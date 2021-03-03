@@ -1,0 +1,156 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import 'flickity.min.css';
+@layer utilities {
+    .animate-delay-0 {
+        animation-delay: 0s;
+    }
+    .animate-delay-1 {
+        animation-delay: .1s;
+    }
+    .animate-delay-2 {
+        animation-delay: .15s;
+    }
+    .animate-delay-3 {
+        animation-delay: .2s;
+    }
+    .animate-delay-4 {
+        animation-delay: .25s;
+    }
+    .animate-delay-5 {
+        animation-delay: .3s;
+    }
+    .animate-delay-6 {
+        animation-delay: .35s;
+    }
+}
+
+.testimonial-carousel:hover .flickity-button {
+    display: block;
+}
+
+.testimonial-carousel .carousel-cell {
+    width: 80%;
+    max-width: 480px;
+    min-width: 280px;
+    height: 360px;
+    opacity: 0.5;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-style: italic;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.steps-carousel .carousel-cell {
+    width: 80%;
+    max-width: 480px;
+    min-width: 280px;
+}
+
+.steps-carousel.flickity-enabled {
+    position: absolute;
+}
+
+.testimonial-carousel .flickity-button {
+    background: rgba(63, 62, 62, 0.7);
+    display: none;
+}
+
+.testimonial-carousel .flickity-button:hover {
+    background: rgb(10, 146, 236);
+}
+
+.testimonial-carousel .flickity-prev-next-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+}
+
+@media only screen and (max-width: 480px) {
+    .testimonial-carousel .flickity-prev-next-button {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+    }
+}
+
+
+/* icon color */
+
+.testimonial-carousel .flickity-button-icon {
+    fill: white;
+}
+
+
+/* hide disabled button */
+
+.testimonial-carousel .flickity-button:disabled {
+    display: none;
+}
+
+.testimonial-carousel .carousel-cell.is-selected {
+    opacity: 1;
+}
+
+.testimonial-carousel .flickity-page-dots {
+    bottom: -40px;
+}
+
+.testimonial-carousel .flickity-page-dots .dot {
+    width: 9px;
+    height: 9px;
+    margin-right: 2px;
+}
+
+.accordion-content {
+    display: none;
+}
+
+.accordion-input:checked~.accordion-content {
+    display: block;
+}
+
+.accordion-input:checked~.accordion-label {
+    background-color: rgba(147, 197, 253);
+}
+
+.accordion-input:checked~.accordion-label>.plus-icon {
+    display: none;
+}
+
+.accordion-input:checked~.accordion-label>.minus-icon {
+    display: block;
+}
+
+.positive-feedback:checked~.positive-feedback-label {
+    color: rgba(245, 158, 11, 0.8);
+}
+
+.negative-feedback:checked~.negative-feedback-label {
+    color: rgba(233, 22, 22, 0.8);
+}
+
+
+/* hero background gradient */
+
+.blur-bg {
+    filter: blur(12px);
+}
+
+.hero-bg {
+    background: rgb(17, 24, 39);
+    background: linear-gradient(174deg, rgba(17, 24, 39, 1) 30%, rgba(30, 58, 105, 1) 60%, rgba(40, 83, 155, 1) 81%, rgba(59, 130, 246, 1) 100%);
+}
+
+.hero2-bg {
+    background: rgb(17, 24, 39);
+    background: linear-gradient(180deg, rgba(96, 155, 250, 1) 20%, rgba(30, 58, 105, 1) 60%, rgba(17, 24, 39, 1) 100%);
+    /* rgba(59, 130, 246, 1) */
+    /* rgba(17, 24, 39, 1) */
+    /* (30, 58, 105, 1) */
+}
