@@ -6,6 +6,10 @@
     </x-slot>
 
     <div class="absolute h-screen hero">
+
     </div>
 
+    <div>
+        
+    </div>
 </x-landing-layout>
