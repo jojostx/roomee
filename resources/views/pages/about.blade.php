@@ -2,14 +2,13 @@
     <!-- hero section -->
     <x-slot name="banner">
         <div class="flex flex-row justify-center bg-blue-100 hero">
-            <div class="relative flex items-center justify-center w-11/12 py-10 mt-20 mb-20 md:justify-between md:h-80">
-                <div class="text-center sm:text-left">
+            <div class="relative flex flex-col items-center justify-between w-11/12 py-10 mb-20 md:mt-20 md:flex-row md:h-80">
+                <div class="mb-16 text-center md:mb-0 md:mr-16 sm:text-left">
                     <p class="mt-12 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl">Who are we?</p>
                     <p class="max-w-md px-8 sm:px-0"><span class="font-bold">Roomee</span> is a roommate finder platform that provides a simple yet effective way for you to find the best roommate based on your preferences. Founded in 2020, by <span class="font-bold">Ikuru John</span>, we are based in Abuja, Nigeria.</p>
                 </div>
-                <div class="absolute right-0 top-4 w-96">
+                <div class="relative w-full max-w-xs badge">
                     <img src="{{ asset('images/badge.png') }}" alt="badge of excellence" class="relative z-20">
-                    <div class="absolute w-full border-2 border-gray-800 h-96 top-12 -left-8"></div>
                 </div>
             </div>
         </div>
@@ -17,9 +16,9 @@
     <!-- end of hero section -->
 
     <!-- company goals and motivation section -->
-    <div class="flex flex-row justify-center pt-12 bg-white">
+    <div class="flex flex-row justify-center bg-white md:pt-12">
         <div class="flex flex-col items-center w-11/12 my-20">
-            <div class="flex flex-col items-center justify-between w-full my-2 mt-12 md:flex-row">
+            <div class="flex flex-col items-center justify-between w-full my-2 md:mt-12 md:flex-row">
                 <div class="max-w-md p-8 border-2 border-gray-800 sm:p-8 md:mb-0">
                     <h2 class="mb-4 text-xl font-bold">OUR MOTIVATION</h2>
                     <p class="font-normal">The insatiable urge to be of help to people and the drive to create solutions to common problems as a way to build a better world for the next generation.</p>

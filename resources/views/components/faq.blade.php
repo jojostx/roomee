@@ -7,7 +7,7 @@
         <div class="border-b border-gray-700 col-span-full md:col-span-4">
             @foreach($questions as $question => $answer)   
                 <div>
-                    <input class="hidden accordion-input" type="checkbox" name="faq-accordion" id="{{ $question}}">
+                    <input class="hidden accordion-input" type="checkbox" name="faq-accordion" id="{{ $question }}">
                     <label class="relative flex items-center justify-between px-4 py-4 border border-b-0 border-gray-700 cursor-pointer md:px-6 accordion-label hover:bg-blue-300" for="{{ $question }}">
                         <p>{{ $question }}</p>
                         <i class="flex-shrink-0 w-6 text-black plus-icon">

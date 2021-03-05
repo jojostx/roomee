@@ -351,3 +351,12 @@
                 </x-step-card>
         </div>
     </div>
+
+    @foreach($terms as $term)
+        <!-- Nothing Runs Inside Here-->
+        <div class="block mb-4 border border-gray-400">
+            <h1 class="font-bold">{{ $term->term_heading }}</h1>
+            <p>{{ $term->term_body }}</p>
+        </div>
+
+        @endforeach

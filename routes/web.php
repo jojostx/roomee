@@ -3,6 +3,7 @@
 use App\Http\Controllers\InertiaController;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\TermController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -47,9 +48,11 @@ Route::get('/rules-and-guidelines', function () {
     return view('pages.rules-and-guidelines');
 })->name('rules');
 
-Route::get('/terms', function () {
-    return view('pages.terms');
-})->name('terms');
+// Route::get('/terms', function () {
+//     return view('pages.terms');
+// })->name('terms');
+
+Route::get('/terms-of-use', [TermController::class, 'show'])->name('terms');
 
 
 
