@@ -4,7 +4,7 @@
         <div class="flex flex-row justify-center bg-blue-100 hero">
             <div class="relative flex flex-col items-center justify-between w-11/12 py-10 mb-20 md:mt-20 md:flex-row md:h-80">
                 <div class="mb-16 text-center md:mb-0 md:mr-16 sm:text-left">
-                    <p class="mt-12 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl">Who are we?</p>
+                    <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl lg:text-5xl">Who are we?</p>
                     <p class="max-w-md px-8 sm:px-0"><span class="font-bold">Roomee</span> is a roommate finder platform that provides a simple yet effective way for you to find the best roommate based on your preferences. Founded in 2020, by <span class="font-bold">Ikuru John</span>, we are based in Abuja, Nigeria.</p>
                 </div>
                 <div class="relative w-full max-w-xs badge">

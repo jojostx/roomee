@@ -219,6 +219,13 @@
                         </x-social-link-alt>
                         <p>/roomee_com_ng</p>
                     </a>
+                    <a target="_blank" href="mailto:support@roomee.com.ng" class="flex items-center max-w-xs px-4 bg-white border border-gray-300 rounded-lg hover:shadow-md hover:text-blue-500">
+                        <x-social-link-alt class="my-6">
+                            <path fill="currentColor" fill-rule="evenodd"  d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                            <path fill="currentColor" fill-rule="evenodd"  d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                        </x-social-link-alt>
+                        <p class="text-sm">support@Roomee.com.ng</p>
+                    </a>
                     <a href="#" class="flex items-center max-w-xs px-4 bg-white border border-gray-300 rounded-lg hover:shadow-md hover:text-blue-500">
                         <x-social-link-alt class="my-6">
                             <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0ZM5.625 5C5.27982 5 5 5.27982 5 5.625L5 6.875C5 11.3625 8.6375 15 13.125 15L14.375 15C14.7202 15 15 14.7202 15 14.375L15 13.0294C14.9999 12.7239 14.7789 12.4632 14.4775 12.4131L11.7056 11.9506C11.4348 11.9056 11.1663 12.0425 11.0437 12.2881L10.56 13.2556C8.82278 12.5546 7.44538 11.1772 6.74437 9.44L7.71187 8.95687C7.95778 8.83424 8.09474 8.56539 8.04937 8.29437L7.58687 5.5225C7.53677 5.22113 7.27614 5.00014 6.97062 5L5.625 5Z" />
@@ -226,7 +233,7 @@
                         <p class="text-sm">+234-903-719-8917</p>
                     </a>
                 </div>
-                <p class="mt-4 font-semibold text-blue-500">Thanks for vibing with us we are happy to help!!! 
+                <p class="mt-4 font-semibold text-blue-500">Thanks for vibing with us we are happy to help!!!
                     <i class="inline-block w-4 text-red-600">
                         <svg viewBox="0 0 32 56" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path id="Shape" d="m11 34c0 .5522847.4477153 1 1 1h1.28c-.217479-.6428465-.2958769-1.3245676-.23-2h-1.05c-.5522847 0-1 .4477153-1 1z" />
@@ -373,7 +380,5 @@
             </svg>
         </div> -->
     </div>
-
-
 
 </x-landing-layout>

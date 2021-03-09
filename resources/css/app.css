@@ -24,6 +24,9 @@
     .animate-delay-6 {
         animation-delay: .35s;
     }
+    .text-indent {
+        text-indent: 10px;
+    }
 }
 
 .testimonial-carousel:hover .flickity-button {
@@ -164,4 +167,20 @@
     right: 10px;
     border-width: 2px;
     border-color: rgba(31, 41, 55, 1);
+}
+
+.privacy li {
+    margin-bottom: 5px;
+}
+
+table tr:nth-child(odd) {
+    background: rgba(209, 213, 219, 1);
+}
+
+table .table-heading th {
+    padding: 10px 10px;
+}
+
+table tr td {
+    padding: 15px 5px;
 }

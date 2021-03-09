@@ -38,7 +38,7 @@
     <!-- End of page content -->
 
     @include('sections.footer')
-    
+
 
 
     <button onclick="backToTop()" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-gray-700 rounded-full shadow-lg topButton focus:outline-black focus:bg-gray-600 hover:bg-blue-600 text-gray-50 bottom-8 right-8">
@@ -102,18 +102,31 @@
                     fetch(req)
                         .then(res => res.json()).then(
                             (data) => {
-                                const responseText = data.success;
-                                const successDiv = document.querySelector('#success');
-                                successDiv.innerHTML = `<p>${responseText}</p>`;
-                                successDiv.classList.remove('hidden')
-                                
-                                setTimeout(() => {
-                                    successDiv.classList.add('hidden')
-                                }, 2000);
+                                    
+                                let responseText;
+                                if (data.success) {
+                                    responseText = data.success;
+                                    const successDiv = document.querySelector('#success');
+                                    successDiv.innerHTML = `<p>${responseText}</p>`;
+                                    successDiv.classList.remove('hidden')
+
+                                    setTimeout(() => {
+                                        successDiv.classList.add('hidden')
+                                    }, 2000)
+                                } 
                             }
                         )
                         .catch(err => {
-                            console.log('no response');
+                            if (err) {
+                                    let responseText = 'Unable to submit feedback';
+                                    const successDiv = document.querySelector('#success');
+                                    successDiv.innerHTML = `<p>${responseText}</p>`;
+                                    successDiv.classList.remove('hidden')
+
+                                    setTimeout(() => {
+                                        successDiv.classList.add('hidden')
+                                    }, 2000) 
+                                }
                         })
                 },
             }
