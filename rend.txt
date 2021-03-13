@@ -1,4 +1,6 @@
 <!-- @foreach($v as $key => $value)
+
+howfar na
             <div>
                 <input class="hidden accordion-input" type="checkbox" name="faq-accordion" id="{{ $key }}">
                 <label class="relative flex items-center justify-between px-4 py-4 border border-b-0 border-gray-700 cursor-pointer md:px-6 accordion-label hover:bg-blue-300" for="{{ $key }}">
