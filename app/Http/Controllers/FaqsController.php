@@ -4,30 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class FaqsController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('pages.faqs');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
+//        $request->validate([
+//            'feedback' => 'required|boolean',
+//        ]);
 
-    //validate request
-    //store request
-    //return confirmation message
-    $this->validate($request, [
-        'feedback' => 'required|boolean',
-    ]);
+        $validator = Validator::make($request->all(),[
+            'feedback' => 'required|boolean',
+        ]);
 
-    Feedback::create([
-        'feedback' => $request->feedback,
-    ]);
+        if ($validator->fails()){
+            return  response(['error'=>$validator->errors()->all()], 442);
+        }
 
-    return response()->json([
-        'success' => 'Feedback Submitted',
-    ]);
-    // return redirect('faqs')->with('status', 'Feedback Submitted!');
-     
+        Feedback::create([
+            'feedback' => $request->feedback,
+        ]);
+
+
+        return response()->json([
+            'success' => 'Feedback submitted succesfully',
+        ]);
+
     }
 }

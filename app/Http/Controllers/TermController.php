@@ -9,11 +9,6 @@ class TermController extends Controller
 {
     //
     public function show(){
-        $terms = Term::all();
-        // \dd($terms);
-        // foreach (Term::all() as $term) {
-        //     \dd($term->term_body);          
-        // }
-        return view('pages.terms')->with('terms', $terms);
+        return view('pages.terms')->with('terms', ['man' => 'young']);
     }
 }

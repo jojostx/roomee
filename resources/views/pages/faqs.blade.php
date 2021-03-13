@@ -99,7 +99,7 @@
             </div>
             @endif
 
-            <div id="success" class="hidden px-4 py-2 font-bold text-blue-600 bg-white border rounded-md shadow-md">
+            <div id="flash" class="hidden px-4 py-2 font-bold text-blue-600 bg-white border rounded-md shadow-md">
             </div>
 
         </div>

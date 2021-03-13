@@ -2,10 +2,10 @@
     <!-- Hero Section -->
 
     <x-slot name="banner">
-        <div class="relative flex items-center justify-center h-screen pt-12 mb-4 bg-gray-900 hero hero-bg">
+        <div class="relative flex items-center justify-center h-screen mb-4 bg-gray-900 hero hero-bg">
             <div class="absolute w-full h-full blur-bg"></div>
 
-            <div class="relative z-20 flex flex-col items-center justify-start w-11/12 pt-0 md:w-5/6 lg:flex-row lg:items-start lg:justify-between lg:pt-0 lg:mt-12">
+            <div class="relative z-20 flex flex-col items-center justify-start w-11/12 pt-0 md:w-5/6 lg:flex-row lg:items-start lg:justify-between lg:pt-0 ">
                 <div class="flex-shrink-0 max-w-md mb-16 -mt-24 text-center text-gray-200 lg:self-center lg:text-left lg:mb-8 ">
                     <h1 class="px-2 mb-6 text-3xl font-bold lg:px-0 sm:text-4xl">Finding A Roommate Has Never Been Easier</h1>
                     <h2 class="mb-6 text-base font-semibold sm:text-xl">Searching for a good roommate is like looking for a soulmate, very few people do find them. Roomee helps you find the perfect roommate based on your preferences.</h2>

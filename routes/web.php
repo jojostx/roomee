@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function () {
     return view('pages.welcome');
 })->name('home');
@@ -25,10 +26,6 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
-
-// Route::get('/contact-us', function () {
-//     return view('pages.contact');
-// })->name('contact');
 
 Route::get('/contact-us', [ContactsController::class, 'index'])->name('contact');
 Route::post('/contact-us', [ContactsController::class, 'store'])->middleware('throttle:60, 1');
@@ -48,19 +45,13 @@ Route::get('/rules-and-guidelines', function () {
     return view('pages.rules-and-guidelines');
 })->name('rules');
 
-// Route::get('/terms', function () {
-//     return view('pages.terms');
-// })->name('terms');
-
 Route::get('/terms-of-use', [TermController::class, 'show'])->name('terms');
-
 
 
 Route::get('/logout', function () {
     Auth::logout();
     return view('pages.welcome');
 })->name('logout');
-
 
 
 Route::get('/pages', [InertiaController::class, 'show']);

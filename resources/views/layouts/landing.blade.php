@@ -78,18 +78,21 @@
             })
         };
 
-
-
         function form(formElem) {
 
             return {
-                submitForm: () => {
+                flashElement(node, flashMessage) {
+                    const flashNode = document.querySelector(node);
+                    flashNode.innerHTML = `<p>${flashMessage}</p>`;
+                    flashNode.classList.remove('hidden')
+
+                    setTimeout(() => {
+                        flashNode.classList.add('hidden')
+                    }, 2000)
+                },
+                submitForm() {
                     const formElement = document.getElementById(formElem);
                     const formDataElem = new FormData(formElement);
-
-                    // for (const key of formDataElem.keys()) {
-                    //     console.log(`${key} : ${formDataElem.get(key).length}`);
-                    // }
 
                     const url = 'http://127.0.0.1:8000/faqs';
                     const req = new Request(
@@ -102,33 +105,16 @@
                     fetch(req)
                         .then(res => res.json()).then(
                             (data) => {
-                                    
-                                let responseText;
-                                if (data.success) {
-                                    responseText = data.success;
-                                    const successDiv = document.querySelector('#success');
-                                    successDiv.innerHTML = `<p>${responseText}</p>`;
-                                    successDiv.classList.remove('hidden')
-
-                                    setTimeout(() => {
-                                        successDiv.classList.add('hidden')
-                                    }, 2000)
-                                } 
+                                (data.success) ?
+                                this.flashElement('#flash', data.success): (data.error) ? this.flashElement('#flash', 'Please choose a reation'):console.log('there was an error');
                             }
                         )
                         .catch(err => {
-                            if (err) {
-                                    let responseText = 'Unable to submit feedback';
-                                    const successDiv = document.querySelector('#success');
-                                    successDiv.innerHTML = `<p>${responseText}</p>`;
-                                    successDiv.classList.remove('hidden')
-
-                                    setTimeout(() => {
-                                        successDiv.classList.add('hidden')
-                                    }, 2000) 
-                                }
+                            let responseText = 'Unable to submit feedback';
+                            this.flashElement('#flash', responseText);
                         })
                 },
+
             }
         };
     </script>
