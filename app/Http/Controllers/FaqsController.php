@@ -15,26 +15,17 @@ class FaqsController extends Controller
 
     public function store(Request $request)
     {
-//        $request->validate([
-//            'feedback' => 'required|boolean',
-//        ]);
-
-        $validator = Validator::make($request->all(),[
-            'feedback' => 'required|boolean',
+        $request->validate([
+            'feedback' => 'required|boolean'
         ]);
-
-        if ($validator->fails()){
-            return  response(['error'=>$validator->errors()->all()], 442);
-        }
 
         Feedback::create([
             'feedback' => $request->feedback,
         ]);
 
-
         return response()->json([
-            'success' => 'Feedback submitted succesfully',
-        ]);
+            'success' => 'Feedback submitted successfully',
+        ], 201);
 
     }
 }

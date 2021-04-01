@@ -54,8 +54,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Mail::to($request->email)->send(new UserCreated());
-
         return redirect(RouteServiceProvider::HOME);
     }
 }

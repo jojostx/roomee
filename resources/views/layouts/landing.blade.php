@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 
     <!-- Scripts -->
     <script src="{{ asset('js/welcome.js') }}" defer></script>
@@ -51,26 +51,6 @@
     </button>
 
     <script>
-        const backToTopButton = document.querySelector('.topButton');
-
-        function inViewport(elem, callback, options = {}) {
-            return new IntersectionObserver(entries => {
-                entries.forEach(entry =>
-                    callback(entry)
-                )
-            }, options).observe(document.querySelector(elem));
-        };
-
-        inViewport('.hero', entry => {
-            if (!entry.isIntersecting) {
-                backToTopButton.classList.add('flex');
-                backToTopButton.classList.remove('hidden');
-            } else {
-                backToTopButton.classList.add('hidden');
-                backToTopButton.classList.remove('flex');
-            }
-        });
-
         function backToTop() {
             document.documentElement.scrollTo({
                 top: 0,
@@ -78,23 +58,23 @@
             })
         };
 
+        function flashElement(node, flashMessage) {
+            const flashNode = document.querySelector(node);
+            flashNode.innerHTML = `<p>${flashMessage}</p>`;
+            flashNode.classList.remove('hidden')
+
+            setTimeout(() => {
+                flashNode.classList.add('hidden')
+            }, 2000)
+        }
         function form(formElem) {
 
             return {
-                flashElement(node, flashMessage) {
-                    const flashNode = document.querySelector(node);
-                    flashNode.innerHTML = `<p>${flashMessage}</p>`;
-                    flashNode.classList.remove('hidden')
-
-                    setTimeout(() => {
-                        flashNode.classList.add('hidden')
-                    }, 2000)
-                },
-                submitForm() {
+                submitForm(form_url) {
                     const formElement = document.getElementById(formElem);
                     const formDataElem = new FormData(formElement);
 
-                    const url = 'http://127.0.0.1:8000/faqs';
+                    const url = form_url;
                     const req = new Request(
                         url, {
                             body: formDataElem,
@@ -106,18 +86,38 @@
                         .then(res => res.json()).then(
                             (data) => {
                                 (data.success) ?
-                                this.flashElement('#flash', data.success): (data.error) ? this.flashElement('#flash', 'Please choose a reation'):console.log('there was an error');
+                                flashElement('#flash', data.success): (data.error) ? flashElement('#flash', 'Please choose a reation'):console.log('there was an error');
                             }
                         )
                         .catch(err => {
-                            let responseText = 'Unable to submit feedback';
-                            this.flashElement('#flash', responseText);
+                            let responseText = 'Submission unsuccessful';
+                            flashElement('#flash', responseText);
                         })
                 },
 
             }
         };
+
+
+        const backToTopButton = document.querySelector('.topButton');
+        function inViewport(elem, callback, options = {}) {
+            return new IntersectionObserver(entries => {
+                entries.forEach(entry =>
+                    callback(entry)
+                )
+            }, options).observe(document.querySelector(elem));
+        };
+        inViewport('.hero', entry => {
+            if (!entry.isIntersecting) {
+                backToTopButton.classList.add('flex');
+                backToTopButton.classList.remove('hidden');
+            } else {
+                backToTopButton.classList.add('hidden');
+                backToTopButton.classList.remove('flex');
+            }
+        });
     </script>
 </body>
 
+@stack('scripts')
 </html>

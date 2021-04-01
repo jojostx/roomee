@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const webpack = require('webpack')
 
 /*
  |--------------------------------------------------------------------------
@@ -11,11 +12,29 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.webpackConfig({
+    plugins: [
+        new webpack.DefinePlugin({
+            __VUE_OPTIONS_API__: false,
+            __VUE_PROD_DEVTOOLS__: false,
+        }),
+    ],
+})
 
-mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'public/css', [
+
+mix
+    .js('resources/js/app.js', 'public/js')
+    .postCss('resources/css/app.css', 'public/css', [
+        require('postcss-import'),
+        require('tailwindcss'),
+        require('autoprefixer'),
+    ]).vue().version();
+
+mix.postCss('resources/css/welcome.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
 ]).version();
+
 
 mix.js('resources/js/welcome.js', 'public/js').version();

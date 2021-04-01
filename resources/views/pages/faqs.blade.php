@@ -68,7 +68,11 @@
     <div class="py-16 bg-gray-100">
         <div class="flex flex-col items-center w-10/12 mx-auto">
             <p class="mb-4 text-xl font-semibold">Was this article helpful?</p>
-            <form action="{{ route('faqs') }}" x-on:submit.prevent="submitForm()" x-data="form('feedback_Form')" method="POST" id="feedback_Form" class="flex flex-col items-center justify-center mb-4">
+            <form x-on:submit.prevent="submitForm('http://127.0.0.1:8000/faqs')"
+                  x-data="form('feedback_Form')"
+                  method="POST"
+                  id="feedback_Form"
+                  class="flex flex-col items-center justify-center mb-4">
                 @csrf
 
                 <div class="flex mb-4">
@@ -87,17 +91,11 @@
                         <p class="font-semibold">No</p>
                     </label>
                 </div>
-        
+
                 <x-button type="Submit" class="flex items-center justify-center font-bold text-gray-100 bg-gray-800 rounded-full w-28 hover:text-gray-100 hover:bg-blue-500">
                     Submit
                 </x-button>
             </form>
-
-            @if (session('status'))
-            <div id="success" class="px-4 py-4 font-bold text-blue-600 bg-white border rounded-md shadow-md">
-                {{ session('status') }}
-            </div>
-            @endif
 
             <div id="flash" class="hidden px-4 py-2 font-bold text-blue-600 bg-white border rounded-md shadow-md">
             </div>
@@ -120,5 +118,5 @@
         </div>
     </div>
     <!-- end of call to action -->
-    
+
 </x-landing-layout>

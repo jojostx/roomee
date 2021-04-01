@@ -8,9 +8,9 @@ class Faq extends Component
 {
 
     /**
-     * 
-     * An asscoiative array of Questions and Answers
-     * 
+     *
+     * An associative array of Questions and Answers
+     *
      */
 
     /**

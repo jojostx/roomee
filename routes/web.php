@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\InertiaController;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\TermController;
@@ -19,33 +18,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.welcome');
-})->name('home');
-
-Route::get('/about', function () {
-    return view('pages.about');
-})->name('about');
-
+Route::view('/', 'pages.welcome')->name('home');
+Route::view('/about','pages.about')->name('about');
+Route::view('/features','pages.features')->name('features');
+Route::view('/privacy', 'pages.privacy-policy')->name('privacy');
+Route::view('/rules-and-guidelines','pages.rules-and-guidelines')->name('rules');
+Route::view('/terms-of-use', 'pages.terms')->name('terms');
 Route::get('/contact-us', [ContactsController::class, 'index'])->name('contact');
-Route::post('/contact-us', [ContactsController::class, 'store'])->middleware('throttle:60, 1');
-
 Route::get('/faqs', [FaqsController::class, 'index'])->name('faqs');
-Route::post('/faqs', [FaqsController::class, 'store'])->middleware('throttle:60, 1');
-
-Route::get('/features', function () {
-    return view('pages.features');
-})->name('features');
-
-Route::get('/privacy', function () {
-    return view('pages.privacy-policy');
-})->name('privacy');
-
-Route::get('/rules-and-guidelines', function () {
-    return view('pages.rules-and-guidelines');
-})->name('rules');
-
-Route::get('/terms-of-use', [TermController::class, 'show'])->name('terms');
+Route::middleware(['throttle:xhrFormRequest'])->group(function () {
+    Route::post('/contact-us', [ContactsController::class, 'store']);
+    Route::post('/faqs', [FaqsController::class, 'store']);
+});
 
 
 Route::get('/logout', function () {
@@ -53,11 +37,8 @@ Route::get('/logout', function () {
     return view('pages.welcome');
 })->name('logout');
 
-
-Route::get('/pages', [InertiaController::class, 'show']);
-
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__ . '/auth.php';

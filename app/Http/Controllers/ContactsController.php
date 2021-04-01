@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCompliantFromContactPageRequest;
 use App\Models\Contact;
-use Illuminate\Http\Request;
+use http\Client\Response;
 
 class ContactsController extends Controller
 {
@@ -12,18 +13,9 @@ class ContactsController extends Controller
         return view('pages.contact');
     }
 
-    public function store(Request $request)
+    public function store(StoreCompliantFromContactPageRequest $request)
     {
-
-        //validate request
-        //store request
-        //return confirmation message
-        $this->validate($request, [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'message' => 'required|max:255'
-        ]);
+        $request->validated();
 
         Contact::create([
             'firstname' => $request->firstname,
@@ -32,10 +24,6 @@ class ContactsController extends Controller
             'message' => $request->message,
         ]);
 
-        return response()->json([
-            'success' => 'Message Submitted',
-        ]);
-        // return redirect('faqs')->with('status', 'Feedback Submitted!');
-
+        return response()->json(['success' => 'Message Submitted succesfully'], 201);
     }
 }
