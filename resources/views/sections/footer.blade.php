@@ -1,4 +1,4 @@
-<div class="flex justify-center w-full pb-8 text-gray-400 bg-gray-900 pt-14 lg:pt-24">
+<footer class="flex justify-center w-full pb-8 text-gray-400 bg-gray-900 pt-14 lg:pt-24">
     <div class="w-11/12">
         <div class="grid grid-cols-1 gap-8 pb-8 lg:pb-12 md:grid-cols-8">
             <div class="pb-8 sm:col-span-3">
@@ -48,4 +48,4 @@
             <p>&copy; 2021 Roomee, Inc. All rights reserved.</p>
         </div>
     </div>
-</div>
+</footer>

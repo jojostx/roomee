@@ -21,9 +21,9 @@
 <body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-gray-100 vh">
 
     <!-- Navigation Bar -->
-    <div class="z-40 flex flex-row items-center justify-center w-full h-16 bg-gray-900 border-b border-gray-800">
+    <header class="z-40 flex flex-row items-center justify-center w-full h-16 bg-gray-900 border-b border-gray-800">
         @include('sections.navbar')
-    </div>
+    </header>
     <!-- End of Navigation Bar -->
 
 

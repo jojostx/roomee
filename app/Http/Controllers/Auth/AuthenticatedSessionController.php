@@ -29,8 +29,11 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
         $request->session()->regenerate();
+
+        if (!$request->user()->profile_updated) {
+            return redirect(RouteServiceProvider::PROFILE);
+        }
 
         return redirect(RouteServiceProvider::HOME);
     }

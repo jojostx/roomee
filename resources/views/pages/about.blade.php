@@ -41,22 +41,6 @@
                     <p class="font-normal">The insatiable urge to be of help to people and the drive to create solutions to common problems as a way to build a better world for the next generation. Making the lives of Nigerians easier by providing solutions to commons problems through the use of technology. We are focused on creating an encouraging environment for young innovative minds.</p>
                 </div>
             </div>
-            <!-- <div class="flex flex-col items-start w-full md:items-center md:flex-row md:justify-between">
-                <div class="flex-shrink-0 max-w-md mb-8 mr-8 w-96 md:mb-0">
-                    <h2 class="mb-4 text-xl font-bold">OUR MOTIVATION</h2>
-                    <p class="font-normal">The insatiable urge to be of help to people and the drive to create solutions to common problems as a way to build a better world for the next generation.</p>
-                </div>
-                <div class="w-full md:max-w-md "><img src="{{ asset('images/goal.jpg') }}" alt="our motivation"></div>
-            </div> -->
-            <!-- <div class="flex flex-col-reverse items-start w-full md:items-center md:flex-row md:justify-between mt-28">
-                <div class="w-full mr-8 md:max-w-md "><img src="{{ asset('images/motivation.jpg') }}" alt="our motivation"></div>
-
-                <div class="flex-shrink-0 max-w-md mb-8 w-96 md:mb-0">
-                    <h2 class="mb-4 text-xl font-bold">OUR MISSION</h2>
-                    <p class="font-normal">The insatiable urge to be of help to people and the drive to create solutions to common problems as a way to build a better world for the next generation.Making the lives of Nigerians easier by providing solutions to commons problems through the use of technology. We are focused on creating an encouraging environment for young innovative minds.</p>
-                </div>
-
-            </div> -->
         </div>
     </div>
     <!-- end of company goals and motivation section -->

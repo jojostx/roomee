@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
-use App\Http\Controllers\TermController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UpdateProfileController;
+use App\Http\Livewire\UpdateProfile;
+use App\Http\Livewire\ViewProfile;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,6 +26,7 @@ Route::view('/privacy', 'pages.privacy-policy')->name('privacy');
 Route::view('/rules-and-guidelines','pages.rules-and-guidelines')->name('rules');
 Route::view('/terms-of-use', 'pages.terms')->name('terms');
 Route::get('/contact-us', [ContactsController::class, 'index'])->name('contact');
+ Route::get('/test', [UpdateProfileController::class, 'index'])->name('test');
 Route::get('/faqs', [FaqsController::class, 'index'])->name('faqs');
 Route::middleware(['throttle:xhrFormRequest'])->group(function () {
     Route::post('/contact-us', [ContactsController::class, 'store']);
@@ -32,13 +34,15 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 });
 
 
-Route::get('/logout', function () {
-    Auth::logout();
-    return view('pages.welcome');
-})->name('logout');
+Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/profile', UpdateProfile::class)->withoutMiddleware(['profile.updated'])->name('profile');
+    Route::get('/view_profile', ViewProfile::class)->withoutMiddleware(['profile.updated'])->name('view_profile');
+});
+
+
 
 require __DIR__ . '/auth.php';

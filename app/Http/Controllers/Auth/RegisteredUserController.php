@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\UserCreated;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -12,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -38,11 +37,13 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|confirmed|min:8',
+            'firstname' => ['required', 'alpha', 'string', 'max:255'],
+            'lastname' => ['required', 'alpha','string','max:255'],
+            'email' => ['required','string','email','max:255','unique:users'],
+            'password' => ['required', 'string','confirmed','min:8'],
+            'gender' => ['required', Rule::in(['male', 'female'])]
         ]);
 
         Auth::login($user = User::create([
@@ -50,10 +51,11 @@ class RegisteredUserController extends Controller
             'lastname' => Str::of($request->lastname)->ucfirst(),
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'gender' => $request->gender,
         ]));
 
         event(new Registered($user));
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(RouteServiceProvider::PROFILE);
     }
 }

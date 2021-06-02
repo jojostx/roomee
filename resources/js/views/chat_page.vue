@@ -1,11 +1,10 @@
 <template>
-  <p>hello</p>
+  <p>hello from chat page </p>
 </template>
 
 <script>
 export default {
-    setup() {
-    }
+
 }
 </script>
 

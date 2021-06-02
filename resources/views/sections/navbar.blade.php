@@ -3,7 +3,7 @@
     <!-- Application Logo -->
     <div class="flex items-center flex-shrink-0">
         <a href="{{ route('home') }}">
-            <x-application-logo class="block w-auto h-10 text-gray-200 fill-current" />
+            <x-application-logo class="block text-gray-200 fill-current h-14" />
         </a>
     </div>
 
@@ -27,14 +27,17 @@
             @if (Route::has('login'))
             <div class="py-2 sm:block">
                 @auth
-                <a href="{{ url('/dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
-                @else
-                <a href="{{ route('login') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">SIGN IN</a>
-
-                @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900">SIGN UP</a>
-                @endif
+                    @if (Auth::user()->profile_updated)
+                        <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
+                    @else
+                        <a href="{{ route('profile') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                    @endif
                 @endauth
+
+                @guest
+                <a href="{{ route('login') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">SIGN IN</a>
+                <a href="{{ route('register') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900">SIGN UP</a>
+                @endguest
             </div>
             @endif
         </div>
@@ -50,7 +53,7 @@
                 </svg>
             </button>
         </div>
-        <div x-show="open" @click.away="open = false" class="absolute right-0 flex flex-col items-center justify-between w-48 pb-4 overflow-hidden bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
+        <div x-show="open" @click.away="open = false" style="display: none;" class="absolute right-0 flex flex-col items-center justify-between w-48 pb-4 overflow-hidden bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
             <div class="flex flex-col justify-between flex-shrink-0 w-full">
                 <x-dark-dropdown-link :href="route('home')" :active="request()->routeIs('home')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
@@ -85,15 +88,18 @@
             </div>
             <div class="relative flex items-center justify-center w-full px-4 pt-4 border-t border-gray-700 sm:items-center sm:pt-0 ">
                 @if (Route::has('login'))
-                @auth
-                <a href="{{ url('/dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
-                @else
-                <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN IN</a>
+                    @auth
+                        @if (Auth::user()->profile_updated)
+                            <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
+                        @else
+                            <a href="{{ route('profile') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                        @endif
+                    @endauth
 
-                @if (Route::has('register'))
-                <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN UP</a>
-                @endif
-                @endauth
+                    @guest
+                        <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN IN</a>
+                        <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN UP</a>
+                    @endguest
                 @endif
             </div>
         </div>

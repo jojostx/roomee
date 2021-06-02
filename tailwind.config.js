@@ -4,6 +4,16 @@ module.exports = {
     purge: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
 
     theme: {
+        customForms: theme => ({
+            default: {
+                input: {
+                    '&:focus': {
+                        borderColor: undefined,
+                        boxShadow: undefined,
+                    }
+                }
+            },
+        }),
         backgroundPosition: {
             'bottom-right-4': 'right bottom -3rem',
         },
@@ -51,7 +61,6 @@ module.exports = {
             '2xl': '1536px',
             // => @media (min-width: 1536px) { ... }
         },
-
     },
 
     variants: {
@@ -60,5 +69,5 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')]
 };
