@@ -1,6 +1,36 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@layer components {
+    .dropdown_ul {
+        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-gray-50;
+    }
+    .select_dropdown {
+        @apply w-full text-gray-500 border-gray-300 rounded-md shadow-sm;
+    }
+    .select_dropdown:focus {
+        @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
+    }
+    .label {
+        @apply block mb-2 font-medium text-gray-700;
+    }
+    button[disabled] {
+        @apply bg-gray-500 cursor-default;
+    }
+    button[disabled]:hover {
+        @apply bg-gray-500;
+    }
+}
+
+.section::before {
+    content: " ";
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+    height: 12px;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='12' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 1c-5 0-5 10-10 10S10 1 5 1 0 11-5 11-10 1-15 1' stroke='%23CBD5DF' stroke-width='2' fill='none' fill-rule='evenodd' stroke-linecap='square'/%3E%3C/svg%3E");
+}
+
 html {
     --scrollbarBG: rgba(229, 231, 235, 1);
     --thumbBG: rgba(75, 85, 99, 1);
@@ -103,4 +133,8 @@ option {
     to {
         transform: rotate(360deg);
     }
+}
+
+#cover_inp {
+    min-height: 200px;
 }

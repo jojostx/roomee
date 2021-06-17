@@ -2,8 +2,8 @@
 
     <!-- Application Logo -->
     <div class="flex items-center flex-shrink-0">
-        <a href="{{ route('home') }}">
-            <x-livewire.logo-alt class="block text-gray-200 fill-current w-36" />
+        <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
+            <x-livewire.logo-alt class="block text-gray-200 fill-current w-36" style="max-width: 120px;"/>
         </a>
     </div>
 

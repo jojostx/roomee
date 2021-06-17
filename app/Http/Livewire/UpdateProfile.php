@@ -7,10 +7,15 @@ use App\Models\Dislike;
 use App\Models\Hobby;
 use App\Models\School;
 use App\Models\Town;
+use App\Rules\ModelsExist;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Illuminate\Support\Str;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateProfile extends Component
 {
@@ -30,7 +35,7 @@ class UpdateProfile extends Component
     public array $selectedDislikes;
     public $selectedSchool = NULL;
     public $selectedCourseLevel = NULL;
-    public $selectedTowns = NULL;
+    public array $selectedTowns = [];
     public $selectedCourse = NULL;
     public $minAllowedBudget = 40000;
     public $maxAllowedBudget = 300000;
@@ -39,59 +44,50 @@ class UpdateProfile extends Component
     public $min_budget = NULL;
     public $rooms = '';
 
-
-
     protected $listeners = ['avatarUpload' => 'handleAvatarUpload', 'coverUpload' => 'handleCoverUpload'];
 
     public function mount()
     {
+        $this->avatar = auth()->user()->avatar ?? '';
+        $this->cover_photo = auth()->user()->cover_photo ?? '';
+
+        $this->rooms = auth()->user()->rooms ?? '';
+
+        $this->bio = auth()->user()->bio ?? '';
 
         $this->budgetRange = range($this->minAllowedBudget, $this->maxAllowedBudget, 20000);
-        $this->hobbies = $this->getHobbies();
-        $this->dislikes = $this->getDislikes();
-        $this->schools = $this->getSchools();
-        $this->courses = $this->getCourses();
-        $this->towns = auth()->user()->school ? auth()->user()->school->towns : collect([]);
-        $this->bio = auth()->user()->bio ?? '';
-        $this->course_levels = $this->getCourseLevels(auth()->user()->course);
-        $this->selectedDislikes = $this->getUserDislikes();
-        $this->selectedHobbies = $this->getUserHobbies();
-        $this->selectedCourse = auth()->user()->course;
-        $this->selectedCourseLevel = auth()->user()->course_level;
-        $this->selectedSchool = auth()->user()->school;
-        $this->selectedTowns = auth()->user()->towns ?? collect([]);
         $this->max_budget = auth()->user()->max_budget ?? '';
         $this->min_budget = auth()->user()->min_budget ?? '';
 
-        // $this->min_budget = old('min_budget', 200000);
+        $this->hobbies = $this->getHobbies();
+        $this->selectedHobbies =  $this->getUserData('hobbies');
+
+        $this->dislikes = $this->getDislikes();
+        $this->selectedDislikes = $this->getUserData('dislikes');
+
+        $this->towns = auth()->user()->school ? auth()->user()->school->towns : [];
+        $this->selectedTowns =  $this->getUserData('towns');
+
+        $this->schools = $this->getSchools();
+        $this->selectedSchool = auth()->user()->school;
+
+        $this->courses = $this->getCourses();
+        $this->selectedCourse = auth()->user()->course;
+
+        $this->course_levels = $this->getCourseLevels(auth()->user()->course);
+        $this->selectedCourseLevel = auth()->user()->course_level;
     }
 
     public function handleAvatarUpload($avatarImage)
     {
         $this->avatar = $avatarImage;
+        $this->validateOnly('avatar');
     }
 
     public function handleCoverUpload($coverImage)
     {
         $this->cover_photo = $coverImage;
-    }
-
-    public function pop_dislike($id)
-    {
-        if (in_array($id, $this->selectedDislikes)) {
-            $this->selectedDislikes = array_filter($this->selectedDislikes, function ($i) use ($id) {
-                return $i != $id;
-            });
-        }
-    }
-
-    public function pop_hobby($id)
-    {
-        if (in_array($id, $this->selectedHobbies)) {
-            $this->selectedHobbies = array_filter($this->selectedHobbies, function ($i) use ($id) {
-                return $i != $id;
-            });
-        }
+        $this->validateOnly('cover_photo');
     }
 
     public function getCourses(): Collection
@@ -103,7 +99,6 @@ class UpdateProfile extends Component
 
         return collect([]);
     }
-
 
     public function getDislikes(): array
     {
@@ -120,27 +115,14 @@ class UpdateProfile extends Component
         return School::orderBy('name')->get();
     }
 
-    public function getUserHobbies(): array
+    public function getUserData(string $columnName): array
     {
-        if (auth()->user()->hobbies) {
-            $hobbies = auth()->user()->hobbies()->pluck('id')->toArray();
-            $hobbies = array_map(function ($item) {
+        if (auth()->user()->{$columnName}) {
+            $options = auth()->user()->{$columnName}()->pluck('id')->toArray();
+            $options = array_map(function ($item) {
                 return strval($item);
-            }, $hobbies);
-            return $hobbies;
-        }
-
-        return [];
-    }
-
-    public function getUserDislikes(): array
-    {
-        if (auth()->user()->dislikes) {
-            $dislikes = auth()->user()->dislikes()->pluck('id')->toArray();
-            $dislikes = array_map(function ($item) {
-                return strval($item);
-            }, $dislikes);
-            return $dislikes;
+            }, $options);
+            return $options;
         }
 
         return [];
@@ -157,15 +139,10 @@ class UpdateProfile extends Component
 
     public function selectedSchoolChange(School $school): void
     {
-
-        // if (!$this->schools->contains($school)) {
-        //    return;
-        // }
-
         $this->selectedSchool = $school;
         $this->selectedCourse = NULL;
         $this->selectedCourseLevel = NULL;
-        $this->selectedTowns = collect([]);
+        $this->selectedTowns = [];
         $this->course_levels = [];
         $this->courses = $school->courses;
         $this->towns = $school->towns;
@@ -178,14 +155,6 @@ class UpdateProfile extends Component
         $this->course_levels = $this->getCourseLevels($course);
     }
 
-    public function selectedTownsChange(Town $town): void
-    {
-        if ($this->towns->contains($town->id) && !$this->selectedTowns->contains($town->id)) {
-            $this->selectedTowns->push($town);
-            return;
-        }
-    }
-
     public function minBudgetChange($value): void
     {
         $this->min_budget = intval($value);
@@ -196,40 +165,191 @@ class UpdateProfile extends Component
         $this->max_budget = intval($value);
     }
 
-    protected function rules()
+    //update the validation rules to only allow integer arrays
+    //create custom rule
+    public function rules()
     {
-        return [
-            'selectedSchool' => ['required'],
-            'selectedTowns' => ['required'],
+        $validationRules = [
+            'selectedSchool' => ['required',],
+            'selectedCourse' => ['required',],
+            'selectedCourseLevel' => ['required', 'in_array:course_levels.*'],
+            'selectedHobbies' => ['required', 'array', 'min:1', new ModelsExist(Hobby::class)],
+            'selectedDislikes' => ['required', 'array', 'min:1', new ModelsExist(Dislike::class)],
+            'selectedTowns' => ['required', 'array', 'min:1', new ModelsExist(Town::class)],
+            'selectedTowns.*' => ['required', 'numeric', 'distinct'],
+            'selectedHobbies.*' => ['required', 'numeric', 'distinct'],
+            'selectedDislikes.*' => ['required', 'numeric', 'distinct'],
             'min_budget' => ['required', 'integer', 'numeric', 'gte:minAllowedBudget', 'in_array:budgetRange.*'],
             'max_budget' => ['required', 'gt:min_budget', 'integer', 'numeric', 'lte:maxAllowedBudget', 'in_array:budgetRange.*'],
             'bio' => ['required', 'string', 'max:255', 'min:25'],
             'rooms' => ['required', Rule::in(['1', '2', '3', '4'])],
-            'avatar' => [
-                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:100,4098',
-                'base64dimensions:min_height=100,max_height=450,ratio=1'
-            ],
+        ];
+
+        $cover_photo_validation_rules = [
             'cover_photo' => [
-                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:100,4098',
+                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:100,5098',
                 'base64dimensions:min_height=100,max_height=450,ratio=1.5'
             ],
         ];
+
+        $avatar_validation_rules = [
+            'avatar' => [
+                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:10,4098',
+                'base64dimensions:min_height=100,max_height=450,ratio=1'
+            ],
+        ];
+        
+        $user = auth()->user();
+
+        if ($user->avatar === $this->avatar && $user->cover_photo === $this->cover_photo) {
+            return $validationRules;
+        } else if ($user->avatar !== $this->avatar && $user->cover_photo !== $this->cover_photo) {
+            return array_merge($validationRules, $avatar_validation_rules, $cover_photo_validation_rules);
+        } else if ($user->avatar === $this->avatar && $user->cover_photo !== $this->cover_photo) {
+            return array_merge($validationRules, $cover_photo_validation_rules); 
+        } else {
+            return array_merge($validationRules, $avatar_validation_rules);
+        }
     }
+
+    protected $messages = [
+        'max_budget.gt' => 'The :attribute must be greater than the minimum budget',
+        'bio.max' => 'Your Bio must be at most 255 characters long',
+        'bio.min' => 'Your Bio must be at least 25 characters long',
+        'selectedSchool.required' => 'Choose your institute of study',
+        'selectedDislikes.required' => 'Choose at least one dislike',
+        'selectedHobbies.required' => 'Choose at least one hobby',
+        'selectedTowns.required' => 'Choose at least one town (property location)',
+        'cover_photo.required' => 'Please upload a cover photo',
+        'avatar.required' => 'Please upload an avatar photo',
+    ];
+
+    protected $validationAttributes = [
+        'selectedSchool' => 'School',
+        'selectedDislikes' => 'Dislikes',
+        'selectedHobbies' => 'Hobbies',
+        'selectedTowns' => 'towns',
+        'cover_photo' => 'Cover Photo',
+        'min_budget' => 'minimum budget',
+        'max_budget' => 'maximum budget',
+        'rooms' => 'Number of rooms',
+        'bio' => 'Your Bio',
+    ];
 
     public function updated($propertyName)
     {
         $this->validateOnly($propertyName);
     }
 
+    protected function createTemporaryFile(string $data)
+    {
+        $this->file = tmpfile();
+
+        fwrite(
+            $this->file,
+            base64_decode(Str::after($data, 'base64,'))
+        );
+
+        return new UploadedFile(stream_get_meta_data($this->file)['uri'], Str::random(6), null, null, true);
+    }
+
     public function save()
     {
         if (!$this->schools->contains($this->selectedSchool)) {
             return;
-        }        
+        }
+        $user = auth()->user();
+        $userCover = $user->cover_photo;
+        $userAvatar = $user->avatar;
 
+        //validate inputs
         $this->validate();
 
-        dd($this->avatar);
+        // handle image conversion, naming and storage
+        if ($userAvatar !== $this->avatar) {
+            $avatarName = $this->storeImage($this->avatar, 'avatars');
+        }
+        if ($userCover !== $this->cover_photo) {
+            $coverName = $this->storeImage($this->cover_photo, 'cover_photos');
+        }
+
+        //store data using db transactions
+        //toggle profile_updated field in the users table
+        DB::beginTransaction();
+        try {
+            $user->bio = $this->bio;
+            $user->school()->associate($this->selectedSchool);
+            $user->course()->associate($this->selectedCourse);
+            $user->hobbies()->sync($this->stringArrayToIntegerArray($this->selectedHobbies));
+            $user->dislikes()->sync($this->stringArrayToIntegerArray($this->selectedDislikes));
+            $user->towns()->sync($this->stringArrayToIntegerArray($this->selectedTowns));
+            $user->course_level = intval($this->selectedCourseLevel);
+            $user->rooms = $this->rooms;
+            $user->min_budget = intval($this->min_budget);
+            $user->max_budget = intval($this->max_budget);
+
+            if ($user->avatar !== $this->avatar) {
+                $user->avatar = $avatarName;
+            }
+            if ($user->cover_photo !== $this->cover_photo) {
+                $user->cover_photo = $coverName;
+            }
+            $user->profile_updated = true;
+            
+            $user->save();
+            DB::commit();
+
+            if ($userAvatar !== $user->avatar) {
+                Storage::disk('avatars')->delete($userAvatar);
+            }
+            if ($userCover !== $user->cover_photo) {
+                Storage::disk('cover_photos')->delete($userCover);
+            }
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Storage::disk('avatars')->delete($avatarName);
+            Storage::disk('cover_photos')->delete($coverName);
+            $this->addError('profileUpdate', 'An error occurred while updating your profile please try again');
+            return;
+        }
+
+        //redirect to dashboard
+        return $this->redirect(route('profile.view'));
+    }
+
+    private function storeImage($base64String, $folderName = 'avatars')
+    {
+        if (!$base64String) {
+            return false;
+        }
+
+        $image = $this->createTemporaryFile($base64String);
+
+        $imageName = $this->randName($image);
+
+        try {
+            $image->move(storage_path("app\\" . $folderName), $imageName);
+            return $imageName;
+        } catch (\Exception $th) {
+            return false;
+        }
+    }
+
+    public function randName($file)
+    {
+        return time() . '-' . Str::random(8) . '.' . $file->guessExtension();
+    }
+
+    public function stringArrayToIntegerArray($arr = [])
+    {
+        $newArr = [];
+        foreach ($arr as $value) {
+            $val = intval($value);
+            if ($val !== 0) {
+                array_push($newArr, $val);
+            }
+        }
+        return $newArr;
     }
 
     public function render()
@@ -237,3 +357,8 @@ class UpdateProfile extends Component
         return view('livewire.update-profile')->layout('layouts.guest');
     }
 }
+
+// dd($coverName, $avatarName);
+        // dd(Storage::disk('avatars')->url($avatarName));   
+        // dd(Storage::disk('cover_photos')->url($coverName));
+        // dd(Storage::disk('cover_photos')->delete($coverName));

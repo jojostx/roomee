@@ -118,8 +118,6 @@
     </div>
     <!-- end of our team section -->
 
-
-
     <!-- call to action //links to contact page -->
     <div class="flex justify-center bg-blue-300">
         <div class="flex flex-col items-center justify-between w-11/12 my-12 py-14 md:flex-row">

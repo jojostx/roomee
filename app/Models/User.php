@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 
+//implements MustVerifyEmail
+
 class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
@@ -38,6 +40,10 @@ class User extends Authenticatable
         'avatar',
         'cover_photo',
         'bio',
+        'rooms',
+        'min_budget',
+        'max_budget',
+        'course_level',
     ];
 
     /**
@@ -97,16 +103,16 @@ class User extends Authenticatable
      */
     public function towns()
     {
-        return $this->belongsToMany(Town::class);
+        return $this->belongsToMany(Town::class)->withTimestamps();
     }
 
     public function getAvatarPathAttribute()
     {
-        return Storage::disk('avatars')->url($this->avatar);
+        return Storage::disk('avatars')->url($this->avatar)??'';
     }
-    
+
     public function getCoverPhotoPathAttribute()
     {
-        return Storage::disk('avatars')->url($this->cover_photo);
+        return Storage::disk('cover_photos')->url($this->cover_photo);
     }
 }

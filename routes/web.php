@@ -39,8 +39,8 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(functi
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/profile', UpdateProfile::class)->withoutMiddleware(['profile.updated'])->name('profile');
-    Route::get('/view_profile', ViewProfile::class)->withoutMiddleware(['profile.updated'])->name('view_profile');
+    Route::get('/profile', UpdateProfile::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
+    Route::get('/view_profile', ViewProfile::class)->name('profile.view');
 });
 
 

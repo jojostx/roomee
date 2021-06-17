@@ -1,7 +1,8 @@
 {
-    "/js/app.js": "/js/app.js?id=70551f97b023f34eabfa",
-    "/js/welcome.js": "/js/welcome.js?id=8212961329890a353c2f",
-    "/js/tabula_rasa.js": "/js/tabula_rasa.js?id=4b0c88dd95e3006b098f",
-    "/css/welcome.css": "/css/welcome.css?id=588af1e1cf8b42efd96c",
-    "/css/app.css": "/css/app.css?id=b83ab341a3720140b4d8"
+    "/js/app.js": "/js/app.js?id=193bfd505958eb5f9b84",
+    "/js/welcome.js": "/js/welcome.js?id=1234426d19dbc4b7b3d6",
+    "/js/tabula_rasa.js": "/js/tabula_rasa.js?id=c5cfd99ddeb09329a14c",
+    "/js/workers/worker.js": "/js/workers/worker.js?id=8b963b8a4f0fbcaea039",
+    "/css/welcome.css": "/css/welcome.css?id=61515586d6d93ee8681f",
+    "/css/app.css": "/css/app.css?id=2946bc374c058aeda00f"
 }

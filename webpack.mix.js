@@ -39,3 +39,4 @@ mix.postCss('resources/css/welcome.css', 'public/css', [
 
 mix.js('resources/js/welcome.js', 'public/js').version();
 mix.js('resources/js/tabula_rasa.js', 'public/js').version();
+mix.js('resources/js/workers/backend/worker.js', 'public/js/workers').version();

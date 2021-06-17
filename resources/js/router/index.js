@@ -13,7 +13,7 @@ const routes = [{
 //create the router instance
 const router = createRouter({
     // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
-    mode: "history",
+    history: "webHashHistory",
     routes, // short for `routes: routes`
 })
 

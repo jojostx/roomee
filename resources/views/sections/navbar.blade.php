@@ -30,7 +30,7 @@
                     @if (Auth::user()->profile_updated)
                         <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
                     @else
-                        <a href="{{ route('profile') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                        <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
                     @endif
                 @endauth
 
@@ -92,7 +92,7 @@
                         @if (Auth::user()->profile_updated)
                             <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
                         @else
-                            <a href="{{ route('profile') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                            <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
                         @endif
                     @endauth
 
