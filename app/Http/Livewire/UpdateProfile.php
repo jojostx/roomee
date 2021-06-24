@@ -11,16 +11,13 @@ use App\Rules\ModelsExist;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
-use Livewire\WithFileUploads;
-use Illuminate\Support\Str;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Livewire\WithImageManipulation;
 
 class UpdateProfile extends Component
 {
-    use WithFileUploads;
-
+    use WithImageManipulation;
 
     public $avatar;
     public $cover_photo;
@@ -155,18 +152,6 @@ class UpdateProfile extends Component
         $this->course_levels = $this->getCourseLevels($course);
     }
 
-    public function minBudgetChange($value): void
-    {
-        $this->min_budget = intval($value);
-    }
-
-    public function maxBudgetChange($value): void
-    {
-        $this->max_budget = intval($value);
-    }
-
-    //update the validation rules to only allow integer arrays
-    //create custom rule
     public function rules()
     {
         $validationRules = [
@@ -194,11 +179,11 @@ class UpdateProfile extends Component
 
         $avatar_validation_rules = [
             'avatar' => [
-                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:10,4098',
+                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:20,4098',
                 'base64dimensions:min_height=100,max_height=450,ratio=1'
             ],
         ];
-        
+
         $user = auth()->user();
 
         if ($user->avatar === $this->avatar && $user->cover_photo === $this->cover_photo) {
@@ -206,13 +191,13 @@ class UpdateProfile extends Component
         } else if ($user->avatar !== $this->avatar && $user->cover_photo !== $this->cover_photo) {
             return array_merge($validationRules, $avatar_validation_rules, $cover_photo_validation_rules);
         } else if ($user->avatar === $this->avatar && $user->cover_photo !== $this->cover_photo) {
-            return array_merge($validationRules, $cover_photo_validation_rules); 
+            return array_merge($validationRules, $cover_photo_validation_rules);
         } else {
             return array_merge($validationRules, $avatar_validation_rules);
         }
     }
 
-    protected $messages = [
+    protected array $messages = [
         'max_budget.gt' => 'The :attribute must be greater than the minimum budget',
         'bio.max' => 'Your Bio must be at most 255 characters long',
         'bio.min' => 'Your Bio must be at least 25 characters long',
@@ -224,7 +209,7 @@ class UpdateProfile extends Component
         'avatar.required' => 'Please upload an avatar photo',
     ];
 
-    protected $validationAttributes = [
+    protected array $validationAttributes = [
         'selectedSchool' => 'School',
         'selectedDislikes' => 'Dislikes',
         'selectedHobbies' => 'Hobbies',
@@ -241,18 +226,6 @@ class UpdateProfile extends Component
         $this->validateOnly($propertyName);
     }
 
-    protected function createTemporaryFile(string $data)
-    {
-        $this->file = tmpfile();
-
-        fwrite(
-            $this->file,
-            base64_decode(Str::after($data, 'base64,'))
-        );
-
-        return new UploadedFile(stream_get_meta_data($this->file)['uri'], Str::random(6), null, null, true);
-    }
-
     public function save()
     {
         if (!$this->schools->contains($this->selectedSchool)) {
@@ -261,6 +234,8 @@ class UpdateProfile extends Component
         $user = auth()->user();
         $userCover = $user->cover_photo;
         $userAvatar = $user->avatar;
+        $coverName = "";
+        $avatarName = "";
 
         //validate inputs
         $this->validate();
@@ -280,22 +255,23 @@ class UpdateProfile extends Component
             $user->bio = $this->bio;
             $user->school()->associate($this->selectedSchool);
             $user->course()->associate($this->selectedCourse);
-            $user->hobbies()->sync($this->stringArrayToIntegerArray($this->selectedHobbies));
-            $user->dislikes()->sync($this->stringArrayToIntegerArray($this->selectedDislikes));
-            $user->towns()->sync($this->stringArrayToIntegerArray($this->selectedTowns));
+            $user->hobbies()->sync($this->selectedHobbies);
+            $user->dislikes()->sync($this->selectedDislikes);
+            $user->towns()->sync($this->selectedTowns);
             $user->course_level = intval($this->selectedCourseLevel);
             $user->rooms = $this->rooms;
             $user->min_budget = intval($this->min_budget);
             $user->max_budget = intval($this->max_budget);
 
-            if ($user->avatar !== $this->avatar) {
+            if (($user->avatar !== $this->avatar) && $avatarName !== "") {
                 $user->avatar = $avatarName;
             }
-            if ($user->cover_photo !== $this->cover_photo) {
+            if (($user->cover_photo !== $this->cover_photo) && $coverName !== "") {
                 $user->cover_photo = $coverName;
             }
+
             $user->profile_updated = true;
-            
+
             $user->save();
             DB::commit();
 
@@ -314,42 +290,7 @@ class UpdateProfile extends Component
         }
 
         //redirect to dashboard
-        return $this->redirect(route('profile.view'));
-    }
-
-    private function storeImage($base64String, $folderName = 'avatars')
-    {
-        if (!$base64String) {
-            return false;
-        }
-
-        $image = $this->createTemporaryFile($base64String);
-
-        $imageName = $this->randName($image);
-
-        try {
-            $image->move(storage_path("app\\" . $folderName), $imageName);
-            return $imageName;
-        } catch (\Exception $th) {
-            return false;
-        }
-    }
-
-    public function randName($file)
-    {
-        return time() . '-' . Str::random(8) . '.' . $file->guessExtension();
-    }
-
-    public function stringArrayToIntegerArray($arr = [])
-    {
-        $newArr = [];
-        foreach ($arr as $value) {
-            $val = intval($value);
-            if ($val !== 0) {
-                array_push($newArr, $val);
-            }
-        }
-        return $newArr;
+        $this->redirect(route('profile.view'));
     }
 
     public function render()
@@ -357,8 +298,3 @@ class UpdateProfile extends Component
         return view('livewire.update-profile')->layout('layouts.guest');
     }
 }
-
-// dd($coverName, $avatarName);
-        // dd(Storage::disk('avatars')->url($avatarName));   
-        // dd(Storage::disk('cover_photos')->url($coverName));
-        // dd(Storage::disk('cover_photos')->delete($coverName));

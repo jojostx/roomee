@@ -8,26 +8,34 @@ use Illuminate\Database\Eloquent\Model;
 class School extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'short_name',
+        'state'
+    ];
 
     /**
      * The courses that belongs to this school.
      */
-    public function courses(){
+    public function courses()
+    {
         return  $this->belongsToMany(Course::class, 'course_school')->withTimestamps();
     }
-    
+
 
     /**
      * The towns that belong to this school.
      */
-    public function towns(){
+    public function towns()
+    {
         return  $this->hasMany(Town::class);
     }
 
     /**
      * The users that belong to this school.
      */
-    public function users(){
+    public function users()
+    {
         return  $this->hasMany(User::class);
     }
 }

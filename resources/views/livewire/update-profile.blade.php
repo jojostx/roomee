@@ -92,7 +92,7 @@
                                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <div wire:ignore>
-                                <img src="{{ auth()->user()->coverPhotoPath }}" id="cover_out" class="z-10 block w-full mb-5 rounded-lg shadow-lg" alt="">
+                                <img src="{{ auth()->user()->coverPhotoPath }}" id="cover_out" class="z-10 block w-full mb-5 rounded-lg shadow-lg" alt="" height="100%" width="100%">
                             </div>
                             @else
                             <svg wire:ignore id="cover-svg" class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
@@ -121,12 +121,6 @@
                                 PNG, JPG, GIF images of up to 5MB
                             </p>
                         </div>
-                        <!-- <div class="fixed z-10 inline-flex justify-between px-2 py-2 text-xs text-gray-800 border border-gray-600 rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="w-4 mr-1" fill="currentColor">
-                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                            </svg>
-                            All fields are required!
-                        </div> -->
                     </div>
                     @error('cover_photo')
                     <x-livewire.error-text>{{ $message }}</x-livewire.error-text>
@@ -322,27 +316,27 @@
     const avatarInput = document.getElementById('profile_photo');
     avatarInput.addEventListener('change', (e) => {
         const img_ava = document.getElementById('avatar_img');
-        let loader = document.querySelector('#loader_avatar');
+        let loader = document.querySelector('.loader');
 
         let options = {
             max_size: 5507566,
             aspectRatio: 1,
-            maxHeight: 180,
-            maxWidth: 180,
+            maxHeight: 240,
+            maxWidth: 240,
             loader,
             output: img_ava,
             hideableElems: []
         }
-
+        
         handleFileUpload(e, 'avatarUpload', options)
     })
 
     const coverInput = document.getElementById('cover_photo');
     coverInput.addEventListener('change', (e) => {
         const cover = document.getElementById('cover_out');
-        let loader = document.querySelector('#loader_cover');
+        let loader = document.getElementById('loader_cover');
         let coverSVG = document.getElementById('cover-svg');
-
+        
         let options = {
             max_size: 4507566,
             aspectRatio: 3 / 2,
@@ -356,31 +350,38 @@
         handleFileUpload(e, 'coverUpload', options);
     })
 
+    /* 
+    options = {
+        max_size : integer (Kilobyte),
+        aspect_Ratio : integer,
+        maxWidth : integer,
+        maxHeight : integer,
+        loader ?: HTMLElement,
+        outputElement ?: ImageElement,
+        hideableElems ?: Array<HTMLElements>[]
+    }
+
+     max_size = 4096000, aspectRatio, loader, output, ...args
+
+    */
 
     //image manipulation utility functions
     function handleFileUpload(event, livewireEventName, options) {
-        let {
-            max_size,
-            loader,
-            aspectRatio,
-            maxWidth,
-            maxHeight,
-            output,
-            hideableElems
-        } = options;
-
-        const file = event.target.files[0];
+        let {max_size, loader, aspectRatio, maxWidth, maxHeight, output, hideableElems} = options;
+        const avatar = event.target.files[0];
         const IMG_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
-        const MAX_FILE_SIZE = max_size ? max_size : 4242880;
+        const MAX_FILE_SIZE = max_size ? max_size : 5242880;
 
         //check file type
-        if (file.type && !IMG_TYPES.includes(file.type)) {
+        if (avatar.type && !IMG_TYPES.includes(avatar.type)) {
             console.log('only images of MIME types: JPG, JPEG and PNG are allowed');
             return
         }
 
+       
+
         //check file size for validity
-        if (file.size > MAX_FILE_SIZE) {
+        if (avatar.size > MAX_FILE_SIZE) {
             console.log(`only images less than ${ (MAX_FILE_SIZE/1000000).toFixed(1) }MB are allowed`);
             return
         }
@@ -394,17 +395,16 @@
         }
 
         reader.onloadend = async () => {
-            let result = reader.result;
-            result = await cropImage(result, aspectRatio);
-            result = await resizeImage(result, maxWidth, maxHeight);
+            const result = await cropImage(reader.result, aspectRatio);
+            const resizedImage = await resizeImage(result, maxWidth, maxHeight);
 
-            displayImage(output, result);
+            displayImage(output, resizedImage);
             hideElements(loader, ...hideableElems);
 
-            window.Livewire.emit(livewireEventName, result);
+            window.Livewire.emit(livewireEventName, resizedImage);
         }
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(avatar);
     }
 
     function resizeImage(base64Str, maxWidth = 300, maxHeight = 250) {
@@ -482,7 +482,7 @@
 
     function hideElements(...elements) {
         if (!elements && !(elements instanceof Array)) {
-            return
+            return 
         }
 
         elements.forEach(element => {
@@ -539,6 +539,6 @@
             })
         }
     }
-   
+
 </script>
 @endprepend

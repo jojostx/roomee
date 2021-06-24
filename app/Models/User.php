@@ -106,6 +106,56 @@ class User extends Authenticatable
         return $this->belongsToMany(Town::class)->withTimestamps();
     }
 
+    /**
+     * The reports that was made made by user.
+     */
+    public function reports()
+    {
+        return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')->withPivot('reportee_id')->withTimestamps();
+    }
+
+    
+    /**
+     * Scope a query to only include users of the same gender.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Str  $gender
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGender($query, $gender)
+    {
+       return $query->where('gender', $gender);
+    }
+    
+    /**
+     * Scope a query to only include users that attend the same school.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Int  $school_id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSchool($query, $school_id)
+    {
+       return $query->where('school_id', $school_id);
+    }
+
+    /**
+     * Scope a query to only include users that attend the same school.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  Int  $school_id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeExcludeUser($query, $user_id)
+    {
+       return $query->whereKeyNot($user_id);
+    }
+
+    public function getFullnameAttribute()
+    {
+        return $this->firstname.' '.$this->lastname;
+    }
+
     public function getAvatarPathAttribute()
     {
         return Storage::disk('avatars')->url($this->avatar)??'';

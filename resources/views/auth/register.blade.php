@@ -82,7 +82,7 @@
             <div class="relative mt-3" x-data="{ show: true}">
                 <x-label for="password" :value="__('Password')" />
                 <x-input id="password" class="block w-full mt-1 text-sm font-medium" name="password" required autocomplete="new-password" x-bind:type="show ? 'password' : 'text'" />
-                <button class="absolute w-4 text-gray-600 transform md:w-5 -translate-y-7 right-4" @click.prevent="show = !show">
+                <button class="absolute w-4 text-gray-600 transform md:w-5 -translate-y-7 right-4" type="button" @click.prevent="show = !show">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <g :class="{ 'hidden' : !show, 'inline-flex' : show }">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />

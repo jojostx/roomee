@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="Roomee's user profile page">
+    <meta name="author" content="Roomee.Inc">
+    <meta name="keywords" content="Roommate, Housing, University, flatmate, Joint-rental, dorm, off-campus, renting, cohabit, roomies, roomie, finder">
 
     <title>{{ config('app.name', 'Roomee') }}</title>
 
@@ -31,7 +34,6 @@
     </main>
 
     @include('sections.footer-alt')
-    
     @livewireScripts
     @stack('scripts')
 </body>
