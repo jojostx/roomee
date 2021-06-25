@@ -22,18 +22,21 @@ class IssuesModal extends Component
     public $action = '';
     public $actions = ['block', 'report'];
 
-    protected $listeners = ['blockOrReport' => 'pong'];
+    protected $listeners = ['blockOrReport' => 'handleIssue'];
 
     public function mount()
     {
         $this->auth_user_id = auth()->user()->id;
-        $this->reports = Report::all();
-        $this->report_ids = $this->reports->pluck('id')->map(function ($item) {
-            return strval($item);
+
+        //all the issues that a user can be reported for
+        $this->reports = Report::pluck('description', 'id');
+
+        $this->report_ids = $this->reports->map(function ($item, $key) {
+            return strval($key);
         })->toArray();
     }
 
-    public function pong($id, $fullname)
+    public function handleIssue($id, $fullname)
     {
         $this->user_id = $id;
         $this->username = $fullname;
@@ -48,6 +51,7 @@ class IssuesModal extends Component
         $this->username = '';
         $this->action = "";
         $this->show = false;
+        $this->selectedReports = [];
         $this->reports = Report::all();
     }
 
@@ -56,7 +60,7 @@ class IssuesModal extends Component
         if ($this->action !== "report") {
             return [
                 'action' => ['required', 'in_array:actions.*'],
-                'user_id' => ['required', 'numeric', 'not_in:'.auth()->user()->id],
+                'user_id' => ['required', 'numeric', new IsBlockable()],
             ];
         }
         
@@ -73,7 +77,7 @@ class IssuesModal extends Component
     {
         $this->validate();
 
-        dd($this->user_id);
+        dd($this->user_id, $this->action);
 
         $this->reset_();
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBlocklistTable extends Migration
+class CreateBlocklistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateBlocklistTable extends Migration
      */
     public function up()
     {
-        Schema::create('blocklist', function (Blueprint $table) {
+        Schema::create('blocklists', function (Blueprint $table) {
             $table->id();
             $table->foreignId('blocker_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('blockee_id')->constrained('users')->onDelete('cascade');
@@ -28,6 +28,6 @@ class CreateBlocklistTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blocklist');
+        Schema::dropIfExists('blocklists');
     }
 }

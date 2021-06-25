@@ -2,20 +2,32 @@
 
 namespace App\Rules;
 
+use App\Models\Blocklist;
+use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
 class IsBlockable implements Rule
 {
 
     protected $blocklist;
+    protected $blockable_users;
+
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user = null)
     {
-        $this->blocklist = auth()->user();
+        if (!$user) {
+            $user = auth()->user();            
+        }
+
+        $this->blocklist = Blocklist::where('blocker_id', $user->id)->pluck('blockee_id')->toArray();
+        
+        $this->blockable_users = User::gender($user->gender)
+        ->school($user->school_id)->excludeUser($user->id)->whereIntegerNotInRaw('id', $this->blocklist)
+        ->get();        
     }
 
     /**
@@ -27,7 +39,7 @@ class IsBlockable implements Rule
      */
     public function passes($attribute, $value)
     {
-        return strval($this->blocker_id) !== strval($value);
+        return $this->blockable_users->contains($value);
     }
 
     /**

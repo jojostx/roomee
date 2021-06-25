@@ -113,8 +113,7 @@ class User extends Authenticatable
     {
         return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')->withPivot('reportee_id')->withTimestamps();
     }
-
-    
+        
     /**
      * Scope a query to only include users of the same gender.
      *
