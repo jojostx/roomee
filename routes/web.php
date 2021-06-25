@@ -6,7 +6,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UpdateProfileController;
 use App\Http\Livewire\UpdateProfile;
 use App\Http\Livewire\ViewProfile;
-use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 

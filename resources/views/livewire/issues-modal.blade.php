@@ -35,11 +35,11 @@
         @if ($action === 'report')
         <div class="py-1 pt-2 text-base">
             <ul class="px-2 text-sm">
-                @foreach ($reports as $report_id => $description)
+                @foreach ($reports as $key => $value)
                 <li>
-                    <label for="report_{{ $report_id  }}" class="flex items-center justify-between px-2 py-2 border-b cursor-pointer">
-                        <p>{{ $description }}</p>
-                        <input type="checkbox" id="report_{{ $report_id  }}" value="{{ $report_id  }}" wire:model="selectedReports">
+                    <label for="report_{{ $key  }}" class="flex items-center justify-between px-2 py-2 border-b cursor-pointer">
+                        <p>{{ $value }}</p>
+                        <input type="checkbox" id="report_{{ $key }}" value="{{ $key }}" wire:model="selectedReports">
                     </label>
                 </li>   
                 @endforeach  
@@ -50,7 +50,7 @@
             </div>
             @if ($errors->any())
             <div class="section">
-                <div class="px-4 py-4 mb-2 text-red-600 bg-red-100 rounded-md">
+                <div class="px-4 py-4 mt-2 text-red-600 bg-red-100 rounded-md">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>

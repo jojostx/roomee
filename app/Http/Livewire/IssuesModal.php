@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Report;
 use App\Rules\IsBlockable;
 use App\Rules\IsReportable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
@@ -52,7 +53,6 @@ class IssuesModal extends Component
         $this->action = "";
         $this->show = false;
         $this->selectedReports = [];
-        $this->reports = Report::all();
     }
 
     protected function rules()
@@ -63,21 +63,59 @@ class IssuesModal extends Component
                 'user_id' => ['required', 'numeric', new IsBlockable()],
             ];
         }
-        
+
         return [
             'action' => ['required', 'in_array:actions.*'],
             'selectedReports' => ['required', 'array'],
             'selectedReports.*' => ['required', 'numeric', 'in_array:report_ids.*'],
-            'user_id' => ['required', 'numeric', 'not_in:'.auth()->user()->id, new IsReportable()],
+            'user_id' => ['required', 'numeric', 'not_in:' . auth()->user()->id, new IsReportable()],
         ];
-       
     }
 
     public function submit()
     {
         $this->validate();
 
-        dd($this->user_id, $this->action);
+        //saving data into the database
+        switch ($this->action) {
+            case 'report': {
+                    DB::table('report_user')->insert(array_map(function ($item) {
+                        $timestamp = now()->toDateTimeString();
+
+                        return [
+                            'reporter_id' => auth()->user()->id,
+                            'reportee_id' => intval($this->user_id),
+                            'report_id' => intval($item),
+                            'created_at' => $timestamp,
+                            'updated_at' => $timestamp,
+                        ];
+                    }, $this->selectedReports));
+
+                    break;
+                }
+
+            case 'block': {
+                    $timestamp = now()->toDateTimeString();
+
+                    $id = DB::table('blocklists')->insertGetId([
+                        'blocker_id' => auth()->user()->id,
+                        'blockee_id' => intval($this->user_id),
+                        'created_at' => $timestamp,
+                        'updated_at' => $timestamp,
+                    ]);
+
+                    if ($id) {
+                        $this->emit('userBlocked', $this->username);
+                    }
+                    //1. emit an event up to refresh the user lists that is being displayed in
+                    // the dashboard UI (done successfully)
+                    // 2. show a toast notification
+                    break;
+                }
+
+            default:
+                break;
+        }
 
         $this->reset_();
     }

@@ -13,6 +13,7 @@ class UserCard extends Component
         $this->course = $this->user->course;
     }
 
+    
     public function render()
     {
         return view('livewire.user-card');

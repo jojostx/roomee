@@ -321,8 +321,8 @@
         let options = {
             max_size: 5507566,
             aspectRatio: 1,
-            maxHeight: 240,
-            maxWidth: 240,
+            maxHeight: 120,
+            maxWidth: 120,
             loader,
             output: img_ava,
             hideableElems: []
