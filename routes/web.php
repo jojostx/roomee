@@ -40,7 +40,8 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', UpdateProfile::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
-    Route::get('/view_profile', ViewProfile::class)->name('profile.view');
+    // Route::get('/view_profile', ViewProfile::class)->name('profile.view');
+    Route::get('/view_profile/{user}', ViewProfile::class)->name('profile.view');
 });
 
 require __DIR__ . '/auth.php';

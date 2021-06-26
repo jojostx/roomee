@@ -21,6 +21,7 @@ module.exports = {
             animation: {
                 reverseSpin: 'reverseSpin 3s linear infinite',
                 'spin-slow': 'spin 3s linear infinite',
+                'slide_up': 'slide_up 1s linear'
             },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
@@ -32,6 +33,11 @@ module.exports = {
                     '0%': { transform: 'rotate(0deg)' },
 
                     '100%': { transform: 'rotate(-360deg)' },
+
+                },
+                slide_up: {
+
+                    '100%': { transform: 'translateY(36px)' },
 
                 },
             },

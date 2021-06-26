@@ -290,7 +290,7 @@ class UpdateProfile extends Component
         }
 
         //redirect to dashboard
-        $this->redirect(route('profile.view'));
+        $this->redirect(route('profile.view', ['user' => auth()->user() ]));
     }
 
     public function render()

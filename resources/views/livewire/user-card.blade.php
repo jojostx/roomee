@@ -1,3 +1,4 @@
+@can('view', $user)
 <div class="col-span-1 px-4 pt-4 pb-2 bg-white border rounded-md">
     <div class="flex mb-2">
         <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
@@ -18,9 +19,9 @@
                     <p>{{ $user->course->name }}</p>
                 </div>
             </div>
-            <button style="border-width: 1.5px;" class="block px-2 py-1 text-sm text-blue-800 border-1.5 border-blue-400 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-sm text-blue-800 border-1.5 border-blue-400 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
                 View Profile
-            </button>
+            </a>
         </div>
         <div class="ml-auto">
             <button wire:click="$emit('blockOrReport', {{ $user->id }}, '{{ $user->fullname }}')" aria-label="options menu button" title="options menu button" class="inline-flex items-center justify-center p-1 text-gray-500 transition duration-150 ease-in-out rounded-md hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-600">
@@ -83,3 +84,8 @@
         </div>
     </div>
 </div>
+@elsecannot('view', $user)
+<div class="hidden" style="display: none;">
+</div>
+@endcan
+
