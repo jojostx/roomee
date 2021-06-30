@@ -5,9 +5,9 @@ namespace App\Services;
 class Similarity
 {
 
-    public static function simple_Diff_Sim(int $course_level_1, int $course_level_2, $min_course_level = 100, $max_course_level = 700)
+    public static function simple_Diff_Sim(int $value_1, int $value_2, $min_value = 100, $max_value = 700)
     {
-        return 1 - (abs($course_level_1 - $course_level_2) / ($max_course_level - $min_course_level));
+        return 1 - (abs($value_1 - $value_2) / ($max_value - $min_value));
     }
 
     //   public static function euclidean(int $value_1, int $value_2)
