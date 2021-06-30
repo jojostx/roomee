@@ -72,6 +72,11 @@ class IssuesModal extends Component
         ];
     }
 
+    protected array $messages = [
+        'selectedReports' => 'choose at least one report',
+        'selectedReports.*' => 'choose at least one report',
+    ];
+
     public function submit()
     {
         $this->validate();
@@ -91,6 +96,8 @@ class IssuesModal extends Component
                         ];
                     }, $this->selectedReports));
 
+                    $this->emit('actionTakenOnUser', $this->username, $this->action);
+
                     break;
                 }
 
@@ -105,7 +112,7 @@ class IssuesModal extends Component
                     ]);
 
                     if ($id) {
-                        $this->emit('userBlocked', $this->username);
+                        $this->emit('actionTakenOnUser', $this->username, $this->action);
                     }
                     //1. emit an event up to refresh the user lists that is being displayed in
                     // the dashboard UI (done successfully)

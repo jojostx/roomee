@@ -15,9 +15,10 @@ class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
 
+    public $similarity_score = 0;
 
     /**
-     * The default values of boolean attributes.
+     * The default values of attributes.
      *
      * @var array
      */

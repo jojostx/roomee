@@ -1,7 +1,7 @@
 <div id="toast" class="fixed top-0 left-0 z-50 items-center justify-center w-full h-full @if($show) flex @else hidden @endif">
     @if ($show)
     <div class="absolute top-0 z-10 w-full h-full bg-gray-900 opacity-40" wire:click="reset_"></div>
-    <div class="z-20 w-64 bg-white rounded-md lg:w-72">
+    <div class="z-20 w-64 overflow-hidden bg-white rounded-md lg:w-72">
         @if ($action === '')
         <ul class="py-2">
             <x-responsive-nav-link wire:click="$set('action', 'report')">
@@ -28,7 +28,10 @@
             </p>
             <div class="flex justify-end">
                 <button wire:click="reset_" class="px-2 py-2 mr-2 font-semibold hover:text-blue-500 focus:text-blue-600">Cancel</button>
-                <button wire:click="submit" class="px-2 py-2 font-semibold hover:text-blue-500 focus:text-blue-600">Block</button>
+                <form method="post" @submit.prevent="">
+                    @csrf
+                    <button wire:click="submit" type="button" class="px-2 py-2 font-semibold hover:text-blue-500 focus:text-blue-600">Block</button>
+                </form>
             </div>
         </div>
         @endif
@@ -45,12 +48,12 @@
                 @endforeach  
             </ul>
             <div class="flex justify-end px-2">
-                <button wire:click="reset_" class="px-1 py-2 mr-2 font-semibold hover:text-blue-500 focus:text-blue-600">Cancel</button>
-                <button wire:click="submit" class="px-1 py-2 font-semibold hover:text-blue-500 focus:text-blue-600">Report</button>
+                <button wire:click="reset_" class="px-1 py-2 mr-2 font-semibold hover:text-blue-500 focus:text-blue-600 focus:outline-none">Cancel</button>
+                <button wire:click="submit" class="px-1 py-2 font-semibold hover:text-blue-500 focus:text-blue-600 focus:outline-none">Report</button>
             </div>
             @if ($errors->any())
-            <div class="section">
-                <div class="px-4 py-4 mt-2 text-red-600 bg-red-100 rounded-md">
+            <div class="bg-red-100 border-t border-red-500">
+                <div class="px-4 py-2 text-red-600">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>

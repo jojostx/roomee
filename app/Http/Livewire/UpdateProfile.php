@@ -52,7 +52,7 @@ class UpdateProfile extends Component
 
         $this->bio = auth()->user()->bio ?? '';
 
-        $this->budgetRange = range($this->minAllowedBudget, $this->maxAllowedBudget, 20000);
+        $this->budgetRange = range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000));
         $this->max_budget = auth()->user()->max_budget ?? '';
         $this->min_budget = auth()->user()->min_budget ?? '';
 

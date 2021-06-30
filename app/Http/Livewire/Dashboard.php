@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\ModelSimilarity\UserSimilarity;
 use App\Models\Blocklist;
 use App\Models\User;
 use Livewire\Component;
@@ -11,7 +12,7 @@ class Dashboard extends Component
     public $blocklist;
     public $users;
 
-    protected $listeners = ['userBlocked' => 'pong'];
+    protected $listeners = ['actionTakenOnUser' => 'pong'];
 
     public function mount()
     {
@@ -22,13 +23,18 @@ class Dashboard extends Component
             ->school($authUser->school_id)->excludeUser($authUser->id)->whereIntegerNotInRaw('id', $this->blocklist)
             ->with('course')
             ->get();
+        $this->users = (new UserSimilarity($authUser))->calculateUsersSimilarityScore($this->users);
     }
 
-    public function pong($username)
+    public function pong($username, $action)
     {
-        $this->users = $this->users->except(
-            Blocklist::where('blocker_id', auth()->user()->id)->pluck('blockee_id')->toArray()
-        );
+        if ($action === 'block') {
+            $this->users = $this->users->except(
+                Blocklist::where('blocker_id', auth()->user()->id)->pluck('blockee_id')->toArray()
+            );
+        }
+
+        return true;
     }
 
     public function render()
