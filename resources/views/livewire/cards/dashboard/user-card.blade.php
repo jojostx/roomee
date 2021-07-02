@@ -40,9 +40,9 @@
             </x-slot>
             Hobbies and Interests
         </x-livewire.label>
-        <div class="flex items-end overflow-hidden">
+        <div class="flex flex-wrap items-end overflow-hidden">
             @foreach ($user->hobbies as $hobby)
-                @if ($loop->iteration <= 4 )
+                @if ($loop->iteration <= 3 )
                     <div class="inline-flex items-center justify-center px-2 py-1 mb-2 mr-2 text-sm text-gray-800 bg-gray-200 rounded-md">{{ $hobby['name'] }}</div>
                 @endif
             @endforeach
@@ -60,7 +60,7 @@
         </x-livewire.label>
         <div class="flex flex-wrap items-end overflow-hidden">
             @foreach ($user->dislikes as $dislike)
-            @if ($loop->iteration <= 4 )
+            @if ($loop->iteration <= 3 )
             <div class="inline-flex items-center justify-center px-2 py-1 mb-2 mr-2 text-sm text-gray-800 bg-gray-200 rounded-md">{{ $dislike['name'] }}</div>
             @endif
             @endforeach
@@ -99,6 +99,46 @@
     </div>
 </div>
 @elsecannot('view', $user)
-<div class="hidden" style="display: none;">
+<div class="col-span-1 pb-2 bg-white border rounded-md sm:max-h-40">
+    <div class="flex px-4 pt-4 mb-2">
+        <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
+            <div class="block mb-2 overflow-hidden bg-blue-200 rounded-full w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20">
+                @if ($user->avatar)
+                <img id="avatar_img" src="{{ $user->avatarPath }}" alt="avatar image" width="100%" height="100%" class="h-full">
+                @else
+                <svg id="pl-ava" class="w-full h-full text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                @endif
+            </div>
+        </div>
+        <div class="mb-1">
+            <div class="mb-1 font-semibold sm:mb-2">
+                <p class="text-sm leading-tight sm:text-base">{{ $user->fullname }}</p>
+                <div class="text-xs font-normal text-gray-600 xs:text-sm">
+                    <p>{{ $user->course->name }}</p>
+                </div>
+            </div>
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-xs sm:text-sm text-blue-800 border-1.5 border-blue-400 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
+                View Profile
+            </a>
+        </div>
+        <div class="ml-auto">
+            <button wire:click="$emit('blockOrReport', {{ $user->id }}, '{{ $user->fullname }}')" aria-label="options menu button" title="options menu button" class="inline-flex items-center justify-center p-1 text-gray-500 transition duration-150 ease-in-out rounded-md hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-600">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="px-4 pb-2 bg-white rounded-md">
+        <p class="text-xs text-gray-500">You are blocked from viewing <span class="font-semibold">{{ $user->firstname }}'s</span> complete profile and sending them roommate request.
+        <a href="{{ route('faqs') }}#q_4" class="text-blue-700">Learn more</a>
+    </p>
+    </div>    
+    <div class="hidden px-4 py-4 mt-6 bg-gray-800 border rounded-md lg:mt-4 sm:block">
+        <div class="inline-flex items-center justify-center px-2 mb-2 text-center text-gray-100 bg-gray-700 rounded-md">AD</div>
+        <p class="text-xs text-gray-200">Buy one hosting plan and get a free domain. Offer last till the 4th of July on <span class="font-bold text-blue-300">Hostinger.com</span></p>
+    </div>    
 </div>
 @endcan

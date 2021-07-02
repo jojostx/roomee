@@ -59,6 +59,30 @@ class UserPolicy
     {
         return $user->id == $model->id;
     }
+   
+    /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function interactWith(User $user, User $model)
+    {
+        return !$model->blocklists->contains($user);
+    }
+   
+    /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function block(User $user, User $model)
+    {
+        return !$user->blocklists->contains($model);
+    }
 
     /**
      * Determine whether the user can delete the model.

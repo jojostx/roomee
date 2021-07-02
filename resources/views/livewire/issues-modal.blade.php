@@ -24,7 +24,7 @@
                 Block <span class="user-name">{{ $username }}</span>?
             </p>
             <p class="mb-2">
-                <span class="font-semibold user-name">{{ $username }}</span> will no longer be able to view your profile or send you match request.
+                <span class="font-semibold user-name">{{ $username }}</span> will no longer be able to view your profile or send you a roommate request.
             </p>
             <div class="flex justify-end">
                 <button wire:click="reset_" class="px-2 py-2 mr-2 font-semibold hover:text-blue-500 focus:text-blue-600">Cancel</button>

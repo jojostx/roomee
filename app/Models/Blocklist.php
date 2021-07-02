@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Blocklist extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+
+    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'blockee_id');
+    }
 }

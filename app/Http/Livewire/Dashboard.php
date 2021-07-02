@@ -12,7 +12,7 @@ class Dashboard extends Component
     public $blocklist;
     public $users;
 
-    protected $listeners = ['actionTakenOnUser' => 'pong'];
+    protected $listeners = ['actionTakenOnUser' => 'resetUsers'];
 
     public function mount()
     {
@@ -24,9 +24,17 @@ class Dashboard extends Component
             ->with('course')
             ->get();
         $this->users = (new UserSimilarity($authUser))->calculateUsersSimilarityScore($this->users);
+        $this->users = $this->sortBySimilarity();
     }
 
-    public function pong($username, $action)
+    public function sortBySimilarity()
+    {
+        return $this->users->sortByDesc(function ($user, $key) {
+            return $user->similarity_score;
+        });
+    }
+
+    public function resetUsers($username, $action)
     {
         if ($action === 'block') {
             $this->users = $this->users->except(

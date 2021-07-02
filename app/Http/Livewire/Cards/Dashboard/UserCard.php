@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Http\Livewire\Cards\Dashboard;
 
 use Livewire\Component;
 
@@ -13,9 +13,8 @@ class UserCard extends Component
         $this->course = $this->user->course;
     }
 
-    
     public function render()
     {
-        return view('livewire.user-card');
+        return view('livewire.cards.dashboard.user-card');
     }
 }

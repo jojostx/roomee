@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -66,6 +67,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'profile_updated' => 'boolean'
     ];
+
+    /**
+     * The hobbies that belong to the user.
+     */
+    public function blocklists()
+    {
+        return $this->belongsToMany(User::class, 'blocklists', 'blocker_id', 'blockee_id')->withTimestamps();
+    }
 
     /**
      * The hobbies that belong to the user.

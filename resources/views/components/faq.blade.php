@@ -1,6 +1,6 @@
 
 @foreach($QandA as $questionGroup => $questions)
-    <div class="grid grid-cols-1 md:grid-cols-6">
+    <div class="grid grid-cols-1 md:grid-cols-6" id="q_{{ $loop->iteration }}">
         <div class="px-2 py-4 border border-b-0 border-gray-700 md:px-4 md:border-b col-span-full md:col-span-2 md:border-r-0">
             <P class="text-lg font-bold text-blue-700 lg:text-xl">{{ $questionGroup }}</P>
         </div>

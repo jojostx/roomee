@@ -24,7 +24,7 @@
 
 <body class="relative min-h-screen font-sans antialiased text-gray-900">
     @auth
-    <header class="z-40 flex flex-row items-center justify-center w-full border-b ">
+    <header class="relative z-40 flex flex-row items-center justify-center w-full bg-white border-b ">
         @include('sections.navbar-alt')
     </header>
     @endauth

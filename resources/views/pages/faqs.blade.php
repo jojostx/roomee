@@ -46,8 +46,10 @@
             "Can I block a user from sending me roommate request?" => "result",
             "How do I remove my account from the search results?" => "result",
             "What issues can I report a user for?" => "result",
-            "What can I do if my account is blocked?" => "result",
-            "Why is my account blocked?" => "result",
+            "Why is my account blocked from viewing a user?" => "result",
+            "What can I do if my account is blocked by a user?" => "result",
+            "Why is my account suspended?" => "result",
+            "What can I do if my account is suspended on Roomee?" => "result",
             ],
             "Profile and Account" => [
             "How do I verify my email address?" => "result",
