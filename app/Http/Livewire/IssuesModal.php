@@ -11,45 +11,35 @@ use Livewire\Component;
 
 class IssuesModal extends Component
 {
-    public $auth_user_id;
     public string $user_id = '';
     public string $username = '';
     public bool $show = false;
-    public array $selectedReports = [];
     public $reports;
-    public $report_ids;
-
+    public array $selectedReports = [];
     //[block|report]
     public $action = '';
-    public $actions = ['block', 'report'];
 
     protected $listeners = ['blockOrReport' => 'handleIssue'];
 
     public function mount()
     {
-        $this->auth_user_id = auth()->user()->id;
-
-        //all the issues that a user can be reported for
-        $this->reports = Report::pluck('description', 'id');
-
-        $this->report_ids = $this->reports->map(function ($item, $key) {
-            return strval($key);
-        })->toArray();
+        $this->reports = Report::pluck('description', 'id');  
     }
 
+    //sets the id, username and show properties to their required properties
+    //handleIssue is called when a "block" or "report" event is fired from the blade/html page
     public function handleIssue($id, $fullname)
     {
-        $this->user_id = $id;
-        $this->username = $fullname;
-        $this->action = "";
-        $this->show = true;
+        list($this->user_id, $this->username, $this->show ) = [$id, $fullname, true];
     }
 
+    //resets all the properties including validation/errors
+    //called when the modal is closed or after the issue ("block" or "report") is saved to the database
     public function reset_()
     {
         $this->resetValidation();
-        $this->user_id = '';
-        $this->username = '';
+        $this->user_id = "";
+        $this->username = "";
         $this->action = "";
         $this->show = false;
         $this->selectedReports = [];
@@ -57,17 +47,20 @@ class IssuesModal extends Component
 
     protected function rules()
     {
+        $actions = ['block', 'report'];
+        $report_ids = Report::pluck('id')->map(fn ($value) => strval($value))->toArray();  
+
         if ($this->action !== "report") {
             return [
-                'action' => ['required', 'in_array:actions.*'],
+                'action' => ['required', Rule::in($actions)],
                 'user_id' => ['required', 'numeric', new IsBlockable()],
             ];
         }
 
         return [
-            'action' => ['required', 'in_array:actions.*'],
+            'action' => ['required', Rule::in($actions)],
             'selectedReports' => ['required', 'array'],
-            'selectedReports.*' => ['required', 'numeric', 'in_array:report_ids.*'],
+            'selectedReports.*' => ['required', 'numeric', Rule::in($report_ids)],
             'user_id' => ['required', 'numeric', 'not_in:' . auth()->user()->id, new IsReportable()],
         ];
     }
@@ -77,11 +70,13 @@ class IssuesModal extends Component
         'selectedReports.*' => 'choose at least one report',
     ];
 
+    //performs the submission of reports and blocking of user actions by saving to the database
+    // it additionally emits an event after successfully saving to database; for each possible action taken
     public function submit()
     {
         $this->validate();
 
-        //saving data into the database
+        //saving data/reports/blocking into the database
         switch ($this->action) {
             case 'report': {
                     DB::table('report_user')->insert(array_map(function ($item) {
@@ -97,26 +92,16 @@ class IssuesModal extends Component
                     }, $this->selectedReports));
 
                     $this->emit('actionTakenOnUser', $this->username, $this->action);
-
                     break;
                 }
 
             case 'block': {
-                    $timestamp = now()->toDateTimeString();
-
-                    $id = DB::table('blocklists')->insertGetId([
-                        'blocker_id' => auth()->user()->id,
-                        'blockee_id' => intval($this->user_id),
-                        'created_at' => $timestamp,
-                        'updated_at' => $timestamp,
-                    ]);
-
-                    if ($id) {
-                        $this->emit('actionTakenOnUser', $this->username, $this->action);
-                    }
-                    //1. emit an event up to refresh the user lists that is being displayed in
-                    // the dashboard UI (done successfully)
-                    // 2. show a toast notification
+                                       
+                    auth()->user()->blocklists()->attach($this->user_id);
+                    auth()->user()->favorites()->detach($this->user_id);
+                    
+                    $this->emit('actionTakenOnUser', $this->username, $this->action);
+                    
                     break;
                 }
 

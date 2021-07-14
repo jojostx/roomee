@@ -2,22 +2,6 @@
     @if ($show)
     <div class="absolute top-0 z-10 w-full h-full bg-gray-900 opacity-40" wire:click="reset_"></div>
     <div class="z-20 w-64 overflow-hidden bg-white rounded-md lg:w-72">
-        @if ($action === '')
-        <ul class="py-2">
-            <x-responsive-nav-link wire:click="$set('action', 'report')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline w-5 h-5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-                </svg>
-                {{ __('Report') }} <span class="font-semibold user-name">{{ $username }}</span>
-            </x-responsive-nav-link>
-            <x-responsive-nav-link wire:click="$set('action', 'block')">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline w-5 h-5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                </svg>
-                {{ __('Block') }} <span class="font-semibold user-name">{{ $username }}</span>
-            </x-responsive-nav-link>
-        </ul>
-        @endif
         @if ($action === 'block')
         <div class="px-4 py-2 text-base">
             <p class="mb-2 font-semibold">
@@ -34,13 +18,12 @@
                 </form>
             </div>
         </div>
-        @endif
-        @if ($action === 'report')
+        @elseif ($action === 'report')
         <div class="py-1 pt-2 text-base">
             <ul class="px-2 text-sm">
                 @foreach ($reports as $key => $value)
                 <li>
-                    <label for="report_{{ $key  }}" class="flex items-center justify-between px-2 py-2 border-b cursor-pointer">
+                    <label for="report_{{ $key }}" class="flex items-center justify-between px-2 py-2 border-b cursor-pointer">
                         <p>{{ $value }}</p>
                         <input type="checkbox" id="report_{{ $key }}" value="{{ $key }}" wire:model="selectedReports">
                     </label>
@@ -63,6 +46,21 @@
             </div>
             @endif
         </div>
+        @else
+        <ul class="py-2">
+            <x-responsive-nav-link wire:click="$set('action', 'report')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline w-5 h-5 mr-1" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+                </svg>
+                {{ __('Report') }}&nbsp;<span class="font-semibold user-name">{{ $username }}</span>
+            </x-responsive-nav-link>
+            <x-responsive-nav-link wire:click="$set('action', 'block')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline w-5 h-5 mr-1" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                </svg>
+                {{ __('Block') }}&nbsp;<span class="font-semibold user-name">{{ $username }}</span>
+            </x-responsive-nav-link>
+        </ul>
         @endif
     </div>
     @endif

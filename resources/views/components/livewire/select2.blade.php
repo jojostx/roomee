@@ -1,12 +1,12 @@
-@props(['name', 'options', 'selectedOptions'])
+@props(['name', 'options', 'selectedOptions', 'label'])
 
 <div x-data="{{ $name }}_dropdown()" class="flex flex-col md:mt-0 md:col-span-1"
     x-on:keydown.escape.window="show = false">
     <div class="flex flex-col mb-2">
-        <label for="{{ $name }}" class="label">{{ ucfirst($slot) }}</label>
+        <label for="{{ $name }}" class="label">{{ ucfirst($label) }}</label>
         <select  x-on:click="openDropdown($refs.{{ $name }}_dropdown)"
          aria-haspopup="true" name="{{$slot}}" id="{{ $name }}" class="select_dropdown">
-            <option value="" disabled selected>Select your {{ ucfirst($slot) }}</option>  
+            <option value="" disabled selected>Select your {{ ucfirst($label) }}</option>  
             @if (!$options)
             <option value="">Select your institute of study</option>  
             @endif

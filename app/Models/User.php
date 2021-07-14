@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use App\Http\ModelSimilarity\UserSimilarity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,8 +16,6 @@ class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable;
 
-    public $similarity_score = 0;
-
     /**
      * The default values of attributes.
      *
@@ -26,6 +24,13 @@ class User extends Authenticatable
     protected $attributes = [
         'profile_updated' => false,
     ];
+
+    /**
+     * The appended attributes.
+     *
+     * @var array
+     */
+    protected $appends = ['similarity_score'];
 
     /**
      * The attributes that are mass assignable.
@@ -68,12 +73,33 @@ class User extends Authenticatable
         'profile_updated' => 'boolean'
     ];
 
+    //RELATIONSHIPS
+
     /**
-     * The hobbies that belong to the user.
+     * The blocklist for the user.
      */
     public function blocklists()
     {
-        return $this->belongsToMany(User::class, 'blocklists', 'blocker_id', 'blockee_id')->withTimestamps();
+        return $this->belongsToMany(User::class, 'blocklists', 'blocker_id', 'blockee_id')
+        ->withTimestamps()->orderByPivot('created_at', 'desc');
+    }
+    
+    /**
+     * The users who are currently blocking this users.
+     */
+    public function blockers()
+    {
+        return $this->belongsToMany(User::class, 'blocklists', 'blockee_id' ,'blocker_id')
+        ->withTimestamps();
+    }
+  
+    /**
+     * The favorited users for a user.
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'favoriter_id', 'favoritee_id')
+        ->withTimestamps()->orderByPivot('created_at', 'desc');
     }
 
     /**
@@ -123,7 +149,9 @@ class User extends Authenticatable
     {
         return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')->withPivot('reportee_id')->withTimestamps();
     }
-        
+    
+    //SCOPES//
+
     /**
      * Scope a query to only include users of the same gender.
      *
@@ -160,9 +188,16 @@ class User extends Authenticatable
        return $query->whereKeyNot($user_id);
     }
 
+    //ACCESSORS
+
     public function getFullnameAttribute()
     {
         return $this->firstname.' '.$this->lastname;
+    }
+
+    public function getSimilarityScoreAttribute()
+    {
+        return (new UserSimilarity())->calculateUserSimilarityScore($this);
     }
 
     public function getAvatarPathAttribute()

@@ -4,19 +4,19 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class Blocklist extends Component
+class Favorites extends Component
 {
     protected $listeners = ['actionTakenOnUser' => '$refresh'];
 
     public function mount(){}
 
-    public function getBlockedUsersProperty()
+    public function getFavoritedUsersProperty()
     {
-        return auth()->user()->blocklists;
+        return auth()->user()->favorites;
     }
     
     public function render()
     {
-        return view('livewire.blocklist')->layout('layouts.guest');
+        return view('livewire.favorites')->layout('layouts.guest');
     }
 }

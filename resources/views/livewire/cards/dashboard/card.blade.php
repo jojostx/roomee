@@ -1,4 +1,4 @@
-@can('view', $user)
+@if (!$this->isBlocker)
 <div class="col-span-1 px-4 pt-4 pb-2 bg-white border rounded-md">
     <div class="flex mb-2">
         <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
@@ -19,7 +19,7 @@
                     <p>{{ $user->course->name }}</p>
                 </div>
             </div>
-            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-xs sm:text-sm text-blue-800 border-1.5 border-blue-400 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-xs sm:text-sm text-blue-800 border-1.5 border-blue-700 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
                 View Profile
             </a>
         </div>
@@ -79,7 +79,17 @@
             {{$user->similarity_score}}%
         </div>
         <div class="flex justify-end pt-1 sm:pt-0" >
-            <button class="inline-flex items-center mr-1.5 px-2 py-1 text-xs xs:text-sm text-blue-600 transition duration-150 ease-in-out bg-blue-100 rounded-md hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+            @if (auth()->user()->favorites->contains($user))
+            <button wire:click="unfavorite()" class="inline-flex items-center mr-1.5 px-2 py-1 text-xs xs:text-sm text-blue-600 transition duration-150 ease-in-out bg-blue-100 rounded-md hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                <span class="pr-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
+                </span>
+                Unfavorite
+            </button>
+            @else                
+            <button wire:click="favorite()" class="inline-flex items-center mr-1.5 px-2 py-1 text-xs xs:text-sm text-blue-600 transition duration-150 ease-in-out bg-blue-100 rounded-md hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
                 <span class="pr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -87,6 +97,8 @@
                 </span>
                 Favorite
             </button>
+            @endif
+
             <button class="inline-flex items-center justify-start px-2 py-1 text-xs text-blue-600 transition duration-150 ease-in-out bg-blue-100 rounded-md xs:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
                 <span class="pr-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,8 +109,8 @@
             </button>
         </div>
     </div>
-</div>
-@elsecannot('view', $user)
+</div>  
+@else
 <div class="col-span-1 pb-2 bg-white border rounded-md sm:max-h-40">
     <div class="flex px-4 pt-4 mb-2">
         <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
@@ -119,7 +131,7 @@
                     <p>{{ $user->course->name }}</p>
                 </div>
             </div>
-            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-xs sm:text-sm text-blue-800 border-1.5 border-blue-400 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-xs sm:text-sm text-blue-800 border-1.5 border-blue-700 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
                 View Profile
             </a>
         </div>
@@ -141,4 +153,4 @@
         <p class="text-xs text-gray-200">Buy one hosting plan and get a free domain. Offer last till the 4th of July on <span class="font-bold text-blue-300">Hostinger.com</span></p>
     </div>    
 </div>
-@endcan
+@endif

@@ -27,6 +27,6 @@ class UpdateProfileController extends Controller
         });
         $hobbies = $hobbies->except([1]);;
 
-        dd($hobbies);
+       
     }
 }

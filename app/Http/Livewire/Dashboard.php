@@ -11,34 +11,42 @@ class Dashboard extends Component
 {
     public $blocklist;
     public $users;
+    public $blockers;
 
     protected $listeners = ['actionTakenOnUser' => 'resetUsers'];
 
     public function mount()
     {
         $authUser = auth()->user();
-
-        $this->blocklist = Blocklist::where('blocker_id', $authUser->id)->pluck('blockee_id')->toArray();
+        $this->blockers = $authUser->blockers;
+        $this->blocklist =  $authUser->blocklists()->pluck('blockee_id');
         $this->users = User::gender($authUser->gender)
             ->school($authUser->school_id)->excludeUser($authUser->id)->whereIntegerNotInRaw('id', $this->blocklist)
             ->with('course')
-            ->get();
-        $this->users = (new UserSimilarity($authUser))->calculateUsersSimilarityScore($this->users);
-        $this->users = $this->sortBySimilarity();
+            ->get()->sortByDesc('similarity_score');   
     }
 
-    public function sortBySimilarity()
+    //polling function that polls the database for updates to the users blocking the auth user
+    //it finds the blockers by using the collection intersect function and fires/emits an event
+    //to all the blockers card to refresh itself
+    public function refreshChildren()
     {
-        return $this->users->sortByDesc(function ($user, $key) {
-            return $user->similarity_score;
-        });
+        $blockers = $this->users->intersect(auth()->user()->blockers);
+
+        if ($blockers->isEmpty()) {
+            return;            
+        }
+    
+        foreach ($blockers->modelKeys() as $key => $value) {
+            $this->emit('refreshChildren:'.$value);
+        }
     }
 
     public function resetUsers($username, $action)
     {
         if ($action === 'block') {
             $this->users = $this->users->except(
-                Blocklist::where('blocker_id', auth()->user()->id)->pluck('blockee_id')->toArray()
+                auth()->user()->blocklists()->pluck('blockee_id')->toArray()
             );
         }
 

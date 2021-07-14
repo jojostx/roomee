@@ -35,8 +35,8 @@
                 @endauth
 
                 @guest
-                <a href="{{ route('login') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">SIGN IN</a>
-                <a href="{{ route('register') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900">SIGN UP</a>
+                <a href="{{ route('register') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">SIGN UP</a>
+                <a href="{{ route('login') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900">SIGN IN</a>
                 @endguest
             </div>
             @endif

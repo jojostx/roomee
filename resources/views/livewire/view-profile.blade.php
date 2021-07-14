@@ -1,8 +1,40 @@
-<div class="w-11/12 m-auto mt-6 mb-6">
+<div class="w-11/12 m-auto mt-6 mb-6" wire:poll>
     <style>
-        [type="radio"][name="tabs"]:checked~label {
+        .tab-container {
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+            width: 100%;
+        }
+
+        .tab-container label {
+            order: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem 0.5rem;
+            cursor: pointer;
+        }
+
+        .content-container {
+            order: 9;
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: #fff;
+        }
+
+        .tab-container input[type="radio"] {
+            display: none;
+        }
+
+        .tab-container input[type="radio"]:checked+label {
             color: rgba(29, 78, 216);
-            border-bottom: 2px solid rgba(29, 78, 216);
+        }
+
+        .tab-container input[type="radio"]:checked+label+.content-container {
+            display: initial;
         }
     </style>
     <div class="flex justify-center w-full md:mt-12">
@@ -27,14 +59,14 @@
                             <span class="font-semibold sm:text-lg">{{ ucfirst($user->firstname) }} {{ ucfirst($user->lastname) }}</span>
                             &nbsp;
                             <span>
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                @if ($user->gender == "male")
+                                <svg class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    @if ($user->gender == "male")
                                     <path d="M0 2.47475C0 1.10798 1.13964 0 2.54545 0C3.95127 0 5.09091 1.10798 5.09091 2.47475C5.09091 3.84151 3.95127 4.94949 2.54545 4.94949C1.13964 4.94949 0 3.84151 0 2.47475Z" transform="translate(9.45459 0.86364746)" fill="currentColor" fill-rule="evenodd" stroke="none" />
                                     <path d="M4 0L8 0L12 17L0 17L4 0Z" transform="matrix(1 0 0 -1 6.000122 22.813293)" fill="currentColor" fill-rule="evenodd" stroke="none" />
-                                @else
+                                    @else
                                     <path d="M0 2.47475C0 1.10798 1.13964 0 2.54545 0C3.95127 0 5.09091 1.10798 5.09091 2.47475C5.09091 3.84151 3.95127 4.94949 2.54545 4.94949C1.13964 4.94949 0 3.84151 0 2.47475Z" transform="translate(9.45459 0.86364746)" fill="currentColor" fill-rule="evenodd" stroke="none" />
                                     <path d="M2.00012 0L12.0001 0L8.90909 8.66162L14 17.3232L0 17.3232L5.09091 8.66162L2.00012 0Z" transform="translate(5 5.8131714)" fill="currentColor" fill-rule="evenodd" stroke="none" />
-                                @endif
+                                    @endif
                                 </svg>
                             </span>
                         </div>
@@ -49,102 +81,89 @@
                                 Edit Profile
                             </a>
                             @elsecannot('update', $user)
-                                @can('block', $user)
-                                    @can('interactWith', $user)
-                                        <button style="border-width: 1.5px;" class="flex items-center px-2 py-1 mr-2 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md xs:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                            <span class="pr-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                                </svg>
-                                            </span>
-                                            Add to Favorites
-                                        </button>
-                                        <button style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                            <span class="pr-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                                                </svg>
-                                            </span>
-                                            Send Request
-                                        </button>
-                                    @endcan
-                                    @cannot('interactWith', $user)
-                                        <button wire:click="blockUser()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                            <span class="pr-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                                                </svg>
-                                            </span>
-                                            block
-                                        </button>
-                                    @endcannot
-                                @elsecannot('block', $user)
-                                    <button wire:click="unblockUser()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                        <span class="pr-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                                            </svg>
-                                        </span>
-                                        Unblock
-                                    </button>
-                                @endcan
+                            @can('block', $user)
+                            @can('interactWith', $user)
+                            @if (auth()->user()->favorites->contains($user))
+                            <button wire:click="unfavorite()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 mr-2 text-xs text-blue-700 transition duration-150 ease-in-out bg-blue-200 border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:text-blue-700">
+                                <span class="pr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                    </svg>
+                                </span>
+                                Unfavorite
+                            </button>
+                            @else
+                            <button wire:click="favorite()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 mr-2 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                <span class="pr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                    </svg>
+                                </span>
+                                Favorite
+                            </button>
+                            @endif
+                            <button style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                <span class="pr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                    </svg>
+                                </span>
+                                Send Request
+                            </button>
                             @endcan
-                        </div>                        
+                            @cannot('interactWith', $user)
+                            <button wire:click="block()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                <span class="pr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                    </svg>
+                                </span>
+                                Block
+                            </button>
+                            @endcannot
+                            @elsecannot('block', $user)
+                            <button wire:click="unblock()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                <span class="pr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </span>
+                                Unblock
+                            </button>
+                            @endcan
+                            @endcan
+                        </div>
                     </div>
                 </div>
                 <div class="relative flex items-center justify-center w-full mt-1 overflow-hidden md:w-1/2">
                     @if ($user->cover_photo)
-                    <div wire:ignore>
-                        <img src="{{ $user->coverPhotoPath }}" id="cover_out" width="100%" height="100%" class="z-10 block w-full rounded-lg shadow-lg" alt="Your cover photo">
+                    <div>
+                        <img src="{{ $user->coverPhotoPath }}" id="cover_out" width="100%" height="100%" class="z-10 block w-full rounded-lg shadow-lg" alt="{{ $user->firstname }}'s cover photo">
                     </div>
                     @else
-                    <svg wire:ignore id="cover-svg" class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                    <svg id="cover-svg" class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                         <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     @endif
                 </div>
             </div>
             @can('view', $user)
-            <div wire:ignore class="w-full mb-6 overflow-hidden border rounded-lg" x-data="tabs()">
-                <div class="relative flex items-center justify-start py-2 border">
-                    <ul class="flex w-full justify-evenly">
-                        <li>
-                            <input type="radio" autocomplete="off" checked name="tabs" id="info-pers" class="hidden">
-                            <label for="info-pers" x-on:click="toggleTabs($refs.tab_pers)" class="flex items-center py-1 text-sm rounded-md info-links hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-1" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                                Personal
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" autocomplete="off" name="tabs" id="info-edu" class="hidden">
-                            <label for="info-edu" x-on:click="toggleTabs($refs.tab_edu)" class="flex items-center py-1 text-sm rounded-md info-links hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                                </svg>
-                                Educational
-                            </label>
-                        </li>
-                        <li>
-                            <input type="radio" autocomplete="off" name="tabs" id="info-apart" class="hidden">
-                            <label for="info-apart" x-on:click="toggleTabs($refs.tab_apart)" class="flex items-center py-1 text-sm rounded-md info-links hover:text-blue-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-5 mr-1" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                                Apartment
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div class="relative flex items-center justify-start overflow-x-hidden border">
-                    <div x-ref="tab_pers" class="grid flex-shrink-0 w-full px-3 py-6 md:px-6 gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2 info-tab">
-                        <div class="mb-4 col-span-full" id="pers_info">
-                            <h1 class="text-xl font-semibold">Personal Information</h1>
+            <div class="w-full border border-gray-300 rounded-md tab-container justify-evenly">
+                <input type="radio" name="tab" id="tab1" checked="checked">
+                <label for="tab1" class="flex items-center py-1 text-xs rounded-md xs:text-sm info-links hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-3 mr-1 xs:w-4 md:w-5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Personal
+                </label>
+                <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
+                    <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
+                        <div class="mb-4 col-span-full">
+                            <h1 class="text-lg font-semibold md:text-xl">Personal Information</h1>
                         </div>
-                        <div class="relative px-2 py-4 mb-2 border border-gray-300 rounded-md col-span-full">
+                        <div class="relative flex px-2 py-4 mb-2 border border-gray-300 rounded-md col-span-full">
                             <p class="absolute z-10 px-2 bg-white -top-3.5  text-sm font-semibold text-gray-500">Bio</p>
-                            <p class="px-1 text-blue-800">{{ $user->bio}}</p>
+                            <p class="px-1 text-blue-800" style="overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;">{{ $user->bio}}</p>
                         </div>
                         <div class="mb-2">
                             <x-livewire.label>
@@ -159,7 +178,7 @@
                                 @endforeach
                             </div>
                         </div>
-                        <div class="mb-2">
+                        <div class="col-span-1 mb-2">
                             <x-livewire.label>
                                 <x-slot name='svgicon'>
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
@@ -173,9 +192,19 @@
                             </div>
                         </div>
                     </div>
-                    <div x-ref="tab_edu" class="grid flex-shrink-0 hidden w-full px-3 py-6 md:px-6 gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2 info-tab">
-                        <div class="col-span-full" id="edu_info">
-                            <h1 class="text-xl font-semibold">Educational Information</h1>
+                </div>
+
+                <input type="radio" name="tab" id="tab2">
+                <label for="tab2" class="flex items-center py-1 text-xs rounded-md xs:text-sm info-links hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-3 mr-1 xs:w-4 md:w-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                    </svg>
+                    Educational
+                </label>
+                <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
+                    <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
+                        <div class="col-span-full">
+                            <h1 class="text-lg font-semibold md:text-xl">Educational Information</h1>
                         </div>
                         <div class="mb-2 col-span-full">
                             <x-livewire.label>
@@ -201,7 +230,6 @@
                                 {{ $user->course['name'] }}
                             </p>
                         </div>
-
                         <div class="col-span-1 mb-2">
                             <x-livewire.label>
                                 <x-slot name='svgicon'>
@@ -209,16 +237,24 @@
                                 </x-slot>
                                 Course Level
                             </x-livewire.label>
-                            <label for="course" class="block mb-2 font-medium"></label>
                             <p class="block py-2 pl-3 pr-4 text-base font-medium text-blue-800 border-l-4 border-blue-400 bg-blue-50">
                                 {{ $user['course_level'] }}
                             </p>
                         </div>
-
                     </div>
-                    <div x-ref="tab_apart" class="grid flex-shrink-0 hidden w-full px-3 py-6 md:px-6 group gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2 info-tab">
-                        <div class="col-span-full" id="apart_info">
-                            <h1 class="text-xl font-semibold">Apartment Information</h1>
+                </div>
+
+                <input type="radio" name="tab" id="tab3">
+                <label for="tab3" class="flex items-center py-1 text-xs rounded-md xs:text-sm info-links hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-3 mr-1 xs:w-4 md:w-5" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    Apartment
+                </label>
+                <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
+                    <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
+                        <div class="col-span-full">
+                            <h1 class="text-lg font-semibold md:text-xl">Apartment Information</h1>
                         </div>
                         <div class="col-span-1 mb-2">
                             <x-livewire.label>
@@ -240,8 +276,7 @@
                                 </x-slot>
                                 Number of Rooms
                             </x-livewire.label>
-                            <label for="rooms" class="label"></label>
-                            <p class="block py-2 pl-3 pr-4 text-base font-medium text-blue-800 border-l-4 border-blue-400 bg-blue-50">
+                            <p class="block py-3 pl-3 pr-4 text-base font-medium text-blue-800 border-l-4 border-blue-400 bg-blue-50">
                                 {{ $user->rooms }} @if ($user->rooms != 1) Rooms @else Room @endif
                             </p>
                         </div>
@@ -254,14 +289,14 @@
                             </x-livewire.label>
                             <div class="flex py-2 pl-3 pr-4 text-base font-medium text-blue-800 border-l-4 border-blue-400 justify-evenly bg-blue-50">
                                 <div class="mr-4">
-                                    <label for="min_price" class="text-sm">Minimum</label>
-                                    <p class="text-lg">
+                                    <p class="mb-1 text-sm">Minimum</p>
+                                    <p class="text-lg leading-tight">
                                         ₦&nbsp;{{ number_format($user->min_budget) }}
                                     </p>
                                 </div>
                                 <div>
-                                    <label for="max_price" class="text-sm">Maximum</label>
-                                    <p class="text-lg">
+                                    <p class="mb-1 text-sm">Maximum</p>
+                                    <p class="text-lg leading-tight">
                                         ₦&nbsp;{{ number_format($user->max_budget) }}
                                     </p>
                                 </div>
@@ -272,7 +307,7 @@
             </div>
             @elsecannot('view', $user)
             <div class="px-4 py-4 mb-4 text-center bg-white border shadow">
-                You are blocked from viewing <span class="font-semibold">{{ $user->firstname }}'s</span>  profile and sending them roommate requests. 
+                You are blocked from viewing <span class="font-semibold">{{ $user->firstname }}'s</span> profile and sending them roommate requests.
                 <a href="{{ route('faqs') }}#q_4" class="text-blue-700">Learn more</a>
             </div>
             @endcan
@@ -283,21 +318,4 @@
     </p>
 
     <x-livewire.toast-notif></x-livewire.toast-notif>
-    
-    @prepend('scripts')
-    <script>
-        function tabs() {
-            return {
-                show: true,
-                toggleTabs(tab) {
-                    document.querySelectorAll('.info-tab').forEach((tab) => {
-                        tab.classList.add('hidden');
-                    });
-
-                    tab.classList.remove('hidden');
-                },
-            }
-        }
-    </script>
-    @endprepend
 </div>

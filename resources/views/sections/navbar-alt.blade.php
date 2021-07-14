@@ -12,7 +12,7 @@
         <!-- Settings Dropdown -->
         <div class="flex items-center ml-6">
             <a href="{{ route('dashboard')}}" style="border-width: 1.5px;" class="items-center justify-start hidden px-2 py-1 mr-4 text-sm text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md md:flex sm:text-base hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">Dashboard</a>
-            <x-dropdown align="right" width="48">
+            <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
                     <button aria-label="settings dropdown button" title="settings dropdown button" class="flex items-center text-sm font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300">
                         <div class="mr-2 overflow-hidden rounded-full lg:mr-4 w-9 h-9 lg:w-12 lg:h-12">
@@ -43,6 +43,9 @@
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('profile.view', ['user' => auth()->user() ])" :active="request()->fullUrl() == route('profile.view', [ 'user'=> auth()->user() ])">
                             {{ __('Profile') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('favorites')" :active="request()->routeIs('favorites')">
+                            {{ __('Favorites') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('blocklist')" :active="request()->routeIs('blocklist')">
                             {{ __('Blocklist') }}

@@ -132,14 +132,14 @@
                     <h1 class="text-xl font-semibold">Personal Information</h1>
                 </div>
                 <div class="col-span-full">
-                    <label for="bio" class="label">Bio <span class="text-xs text-blue-800">*25-255 characters long</span></label>
-                    <textarea rows="3" name="bio" class="select_dropdown @error('bio') border-red-500 @enderror" id="bio" wire:model.lazy="bio" placeholder="Write something about yourself">{{ $bio }}</textarea>
+                    <label for="bio" class="label">About <span class="text-xs text-blue-800">*25-255 characters long</span></label>
+                    <textarea rows="3" name="bio" class="select_dropdown @error('bio') border-red-500 @enderror" id="bio" wire:model.lazy="bio" placeholder="Write about how you would describe yourself">{{ $bio }}</textarea>
                     @error('bio')
                     <x-livewire.error-text>{{ $message }}</x-livewire.error-text>
                     @enderror
                 </div>
-                <x-livewire.select2 :name="$hobby = 'hobby'" :options="$hobbies" :selectedOptions="$selectedHobbies">Hobbies</x-livewire.select2>
-                <x-livewire.select2 :name="$dislike = 'dislike'" :options="$dislikes" :selectedOptions="$selectedDislikes">Dislikes</x-livewire.select2>
+                <x-livewire.select2 :name="$hobby = 'hobby'" :options="$hobbies" :selectedOptions="$selectedHobbies" :label="$label = 'Hobbies & Interests'">Hobbies</x-livewire.select2>
+                <x-livewire.select2 :name="$dislike = 'dislike'" :options="$dislikes" :selectedOptions="$selectedDislikes" :label="$label = 'Dislikes'">Dislikes</x-livewire.select2>
             </div>
             <div class="grid pt-6 gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2 field_set" data-link="li-edu">
                 <div class="col-span-full" id="edu_info">
@@ -196,12 +196,18 @@
                 <div class="col-span-full" id="apart_info">
                     <h1 class="text-xl font-semibold">Apartment Information</h1>
                 </div>
-                <x-livewire.select2 :name="$town = 'town'" :options="$towns" :selectedOptions="$selectedTowns">Towns</x-livewire.select2>
+                <x-livewire.select2 :name="$town = 'town'" :options="$towns" :selectedOptions="$selectedTowns" :label="$label = 'Preferred property locations'">Towns</x-livewire.select2>
                 <div class="col-span-1 mb-2">
                     <label for="rooms" class="label">Number of Rooms</label>
                     <select wire:model="rooms" required autocomplete="off" class="select_dropdown" name="no of rooms" id="rooms">
                         <option value="" disabled @if (!auth()->user()->rooms) {{ 'selected' }} @endif >Select the number of rooms in the apartment</option>
-                        @for ($rooms_ = 1; $rooms_<=4; $rooms_++) <option value="{{ $rooms_ }}" @if (auth()->user()->rooms == $rooms_) selected @endif >{{ $rooms_ }} @if ($rooms == 4) and above @endif</option>
+                        @for ($rooms_ = 0; $rooms_<=5; $rooms_++) 
+                        <option value="{{ $rooms_ }}" @if (auth()->user()->rooms == $rooms_) selected @endif >
+                            @if($rooms_ === 0) Self-contain
+                             @elseif ($rooms_ === 5) {{ $rooms_}} rooms and above 
+                             @else {{ $rooms_ }}&nbsp;{{ Str::plural('room', $rooms_) }} 
+                            @endif
+                        </option>
                             @endfor
                     </select>
                     @error('rooms')

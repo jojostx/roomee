@@ -180,7 +180,7 @@ class UpdateProfile extends Component
         $avatar_validation_rules = [
             'avatar' => [
                 'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:20,4098',
-                'base64dimensions:min_height=100,max_height=450,ratio=1'
+                'base64dimensions:min_height=100,max_height=450'
             ],
         ];
 

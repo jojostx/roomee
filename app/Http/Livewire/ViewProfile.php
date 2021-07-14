@@ -2,56 +2,35 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Traits\Favoriting;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ViewProfile extends Component
 {
+    use Favoriting, AuthorizesRequests;
+
     public $user;
-    public $blocklist_id;
 
     public function mount(User $user)
     {
-    
         $this->user = $user;
-    
     }
 
-    public function blockUser()
+    public function block()
     {
-        if ($this->user->id === auth()->user()->id) {
-            return;
-        }
+        $this->authorize('block', $this->user);
+        auth()->user()->blocklists()->attach($this->user->id);
+        $this->emit('actionTakenOnUser', $this->user->fullname, 'block');
 
-        $timestamp = now()->toDateTimeString();
-
-        $id = DB::table('blocklists')->insertGetId([
-            'blocker_id' => auth()->user()->id,
-            'blockee_id' => intval($this->user->id),
-            'created_at' => $timestamp,
-            'updated_at' => $timestamp,
-        ]);
-
-        if ($id) {
-            $this->emit('actionTakenOnUser', $this->user->fullname, 'block');
-            $this->blocklist_id = $id;
-        }
     }
 
-    public function unblockUser()
+    public function unblock()
     {
-        if ($this->user->id === auth()->user()->id) {
-            return;
-        }
+        auth()->user()->blocklists()->detach($this->user->id);
+        $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
 
-        $id = DB::table('blocklists')->delete($this->blocklist_id);
-
-        if ($id) {
-            $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
-            $this->blocklist_id = "";
-        }
     }
 
     public function render()

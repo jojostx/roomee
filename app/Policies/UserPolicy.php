@@ -81,7 +81,7 @@ class UserPolicy
      */
     public function block(User $user, User $model)
     {
-        return !$user->blocklists->contains($model);
+        return !$user->blocklists->contains($model) && $user->isNot($model);
     }
 
     /**

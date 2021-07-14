@@ -17,7 +17,7 @@ class UserSimilarity
     protected $courseLevelWeight = 0.8;
     protected $propertyLocationWeight = 1;
 
-    public function __construct(?User $user)
+    public function __construct(User $user = null)
     {
         $this->user = $user ?? auth()->user();
     }
@@ -62,7 +62,7 @@ class UserSimilarity
         $this->hobbyWeight = $weight;
     }
 
-    public function calculateSimilarityScore(?User $user_1, User $user_2)
+    public function calculateSimilarityScore(User $user_1 = null, User $user_2): float
     {
         $user_1 = $user_1 ?? $this->user;
 
@@ -85,9 +85,14 @@ class UserSimilarity
         ]) / ($this->budgetWeight + $this->hobbyWeight + $this->dislikeWeight + $this->propertyLocationWeight + $this->courseLevelWeight + $this->roomsWeight);
     }
 
-    public function calculateUsersSimilarityScore(?Collection $users){
+    public function calculateUsersSimilarityScore(?Collection $users)
+    {
         return $users->each(function ($user) {
             $user->similarity_score =  round($this->calculateSimilarityScore($this->user, $user), 2) * 100;
         });
+    }
+  
+    public function calculateUserSimilarityScore(User $user){
+        return round($this->calculateSimilarityScore($this->user, $user), 2) * 100;
     }
 }
