@@ -46,7 +46,7 @@ class StoreCompliantFromContactPageRequest extends FormRequest
         return [
             'firstname' => 'First name',
             'lastname' => 'Last name',
-            'email' => 'email address',
+            'email' => 'Email address',
         ];
     }
 }

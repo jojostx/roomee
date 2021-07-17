@@ -8,8 +8,6 @@ class Favorites extends Component
 {
     protected $listeners = ['actionTakenOnUser' => '$refresh'];
 
-    public function mount(){}
-
     public function getFavoritedUsersProperty()
     {
         return auth()->user()->favorites;

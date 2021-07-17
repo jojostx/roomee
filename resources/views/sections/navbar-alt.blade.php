@@ -1,12 +1,10 @@
 <div class="w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
-        <div class="flex">
-            <!-- Logo -->
-            <div class="flex items-center flex-shrink-0">
-                <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
-                    <x-application-logo class="block w-auto h-10 text-gray-600 fill-current" />
-                </a>
-            </div>
+        <!-- Logo -->
+        <div class="flex items-center flex-shrink-0">
+            <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
+                <x-application-logo class="block w-auto h-10 text-gray-600 fill-current" />
+            </a>
         </div>
 
         <!-- Settings Dropdown -->

@@ -2,16 +2,14 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\ModelSimilarity\UserSimilarity;
-use App\Models\Blocklist;
 use App\Models\User;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public $blocklist;
-    public $users;
     public $blockers;
+    public $users;
 
     protected $listeners = ['actionTakenOnUser' => 'resetUsers'];
 

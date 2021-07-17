@@ -1,7 +1,7 @@
 <x-landing-layout>
     <x-slot name="banner">
         <div class="flex items-center justify-center text-center bg-blue-100 h-60 md:h-80">
-        <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl lg:text-5xl">Frequently Asked Questions</p>
+            <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl lg:text-5xl">Frequently Asked Questions</p>
         </div>
     </x-slot>
 
@@ -70,11 +70,7 @@
     <div class="py-16 bg-gray-100">
         <div class="flex flex-col items-center w-10/12 mx-auto">
             <p class="mb-4 text-xl font-semibold">Was this article helpful?</p>
-            <form x-on:submit.prevent="submitForm('http://127.0.0.1:8000/faqs')"
-                  x-data="form('feedback_Form')"
-                  method="POST"
-                  id="feedback_Form"
-                  class="flex flex-col items-center justify-center mb-4">
+            <form x-on:submit.prevent="submitForm('http://127.0.0.1:8000/faqs')" x-data="form('feedback_Form')" method="POST" id="feedback_Form" class="flex flex-col items-center justify-center mb-4">
                 @csrf
 
                 <div class="flex mb-4">

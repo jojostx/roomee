@@ -58,7 +58,7 @@
                         <div class="flex items-center justify-center mb-4 overflow-hidden">
                             <span class="font-semibold sm:text-lg">{{ ucfirst($user->firstname) }} {{ ucfirst($user->lastname) }}</span>
                             &nbsp;
-                            <span>
+                            <span class="text-gray-500">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     @if ($user->gender == "male")
                                     <path d="M0 2.47475C0 1.10798 1.13964 0 2.54545 0C3.95127 0 5.09091 1.10798 5.09091 2.47475C5.09091 3.84151 3.95127 4.94949 2.54545 4.94949C1.13964 4.94949 0 3.84151 0 2.47475Z" transform="translate(9.45459 0.86364746)" fill="currentColor" fill-rule="evenodd" stroke="none" />
@@ -84,7 +84,8 @@
                             @can('block', $user)
                             @can('interactWith', $user)
                             @if (auth()->user()->favorites->contains($user))
-                            <button wire:click="unfavorite()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 mr-2 text-xs text-blue-700 transition duration-150 ease-in-out bg-blue-200 border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:text-blue-700">
+                            <button wire:click="unfavorite()" style="border-width: 1.5px;" 
+                            class="flex items-center justify-start px-2 py-1 mr-2 text-xs text-blue-100 transition duration-150 ease-in-out bg-blue-600 rounded-md sm:text-sm hover:text-blue-100 hover:bg-blue-800 focus:bg-blue-800 focus:outline-none focus:text-blue-100">
                                 <span class="pr-1">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />

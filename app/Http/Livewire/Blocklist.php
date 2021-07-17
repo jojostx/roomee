@@ -2,15 +2,14 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class Blocklist extends Component
 {
     protected $listeners = ['actionTakenOnUser' => '$refresh'];
 
-    public function mount(){}
-
-    public function getBlockedUsersProperty()
+    public function getBlockedUsersProperty(): Collection
     {
         return auth()->user()->blocklists;
     }

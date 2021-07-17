@@ -27,7 +27,7 @@
 
     <div class="flex items-center justify-between pt-2">
         <p class="text-sm font-semibold text-gray-600">{{ $user->pivot->created_at->diffForHumans() }}</p>
-        <button wire:click="unblockUser()" class="inline-flex items-center mr-1.5 px-2 py-1 text-xs xs:text-sm text-blue-600 transition duration-150 ease-in-out bg-blue-100 rounded-md hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+        <button wire:click="unblockUser()" class="inline-flex items-center mr-1.5  px-2 py-1 text-xs xs:text-sm text-blue-100 transition duration-150 ease-in-out bg-blue-600 rounded-md hover:text-blue-100 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 focus:text-blue-100">
             <span class="pr-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>

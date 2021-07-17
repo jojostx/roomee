@@ -92,7 +92,8 @@ class UserSimilarity
         });
     }
   
-    public function calculateUserSimilarityScore(User $user){
+    public function calculateUserSimilarityScore(User $user): float
+    {
         return round($this->calculateSimilarityScore($this->user, $user), 2) * 100;
     }
 }

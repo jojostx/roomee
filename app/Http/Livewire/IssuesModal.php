@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Report;
 use App\Rules\IsBlockable;
 use App\Rules\IsReportable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -14,10 +15,10 @@ class IssuesModal extends Component
     public string $user_id = '';
     public string $username = '';
     public bool $show = false;
-    public $reports;
+    public Collection $reports;
     public array $selectedReports = [];
     //[block|report]
-    public $action = '';
+    public string $action = '';
 
     protected $listeners = ['blockOrReport' => 'handleIssue'];
 
@@ -28,14 +29,14 @@ class IssuesModal extends Component
 
     //sets the id, username and show properties to their required properties
     //handleIssue is called when a "block" or "report" event is fired from the blade/html page
-    public function handleIssue($id, $fullname)
+    public function handleIssue($id, $fullname): void
     {
         list($this->user_id, $this->username, $this->show ) = [$id, $fullname, true];
     }
 
     //resets all the properties including validation/errors
     //called when the modal is closed or after the issue ("block" or "report") is saved to the database
-    public function reset_()
+    public function reset_(): void
     {
         $this->resetValidation();
         $this->user_id = "";

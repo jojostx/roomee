@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCompliantFromContactPageRequest;
 use App\Models\Contact;
-use http\Client\Response;
 
 class ContactsController extends Controller
 {

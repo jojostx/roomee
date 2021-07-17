@@ -27,11 +27,11 @@
             @if (Route::has('login'))
             <div class="py-2 sm:block">
                 @auth
-                    @if (Auth::user()->profile_updated)
-                        <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
-                    @else
-                        <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
-                    @endif
+                @if (Auth::user()->profile_updated)
+                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
+                @else
+                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                @endif
                 @endauth
 
                 @guest
@@ -88,18 +88,18 @@
             </div>
             <div class="relative flex items-center justify-center w-full px-4 pt-4 border-t border-gray-700 sm:items-center sm:pt-0 ">
                 @if (Route::has('login'))
-                    @auth
-                        @if (Auth::user()->profile_updated)
-                            <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
-                        @else
-                            <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
-                        @endif
-                    @endauth
+                @auth
+                @if (Auth::user()->profile_updated)
+                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
+                @else
+                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                @endif
+                @endauth
 
-                    @guest
-                        <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN IN</a>
-                        <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN UP</a>
-                    @endguest
+                @guest
+                <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN IN</a>
+                <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN UP</a>
+                @endguest
                 @endif
             </div>
         </div>
