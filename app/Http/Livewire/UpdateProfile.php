@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Traits\WithImageManipulation;
 use App\Models\Course;
 use App\Models\Dislike;
 use App\Models\Hobby;
@@ -13,7 +14,6 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Livewire\WithImageManipulation;
 
 class UpdateProfile extends Component
 {
@@ -154,6 +154,7 @@ class UpdateProfile extends Component
 
     public function rules()
     {
+        //upgrade validation rules for schools, course etc
         $validationRules = [
             'selectedSchool' => ['required',],
             'selectedCourse' => ['required',],
@@ -231,6 +232,7 @@ class UpdateProfile extends Component
         if (!$this->schools->contains($this->selectedSchool)) {
             return;
         }
+
         $user = auth()->user();
         $userCover = $user->cover_photo;
         $userAvatar = $user->avatar;
@@ -250,47 +252,44 @@ class UpdateProfile extends Component
 
         //store data using db transactions
         //toggle profile_updated field in the users table
-        DB::beginTransaction();
-        try {
-            $user->bio = $this->bio;
-            $user->school()->associate($this->selectedSchool);
-            $user->course()->associate($this->selectedCourse);
-            $user->hobbies()->sync($this->selectedHobbies);
-            $user->dislikes()->sync($this->selectedDislikes);
-            $user->towns()->sync($this->selectedTowns);
-            $user->course_level = intval($this->selectedCourseLevel);
-            $user->rooms = $this->rooms;
-            $user->min_budget = intval($this->min_budget);
-            $user->max_budget = intval($this->max_budget);
-
-            if (($user->avatar !== $this->avatar) && $avatarName !== "") {
+        if ($avatarName !== "" && $coverName !== "") {
+            DB::beginTransaction();
+            try {
+                $user->bio = $this->bio;
+                $user->school()->associate($this->selectedSchool);
+                $user->course()->associate($this->selectedCourse);
+                $user->hobbies()->sync($this->selectedHobbies);
+                $user->dislikes()->sync($this->selectedDislikes);
+                $user->towns()->sync($this->selectedTowns);
+                $user->course_level = intval($this->selectedCourseLevel);
+                $user->rooms = $this->rooms;
+                $user->min_budget = intval($this->min_budget);
+                $user->max_budget = intval($this->max_budget);
                 $user->avatar = $avatarName;
-            }
-            if (($user->cover_photo !== $this->cover_photo) && $coverName !== "") {
                 $user->cover_photo = $coverName;
-            }
+                $user->profile_updated = true;
 
-            $user->profile_updated = true;
+                $user->save();
+                DB::commit();
 
-            $user->save();
-            DB::commit();
-
-            if ($userAvatar !== $user->avatar) {
-                Storage::disk('avatars')->delete($userAvatar);
+                if ($userAvatar !== $user->avatar) {
+                    Storage::disk('avatars')->delete($userAvatar);
+                }
+                if ($userCover !== $user->cover_photo) {
+                    Storage::disk('cover_photos')->delete($userCover);
+                }
+            } catch (\Throwable $th) {
+                DB::rollBack();
+                Storage::disk('avatars')->delete($avatarName);
+                Storage::disk('cover_photos')->delete($coverName);
+                $this->addError('profileUpdate', 'An error occurred while updating your profile please try again');
+                return;
             }
-            if ($userCover !== $user->cover_photo) {
-                Storage::disk('cover_photos')->delete($userCover);
-            }
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            Storage::disk('avatars')->delete($avatarName);
-            Storage::disk('cover_photos')->delete($coverName);
-            $this->addError('profileUpdate', 'An error occurred while updating your profile please try again');
-            return;
         }
 
+
         //redirect to dashboard
-        $this->redirect(route('profile.view', ['user' => auth()->user() ]));
+        $this->redirect(route('profile.view', ['user' => auth()->user()]));
     }
 
     public function render()
