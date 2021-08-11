@@ -26,45 +26,10 @@ class UserSimilarity
     {
         return new static($user);
     }
-
+  
     public function setUsers(Collection $users): void
     {
         $this->users = $users;
-    }
-
-    public function setUser(User $user): void
-    {
-        $this->user = $user;
-    }
-
-    public function setHobbyWeight(float $weight): void
-    {
-        $this->hobbyWeight = $weight;
-    }
-   
-    public function setRoomsWeight(float $weight): void
-    {
-        $this->roomsWeight = $weight;
-    }
-
-    public function setDislikeWeight(float $weight): void
-    {
-        $this->dislikeWeight = $weight;
-    }
-
-    public function setBudgetWeight(float $weight): void
-    {
-        $this->budgetWeight = $weight;
-    }
-
-    public function setPropertyLocationWeight(float $weight): void
-    {
-        $this->propertyLocationWeight = $weight;
-    }
-
-    public function setCourseLevelWeight(float $weight): void
-    {
-        $this->hobbyWeight = $weight;
     }
 
     public function calculateSimilarityScore(User $user_1 = null, User $user_2): float

@@ -32,13 +32,13 @@ class HobbySeeder extends Seeder
      */
     public function run()
     {
-        collect($this->hobbies)->each(function ($hobby) {
-            DB::table('hobbies')->insert(
-                array_merge($hobby, [
+        DB::table('hobbies')->insert(
+            collect($this->hobbies)->map(function ($hobby) {
+                return array_merge($hobby, [
                     'created_at' => now(),
                     'updated_at' => now(),
-                ])
-            );
-        });
+                ]);
+            })->toArray()
+        );
     }
 }

@@ -12,14 +12,5 @@
 
         <x-livewire.toast-notif></x-livewire.toast-notif>
 
-        <script>
-            // window.addEventListener('DOMContentLoaded', (e) => {
-            //     // console.log('ok');
-            //     Echo.channel(`request.{{ auth()->user()->id }}`)
-            //         .listen('RoommateRequestUpdated', (e) => {
-            //             console.log(e);
-            //         });
-            // })
-        </script>
     </div>
 </x-app-layout>

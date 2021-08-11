@@ -32,13 +32,13 @@ class DislikeSeeder extends Seeder
      */
     public function run()
     {
-        collect($this->dislikes)->each(function ($dislike) {
-            DB::table('dislikes')->insert(
-                array_merge($dislike, [
+        DB::table('dislikes')->insert(
+            collect($this->dislikes)->map(function ($dislike) {
+                return array_merge($dislike, [
                     'created_at' => now(),
                     'updated_at' => now(),
-                ])
-            );
-        });
+                ]);
+            })->toArray()
+        );
     }
 }

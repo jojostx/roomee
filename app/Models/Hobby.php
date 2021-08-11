@@ -25,6 +25,4 @@ class Hobby extends Model
     {
         return $this->checked;
     }
-
-
 }

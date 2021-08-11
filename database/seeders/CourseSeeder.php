@@ -57,14 +57,13 @@ class CourseSeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->courses as $course) {
-
-            $course = array_merge($course, [
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            DB::table('courses')->insert($course);
-        }
+        DB::table('courses')->insert(
+            collect($this->courses)->map(function ($course) {
+                return array_merge($course, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            })->toArray()
+        );
     }
 }

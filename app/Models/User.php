@@ -149,6 +149,7 @@ class User extends Authenticatable
     {
         return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')->withPivot('reportee_id')->withTimestamps();
     }
+   
     
     //SCOPES//
 

@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
-use Carbon\Traits\Timestamp;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class UniversitySeeder extends Seeder
+class SchoolSeeder extends Seeder
 {
-
-    public $universities = [
+    public $schools = [
         [
             'name' => 'University of Abuja',
             'short_name' => 'UNIABJ',
@@ -42,6 +40,11 @@ class UniversitySeeder extends Seeder
         ],
     ];
 
+    // public function __construct()
+    // {
+    //     $this->schools = collect($this->schools);
+    // }
+
     /**
      * Run the database seeds.
      *
@@ -49,14 +52,13 @@ class UniversitySeeder extends Seeder
      */
     public function run()
     {
-        foreach ($this->universities as $university) {
-
-            $university = array_merge($university, [
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            DB::table('schools')->insert($university);
-        }
+        DB::table('schools')->insert(
+            collect($this->schools)->map(function ($school) {
+                return array_merge($school, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            })->toArray()
+        );
     }
 }
