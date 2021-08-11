@@ -11,7 +11,13 @@ class Dashboard extends Component
     public $blockers;
     public $users;
 
-    protected $listeners = ['actionTakenOnUser' => 'resetUsers'];
+    protected function getListeners()
+    {
+        return [
+            'actionTakenOnUser' => 'resetUsers',
+            'echo:request.' . auth()->user()->id . ',RoommateRequestUpdated' => 'showRequestToastNotification'
+        ];
+    }
 
     public function mount()
     {
@@ -21,7 +27,7 @@ class Dashboard extends Component
         $this->users = User::gender($authUser->gender)
             ->school($authUser->school_id)->excludeUser($authUser->id)->whereIntegerNotInRaw('id', $this->blocklist)
             ->with('course')
-            ->get()->sortByDesc('similarity_score');   
+            ->get()->sortByDesc('similarity_score');
     }
 
     //polling function that polls the database for updates to the users blocking the auth user
@@ -32,12 +38,17 @@ class Dashboard extends Component
         $blockers = $this->users->intersect(auth()->user()->blockers);
 
         if ($blockers->isEmpty()) {
-            return;            
+            return;
         }
-    
+
         foreach ($blockers->modelKeys() as $key => $value) {
-            $this->emit('refreshChildren:'.$value);
+            $this->emit('refreshChildren:' . $value);
         }
+    }
+
+    public function showRequestToastNotification($data)
+    {
+        dd($data);
     }
 
     public function resetUsers($username, $action)

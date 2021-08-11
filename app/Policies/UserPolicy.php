@@ -32,20 +32,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        $this->blocklist = Blocklist::where('blocker_id', $model->id)->pluck('blockee_id')->toArray();
-
-        return ($user->gender === $model->gender) && ($user->school_id === $model->school_id) && !in_array($user->id, $this->blocklist);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *          
-     * @param  \App\Models\User  $user
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        //
+        return ($user->gender === $model->gender) && ($user->school_id === $model->school_id);
     }
 
     /**
@@ -59,9 +46,9 @@ class UserPolicy
     {
         return $user->id == $model->id;
     }
-   
+
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can interact with the model.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
@@ -71,9 +58,9 @@ class UserPolicy
     {
         return !$model->blocklists->contains($user);
     }
-   
+
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the user can block the model.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
@@ -83,40 +70,17 @@ class UserPolicy
     {
         return !$user->blocklists->contains($model) && $user->isNot($model);
     }
-
+    
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can unblock the model.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\User  $model
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function unblock(User $user, User $model)
     {
-        //
+        return $user->blocklists->contains($model) && $user->isNot($model);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function restore(User $user, User $model)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
-     * @return mixed
-     */
-    public function forceDelete(User $user, User $model)
-    {
-        //
-    }
 }

@@ -22,9 +22,14 @@ class UserSimilarity
         $this->user = $user ?? auth()->user();
     }
 
+    public function make(User $user)
+    {
+        return new static($user);
+    }
+
     public function setUsers(Collection $users): void
     {
-        $this->user = $users;
+        $this->users = $users;
     }
 
     public function setUser(User $user): void
@@ -64,7 +69,7 @@ class UserSimilarity
 
     public function calculateSimilarityScore(User $user_1 = null, User $user_2): float
     {
-        $user_1 = $user_1 ?? $this->user;
+        $user_1 = $user_1 ?? auth()->user();
 
         $user_1_dislikes = $user_1->dislikes()->pluck('name')->toArray();
         $user_2_dislikes = $user_2->dislikes()->pluck('name')->toArray();

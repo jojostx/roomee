@@ -13,7 +13,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class UpdateProfile extends Component
 {
@@ -200,6 +199,7 @@ class UpdateProfile extends Component
 
     protected array $messages = [
         'max_budget.gt' => 'The :attribute must be greater than the minimum budget',
+        'bio.required' => 'Your Bio is required',
         'bio.max' => 'Your Bio must be at most 255 characters long',
         'bio.min' => 'Your Bio must be at least 25 characters long',
         'selectedSchool.required' => 'Choose your institute of study',
@@ -219,7 +219,7 @@ class UpdateProfile extends Component
         'min_budget' => 'minimum budget',
         'max_budget' => 'maximum budget',
         'rooms' => 'Number of rooms',
-        'bio' => 'Your Bio',
+        'bio' => 'Bio',
     ];
 
     public function updated($propertyName)
@@ -233,27 +233,27 @@ class UpdateProfile extends Component
             return;
         }
 
-        $user = auth()->user();
-        $userCover = $user->cover_photo;
-        $userAvatar = $user->avatar;
-        $coverName = "";
-        $avatarName = "";
-
-        //validate inputs
         $this->validate();
 
+        $user = auth()->user();
+
+        $userCover = $user->cover_photo;
+        
+        $userAvatar = $user->avatar;
+  
         // handle image conversion, naming and storage
         if ($userAvatar !== $this->avatar) {
-            $avatarName = $this->storeImage($this->avatar, 'avatars');
+            $userAvatar = $this->storeImage($this->avatar, 'avatars\\'.$user->id);
         }
         if ($userCover !== $this->cover_photo) {
-            $coverName = $this->storeImage($this->cover_photo, 'cover_photos');
+            $userCover = $this->storeImage($this->cover_photo, 'cover_photos\\'.$user->id);
         }
 
         //store data using db transactions
         //toggle profile_updated field in the users table
-        if ($avatarName !== "" && $coverName !== "") {
+        if ($userAvatar && $userCover) {
             DB::beginTransaction();
+            
             try {
                 $user->bio = $this->bio;
                 $user->school()->associate($this->selectedSchool);
@@ -265,28 +265,22 @@ class UpdateProfile extends Component
                 $user->rooms = $this->rooms;
                 $user->min_budget = intval($this->min_budget);
                 $user->max_budget = intval($this->max_budget);
-                $user->avatar = $avatarName;
-                $user->cover_photo = $coverName;
+                $user->avatar = $userAvatar;
+                $user->cover_photo = $userCover;
                 $user->profile_updated = true;
 
                 $user->save();
+                
                 DB::commit();
 
-                if ($userAvatar !== $user->avatar) {
-                    Storage::disk('avatars')->delete($userAvatar);
-                }
-                if ($userCover !== $user->cover_photo) {
-                    Storage::disk('cover_photos')->delete($userCover);
-                }
             } catch (\Throwable $th) {
                 DB::rollBack();
-                Storage::disk('avatars')->delete($avatarName);
-                Storage::disk('cover_photos')->delete($coverName);
+
                 $this->addError('profileUpdate', 'An error occurred while updating your profile please try again');
+
                 return;
             }
         }
-
 
         //redirect to dashboard
         $this->redirect(route('profile.view', ['user' => auth()->user()]));

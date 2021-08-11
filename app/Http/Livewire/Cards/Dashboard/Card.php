@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Cards\Dashboard;
 
+use App\Events\RoommateRequestUpdated;
 use Livewire\Component;
 use App\Http\Livewire\Traits\Favoriting;
 
@@ -20,6 +21,12 @@ class Card extends Component
 
     public function mount(){
         $this->course = $this->user->course;
+    }
+
+    public function updateRequest()
+    {
+        // event(new RoommateRequestUpdated(auth()->user()->id, $this->user->id));
+        broadcast(new RoommateRequestUpdated(auth()->user()->id, $this->user->id))->toOthers();
     }
 
     public function getIsBlockerProperty()

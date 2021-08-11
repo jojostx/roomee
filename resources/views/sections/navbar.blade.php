@@ -10,18 +10,18 @@
     <!-- Primary Navigation Menu -->
     <div class="items-center hidden sm:flex">
         <div class="flex flex-shrink-0">
-            <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+            <x-nav-link-primary :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
-            </x-nav-link>
-            <x-nav-link :href="route('features')" :active="request()->routeIs('features')">
+            </x-nav-link-primary>
+            <x-nav-link-primary :href="route('features')" :active="request()->routeIs('features')">
                 {{ __('Features') }}
-            </x-nav-link>
-            <x-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
+            </x-nav-link-primary>
+            <x-nav-link-primary :href="route('faqs')" :active="request()->routeIs('faqs')">
                 {{ __('FAQs') }}
-            </x-nav-link>
-            <x-nav-link :href="route('about')" :active="request()->routeIs('about')">
+            </x-nav-link-primary>
+            <x-nav-link-primary :href="route('about')" :active="request()->routeIs('about')">
                 {{ __('About Us') }}
-            </x-nav-link>
+            </x-nav-link-primary>
         </div>
         <div class="relative flex items-center justify-center min-h-full ml-2 sm:items-center sm:pt-0">
             @if (Route::has('login'))

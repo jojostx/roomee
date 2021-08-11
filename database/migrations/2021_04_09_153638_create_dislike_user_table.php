@@ -14,6 +14,7 @@ class CreateDislikeUserTable extends Migration
     public function up()
     {
         Schema::create('dislike_user', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('dislike_id')->constrained()->onDelete('cascade');
             $table->timestamps();

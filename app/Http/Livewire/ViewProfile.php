@@ -15,6 +15,7 @@ class ViewProfile extends Component
 
     public function mount(User $user)
     {
+        $this->authorize('view', $user);
         $this->user = $user;
     }
 
@@ -23,7 +24,6 @@ class ViewProfile extends Component
         $this->authorize('block', $this->user);
         auth()->user()->blocklists()->attach($this->user->id);
         $this->emit('actionTakenOnUser', $this->user->fullname, 'block');
-
     }
 
     public function unblock()

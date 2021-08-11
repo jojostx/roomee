@@ -56,7 +56,7 @@
                     </div>
                     <div class="flex flex-col justify-center w-full mt-14 sm:mt-0 md:pt-2">
                         <div class="flex items-center justify-center mb-4 overflow-hidden">
-                            <span class="font-semibold sm:text-lg">{{ ucfirst($user->firstname) }} {{ ucfirst($user->lastname) }}</span>
+                            <span class="font-semibold xs:text-lg">{{ ucfirst($user->firstname) }} {{ ucfirst($user->lastname) }}</span>
                             &nbsp;
                             <span class="text-gray-500">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,15 +148,15 @@
                     @endif
                 </div>
             </div>
-            @can('view', $user)
+            @can('interactWith', $user)
             <div class="w-full border border-gray-300 rounded-md tab-container justify-evenly">
                 <input type="radio" name="tab" id="tab1" checked="checked">
-                <label for="tab1" class="flex items-center py-1 text-xs rounded-md xs:text-sm info-links hover:text-blue-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-3 mr-1 xs:w-4 md:w-5" stroke="currentColor">
+                <x-livewire.tab-label for="tab1">
+                    <x-slot name="svg_path">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    </x-slot>
                     Personal
-                </label>
+                </x-livewire.tab-label>
                 <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
                     <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
                         <div class="mb-4 col-span-full">
@@ -196,12 +196,12 @@
                 </div>
 
                 <input type="radio" name="tab" id="tab2">
-                <label for="tab2" class="flex items-center py-1 text-xs rounded-md xs:text-sm info-links hover:text-blue-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-3 mr-1 xs:w-4 md:w-5">
+                <x-livewire.tab-label for="tab2">
+                    <x-slot name="svg_path">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                    </svg>
+                    </x-slot>
                     Educational
-                </label>
+                </x-livewire.tab-label>
                 <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
                     <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
                         <div class="col-span-full">
@@ -246,12 +246,12 @@
                 </div>
 
                 <input type="radio" name="tab" id="tab3">
-                <label for="tab3" class="flex items-center py-1 text-xs rounded-md xs:text-sm info-links hover:text-blue-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-3 mr-1 xs:w-4 md:w-5" viewBox="0 0 24 24" stroke="currentColor">
+                <x-livewire.tab-label for="tab3">
+                    <x-slot name="svg_path">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
+                    </x-slot>
                     Apartment
-                </label>
+                </x-livewire.tab-label>
                 <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
                     <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
                         <div class="col-span-full">
@@ -290,15 +290,15 @@
                             </x-livewire.label>
                             <div class="flex py-2 pl-3 pr-4 text-base font-medium text-blue-800 border-l-4 border-blue-400 justify-evenly bg-blue-50">
                                 <div class="mr-4">
-                                    <p class="mb-1 text-sm">Minimum</p>
-                                    <p class="text-lg leading-tight">
-                                        ₦&nbsp;{{ number_format($user->min_budget) }}
+                                    <p class="mb-1 text-sm text-blue-600 opacity-70">Minimum</p>
+                                    <p class="text-xl leading-tight">
+                                        ₦{{ number_format($user->min_budget) }}
                                     </p>
                                 </div>
                                 <div>
-                                    <p class="mb-1 text-sm">Maximum</p>
-                                    <p class="text-lg leading-tight">
-                                        ₦&nbsp;{{ number_format($user->max_budget) }}
+                                    <p class="mb-1 text-sm text-blue-600 opacity-70">Maximum</p>
+                                    <p class="text-xl leading-tight">
+                                        ₦{{ number_format($user->max_budget) }}
                                     </p>
                                 </div>
                             </div>
@@ -306,7 +306,7 @@
                     </div>
                 </div>
             </div>
-            @elsecannot('view', $user)
+            @elsecannot('interactWith', $user)
             <div class="px-4 py-4 mb-4 text-center bg-white border shadow">
                 You are blocked from viewing <span class="font-semibold">{{ $user->firstname }}'s</span> profile and sending them roommate requests.
                 <a href="{{ route('faqs') }}#q_4" class="text-blue-700">Learn more</a>

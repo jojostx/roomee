@@ -17,6 +17,7 @@ class CreateCoursesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('short_name');
+            $table->string('max_level');
             $table->timestamps();
         });
     }
