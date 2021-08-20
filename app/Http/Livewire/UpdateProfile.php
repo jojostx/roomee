@@ -111,10 +111,11 @@ class UpdateProfile extends Component
         return School::orderBy('name')->get();
     }
 
-    public function getUserData(string $columnName): array
+    public function getUserData(string $tableName): array
     {
-        if (auth()->user()->{$columnName}) {
-            $options = auth()->user()->{$columnName}()->pluck('id')->toArray();
+        if (auth()->user()->{$tableName}) {
+            $options = auth()->user()->{$tableName}()->pluck($tableName.'.id')->toArray();
+            
             $options = array_map(function ($item) {
                 return strval($item);
             }, $options);

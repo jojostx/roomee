@@ -32,14 +32,14 @@ class UserSimilarity
         $this->users = $users;
     }
 
-    public function calculateSimilarityScore(User $user_1 = null, User $user_2): float
+    public function calculateSimilarityScore(User $user_1, User $user_2): float
     {
         $user_1 = $user_1 ?? auth()->user();
 
-        $user_1_dislikes = $user_1->dislikes()->pluck('name')->toArray();
-        $user_2_dislikes = $user_2->dislikes()->pluck('name')->toArray();
-        $user_1_hobbies = $user_1->hobbies()->pluck('name')->toArray();
-        $user_2_hobbies = $user_2->hobbies()->pluck('name')->toArray();
+        $user_1_dislikes = $user_1->dislikes()->pluck('dislikes.name')->toArray();
+        $user_2_dislikes = $user_2->dislikes()->pluck('dislikes.name')->toArray();
+        $user_1_hobbies = $user_1->hobbies()->pluck('hobbies.name')->toArray();
+        $user_2_hobbies = $user_2->hobbies()->pluck('hobbies.name')->toArray();
         $user_1_property_locations = $user_1->towns()->pluck('name')->toArray();
         $user_2_property_locations = $user_2->towns()->pluck('name')->toArray();
         $user_1_budget = [$user_1->min_budget, $user_1->max_budget];

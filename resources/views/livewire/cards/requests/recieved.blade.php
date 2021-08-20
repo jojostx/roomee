@@ -1,8 +1,8 @@
 @isset($user)
-<div class="w-full px-4 pt-4 pb-2 my-2 bg-white border rounded-md md:w-80 lg:w-96">
+<div class="w-full max-w-md px-4 pt-4 pb-2 my-2 bg-white border rounded-md lg:w-96">
     <div class="flex pb-2 mb-1 border-b">
         <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
-            <div class="block mb-2 overflow-hidden bg-blue-200 rounded-full w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20">
+            <div class="block w-12 h-12 mb-2 overflow-hidden bg-blue-200 rounded-full sm:w-14 sm:h-14 lg:w-16 lg:h-16">
                 @if ($user->avatar)
                 <img id="avatar_img" src="{{ $user->avatarPath }}" alt="avatar image" width="100%" height="100%" class="h-full">
                 @else
@@ -25,14 +25,20 @@
         </div>
     </div>
 
-    <div class="flex items-center justify-between pt-2">
+    <div class="flex items-center justify-between pt-2 pb-1">
         <p class="text-sm font-semibold text-gray-600">{{ $user->pivot->created_at->diffForHumans() }}</p>
-        <x-button-sec wire:click="unfavorite()">
+        <x-button-primary wire:click="" class="ml-auto mr-1.5">
             <x-slot name="svgPath">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </x-slot>
-            Unfavorite
-        </x-button-sec>
+            Accept
+        </x-button-primary>
+        <x-button-primary wire:click="">
+            <x-slot name="svgPath">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </x-slot>
+            Decline
+        </x-button-primary>
     </div>
 </div>
 @endisset

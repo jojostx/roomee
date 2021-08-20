@@ -13,9 +13,11 @@ class Dashboard extends Component
 
     protected function getListeners()
     {
+        $id = auth()->id();
+
         return [
             'actionTakenOnUser' => 'resetUsers',
-            'echo:request.' . auth()->user()->id . ',RoommateRequestUpdated' => 'showRequestToastNotification'
+            "echo-private:request.{$id},RoommateRequestUpdated" => "showRequestToastNotification"
         ];
     }
 

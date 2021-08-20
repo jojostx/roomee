@@ -7,7 +7,7 @@
         </div>
     </div>
     @else
-    <div class="flex flex-wrap px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+    <div class="flex flex-wrap px-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
         @foreach ($this->favoritedUsers as $user)
         @livewire('cards.favorites.card', ['user' => $user], key($user->id))
         @endforeach

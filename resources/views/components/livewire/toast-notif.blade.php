@@ -38,6 +38,15 @@
                     <span class="font-semibold">${username}</span>
                  </p>`;
         }
+        
+        if (actionTaken == 'request') {
+            p = `<p>Your roommate ${actionTaken} has been sent to 
+                    <span class="font-semibold">${username}</span>
+                 </p>
+                 <a href="{{ route('favorites') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-blue-100 md:text-base">
+                  View all requests
+                 </a>`;
+        }
 
         if (actionTaken == 'report') {
             p = `<p>Your report has been submitted. 

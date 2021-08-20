@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UpdateProfileController;
 use App\Http\Livewire\Blocklist;
 use App\Http\Livewire\Favorites;
+use App\Http\Livewire\Requests;
 use App\Http\Livewire\UpdateProfile;
 use App\Http\Livewire\ViewProfile;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,7 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(functi
     Route::get('/profile/{user}', ViewProfile::class)->name('profile.view');
     Route::get('/blocklist', Blocklist::class)->name('blocklist');
     Route::get('/favorites', Favorites::class)->name('favorites');
+    Route::get('/requests', Requests::class)->name('requests');
 });
 
 require __DIR__ . '/auth.php';

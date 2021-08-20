@@ -92,6 +92,24 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'blocklists', 'blockee_id' ,'blocker_id')
         ->withTimestamps();
     }
+    
+    /**
+     * The requests for the user.
+     */
+    public function recievedRequests()
+    {
+        return $this->belongsToMany(User::class, 'roommate_requests', 'requestee_id', 'requester_id')
+        ->withTimestamps()->orderByPivot('created_at', 'desc');
+    }
+    
+    /**
+     * The requests sent by the user.
+     */
+    public function sentRequests()
+    {
+        return $this->belongsToMany(User::class, 'roommate_requests', 'requester_id', 'requestee_id')
+        ->withTimestamps()->orderByPivot('created_at', 'desc');
+    }
   
     /**
      * The favorited users for a user.
@@ -115,7 +133,7 @@ class User extends Authenticatable
      */
     public function dislikes()
     {
-        return $this->belongsToMany(Dislike::class, 'dislike_user')->withTimestamps();
+        return $this->belongsToMany(Dislike::class, 'dislike_user', 'user_id', 'dislike_id')->withTimestamps();
     }
 
     /**

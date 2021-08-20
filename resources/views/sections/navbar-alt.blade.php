@@ -42,6 +42,9 @@
                         <x-dropdown-link :href="route('profile.view', ['user' => auth()->user() ])" :active="request()->fullUrl() == route('profile.view', [ 'user'=> auth()->user() ])">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('requests')" :active="request()->routeIs('requests')">
+                            {{ __('Requests') }}
+                        </x-dropdown-link>
                         <x-dropdown-link :href="route('favorites')" :active="request()->routeIs('favorites')">
                             {{ __('Favorites') }}
                         </x-dropdown-link>

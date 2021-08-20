@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 
-class IssuesModal extends Component
+class Issues extends Component
 {
     public string $user_id = '';
     public string $username = '';
@@ -24,14 +24,14 @@ class IssuesModal extends Component
 
     public function mount()
     {
-        $this->reports = Report::pluck('desc', 'id');
+        $this->reports = Report::pluck('desc', 'id');  
     }
 
     //sets the id, username and show properties to their required properties
     //handleIssue is called when a "block" or "report" event is fired from the blade/html page
     public function handleIssue($id, $fullname): void
     {
-        list($this->user_id, $this->username, $this->show) = [$id, $fullname, true];
+        list($this->user_id, $this->username, $this->show ) = [$id, $fullname, true];
     }
 
     //resets all the properties including validation/errors
@@ -49,7 +49,7 @@ class IssuesModal extends Component
     protected function rules()
     {
         $actions = ['block', 'report'];
-        $report_ids = Report::pluck('id')->map(fn ($value) => strval($value))->toArray();
+        $report_ids = Report::pluck('id')->map(fn ($value) => strval($value))->toArray();  
 
         if ($this->action !== "report") {
             return [
@@ -97,19 +97,12 @@ class IssuesModal extends Component
                 }
 
             case 'block': {
-                    //add user to blocklist
+                                       
                     auth()->user()->blocklists()->attach($this->user_id);
-
-                    // remove user from favorites, delete sent and recieved requests
                     auth()->user()->favorites()->detach($this->user_id);
-
-                    auth()->user()->sentRequests()->detach($this->user_id);
-
-                    auth()->user()->recievedRequests()->detach($this->user_id);
                     
-                    //emit the event to show toast notification
                     $this->emit('actionTakenOnUser', $this->username, $this->action);
-
+                    
                     break;
                 }
 
@@ -122,6 +115,6 @@ class IssuesModal extends Component
 
     public function render()
     {
-        return view('livewire.issues-modal');
+        return view('livewire.popups.issues');
     }
 }

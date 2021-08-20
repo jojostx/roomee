@@ -7,10 +7,10 @@
 
     <div>
         @livewire('issues-modal')
+        @livewire('popups.delete-request')
 
         @livewire('dashboard')
 
         <x-livewire.toast-notif></x-livewire.toast-notif>
-
     </div>
 </x-app-layout>
