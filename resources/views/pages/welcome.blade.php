@@ -8,15 +8,14 @@
             <div class="relative z-20 flex flex-col items-center justify-center w-11/12 h-full pt-0 lg:w-10/12 lg:flex-row lg:items-center lg:justify-between lg:pt-0 ">
                 <div class="flex-shrink-0 max-w-lg text-center text-gray-200 lg:text-left lg:mb-8 ">
                     <div>
-                        <h1 class="px-2 mb-6 text-4xl font-bold lg:px-0 lg:text-5xl">Finding A Roommate Has Never Been
+                        <h1 class="px-2 mb-6 text-4xl font-bold lg:px-0 lg:text-5xl">Finding A Roommate Just Got
                             Easier
                         </h1>
                         <h2 class="mb-6 text-lg font-semibold text-gray-300 sm:text-2xl">Searching for a good roommate
                             is
                             like looking
-                            for a soulmate, very few people do find them. Roomee helps you find the perfect roommate
-                            based
-                            on your preferences.
+                            for a soulmate, not many people find them. 
+                            Roomee helps you find the best roommate for you.
                         </h2>
                     </div>
                     <x-ctaButton href="#howItWorks" class="font-bold text-gray-100 bg-blue-500 hover:text-gray-100 hover:bg-blue-600">
@@ -26,6 +25,7 @@
                         GET STARTED
                     </x-ctaButton>
                 </div>
+                <!-- Roomee helps you find the perfect roommate based on your preferences. -->
                 
             </div>
 

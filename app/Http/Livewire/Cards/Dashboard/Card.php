@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Cards\Dashboard;
 use App\Events\RoommateRequestUpdated;
 use Livewire\Component;
 use App\Http\Livewire\Traits\Favoriting;
-use Illuminate\Support\Facades\DB;
+use App\Notifications\RoommateRequestRecieved;
 
 class Card extends Component
 {
@@ -17,6 +17,8 @@ class Card extends Component
 
     protected function getListeners()
     {
+        $id = auth()->id();
+
         return [
             'refreshChildren:' . $this->user->id => '$refresh',
         ];
@@ -29,21 +31,23 @@ class Card extends Component
 
     public function sendRequest()
     {
-        auth()->user()->sentRequests()->attach($this->user->id);
+        auth()->user()->sendRoommateRequest($this->user);
 
         $this->emit('actionTakenOnUser', $this->user->fullname, 'request');
         
-        RoommateRequestUpdated::dispatch(auth()->id(), $this->user->id);      
-    }
-
-    public function getIsBlockerProperty()
-    {
-        return $this->user->blocklists->contains(auth()->user());
+        RoommateRequestUpdated::dispatch(auth()->id(), $this->user->id, 'pending');  
+        
+        $this->user->notify(new RoommateRequestRecieved(auth()->user()));
     }
 
     public function showDeleteRequestPopup()
     {
         $this->emit('showDeleteRequestPopup', $this->user->id, $this->user->fullname);
+    }
+
+    public function getIsBlockerProperty()
+    {
+        return $this->user->blocklists->contains(auth()->user());
     }
 
     public function render()

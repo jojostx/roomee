@@ -16,7 +16,7 @@ class CreateTownsTable extends Migration
         Schema::create('towns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('school_id')->constrained()->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->index();
             $table->timestamps();
         });
     }

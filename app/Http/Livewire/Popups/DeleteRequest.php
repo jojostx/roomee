@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Popups;
 
+use App\Events\RoommateRequestUpdated;
 use Livewire\Component;
 
 class DeleteRequest extends Component
@@ -27,7 +28,9 @@ class DeleteRequest extends Component
     public function deleteRequest()
     {
         if ((int) auth()->id() !== (int) $this->user_id) {
-            auth()->user()->sentRequests()->detach($this->user_id);
+            auth()->user()->deleteRoommateRequests($this->user_id);
+
+            RoommateRequestUpdated::dispatch(auth()->id(), $this->user_id, 'deleted'); 
             
             $this->emit("refreshChildren:{$this->user_id}");
 

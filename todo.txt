@@ -87,3 +87,31 @@ the blocker's profile card
     composer install
     npm install 
     npm run build
+
+
+//consideraton
+utilizing redis
+utilizing amazon s3 for image upload
+utilizing livewire file upload
+
+//tasks 
+(development)
+collect and organize CSV files for regenerating courses, universities and location data.
+generate similarity matrix for courses and cache using redis (in user similarity service class).
+implement retrieval of similarity score from redis db.
+implement account verification using email.
+implement Oauth signup/login using socialite.
+implement notifications functionality.
+implement the recieving of websocket event.
+implement accepting and declining of roommate request.
+implement guards on which users can recieve/send roommate request from each other.
+implement sending of email upon sending/accepting a request.
+implement the user account and notification settings.
+implement showing of contact info (facebook, phone number and email) upon accepting a request.
+add contact field to sign up or update profile form.
+implement loading states for all pages
+implement infinite scrolling for dashboard page
+implement pagination for all other pages
+
+(testing)
+write tests for all the above functionalities  

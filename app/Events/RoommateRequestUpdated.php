@@ -15,16 +15,18 @@ class RoommateRequestUpdated implements ShouldBroadcast
 
     public $requester_id;
     public $requestedUser_id;
+    public $status;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($requester_id, $requestedUser_id)
+    public function __construct($requester_id, $requestedUser_id, string $status)
     {
         $this->requester_id = $requester_id;
         $this->requestedUser_id = $requestedUser_id;
+        $this->status = $status;
     }
 
     /**

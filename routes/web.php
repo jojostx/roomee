@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\BraintreePaymentController;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UpdateProfileController;
 use App\Http\Livewire\Blocklist;
 use App\Http\Livewire\Favorites;
+use App\Http\Livewire\Notifications;
 use App\Http\Livewire\Requests;
 use App\Http\Livewire\UpdateProfile;
 use App\Http\Livewire\ViewProfile;
@@ -22,6 +24,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+// remove when done
+Route::get('/braintree', [BraintreePaymentController::class, 'index'])->name('braintree');
+Route::post('/braintree/payment', [BraintreePaymentController::class, 'processPayment'])->name('braintree.payment');
+
 
 Route::get('/test', [UpdateProfileController::class, 'index'])->name('test');
 
@@ -47,6 +55,7 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(functi
     Route::get('/blocklist', Blocklist::class)->name('blocklist');
     Route::get('/favorites', Favorites::class)->name('favorites');
     Route::get('/requests', Requests::class)->name('requests');
+    Route::get('/notifications', Notifications::class)->name('notifications');
 });
 
 require __DIR__ . '/auth.php';

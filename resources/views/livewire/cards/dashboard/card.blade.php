@@ -46,7 +46,7 @@
 
         <div class="text-xs text-gray-600">
             @foreach ($user->towns->take(3) as $town)
-            <span class="bg-gray-100 rounded-md mr-0.5 py-0.5 px-2 text-gray-500">{{ ucfirst($town['name']) }}</span>
+            <span class="bg-gray-100 rounded-md mr-0.5 py-0.5 px-2 text-gray-600">{{ ucfirst($town['name']) }}</span>
             @endforeach
         </div>
     </div>
@@ -69,7 +69,7 @@
                 Unfavorite
             </x-button-sec>
             @else
-            <x-button-primary aria-label="add to favorites" title="add to favorites"  wire:click="favorite()" class="mr-1.5">
+            <x-button-primary aria-label="add to favorites" title="add to favorites" wire:click="favorite()" class="mr-1.5">
                 <x-slot name="svgPath">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                 </x-slot>
@@ -84,6 +84,13 @@
                 </x-slot>
                 Requested
             </x-button-sec>
+            @elseif (auth()->user()->recievedRequests->contains($user))
+            <x-button-primary wire:click="">
+                <x-slot name="svgPath">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </x-slot>
+                View request
+            </x-button-primary>
             @else
             <x-button-primary wire:click="sendRequest()" aria-label="send request" title="send request">
                 <x-slot name="svgPath">

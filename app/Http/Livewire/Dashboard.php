@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -17,19 +19,27 @@ class Dashboard extends Component
 
         return [
             'actionTakenOnUser' => 'resetUsers',
-            "echo-private:request.{$id},RoommateRequestUpdated" => "showRequestToastNotification"
+            "echo-private:request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent"
         ];
     }
 
     public function mount()
     {
+        // dd(DB::table('users')->where('id', 2)->select('firstname', 'lastname')->get()->first());
+
         $authUser = auth()->user();
+
         $this->blockers = $authUser->blockers;
+
         $this->blocklist =  $authUser->blocklists()->pluck('blockee_id');
+
         $this->users = User::gender($authUser->gender)
-            ->school($authUser->school_id)->excludeUser($authUser->id)->whereIntegerNotInRaw('id', $this->blocklist)
-            ->with('course')
+            ->school($authUser->school_id)
+            ->excludeUser($authUser->id)
+            ->whereIntegerNotInRaw('id', $this->blocklist)
+            ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name', 'towns:id,name'])
             ->get()->sortByDesc('similarity_score');
+
     }
 
     //polling function that polls the database for updates to the users blocking the auth user
@@ -48,9 +58,22 @@ class Dashboard extends Component
         }
     }
 
-    public function showRequestToastNotification($data)
+    public function showRecievedRequestToastNotification($name)
     {
-        dd($data);
+        $this->emit('actionTakenOnUser', $name, 'request.Recieved');
+    }
+
+    public function handleRoommateRequestUpdatedEvent($data)
+    {
+        $user = User::find($data['requester_id']);
+
+        $this->emit('refreshChildren:' . $user->id);
+
+        if ($data['status'] == 'deleted') {
+            return ;
+        }
+
+        $this->showRecievedRequestToastNotification($user->fullname);
     }
 
     public function resetUsers($username, $action)

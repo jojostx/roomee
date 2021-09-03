@@ -89,6 +89,7 @@ class UpdateProfile extends Component
     public function getCourses(): Collection
     {
         $school = auth()->user()->school;
+        
         if ($school) {
             return $school->courses;
         }
@@ -98,17 +99,17 @@ class UpdateProfile extends Component
 
     public function getDislikes(): array
     {
-        return Dislike::orderBy('name')->get()->toArray();
+        return Dislike::select('id', 'name')->orderBy('name')->get()->toArray();
     }
 
     public function getHobbies(): array
     {
-        return Hobby::orderBy('name')->get()->toArray();
+        return Hobby::select('id', 'name')->orderBy('name')->get()->toArray();
     }
 
     public function getSchools(): Collection
     {
-        return School::orderBy('name')->get();
+        return School::select('id', 'name')->orderBy('name')->get();
     }
 
     public function getUserData(string $tableName): array

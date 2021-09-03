@@ -5,8 +5,10 @@ namespace App\Models;
 use App\Http\ModelSimilarity\UserSimilarity;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 
@@ -217,6 +219,7 @@ class User extends Authenticatable
     public function getSimilarityScoreAttribute()
     {
         return (new UserSimilarity())->calculateUserSimilarityScore($this);
+        // return 10;
     }
 
     public function getAvatarPathAttribute()
@@ -228,4 +231,5 @@ class User extends Authenticatable
     {
         return Storage::disk('cover_photos')->url($this->id.'\\'.$this->cover_photo);
     }
+
 }

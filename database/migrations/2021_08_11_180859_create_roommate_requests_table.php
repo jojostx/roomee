@@ -14,11 +14,10 @@ class CreateRoommateRequestsTable extends Migration
     public function up()
     {
         Schema::create('roommate_requests', function (Blueprint $table) {
-            $table->id();
+            $table->string('id')->primary();
             $table->foreignId('requester_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('requestee_id')->constrained('users')->onDelete('cascade');
-            $table->string('status')->default('pending');
-            $table->boolean('seen')->default(false);
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }
