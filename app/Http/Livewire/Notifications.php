@@ -15,9 +15,9 @@ class Notifications extends Component
     {
         $this->notifications = auth()->user()->notifications()->select('id', 'type', 'data', 'read_at', 'created_at')->get();
 
-        $this->requestAcceptedNotifications = $this->notifications->where('type', 'App\Notifications\RoommateRequestAccepted')->all();
+        $this->requestAcceptedNotifications = $this->notifications->where('type', 'App\Notifications\RoommateRequestAccepted')->unique('data')->values()->all();
 
-        $this->requestRecievedNotifications = $this->notifications->where('type', 'App\Notifications\RoommateRequestRecieved')->all();
+        $this->requestRecievedNotifications = $this->notifications->where('type', 'App\Notifications\RoommateRequestRecieved')->unique('data')->values()->all();
 
         $this->markAsRead();
     }

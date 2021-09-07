@@ -1,6 +1,6 @@
 <div id="toast" class="fixed top-0 left-0 z-50 items-center justify-center w-full h-full @if($show) flex @else hidden @endif">
     @if ($show)
-    <div class="absolute top-0 z-10 w-full h-full bg-gray-900 opacity-40" wire:click="reset_"></div>
+    <div class="absolute top-0 z-10 w-full h-full bg-gray-900 backdrop opacity-40" wire:click="reset_"></div>
     <div class="z-20 w-64 overflow-hidden bg-white rounded-md lg:w-72">
         @if ($action === 'block')
         <div class="px-4 py-2 text-base">

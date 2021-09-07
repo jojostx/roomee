@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Http\ModelSimilarity\UserSimilarity;
+use App\Models\Traits\Requestable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable, Requestable;
 
     /**
      * The default values of attributes.
@@ -101,6 +100,7 @@ class User extends Authenticatable
     public function recievedRequests()
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'requestee_id', 'requester_id')
+        ->as('roommateRequests')
         ->withTimestamps()->orderByPivot('created_at', 'desc');
     }
     
@@ -110,6 +110,7 @@ class User extends Authenticatable
     public function sentRequests()
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'requester_id', 'requestee_id')
+        ->as('roommateRequests')
         ->withTimestamps()->orderByPivot('created_at', 'desc');
     }
   
@@ -208,6 +209,8 @@ class User extends Authenticatable
     {
        return $query->whereKeyNot($user_id);
     }
+
+
 
     //ACCESSORS
 

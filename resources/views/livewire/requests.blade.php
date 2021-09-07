@@ -39,4 +39,5 @@
     @endif
     
     <x-livewire.toast-notif></x-livewire.toast-notif>
+    @livewire('popups.delete-request')
 </div>

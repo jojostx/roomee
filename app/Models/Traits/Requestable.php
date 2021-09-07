@@ -30,7 +30,7 @@ trait Requestable
         return true;
     }
 
-    public function sendRoommateRequest(Model $recipient)
+    public function sendRoommateRequest(Model $recipient): bool
     {
         if (!$this->canSendRoommateRequest($recipient)) {
             return false;
@@ -38,7 +38,7 @@ trait Requestable
 
         $id = RoommateRequest::getCompositeKey($this, $recipient);
         
-        DB::table('roommate_requests')->insert([
+        $inserted = DB::table('roommate_requests')->insert([
             'id' => $id,
             'status' => Status::PENDING,
             'requester_id' => $this->getKey(),
@@ -47,16 +47,20 @@ trait Requestable
             'updated_at' => now(),
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey()); 
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), 'sent'); 
 
-        return true;
+        return $inserted;
     }
     
-    public function deleteRoommateRequest(Model $recipient)
+    public function deleteRoommateRequest(Model $recipient): bool
     {
         $id = RoommateRequest::getCompositeKey($this, $recipient);
 
-        DB::table('users')->where('id', $id)->delete();
+        $deleted = (bool) DB::table('roommate_requests')->delete($id);
+
+        RoommateRequestUpdated::dispatch(auth()->id(), $this->user_id, 'deleted'); 
+
+        return $deleted;
     }
     
     public function findRoommateRequest(Model $recipient): Builder
@@ -80,7 +84,7 @@ trait Requestable
             'status' => Status::ACCEPTED,
         ]);
 
-        Event::dispatch('roommateRequestUpdated', [$this, $recipient]);
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), 'accepted'); 
       
         return (bool) $updated;
     }
@@ -91,7 +95,7 @@ trait Requestable
             'status' => Status::DENIED,
         ]);
 
-        Event::dispatch('roommateRequestUpdated', [$this, $recipient]);
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), 'denied'); 
       
         return (bool) $updated;
     }

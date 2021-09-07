@@ -24,8 +24,8 @@
     </div>
 
     <div class="flex items-center justify-between pb-1">
-        <p class="text-xs font-medium text-gray-600">{{ $user->pivot->created_at->diffForHumans() }}</p>
-        @if ($request->status == 1)
+        <p class="text-xs font-medium text-gray-600">{{ $request->created_at->diffForHumans() }}</p>
+        @if (auth()->user()->isRoommateWith($user))
         <x-button-primary class="ml-auto">
             <x-slot name="svgPath">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -33,7 +33,7 @@
             Contact
         </x-button-primary>
         @else
-        <button wire:click="$emit('showDeleteRequestPopup', {{ $user->id }}, '{{ $user->fullname }}')" class="inline-flex items-center px-1 py-1 text-xs font-semibold text-blue-100 transition duration-150 ease-in-out bg-blue-600 rounded-md xs:px-2 sm:text-sm hover:text-blue-100 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 focus:text-blue-100">
+        <button wire:click="showDeleteRequestPopup()" class="inline-flex items-center px-1 py-1 text-xs font-semibold text-blue-100 transition duration-150 ease-in-out bg-blue-600 rounded-md xs:px-2 sm:text-sm hover:text-blue-100 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 focus:text-blue-100">
             <span class="pr-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-3 h-3 sm:w-4 sm:h-4" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7a4 4 0 11-8 0 4 4 0 018 0zM9 14a6 6 0 00-6 6v1h12v-1a6 6 0 00-6-6zM21 12h-6" />

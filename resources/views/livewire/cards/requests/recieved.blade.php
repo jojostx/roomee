@@ -26,8 +26,16 @@
     </div>
 
     <div class="flex items-center justify-between pt-2 pb-1">
-        <p class="text-sm font-semibold text-gray-600">{{ $user->pivot->created_at->diffForHumans() }}</p>
-        <x-button-primary wire:click="" class="ml-auto mr-1.5">
+        <p class="text-sm font-semibold text-gray-600">{{ $request->created_at->diffForHumans() }}</p>
+        @if (auth()->user()->isRoommateWith($user))
+        <x-button-primary class="ml-auto">
+            <x-slot name="svgPath">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </x-slot>
+            Contact
+        </x-button-primary>
+        @else
+        <x-button-primary wire:click="acceptRequest" class="ml-auto mr-1.5">
             <x-slot name="svgPath">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </x-slot>
@@ -39,6 +47,7 @@
             </x-slot>
             Decline
         </x-button-primary>
+        @endif
     </div>
 </div>
 @endisset

@@ -17,8 +17,6 @@ class Card extends Component
 
     protected function getListeners()
     {
-        $id = auth()->id();
-
         return [
             'refreshChildren:' . $this->user->id => '$refresh',
         ];
@@ -34,15 +32,13 @@ class Card extends Component
         auth()->user()->sendRoommateRequest($this->user);
 
         $this->emit('actionTakenOnUser', $this->user->fullname, 'request');
-        
-        RoommateRequestUpdated::dispatch(auth()->id(), $this->user->id, 'pending');  
-        
+                
         $this->user->notify(new RoommateRequestRecieved(auth()->user()));
     }
 
     public function showDeleteRequestPopup()
     {
-        $this->emit('showDeleteRequestPopup', $this->user->id, $this->user->fullname);
+        $this->emit('showDeleteRequestPopup', $this->user->id);
     }
 
     public function getIsBlockerProperty()

@@ -1,42 +1,4 @@
 <div class="w-11/12 m-auto mt-6 mb-6" wire:poll>
-    <style>
-        .tab-container {
-            display: flex;
-            flex-wrap: wrap;
-            height: auto;
-            width: 100%;
-        }
-
-        .tab-container label {
-            order: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem 0.5rem;
-            cursor: pointer;
-        }
-
-        .content-container {
-            order: 9;
-            flex-grow: 1;
-            width: 100%;
-            height: 100%;
-            display: none;
-            background: #fff;
-        }
-
-        .tab-container input[type="radio"] {
-            display: none;
-        }
-
-        .tab-container input[type="radio"]:checked+label {
-            color: rgba(29, 78, 216);
-        }
-
-        .tab-container input[type="radio"]:checked+label+.content-container {
-            display: initial;
-        }
-    </style>
     <div class="flex justify-center w-full md:mt-12">
         <div class="w-full max-w-3xl pb-6">
             <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 border rounded-lg sm:flex-row">
@@ -72,66 +34,41 @@
                         </div>
                         <div class="flex justify-center w-full">
                             @can('update', $user)
-                            <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                                    </svg>
-                                </span>
-                                Edit Profile
-                            </a>
-                            @elsecannot('update', $user)
-                            @can('block', $user)
-                            @can('interactWith', $user)
-                            @if (auth()->user()->favorites->contains($user))
-                            <button wire:click="unfavorite()" style="border-width: 1.5px;" 
-                            class="flex items-center justify-start px-2 py-1 mr-2 text-xs text-blue-100 transition duration-150 ease-in-out bg-blue-600 rounded-md sm:text-sm hover:text-blue-100 hover:bg-blue-800 focus:bg-blue-800 focus:outline-none focus:text-blue-100">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                    </svg>
-                                </span>
-                                Unfavorite
-                            </button>
-                            @else
-                            <button wire:click="favorite()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 mr-2 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                                    </svg>
-                                </span>
-                                Favorite
-                            </button>
-                            @endif
-                            <button style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                                    </svg>
-                                </span>
-                                Send Request
-                            </button>
-                            @endcan
-                            @cannot('interactWith', $user)
-                            <button wire:click="block()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                    </svg>
-                                </span>
-                                Block
-                            </button>
-                            @endcannot
-                            @elsecannot('block', $user)
-                            <button wire:click="unblock()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                </span>
-                                Unblock
-                            </button>
-                            @endcan
+                                <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                    <span class="pr-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                        </svg>
+                                    </span>
+                                    Edit Profile
+                                </a> 
+                            @elsecannot('update', $user)  
+                                @can('block', $user)                
+                                    @can('interactWith', $user)
+                                        @include('components.livewire.includes.favoriting-sxn')
+                                        @include('components.livewire.includes.requesting-sxn')
+                                    @endcan
+
+                                    @cannot('interactWith', $user)
+                                        <button wire:click="block()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                            <span class="pr-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                                </svg>
+                                            </span>
+                                                Block
+                                        </button>
+                                    @endcannot
+                                @elsecannot('block', $user)
+                                    <button wire:click="unblock()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-blue-700 transition duration-150 ease-in-out border border-blue-700 rounded-md sm:text-sm hover:text-blue-700 hover:bg-blue-200 focus:outline-none focus:bg-blue-200 focus:text-blue-700">
+                                        <span class="pr-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </span>
+                                        Unblock
+                                    </button>
+                                @endcan
                             @endcan
                         </div>
                     </div>
@@ -318,5 +255,6 @@
         &copy; 2020 Roomee. All rights reserved
     </p>
 
+    @livewire('popups.delete-request')
     <x-livewire.toast-notif></x-livewire.toast-notif>
 </div>

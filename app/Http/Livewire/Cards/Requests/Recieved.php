@@ -10,26 +10,29 @@ use Livewire\Component;
 class Recieved extends Component
 {
     public $user;
+    public $request;
 
-    public function mount(User $user)
+    public function showDeleteRequestPopup()
+    {
+        $this->emit('showDeleteRequestPopup', $this->user->id);
+    }
+
+    public function mount()
     {     
-        $this->user = $user;        
+        $this->request = $this->user->getRoommateRequest(auth()->user());        
     }
 
     public function acceptRequest()
     {        
-        $wasUpdated = DB::table('roommate_requests')->where([
-            'requester_id'=> $this->user->id,
-            'requestee_id'=> auth()->id(),
-        ])->update([
-            'status' => 'accepted', 
-            'seen' => true
-        ]);
+        $wasUpdated = auth()->user()->acceptRoommateRequest($this->user);
         
-        if (boolval($wasUpdated)) {
+        if ($wasUpdated) {
             $this->user->notify(new RoommateRequestAccepted(auth()->user()));   
         }
 
+        $this->request->refresh();
+      
+        //remember to emit websocket event!!!
         //remember to emit toast notification event!!!
     }
     

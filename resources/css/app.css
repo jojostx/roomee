@@ -138,3 +138,40 @@ option {
 #cover_inp {
     min-height: 200px;
 }
+
+.tab-container {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    width: 100%;
+}
+
+.tab-container label {
+    order: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    cursor: pointer;
+}
+
+.content-container {
+    order: 9;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background: #fff;
+}
+
+.tab-container input[type="radio"] {
+    display: none;
+}
+
+.tab-container input[type="radio"]:checked+label {
+    color: rgba(29, 78, 216);
+}
+
+.tab-container input[type="radio"]:checked+label+.content-container {
+    display: initial;
+}

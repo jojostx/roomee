@@ -5,10 +5,10 @@
         </div>
     </x-page-header>
 
-    <div class="flex flex-wrap w-full px-3 mx-auto my-2 max-w-7xl sm:px-6 lg:px-8">
+    <div class="flex flex-wrap justify-center w-full px-3 mx-auto my-2 max-w-7xl sm:px-6 lg:px-8">
         @if ($notifications->isEmpty())
             <div class="p-3 my-4 bg-white border rounded-md shadow justify-self-center">
-                Your have not sent any roommate requests.
+                Your have no new notifications.
             </div> 
         @else
             @foreach ($requestAcceptedNotifications as $notification)
@@ -20,6 +20,5 @@
             @endforeach
         @endif       
     </div>
-
     <x-livewire.toast-notif></x-livewire.toast-notif>
 </div>

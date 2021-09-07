@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Http\Livewire\Traits\Favoriting;
 use App\Models\User;
+use App\Notifications\RoommateRequestRecieved;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
@@ -31,6 +32,20 @@ class ViewProfile extends Component
         auth()->user()->blocklists()->detach($this->user->id);
         $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
 
+    }
+
+    public function sendRequest()
+    {
+        auth()->user()->sendRoommateRequest($this->user);
+
+        $this->emit('actionTakenOnUser', $this->user->fullname, 'request');
+                
+        $this->user->notify(new RoommateRequestRecieved(auth()->user()));
+    }
+
+    public function showDeleteRequestPopup()
+    {
+        $this->emit('showDeleteRequestPopup', $this->user->id);
     }
 
     public function render()

@@ -2,8 +2,7 @@
 
 namespace App\Http\Livewire\Cards\Requests;
 
-use App\Models\RoommateRequest;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use Livewire\Component;
 
 class Sent extends Component
@@ -13,12 +12,12 @@ class Sent extends Component
 
     public function mount()
     {
-        $this->request = RoommateRequest::firstWhere(
-            [
-                'requester_id' => auth()->id(),
-                'requestee_id' => $this->user->id,
-            ]
-        );
+        $this->request = auth()->user()->getRoommateRequest($this->user);
+    }
+
+    public function showDeleteRequestPopup()
+    {
+        $this->emit('showDeleteRequestPopup', $this->user->id);
     }
 
     public function render()
@@ -26,3 +25,5 @@ class Sent extends Component
         return view('livewire.cards.requests.sent');
     }
 }
+
+
