@@ -26,9 +26,6 @@ class DeleteRequest extends Component
 
     public function deleteRequest()
     {
-        if ((int) auth()->id() === (int) $this->user->id) {
-            return;
-        }
 
         auth()->user()->deleteRoommateRequest($this->user);
             

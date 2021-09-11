@@ -38,6 +38,10 @@ class UserSimilarity
 
         $user_1_dislikes = $user_1->dislikes->pluck('name')->toArray();
         $user_2_dislikes = $user_2->dislikes->pluck('name')->toArray();
+        
+        // $user_1_dislikes = $user_1->dislikes()->select('name')->get()->pluck('name')->toArray();
+        // $user_2_dislikes = $user_2->dislikes()->select('name')->get()->pluck('name')->toArray();
+
         $user_1_hobbies = $user_1->hobbies->pluck('name')->toArray();
         $user_2_hobbies = $user_2->hobbies->pluck('name')->toArray();
         $user_1_property_locations = $user_1->towns->pluck('name')->toArray();

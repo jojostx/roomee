@@ -25,7 +25,6 @@
                 new
                 {{ Str::plural('notification', $this->unseenNotifs) }}
             </p>
-
             <a href="{{ route('notifications') }}" class="text-blue-600 hover:text-blue-800">view all</a>
         </div>
         @endif

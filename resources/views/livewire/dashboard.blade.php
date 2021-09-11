@@ -4,7 +4,7 @@
         @empty
         <div class="flex items-center justify-center my-2 col-span-full">
                 <div class="p-3 my-4 bg-white border rounded-md shadow">
-                        Your have not added any favorites.
+                     There is currently no user that matches your preferences.
                 </div>
         </div>
         @endforelse

@@ -22,16 +22,18 @@ class ViewProfile extends Component
 
     public function block()
     {
-        $this->authorize('block', $this->user);
-        auth()->user()->blocklists()->attach($this->user->id);
+        auth()->user()->block($this->user);
+        
         $this->emit('actionTakenOnUser', $this->user->fullname, 'block');
     }
 
     public function unblock()
     {
-        auth()->user()->blocklists()->detach($this->user->id);
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
+        $blocked = auth()->user()->unblock($this->user);
 
+        if ($blocked) {
+            $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
+        }
     }
 
     public function sendRequest()

@@ -2,8 +2,6 @@
 
 namespace App\Http\Livewire\Cards\Blocklist;
 
-use App\Models\Blocklist;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Card extends Component
@@ -15,15 +13,9 @@ class Card extends Component
 
     public function unblockUser()
     {
-        if ($this->user->id === auth()->user()->id) {
-            return;
-        }
-        
-        $blocklist_id = Blocklist::where('blocker_id', auth()->user()->id)->where('blockee_id', $this->user->id)->pluck('id');
+        $blocked = auth()->user()->unblock($this->user);
 
-        $id = DB::table('blocklists')->delete($blocklist_id);
-
-        if ($id) {
+        if ($blocked) {
             $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
         }
 

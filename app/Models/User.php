@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\ModelSimilarity\UserSimilarity;
+use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, Requestable;
+    use HasFactory, HasApiTokens, Notifiable, Requestable, Blockable;
 
     /**
      * The default values of attributes.
@@ -86,7 +87,7 @@ class User extends Authenticatable
     }
     
     /**
-     * The users who are currently blocking this users.
+     * The users who are currently blocking this user.
      */
     public function blockers()
     {
@@ -199,15 +200,15 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to only include users that attend the same school.
+     * Scope a query to only exclude the currently authenticated user.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  Int  $school_id
+     * @param  Int  $user_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeExcludeUser($query, $user_id)
     {
-       return $query->whereKeyNot($user_id);
+       return $query->where('id', '<>', $user_id);
     }
 
 

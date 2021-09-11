@@ -86,7 +86,7 @@
                 </div>
             </div>
             @can('interactWith', $user)
-            <div class="w-full border border-gray-300 rounded-md tab-container justify-evenly">
+            <div id="profile__box" class="w-full border border-gray-300 rounded-md tab-container justify-evenly">
                 <input type="radio" name="tab" id="tab1" checked="checked">
                 <x-livewire.tab-label for="tab1">
                     <x-slot name="svg_path">

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Report;
+use App\Models\User;
 use App\Rules\IsBlockable;
 use App\Rules\IsReportable;
 use Illuminate\Support\Collection;
@@ -20,7 +21,7 @@ class IssuesModal extends Component
     //[block|report]
     public string $action = '';
 
-    protected $listeners = ['blockOrReport' => 'handleIssue'];
+    protected $listeners = ['blockOrReport' => 'assignVariables'];
 
     public function mount()
     {
@@ -29,7 +30,7 @@ class IssuesModal extends Component
 
     //sets the id, username and show properties to their required properties
     //handleIssue is called when a "block" or "report" event is fired from the blade/html page
-    public function handleIssue($id, $fullname): void
+    public function assignVariables($id, $fullname): void
     {
         list($this->user_id, $this->username, $this->show) = [$id, $fullname, true];
     }
@@ -81,7 +82,7 @@ class IssuesModal extends Component
         switch ($this->action) {
             case 'report': {
                     DB::table('report_user')->insert(array_map(function ($item) {
-                        $timestamp = now()->toDateTimeString();
+                        $timestamp = now();
 
                         return [
                             'reporter_id' => auth()->user()->id,
@@ -97,17 +98,18 @@ class IssuesModal extends Component
                 }
 
             case 'block': {
-                    //add user to blocklist
-                    auth()->user()->blocklists()->attach($this->user_id);
+                    $user = User::find($this->user_id);
+
+                    //block user 
+                    auth()->user()->block($user);
+
+                    // delete any existing roommate request
+                    auth()->user()->deleteRoommateRequest($user);
 
                     // remove user from favorites, delete sent and recieved requests
                     auth()->user()->favorites()->detach($this->user_id);
-
-                    auth()->user()->sentRequests()->detach($this->user_id);
-
-                    auth()->user()->recievedRequests()->detach($this->user_id);
                     
-                    //emit the event to show toast notification
+                    //emit the event to show toast notification //js notif.
                     $this->emit('actionTakenOnUser', $this->username, $this->action);
 
                     break;

@@ -1,4 +1,4 @@
-<div class="w-full max-w-md px-3 py-3 my-2 bg-white border rounded-md lg:w-96">
+<div class="w-full max-w-md px-3 py-3 mb-1 bg-white border rounded-md lg:w-96">
     <div class="px-2 py-1 mb-2 text-xs text-blue-700 bg-blue-100 rounded-md md:text-sm">
         <p><span class="font-medium"> {{$user->fullname}} </span>Sent You a Roommate request</p>
     </div>

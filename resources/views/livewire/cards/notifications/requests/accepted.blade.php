@@ -1,7 +1,10 @@
-<div class="w-full max-w-sm px-4 pt-4 pb-2 mx-1 my-1 bg-white border rounded-md sm:w-80 lg:w-96">
-    <div class="flex">
+<div class="w-full max-w-md px-3 py-3 mb-1 bg-white border rounded-md lg:w-96">
+    <div class="px-2 py-1 mb-2 text-xs text-blue-700 bg-blue-100 rounded-md md:text-sm">
+        <p><span class="font-medium"> {{$user->fullname}} </span>Accepted Your Roommate request</p>
+    </div>
+    <div class="flex items-center">
         <div class="flex flex-col items-center justify-center mr-3 lg:mr-5">
-            <div class="block w-12 h-12 mb-2 overflow-hidden bg-blue-200 rounded-full sm:w-14 sm:h-14 lg:w-16 lg:h-16">
+            <div class="block w-12 h-12 overflow-hidden bg-blue-200 rounded-full sm:w-14 sm:h-14 lg:w-16 lg:h-16">
                 @if ($user->avatar)
                 <img id="avatar_img" src="{{ $user->avatarPath }}" alt="avatar image" width="100%" height="100%" class="h-full">
                 @else
@@ -12,24 +15,16 @@
             </div>
         </div>
         <div>
-            <p class="text-sm">
-                <span class="font-semibold">{{ $user->fullname }}</span> accepted your roommate request
-                <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" class="inline-block px-1 text-xs font-medium text-blue-600 transition duration-150 ease-in-out sm:text-sm hover:text-blue-800 focus:outline-none focus:text-blue-600">
-                    View Profile
-                </a>
+            <p class="text-sm leading-none">
+                <span class="font-semibold">{{ $user->fullname }}</span>
+                <span class="px-1 text-gray-700">.</span>
+                <span class="inline-block text-xs">
+                    {{ $notification->created_at->diffForHumans(null, null, true) }}
+                </span>
             </p>
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" class="text-xs font-medium text-blue-600 transition duration-150 ease-in-out sm:text-sm hover:text-blue-800 focus:outline-none focus:text-blue-600">
+                View Profile
+            </a>
         </div>
-    </div>
-
-    <div class="flex items-center justify-between pb-1">
-        <div class="text-xs font-medium text-gray-600">
-            {{ $notification->created_at->diffForHumans() }}
-        </div>
-        <x-button-primary wire:click="" class="ml-auto mr-1.5">
-            <x-slot name="svgPath">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </x-slot>
-            Contact
-        </x-button-primary>
     </div>
 </div>

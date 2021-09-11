@@ -82,13 +82,6 @@ class RoommateRequest extends Model
 
         return $query->where('id', $id);
 
-        // return $query->where(function ($queryIn) use ($sender, $recipient) {
-        //     $queryIn->where(function ($q) use ($sender, $recipient) {
-        //         $q->whereSender($sender)->whereRecipient($recipient);
-        //     })->orWhere(function ($q) use ($sender, $recipient) {
-        //         $q->whereSender($recipient)->whereRecipient($sender);
-        //     });
-        // });
     }
 
     static function getCompositeKey(User $sender, User $recipient): string

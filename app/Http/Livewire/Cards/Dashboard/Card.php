@@ -6,6 +6,7 @@ use App\Events\RoommateRequestUpdated;
 use Livewire\Component;
 use App\Http\Livewire\Traits\Favoriting;
 use App\Notifications\RoommateRequestRecieved;
+use Illuminate\Support\Facades\DB;
 
 class Card extends Component
 {
@@ -43,7 +44,12 @@ class Card extends Component
 
     public function getIsBlockerProperty()
     {
-        return $this->user->blocklists->contains(auth()->user());
+        $blocking = DB::table('blocklists')->where([
+            'blocker_id' => $this->user->id,
+            'blockee_id' => auth()->id()
+        ])->get();
+
+        return $blocking->count();
     }
 
     public function render()

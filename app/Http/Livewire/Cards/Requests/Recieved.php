@@ -2,15 +2,20 @@
 
 namespace App\Http\Livewire\Cards\Requests;
 
-use App\Models\User;
 use App\Notifications\RoommateRequestAccepted;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Recieved extends Component
 {
     public $user;
     public $request;
+
+    protected function getListeners()
+    {
+        return [
+            'refreshChildren:' . $this->user->id => '$refresh',
+        ];
+    }
 
     public function showDeleteRequestPopup()
     {
@@ -31,9 +36,17 @@ class Recieved extends Component
         }
 
         $this->request->refresh();
-      
-        //remember to emit websocket event!!!
-        //remember to emit toast notification event!!!
+    }
+    
+    public function declineRequest()
+    {        
+        $wasUpdated = auth()->user()->denyRoommateRequest($this->user);
+        
+        if ($wasUpdated) {
+            $this->user->notify(new RoommateRequestAccepted(auth()->user()));   
+        }
+
+        $this->request->refresh();
     }
     
     public function render()

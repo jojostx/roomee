@@ -8,23 +8,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class RoommateRequestUpdated implements ShouldBroadcast
+class UserBlocked implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $requester_id;
-    public $requestedUser_id;
+    public $blocker_id;
+    public $blockedUser_id;
     public $status;
-    
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($requester_id, $requestedUser_id, string $status)
+    public function __construct($blocker_id, $blockedUser_id, string $status)
     {
-        $this->requester_id = $requester_id;
-        $this->requestedUser_id = $requestedUser_id;
+        $this->blocker_id = $blocker_id;
+        $this->blockedUser_id = $blockedUser_id;
         $this->status = $status;
     }
 
@@ -35,6 +35,6 @@ class RoommateRequestUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("request.{$this->requestedUser_id}");
+        return new PrivateChannel("blocking.{$this->blockedUser_id}");
     }
 }

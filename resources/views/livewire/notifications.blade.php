@@ -5,9 +5,9 @@
         </div>
     </x-page-header>
 
-    <div class="flex flex-wrap justify-center w-full px-3 mx-auto my-2 max-w-7xl sm:px-6 lg:px-8">
+    <div class="flex flex-wrap {{ ($notifications->isEmpty())?'justify-center':'justify-start' }} gap-2 w-full px-3 mx-auto my-2 max-w-7xl sm:px-6 lg:px-8">
         @if ($notifications->isEmpty())
-            <div class="p-3 my-4 bg-white border rounded-md shadow justify-self-center">
+            <div class="p-3 my-4 bg-white border rounded-md shadow">
                 Your have no new notifications.
             </div> 
         @else

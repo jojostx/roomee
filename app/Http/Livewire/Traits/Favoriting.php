@@ -6,6 +6,10 @@ trait Favoriting
 {
     public function favorite()
     {
+        if (auth()->user()->isBlockedBy($this->user)) {
+            return;
+        }
+        
         auth()->user()->favorites()->attach($this->user->id);
         $this->emit('actionTakenOnUser', $this->user->fullname, 'favorite');
     }

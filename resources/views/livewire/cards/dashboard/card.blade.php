@@ -70,7 +70,7 @@
 <div class="col-span-1 pb-2 bg-white border rounded-md sm:max-h-40">
     <div class="flex px-4 pt-4 mb-2">
         <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
-            <div class="block mb-2 overflow-hidden bg-blue-200 rounded-full w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20">
+            <div class="block w-16 h-16 mb-2 overflow-hidden bg-blue-200 rounded-full md:w-18 md:h-18">
                 @if ($user->avatar)
                 <img id="avatar_img" src="{{ $user->avatarPath }}" alt="avatar image" width="100%" height="100%" class="h-full">
                 @else
@@ -81,13 +81,13 @@
             </div>
         </div>
         <div class="mb-1">
-            <div class="mb-1 font-semibold sm:mb-2">
+            <div class="font-semibold ">
                 <p class="text-sm leading-tight sm:text-base">{{ $user->fullname }}</p>
                 <div class="text-xs font-normal text-gray-600 xs:text-sm">
                     <p>{{ $user->course->name }}</p>
                 </div>
             </div>
-            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" style="border-width: 1.5px;" class="px-2 py-1 text-xs sm:text-sm text-blue-800 border-1.5 border-blue-700 rounded-md transition duration-150 ease-in-out hover:text-blue-600 hover:bg-blue-100 focus:outline-none focus:bg-blue-100 focus:text-blue-600">
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" class="text-xs font-medium text-blue-600 transition duration-150 ease-in-out sm:text-sm hover:text-blue-800 focus:outline-none focus:text-blue-600">
                 View Profile
             </a>
         </div>

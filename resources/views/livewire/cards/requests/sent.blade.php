@@ -1,5 +1,5 @@
 @isset($user)
-<div class="w-full max-w-md px-4 pt-4 pb-2 my-2 bg-white border rounded-md lg:w-96">
+<div id="requests-sent__{{ $user->id }}" class="w-full max-w-md px-4 pt-4 pb-2 my-2 bg-white border rounded-md lg:w-96">
     <div class="flex mb-2">
         <div class="flex flex-col items-center justify-center mr-3 lg:mr-5">
             <div class="block w-12 h-12 mb-2 overflow-hidden bg-blue-200 rounded-full sm:w-14 sm:h-14 lg:w-16 lg:h-16">

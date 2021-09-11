@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class NotificationBell extends Component
@@ -23,7 +24,13 @@ class NotificationBell extends Component
 
     public function getUnseenNotifsProperty()
     {
-        return auth()->user()->unreadNotifications->count();
+        $unseenNotifs = DB::table('notifications')->where([
+            'notifiable_id' => auth()->id(),
+            'notifiable_type' => 'App\Models\User',
+            'read_at' => null
+        ])->count();
+
+        return $unseenNotifs;
     }
 
     public function showNotifs($data)

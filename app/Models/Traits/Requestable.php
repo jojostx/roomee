@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Event;
-
 
 trait Requestable
 {
@@ -58,7 +56,7 @@ trait Requestable
 
         $deleted = (bool) DB::table('roommate_requests')->delete($id);
 
-        RoommateRequestUpdated::dispatch(auth()->id(), $this->user_id, 'deleted'); 
+        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, 'deleted'); 
 
         return $deleted;
     }
@@ -105,15 +103,15 @@ trait Requestable
         return $this->findRoommateRequest($recipient)->where('status', Status::ACCEPTED)->exists();
     }
     
-    public function hasBlocked(Model $recipient): bool
-    {
-        return $this->blocklists->contains($recipient);
-    }
+    // public function hasBlocked(Model $recipient): bool
+    // {
+    //     return $this->blocklists->contains($recipient);
+    // }
 
-    public function isBlockedBy(Model $recipient): bool
-    {
-        return $recipient->hasBlocked($this);
-    }
+    // public function isBlockedBy(Model $recipient): bool
+    // {
+    //     return $recipient->hasBlocked($this);
+    // }
    
     public function getRoommateRequest(Model $recipient)
     {

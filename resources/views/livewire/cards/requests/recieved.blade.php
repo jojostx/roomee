@@ -1,5 +1,5 @@
 @isset($user)
-<div class="w-full max-w-md px-4 pt-4 pb-2 my-2 bg-white border rounded-md lg:w-96">
+<div id="requests-recieved__{{ $user->id }}" class="w-full max-w-md px-4 pt-4 pb-2 my-2 bg-white border rounded-md lg:w-96">
     <div class="flex pb-2 mb-1 border-b">
         <div class="flex flex-col items-center justify-center mt-1 mr-3 lg:mr-5">
             <div class="block w-12 h-12 mb-2 overflow-hidden bg-blue-200 rounded-full sm:w-14 sm:h-14 lg:w-16 lg:h-16">
@@ -41,7 +41,7 @@
             </x-slot>
             Accept
         </x-button-primary>
-        <x-button-primary wire:click="">
+        <x-button-primary wire:click="declineRequest">
             <x-slot name="svgPath">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </x-slot>
