@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Cards\Requests;
 
-use App\Models\User;
 use Livewire\Component;
 
 class Sent extends Component
@@ -12,7 +11,7 @@ class Sent extends Component
 
     public function mount()
     {
-        $this->request = auth()->user()->getRoommateRequest($this->user);
+        $this->user = $this->request->recipient;
     }
 
     public function showDeleteRequestPopup()

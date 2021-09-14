@@ -4,7 +4,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\RoommateRequest;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Requests extends Component
@@ -23,17 +25,49 @@ class Requests extends Component
             "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
         ];
     }
-    
+
     public function mount()
     {
-        $this->recievedRequests = auth()->user()->recievedRequests;
-        $this->sentRequests = auth()->user()->sentRequests;
+        //remember to paginate
+        if ($this->currentPage === "sent") {
+            $this->sentRequests = $this->fetchRequestsByType('sent');
+
+            $this->recievedRequests = collect([]);
+        } else {
+            $this->recievedRequests = $this->fetchRequestsByType('recieved');
+
+            $this->sentRequests = collect([]);
+        }
+    }
+
+    public function fetchRequestsByType(string $requestType): Collection
+    {
+        $requestTypes = collect(['sent', 'recieved']);
+
+        if (!$requestTypes->contains($requestType)) {
+            return collect([]);
+        }
+
+        if ($requestType === 'sent') {
+            return RoommateRequest::where('requester_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
+            // return RoommateRequest::where('requester_id',  auth()->id())->with('recipient:id,firstname,lastname,avatar,course_id')->orderBy('created_at', 'desc')->get();
+        } else {
+            return RoommateRequest::Where('requestee_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
+            // return RoommateRequest::Where('requestee_id',  auth()->id())->with('sender:id,firstname,lastname,avatar,course_id')->orderBy('created_at', 'desc')->get();
+        }
     }
 
     public function switchPage()
     {
-        $this->currentPage = ($this->currentPage === "sent") ? "recieved" : "sent";
-        $this->mount();
+        if ($this->currentPage === "sent") {
+            $this->recievedRequests = $this->fetchRequestsByType('recieved');
+            $this->currentPage = "recieved";
+            return;
+        }
+
+        $this->sentRequests = $this->fetchRequestsByType('sent');
+        $this->currentPage = "sent";
+        return;
     }
 
     public function handleRoommateRequestUpdatedEvent($data)
@@ -73,7 +107,7 @@ class Requests extends Component
     {
         $this->emit('actionTakenOnUser', $name, $status);
     }
-    
+
     public function render()
     {
         return view('livewire.requests')->layout('layouts.guest');

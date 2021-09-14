@@ -24,7 +24,7 @@ class Recieved extends Component
 
     public function mount()
     {     
-        $this->request = $this->user->getRoommateRequest(auth()->user());        
+        $this->user = $this->request->sender;        
     }
 
     public function acceptRequest()

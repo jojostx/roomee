@@ -222,8 +222,8 @@ class User extends Authenticatable
 
     public function getSimilarityScoreAttribute()
     {
-        return (new UserSimilarity())->calculateUserSimilarityScore($this);
-        // return 10;
+        // return (new UserSimilarity())->calculateUserSimilarityScore($this);
+        return 10;
     }
 
     public function getAvatarPathAttribute()

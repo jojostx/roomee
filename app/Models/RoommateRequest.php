@@ -90,6 +90,5 @@ class RoommateRequest extends Model
         $max = max([$sender->getKey(), $recipient->getKey()]);
 
         return "$min"."_"."$max";
-    }
-
+    }               
 }

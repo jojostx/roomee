@@ -115,3 +115,15 @@ implement pagination for all other pages
 
 (testing)
 write tests for all the above functionalities  
+
+
+$requestTypes = collect(['sent' => 'requester_id', 'recieved' => 'requestee_id']);
+
+        $columnName = $requestTypes->get($requestType);
+
+        if (!$columnName) {
+            return collect([]);
+        }
+
+        // auth()->user()->${}
+        return RoommateRequest::where($columnName, auth()->id())->orderBy('created_at', 'desc')->get();
