@@ -17,7 +17,7 @@
             <div class="text-xs font-normal leading-none text-gray-600 xs:text-sm">
                 <p>{{ $user->course->name }}</p>
             </div>
-            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" class="inline-block text-xs font-medium text-blue-600 transition duration-150 ease-in-out sm:text-sm hover:text-blue-800 focus:outline-none focus:text-blue-600">
+            <a href="{{ route('profile.view', [ 'user'=> $user ] ) }}" class="text-xs font-medium text-blue-600 transition duration-150 ease-in-out sm:text-sm hover:text-blue-800 focus:outline-none focus:text-blue-600">
                 View Profile
             </a>
         </div>

@@ -14,6 +14,13 @@ class Sent extends Component
         $this->user = $this->request->recipient;
     }
 
+    protected function getListeners()
+    {
+        return [
+            'refreshChildren:' . $this->user->id => '$refresh',
+        ];
+    }
+
     public function showDeleteRequestPopup()
     {
         $this->emit('showDeleteRequestPopup', $this->user->id);

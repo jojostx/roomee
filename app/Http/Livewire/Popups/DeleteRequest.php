@@ -30,6 +30,7 @@ class DeleteRequest extends Component
         auth()->user()->deleteRoommateRequest($this->user);
             
         $this->emit("refreshChildren:{$this->user->id}");
+        $this->emit("resetUsers", $this->user->id);
 
         $this->reset_();
     }

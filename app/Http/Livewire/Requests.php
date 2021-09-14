@@ -11,8 +11,8 @@ use Livewire\Component;
 
 class Requests extends Component
 {
-    public $recievedRequests;
-    public $sentRequests;
+    public Collection $recievedRequests;
+    public Collection $sentRequests;
     public $currentPage = 'recieved';
 
     protected function getListeners()
@@ -20,7 +20,7 @@ class Requests extends Component
         $id = auth()->id();
 
         return [
-            'actionTakenOnUser' => 'resetUsers',
+            'resetUsers' => 'resetUsersWhenSentRequestIsDeleted',
             "echo-private:request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
             "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
         ];
@@ -70,20 +70,16 @@ class Requests extends Component
         return;
     }
 
+    public function resetUsersWhenSentRequestIsDeleted($id)
+    {
+        $this->recievedRequests = $this->recievedRequests->except([$id]);
+    }
+
     public function handleRoommateRequestUpdatedEvent($data)
     {
         $user = User::find($data['requester_id']);
 
         $this->emit('refreshChildren:' . $user->id);
-
-        if ($data['status'] == 'deleted') {
-            return;
-        }
-
-        if ($data['status'] == 'accepted') {
-
-            return;
-        }
 
         switch ($data['status']) {
             case 'deleted':
@@ -101,6 +97,7 @@ class Requests extends Component
     public function handleUserblockedEvent($data)
     {
         $this->emit('refreshChildren:' . $data['blocker_id']);
+        $this->emit('resetUsers', $data['blocker_id']);
     }
 
     public function showRecievedRequestToastNotification($name, string $status = 'request.Recieved')
