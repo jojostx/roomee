@@ -50,7 +50,7 @@
                 </svg>
             </button>
         </div>
-        <div x-show="open" @click.away="open = false" class="absolute right-0 flex flex-col items-center justify-between w-48 pb-4 overflow-hidden bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
+        <div x-show="open" @click.outside="open = false" class="absolute right-0 flex flex-col items-center justify-between w-48 pb-4 overflow-hidden bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
             <div class="flex flex-col justify-between flex-shrink-0 w-full">
                 <x-dark-dropdown-link :href="route('home')" :active="request()->routeIs('home')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">

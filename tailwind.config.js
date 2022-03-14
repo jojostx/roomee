@@ -1,7 +1,7 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
-    purge: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
+    content: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
 
     theme: {
         backgroundPosition: {
@@ -52,12 +52,6 @@ module.exports = {
             // => @media (min-width: 1536px) { ... }
         },
 
-    },
-
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-        },
     },
 
     plugins: [require('@tailwindcss/forms')],

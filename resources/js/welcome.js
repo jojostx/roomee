@@ -1,4 +1,8 @@
-require('alpinejs');
+import Alpine from 'alpinejs'
+
+window.Alpine = Alpine;
+
+Alpine.start();
 
 import Flickity from 'flickity'
 
