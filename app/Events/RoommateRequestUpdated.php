@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Enums\RoommateRequestStatus;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -12,16 +13,27 @@ class RoommateRequestUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var string|int
+     */
     public $requester_id;
+       
+    /**
+     * @var string|int
+     */
     public $requestedUser_id;
+       
+    /**
+     * @var App\Enums\RoommateRequestStatus
+     */
     public $status;
-    
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($requester_id, $requestedUser_id, string $status)
+    public function __construct($requester_id, $requestedUser_id, RoommateRequestStatus $status)
     {
         $this->requester_id = $requester_id;
         $this->requestedUser_id = $requestedUser_id;

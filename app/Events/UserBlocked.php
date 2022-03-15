@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Enums\BlockStatus;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -12,8 +13,19 @@ class UserBlocked implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var string|int
+     */
     public $blocker_id;
+       
+    /**
+     * @var string|int
+     */
     public $blockedUser_id;
+       
+    /**
+     * @var App\Enums\BlockStatus
+     */
     public $status;
 
     /**
@@ -21,7 +33,7 @@ class UserBlocked implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($blocker_id, $blockedUser_id, string $status)
+    public function __construct($blocker_id, $blockedUser_id, BlockStatus $status)
     {
         $this->blocker_id = $blocker_id;
         $this->blockedUser_id = $blockedUser_id;

@@ -1,12 +1,11 @@
-<?php 
+<?php
 
 namespace App\Enums;
 
-class RoommateRequestStatus
+enum RoommateRequestStatus: int
 {
-    const PENDING = 0;
-    const ACCEPTED = 1;
-    const DENIED = 2;
+    case PENDING = 0;
+    case ACCEPTED = 1;
+    case DENIED = 2;
+    case DELETED = 3;
 }
-
-

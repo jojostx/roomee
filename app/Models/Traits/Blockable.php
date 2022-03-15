@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Enums\BlockStatus;
 use App\Events\UserBlocked;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ trait Blockable
         ]);
 
         if ($blocked) {
-            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), 'blocked');     
+            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), BlockStatus::BLOCKED);     
         }
 
         return $blocked;
@@ -40,10 +41,10 @@ trait Blockable
         ])->delete();
             
         if ($unblocked) {
-            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), 'unblocked');            
+            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), BlockStatus::UNBLOCKED);            
         }
 
-        return  $unblocked;
+        return $unblocked;
     }
 
     public function hasBlocked(Model $recipient): bool

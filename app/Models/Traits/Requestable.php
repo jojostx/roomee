@@ -20,7 +20,7 @@ trait Requestable
 
         if ($roommateRequest = $this->getRoommateRequest($recipient)) {
             // if previous friendship was Denied then let the user send fr
-            if ($roommateRequest->status != Status::DENIED) {
+            if ($roommateRequest->status != Status::DENIED->value) {
                 return false;
             }
         }
@@ -38,14 +38,14 @@ trait Requestable
         
         $inserted = DB::table('roommate_requests')->insert([
             'id' => $id,
-            'status' => Status::PENDING,
+            'status' => Status::PENDING->value,
             'requester_id' => $this->getKey(),
             'requestee_id' => $recipient->getKey(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), 'sent'); 
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::PENDING); 
 
         return $inserted;
     }
@@ -56,7 +56,7 @@ trait Requestable
 
         $deleted = (bool) DB::table('roommate_requests')->delete($id);
 
-        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, 'deleted'); 
+        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED); 
 
         return $deleted;
     }
@@ -68,21 +68,21 @@ trait Requestable
 
     public function hasRoommateRequestFrom(Model $recipient): bool
     {
-        return $this->findRoommateRequest($recipient)->whereSender($recipient)->whereStatus(Status::PENDING)->exists();
+        return $this->findRoommateRequest($recipient)->whereSender($recipient)->whereStatus(Status::PENDING->value)->exists();
     }
 
     public function hasSentRoommateRequestTo(Model $recipient): bool
     {
-        return RoommateRequest::whereRecipient($recipient)->whereSender($this)->whereStatus(Status::PENDING)->exists();
+        return RoommateRequest::whereRecipient($recipient)->whereSender($this)->whereStatus(Status::PENDING->value)->exists();
     }
 
     public function acceptRoommateRequest(Model $recipient): bool
     {
         $updated = $this->findRoommateRequest($recipient)->whereRecipient($this)->update([
-            'status' => Status::ACCEPTED,
+            'status' => Status::ACCEPTED->value,
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), 'accepted'); 
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::ACCEPTED); 
       
         return (bool) $updated;
     }
@@ -90,29 +90,19 @@ trait Requestable
     public function denyRoommateRequest(Model $recipient): bool
     {
         $updated = $this->findRoommateRequest($recipient)->whereRecipient($this)->update([
-            'status' => Status::DENIED,
+            'status' => Status::DENIED->value,
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), 'denied'); 
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::DENIED); 
       
         return (bool) $updated;
     }
 
     public function isRoommateWith(Model $recipient): bool
     {
-        return $this->findRoommateRequest($recipient)->where('status', Status::ACCEPTED)->exists();
+        return $this->findRoommateRequest($recipient)->where('status', Status::ACCEPTED->value)->exists();
     }
-    
-    // public function hasBlocked(Model $recipient): bool
-    // {
-    //     return $this->blocklists->contains($recipient);
-    // }
-
-    // public function isBlockedBy(Model $recipient): bool
-    // {
-    //     return $recipient->hasBlocked($this);
-    // }
-   
+       
     public function getRoommateRequest(Model $recipient)
     {
         return $this->findRoommateRequest($recipient)->first();
@@ -125,16 +115,16 @@ trait Requestable
 
     public function getPendingRoommateRequests(): Collection
     {
-        return $this->findRoommateRequests(Status::PENDING)->get();
+        return $this->findRoommateRequests(Status::PENDING->value)->get();
     }
 
     public function getAcceptedRoommateRequests(): Collection
     {
-        return $this->findRoommateRequests(Status::ACCEPTED)->get();
+        return $this->findRoommateRequests(Status::ACCEPTED->value)->get();
     }
 
     public function getDeniedRoommateRequests(): Collection
     {
-        return $this->findRoommateRequests(Status::DENIED)->get();
+        return $this->findRoommateRequests(Status::DENIED->value)->get();
     }
 }
