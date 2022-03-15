@@ -1,5 +1,4 @@
 const mix = require('laravel-mix');
-const webpack = require('webpack')
 
 /*
  |--------------------------------------------------------------------------
@@ -12,31 +11,11 @@ const webpack = require('webpack')
  |
  */
 
-mix.webpackConfig({
-    plugins: [
-        new webpack.DefinePlugin({
-            __VUE_OPTIONS_API__: true,
-            __VUE_PROD_DEVTOOLS__: true,
-        }),
-    ],
-})
 
-
-mix
-    .js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        require('postcss-import'),
-        require('tailwindcss'),
-        require('autoprefixer'),
-    ]).vue().version();
-
-mix.postCss('resources/css/welcome.css', 'public/css', [
+mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'public/css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
 ]).version();
 
-
 mix.js('resources/js/welcome.js', 'public/js').version();
-mix.js('resources/js/tabula_rasa.js', 'public/js').version();
-mix.js('resources/js/workers/backend/worker.js', 'public/js/workers').version();
