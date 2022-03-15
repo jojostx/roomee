@@ -8,13 +8,11 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "ext-ds": "^1.3",
-        "beyondcode/laravel-websockets": "^1.0",
-        "braintree/braintree_php": "^6.4",
+        "php": "^8.0",
+        "beyondcode/laravel-websockets": "^1.11.0",
         "crazybooot/base64-validation": "^1.0",
-        "doctrine/dbal": "2.10",
-        "doctrine/migrations": "^3.1",
+        "doctrine/dbal": "^3.3.0",
+        "doctrine/migrations": "^3.4",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -23,7 +21,6 @@
         "laravel/sanctum": "^2.9",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.4",
-        "php-ds/php-ds": "^1.3",
         "pusher/pusher-php-server": "^5.0"
     },
     "require-dev": {

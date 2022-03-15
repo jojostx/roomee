@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\BraintreePaymentController;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\DashboardController;
@@ -24,12 +23,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
-// remove when done
-Route::get('/braintree', [BraintreePaymentController::class, 'index'])->name('braintree');
-Route::post('/braintree/payment', [BraintreePaymentController::class, 'processPayment'])->name('braintree.payment');
-
 
 Route::get('/test', [UpdateProfileController::class, 'index'])->name('test');
 
