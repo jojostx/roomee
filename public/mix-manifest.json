@@ -1,8 +1,5 @@
 {
-    "/js/app.js": "/js/app.js?id=a4e2019d34c37645150b",
-    "/js/welcome.js": "/js/welcome.js?id=8212961329890a353c2f",
-    "/js/tabula_rasa.js": "/js/tabula_rasa.js?id=2567c86ff94128396749",
-    "/js/workers/worker.js": "/js/workers/worker.js?id=ae0e4dedfb78c50f6797",
-    "/css/welcome.css": "/css/welcome.css?id=100525ab44b1a45ee466",
-    "/css/app.css": "/css/app.css?id=d923ad45866e8c0f3e44"
+    "/js/app.js": "/js/app.js?id=46794da28b26c338abc7d318af61bc55",
+    "/js/welcome.js": "/js/welcome.js?id=dba1626d5a2950dcfc514bf0a283d44e",
+    "/css/app.css": "/css/app.css?id=bd637885eccbe165b366e78f7c87fb7c"
 }
