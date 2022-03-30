@@ -1,6 +1,16 @@
-require('alpinejs');
-
 import Flickity from 'flickity'
+
+import Alpine from 'alpinejs';
+import focus from '@alpinejs/focus'
+import intersect from '@alpinejs/intersect'
+
+window.Alpine = Alpine;
+
+Alpine.plugin(intersect)
+Alpine.plugin(focus)
+
+Alpine.start();
+
 
 if (document.querySelector('.testimonial-carousel')) {
 

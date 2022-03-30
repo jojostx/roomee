@@ -23,7 +23,7 @@
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-95" 
             x-ref="{{ $name }}_dropdown"
-            @click.away="show = false" 
+            @click.outside="show = false" 
             aria-expanded="false">
             @foreach ($options as $option)
             <li tabindex="0" x-on:keydown.arrow-up.prevent="previousUp($event)"

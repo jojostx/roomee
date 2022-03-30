@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="flex flex-row items-center justify-between w-11/12 h-full">
+<nav class="flex flex-row items-center justify-between w-11/12 h-full">
 
     <!-- Application Logo -->
     <div class="flex items-center flex-shrink-0">
@@ -44,16 +44,16 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div class="relative z-40 block sm:hidden">
+    <div x-data="{ open: false }" class="relative z-40 block sm:hidden">
         <div class="flex items-center sm:hidden">
-            <button @click="open = !open" class="inline-flex items-center justify-center p-2 text-gray-200 transition duration-150 ease-in-out rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+            <button x-on:click="open = !open" class="inline-flex items-center justify-center p-2 text-gray-200 transition duration-150 ease-in-out rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
                 <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-        <div x-show="open" @click.away="open = false" style="display: none;" class="absolute right-0 flex flex-col items-center justify-between w-48 pb-4 overflow-hidden bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
+        <div x-show="open" x-trap.noscroll="open" x-on:click.outside="open = false" x-cloak class="absolute right-0 flex flex-col items-center justify-between pb-4 overflow-hidden w-[320px] bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
             <div class="flex flex-col justify-between flex-shrink-0 w-full">
                 <x-dark-dropdown-link :href="route('home')" :active="request()->routeIs('home')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">

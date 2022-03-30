@@ -18,6 +18,9 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Scripts -->
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
     <script src="{{ asset('js/tabula_rasa.js') }}" defer></script>
     @livewireStyles
 </head>

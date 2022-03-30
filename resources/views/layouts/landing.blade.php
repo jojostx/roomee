@@ -13,6 +13,10 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
+    
+    <style>
+        [x-cloak] { display: none !important; }
+    </style>
 
     <!-- Scripts -->
     <script src="{{ asset('js/welcome.js') }}" defer></script>
@@ -39,9 +43,7 @@
 
     @include('sections.footer')
 
-
-
-    <button onclick="backToTop()" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-gray-700 rounded-full shadow-lg topButton focus:outline-black focus:bg-gray-600 hover:bg-blue-600 text-gray-50 bottom-8 right-8">
+    <button onclick="backToTop()" id="topButton" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-gray-700 rounded-full shadow-lg focus:outline-black focus:bg-gray-600 hover:bg-blue-600 text-gray-50 bottom-8 right-8">
         <p class="mr-2 font-semibold">Back to top</p>
         <i class="block w-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,8 +100,7 @@
             }
         };
 
-
-        const backToTopButton = document.querySelector('.topButton');
+        const backToTopButton = document.querySelector('#topButton');
         function inViewport(elem, callback, options = {}) {
             return new IntersectionObserver(entries => {
                 entries.forEach(entry =>

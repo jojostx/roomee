@@ -2,6 +2,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'flickity.min.css';
+
 @layer utilities {
     .animate-delay-0 {
         animation-delay: 0s;
@@ -27,6 +28,15 @@
     .text-indent {
         text-indent: 10px;
     }
+}
+
+.HeroGraphic__phone {
+    @apply shadow-[0_50px_100px_-20px_rgba(50,_50,_93,_0.25),0_30px_60px_-30px_rgba(0,_0,_0,_0.3),_inset_0_-2px_6px_0_rgba(10,_37,_64,_0.35)] select-none p-2 h-[533px] w-[264px] rounded-[36px] text-base bg-[#f6f9fc];
+}
+
+.PhoneGraphic__screen {
+    @apply relative h-full rounded-[33px] bg-[#f3c5c5];
+    mask-image: radial-gradient(#fff, #000);
 }
 
 .testimonial-carousel:hover .flickity-button {

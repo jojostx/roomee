@@ -14,7 +14,7 @@
                         <h2 class="mb-6 text-lg font-semibold text-gray-300 sm:text-2xl">Searching for a good roommate
                             is
                             like looking
-                            for a soulmate, not many people find them. 
+                            for a soulmate, not many people find them.
                             Roomee helps you find the best roommate for you.
                         </h2>
                     </div>
@@ -26,7 +26,7 @@
                     </x-ctaButton>
                 </div>
                 <!-- Roomee helps you find the perfect roommate based on your preferences. -->
-                
+
             </div>
 
             <div class="absolute bottom-0 left-0 z-0 w-full text-gray-100">
@@ -39,8 +39,8 @@
     </x-slot>
 
     <!-- How it works section -->
-    <div id="howItWorks" class="relative z-20 flex flex-col items-center justify-center w-full pb-8 md:pt-16">
-        <div class="pb-12 text-xl font-bold text-center sm:pb-16 xs:text-2xl sm:text-3xl">
+    <div id="howItWorks" x-data="{ shown: false }" x-intersect.once.margin.-10px="shown = true" class="relative z-20 flex flex-col items-center justify-center w-full pb-8 md:pt-16">
+        <div x-show="shown" x-transition:enter.duration.1000ms class="pb-12 text-xl font-bold text-center sm:pb-16 xs:text-2xl sm:text-3xl">
             <div>
                 <h1 class="text-3xl font-extrabold md:text-5xl">How It Works</h1>
                 <div class="flex items-center justify-center w-full my-5 lg:my-8">
@@ -59,8 +59,9 @@
                     to be easy to use</p>
             </div>
         </div>
-        <div class="relative z-20 w-11/12 max-w-full mx-auto">
-            <div class="grid w-full grid-cols-1 pt-0 md:grid-cols-2">
+
+        <div x-show="shown" x-transition:enter.duration.1200ms class="relative z-20 w-11/12 max-w-full mx-auto">
+            <div class="grid w-full grid-cols-1 gap-6 pt-0 md:grid-cols-2">
                 <div class="flex flex-col items-center w-full md:items-end">
                     <x-steps>
                         <x-slot name="icon">
@@ -72,9 +73,7 @@
                         </x-slot>
                         <div>
                             <p class="mb-2 text-base font-bold text-blue-900 sm:text-lg">CREATE ACCOUNT</p>
-                            <p class="max-w-sm text-sm sm:text-base">Create a Roomee account. Upload a recent profile
-                                photo and display photos. Carefully fill in your preferences, educational info and
-                                budget.</p>
+                            <p class="max-w-sm text-sm sm:text-base">Create a Roomee account, complete your profile and Carefully fill in your preferences, educational info and budget.</p>
                         </div>
                     </x-steps>
                     <x-steps>
@@ -87,7 +86,7 @@
                         </x-slot>
                         <div>
                             <p class="mb-2 text-base font-bold text-red-800 sm:text-lg">SEND A REQUEST</p>
-                            <p class="max-w-sm text-sm sm:text-base">Pick a roommate that fits your preferences from
+                            <p class="max-w-sm text-sm sm:text-base">Pick a roommate of your choice from
                                 Roomee's suggested roommates page and send them a roommate request.</p>
                         </div>
                     </x-steps>
@@ -103,7 +102,7 @@
                         <div>
                             <p class="mb-2 text-base font-bold text-yellow-800 sm:text-lg">DISCUSS CONDITIONS</p>
                             <p class="max-w-sm text-sm sm:text-base">When the user accepts your roommate request, you
-                                can chat with the matched user to discuss conditions and reach an agreement.</p>
+                                can chat with them to discuss conditions and reach an agreement.</p>
                         </div>
                     </x-steps>
                     <x-steps>
@@ -134,12 +133,95 @@
                     </x-steps>
                 </div>
                 <div class="relative items-center justify-center hidden w-full h-full md:flex">
+                    <figure class="HeroGraphic__phone PhoneGraphic" aria-hidden="true">
+                        <div class="PhoneGraphic__screen">
+                            <div class="w-full h-full px-4 flex flex-col justify-center space-y-4 overflow-hidden bg-white max-w-sm rounded-lg">
+                                <div class="flex flex-col items-center">
+                                    <p class="font-semibold text-sm">CREATE ACCOUNT</p>
+                                    <p class="text-xs">Already have an account? <a href="http://roomee.test/login" class="text-blue-600 underline hover:text-blue-900">Log In</a></p>
+                                </div>
+
+                                <!-- name -->
+                                <div class="grid grid-cols-2 col-span-1 gap-2 mt-6">
+                                    <div class="flex flex-col col-span-1 form_input">
+                                        <label class="block font-medium text-sm text-gray-600">
+                                            First Name
+                                        </label>
+                                        <div class="rounded-md border shadow-sm border-gray-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                    </div>
+                                    <div class="flex flex-col col-span-1 form_input">
+                                        <label class="block font-medium text-sm text-gray-600">
+                                            Last Name
+                                        </label>
+                                        <div class="rounded-md border shadow-sm border-gray-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Email Address -->
+                                <div class="">
+                                    <label class="block font-medium text-sm text-gray-600">
+                                        Email
+                                    </label>
+                                    <div class="rounded-md border shadow-sm border-gray-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                </div>
+
+                                <!-- Password -->
+                                <div class="relative" >
+                                    <label class="block font-medium text-sm text-gray-600">
+                                        Password
+                                    </label>
+                                    <div class="rounded-md border shadow-sm border-gray-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                    <div class="absolute w-4 text-gray-600 transform md:w-5 -translate-y-7 right-4">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <g class="inline-flex">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Confirm Password -->
+                                <div class="">
+                                    <label class="block font-medium text-sm text-gray-600">
+                                        Confirm Your Password
+                                    </label>
+                                    <div class="rounded-md border shadow-sm border-gray-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                </div>
+
+                                <!-- select gender -->
+                                <fieldset class="flex flex-col order rounded-md">
+                                    <label class="mb-1 text-sm text-gray-600">Choose your Gender:</label>
+                                    <div class="flex">
+                                        <div>
+                                            <label for="male" class="mr-1 text-sm">Male</label>
+                                            <input type="radio" name="gender" id="male" value="male">
+                                        </div>
+                                        <div class="ml-6">
+                                            <label for="male" class="mr-1 text-sm">Female</label>
+                                            <input checked type="radio" name="gender" id="female" value="female">
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- submit button -->
+                                <div class="">
+                                    <div class="px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest flex items-center justify-center w-full">
+                                        Register
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </figure>
                 </div>
             </div>
         </div>
-        <div class="absolute bottom-0 left-0 z-0 w-full text-blue-400">
+
+        <!-- curvy bg -->
+        <div x-show="shown" x-transition:enter.duration.1400ms class="absolute bottom-0 left-0 z-0 w-full text-blue-100">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-                <path fill="currentColor" fill-opacity="1" d="M0,128L48,117.3C96,107,192,85,288,90.7C384,96,480,128,576,154.7C672,181,768,203,864,186.7C960,171,1056,117,1152,90.7C1248,64,1344,64,1392,64L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+                <path fill="currentColor" fill-opacity="1">
+                    <animate repeatCount="indefinite" attributeName="d" dur="20s" values="M0,64L48,80C96,96,192,128,288,149.3C384,171,480,181,576,154.7C672,128,768,64,864,42.7C960,21,1056,43,1152,74.7C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;M0,128L48,117.3C96,107,192,85,288,90.7C384,96,480,128,576,154.7C672,181,768,203,864,186.7C960,171,1056,117,1152,90.7C1248,64,1344,64,1392,64L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;                                   M0,160L48,133.3C96,107,192,53,288,53.3C384,53,480,107,576,122.7C672,139,768,117,864,90.7C960,64,1056,32,1152,26.7C1248,21,1344,43,1392,53.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z; M0,64L48,80C96,96,192,128,288,149.3C384,171,480,181,576,154.7C672,128,768,64,864,42.7C960,21,1056,43,1152,74.7C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;" />
                 </path>
             </svg>
         </div>
@@ -147,15 +229,13 @@
     <!-- End of How it Works Section -->
 
     <!-- CTA section -->
-    <div class="flex flex-col items-center justify-center w-full px-16 pt-6 pb-16 text-center bg-blue-400 md:py-16 md:pb-24 md:pt-10">
+    <div class="flex flex-col items-center justify-center w-full px-16 pt-6 pb-16 text-center bg-blue-100 md:py-16 md:pb-24 md:pt-10">
         <p class="mb-6 text-3xl font-bold text-gray-800">Ready to find the perfect roommate?</p>
         @auth
-        <x-ctaButton href=" {{ route('dashboard') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-blue-800">
-            Sign Up</x-ctaButton>
+        <x-ctaButton href=" {{ route('dashboard') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-blue-800">Sign Up</x-ctaButton>
         @endauth
         @guest
-        <x-ctaButton href=" {{ route('register') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-blue-800">
-            Sign Up</x-ctaButton>
+        <x-ctaButton href=" {{ route('register') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-blue-800">Sign Up</x-ctaButton>
         @endguest
     </div>
     <!-- End of CTA section -->
@@ -750,28 +830,5 @@
         </div>
     </section>
     <!-- End of Carousel Section -->
-
-    <!-- PWA section -->
-    <!-- <div class="relative z-20 w-full bg-gray-900 border-b border-gray-700 hero hero2-bg">
-        <div class="absolute z-0 w-full h-full blur-bg"></div>
-        <div
-            class="relative z-20 flex flex-col items-center justify-center w-4/5 pt-20 pb-12 mx-auto md:flex-row md:py-24">
-            <div class="max-w-sm mb-8 w-60 sm:w-1/2 md:w-1/3 lg:w-1/4 md:mb-0">
-                <img src="{{ asset('images/pwa.png') }}" alt="image of roomee's pwa prompt" />
-            </div>
-            <div
-                class="flex flex-col items-center justify-center w-full max-w-sm pt-2 pb-12 font-bold text-center text-gray-50 bg-gradient-to-t from-gray-900-400 via-blue-400 to-transparent md:py-0 sm:text-xl sm:text-justify md:px-4 md:mt-0 md:ml-8 md:w-80 lg:w-1/2">
-                <p class="mb-10">Roomee is a PWA (progressive web app) that can be installed to your homescreen through
-                    your browser. This way you get instant access, notifications, faster browsing with an app-like
-                    performance and lots more. it also takes considerably less storage space. </p>
-                <div class="w-full text-center md:text-left">
-                    <x-ctaButton href=" {{ route('features') }}"
-                        class="px-10 py-4 text-lg font-semibold leading-3 text-gray-100 bg-blue-500 md:text-xl hover:bg-blue-600">
-                        Learn More</x-ctaButton>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- End of PWA Section -->
 
 </x-landing-layout>
