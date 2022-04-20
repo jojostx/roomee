@@ -19,7 +19,7 @@
             </div>
 
             <!-- notification component  -->
-            <livewire:notification-bell />
+            @livewire('components.notification-bell')
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ml-6">

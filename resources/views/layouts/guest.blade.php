@@ -9,20 +9,20 @@
     <meta name="author" content="Roomee.Inc">
     <meta name="keywords" content="Roommate, Housing, University, flatmate, Joint-rental, dorm, off-campus, renting, cohabit, roomies, roomie, finder">
 
-    <title>{{ config('app.name', 'Roomee') }}</title>
+    <title>{{ $title ?? config('app.name', 'Roomee') }}</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
-    <!-- Scripts -->
     <style>
         [x-cloak] { display: none !important; }
     </style>
-    <script src="{{ asset('js/tabula_rasa.js') }}" defer></script>
     @livewireStyles
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/tabula_rasa.js') }}" defer></script>
 </head>
 
 <body class="relative min-h-screen font-sans antialiased text-gray-900">
@@ -31,14 +31,15 @@
         @include('sections.navbar-alt')
     </header>
     @endauth
-
+    
     <main>
         {{ $slot }}
     </main>
-
+    
     @include('sections.footer-alt')
+    
     @livewireScripts
-    @stack('scripts')
 </body>
 
+@stack('scripts')
 </html>

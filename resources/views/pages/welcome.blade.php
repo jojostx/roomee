@@ -1,6 +1,11 @@
 <x-landing-layout>
 
     <!-- Hero Section -->
+    <x-slot name="title">
+        Roomee
+    </x-slot>
+
+    <!-- Hero Section -->
     <x-slot name="banner">
         <div class="relative flex items-center justify-center min-h-screen bg-gray-900 mi hero hero-bg">
             <div class="absolute w-full h-full blur-bg"></div>

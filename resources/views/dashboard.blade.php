@@ -6,10 +6,10 @@
     </x-slot>
 
     <div>
-        @livewire('issues-modal')
-        @livewire('popups.delete-request')
+        @livewire('components.popups.report-or-block-popup')
+        @livewire('components.popups.delete-request-popup')
 
-        @livewire('dashboard')
+        @livewire('pages.dashboard')
 
         <x-livewire.toast-notif></x-livewire.toast-notif>
     </div>

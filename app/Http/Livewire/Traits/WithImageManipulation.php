@@ -7,33 +7,50 @@ use Illuminate\Support\Str;
 
 trait WithImageManipulation
 {
-    private function storeImage($base64String, $folderName = 'avatars'): string
+    protected $file;
+
+    private function storeImage($base64String, $folderName = 'avatars'): string|bool
     {
         if (!$base64String) {
-            return '';
+            return false;
         }
+
         $image = $this->createTemporaryFile($base64String);
+
+        if (!$image) {
+            return false;
+        }
+        
         $imageName = $this->randName($image);
+
         try {
             $image->move(storage_path("app\\" . $folderName), $imageName);
             return $imageName;
         } catch (\Exception $th) {
-            return '';
+            return false;
         }
     }
 
-    protected function createTemporaryFile(string $data): UploadedFile
+    protected function createTemporaryFile(string $data): UploadedFile|bool
     {
-        $this->file = tmpfile();
-        fwrite(
-            $this->file,
+        $file = tmpfile();
+
+        $written = fwrite(
+            $file,
             base64_decode(Str::after($data, 'base64,'))
         );
-        return new UploadedFile(stream_get_meta_data($this->file)['uri'], Str::random(6), null, null, true);
+
+        if (!$written) {
+            return false;    
+        }
+
+        return new UploadedFile(stream_get_meta_data($file)['uri'], Str::random(6), null, null, true);
     }
 
     public function randName(UploadedFile $file): string
     {
+        \dd($file);
+        
         return time() . '-' . Str::random(8) . '.' . $file->guessExtension();
     }
 }
