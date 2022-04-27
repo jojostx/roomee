@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use Livewire\TemporaryUploadedFile;
 
 trait WithImageManipulation
 {
@@ -41,6 +42,8 @@ trait WithImageManipulation
         );
 
         if (!$written) {
+            fclose($file);
+            
             return false;    
         }
 
@@ -48,9 +51,7 @@ trait WithImageManipulation
     }
 
     public function randName(UploadedFile $file): string
-    {
-        \dd($file);
-        
+    {        
         return time() . '-' . Str::random(8) . '.' . $file->guessExtension();
     }
 }

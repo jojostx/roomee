@@ -13,10 +13,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Livewire\WithFileUploads;
 
 class UpdateProfile extends Component
 {
-    use WithImageManipulation;
+    use WithImageManipulation, WithFileUploads;
 
     public $avatar;
     public $cover_photo;
@@ -43,7 +44,7 @@ class UpdateProfile extends Component
     protected $listeners = ['avatarUpload' => 'handleAvatarUpload', 'coverUpload' => 'handleCoverUpload'];
 
     public function mount()
-    {
+    {        
         $this->avatar = auth()->user()->avatar ?? '';
         $this->cover_photo = auth()->user()->cover_photo ?? '';
 
@@ -120,6 +121,7 @@ class UpdateProfile extends Component
             $options = array_map(function ($item) {
                 return strval($item);
             }, $options);
+
             return $options;
         }
 
@@ -157,7 +159,7 @@ class UpdateProfile extends Component
     {
         //upgrade validation rules for schools, course etc
         $validationRules = [
-            'selectedSchool' => ['required',],
+            'selectedSchool' => ['required', 'exists:schools,id'],
             'selectedCourse' => ['required',],
             'selectedCourseLevel' => ['required', 'in_array:course_levels.*'],
             'selectedHobbies' => ['required', 'array', 'min:1', new ModelsExist(Hobby::class)],
@@ -174,15 +176,15 @@ class UpdateProfile extends Component
 
         $cover_photo_validation_rules = [
             'cover_photo' => [
-                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:50,5098',
-                'base64dimensions:min_height=100,max_height=450,ratio=1.5'
+                'required', 'image', 'mimes:jpeg,png,jpg', 'between:50,5098',
+                'dimensions:min_height=100,max_height=450,ratio=1.5'
             ],
         ];
 
         $avatar_validation_rules = [
             'avatar' => [
-                'required', 'base64image', 'base64mimes:jpeg,png,jpg', 'base64between:10,5098',
-                'base64dimensions:min_height=100,max_height=450'
+                'required', 'image', 'mimes:jpeg,png,jpg', 'between:10,5098',
+                'dimensions:min_height=100,max_height=450'
             ],
         ];
 
@@ -226,6 +228,7 @@ class UpdateProfile extends Component
 
     public function updated($propertyName)
     {
+        dd($propertyName);
         $this->validateOnly($propertyName);
     }
 
@@ -236,7 +239,7 @@ class UpdateProfile extends Component
         }
 
         $this->validate();
-
+        
         $user = auth()->user();
 
         $userCover = $user->cover_photo;

@@ -2,6 +2,26 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import 'flickity.min.css';
+@layer components {
+    .dropdown_ul {
+        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-24 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-gray-50;
+    }
+    .select_dropdown {
+        @apply w-full text-gray-500 border-gray-300 rounded-md shadow-sm;
+    }
+    .select_dropdown:focus {
+        @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
+    }
+    .label {
+        @apply block mb-2 font-medium text-gray-700;
+    }
+    button[disabled] {
+        @apply bg-gray-500 cursor-default;
+    }
+    button[disabled]:hover {
+        @apply bg-gray-500;
+    }
+}
 
 @layer utilities {
     .animate-delay-0 {

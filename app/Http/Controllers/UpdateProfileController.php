@@ -26,7 +26,5 @@ class UpdateProfileController extends Controller
             if ($hobby->id > 4) $hobby->checked = true;
         });
         $hobbies = $hobbies->except([1]);;
-
-       
     }
 }

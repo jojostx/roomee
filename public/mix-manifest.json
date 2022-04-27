@@ -1,5 +1,7 @@
 {
-    "/js/app.js": "/js/app.js?id=956de84e823a6eaaf355c7ec4035c706",
+    "/js/app.js": "/js/app.js?id=29e20c2ec1c7de366f977ab1e5e48032",
     "/js/welcome.js": "/js/welcome.js?id=350f4f4ee657cd7a61848515d89136bf",
-    "/css/app.css": "/css/app.css?id=a5a4acc85e25aef0dfb7d0fd0fa1c329"
+    "/js/tabula_rasa.js": "/js/tabula_rasa.js?id=2ba9a6e66a0df76ce14e15bd5dc7c886",
+    "/css/welcome.css": "/css/welcome.css?id=11fe3d68d0f7424b2d96517f0a5bce68",
+    "/css/app.css": "/css/app.css?id=fd6c339f4b314ca163f44c87e7588cd6"
 }
