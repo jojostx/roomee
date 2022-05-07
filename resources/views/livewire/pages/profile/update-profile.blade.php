@@ -146,8 +146,8 @@
                     <x-livewire.error-text>{{ $message }}</x-livewire.error-text>
                     @enderror
                 </div>
-                <x-livewire.select2 :isRequired="true" :name="$hobby = 'hobby'" :options="$hobbies" :selectedOptions="$selectedHobbies" :label="$label = 'Hobbies & Interests'">Hobbies</x-livewire.select2>
-                <x-livewire.select2 :isRequired="true" :name="$dislike = 'dislike'" :options="$dislikes" :selectedOptions="$selectedDislikes" :label="$label = 'Dislikes'">Dislikes</x-livewire.select2>
+                <x-livewire.multiselect :isRequired="true" :name="$hobby = 'hobby'" :options="$hobbies" :selectedOptions="$selectedHobbies" :label="$label = 'Hobbies & Interests'">Hobbies</x-livewire.multiselect>
+                <x-livewire.multiselect :isRequired="true" :name="$dislike = 'dislike'" :options="$dislikes" :selectedOptions="$selectedDislikes" :label="$label = 'Dislikes'">Dislikes</x-livewire.multiselect>
             </div>
 
             <div class="grid pt-6 gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2 field_set" data-link="li-edu">
@@ -213,7 +213,7 @@
                     <h1 class="text-xl font-semibold">Apartment Information</h1>
                 </div>
 
-                <x-livewire.select2 :name="$town = 'town'" :isRequired="true" :options="$towns" :selectedOptions="$selectedTowns" :label="$label = 'Preferred property locations'">Towns</x-livewire.select2>
+                <x-livewire.multiselect :name="$town = 'town'" :isRequired="true" :options="$towns" :selectedOptions="$selectedTowns" :label="$label = 'Preferred property locations'">Towns</x-livewire.multiselect>
 
                 <div class="col-span-1 mb-2">
                     <label for="rooms" class="label">Number of Rooms

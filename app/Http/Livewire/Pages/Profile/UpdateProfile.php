@@ -228,7 +228,6 @@ class UpdateProfile extends Component
 
     public function updated($propertyName)
     {
-        dd($propertyName);
         $this->validateOnly($propertyName);
     }
 
