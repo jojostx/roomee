@@ -27,19 +27,19 @@ class UpdateProfile extends Component
     public Collection $schools;
     public Collection $courses;
     public $towns;
-    public array $course_levels = [];
-    public array $selectedHobbies;
-    public array $selectedDislikes;
-    public $selectedSchool = NULL;
-    public $selectedCourseLevel = NULL;
-    public array $selectedTowns = [];
-    public $selectedCourse = NULL;
+    public $course_levels = [];
     public $minAllowedBudget = 40000;
     public $maxAllowedBudget = 300000;
     public $budgetRange = [];
     public $max_budget = NULL;
     public $min_budget = NULL;
     public $rooms = '';
+    public $selectedHobbies;
+    public $selectedDislikes;
+    public $selectedSchool = NULL;
+    public $selectedCourse = NULL;
+    public $selectedCourseLevel = NULL;
+    public $selectedTowns = [];
 
     protected $listeners = ['avatarUpload' => 'handleAvatarUpload', 'coverUpload' => 'handleCoverUpload'];
 
@@ -228,6 +228,7 @@ class UpdateProfile extends Component
 
     public function updated($propertyName)
     {
+        \dd($this->{$propertyName});
         $this->validateOnly($propertyName);
     }
 
@@ -237,7 +238,7 @@ class UpdateProfile extends Component
             return;
         }
 
-        $this->validate();
+        // $this->validate();
         
         $user = auth()->user();
 

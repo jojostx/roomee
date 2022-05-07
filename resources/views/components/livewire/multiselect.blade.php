@@ -1,12 +1,13 @@
 @props(['name', 'options', 'selectedOptions', 'label', 'isRequired'])
 
-<div  x-data="multiselect({ 
-        options: {{ json_encode($getOptions()) }}, 
-        selectedOptions: {{ json_encode($getSelectedOptions()) }}, 
+<div x-data="multiselect({ 
+        options: {{ json_encode($options) }}, 
+        selectedOptions: {{ json_encode($selectedOptions) }}, 
         })" 
-        class="flex flex-col md:mt-0 md:col-span-1" 
-        @click.away="closeListbox()" 
-        @keydown.escape.window="closeListbox()">
+      x-init="$nextTick(() => { $watch('selected', value => $wire.set('selected{{ ucfirst(Str::plural($name)) }}', value)) })"
+      @click.away="closeListbox()" 
+      @keydown.escape.window="closeListbox()"
+      class="flex flex-col md:mt-0 md:col-span-1">
   <div class="flex flex-col mb-2">
     <label for="{{ $name }}_search" class="label">{{ ucfirst($label) }} @if ($isRequired)
       <x-required-field-star /> @endif
@@ -15,7 +16,7 @@
   <div class="relative block w-full transition duration-75 border border-gray-300 divide-y rounded-lg shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 filament-forms-multi-select-component">
     <div x-on:click.away="closeListbox()" x-on:blur="closeListbox()" x-on:keydown.escape.stop="closeListbox()" class="relative">
       <div x-on:click="openListbox()" aria-haspopup="listbox" tabindex="1" class="relative overflow-hidden rounded-lg">
-        <input x-model="search" placeholder="please select your {{ $name }}" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-gray-700 dark:placeholder-gray-400'=> config('forms.dark_mode'),])/>
+        <input x-model="search" placeholder="please select your {{ Str::plural($name) }}" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-gray-700 dark:placeholder-gray-400'=> config('forms.dark_mode'),])/>
 
         <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none rtl:right-auto rtl:left-0 rtl:pr-0 rtl:pl-2">
           <svg class="w-5 h-5" x-bind:class="optionsVisible && 'rotate-180'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -28,7 +29,7 @@
         <ul class="py-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
           <template x-for="(option, index) in filteredOptions()" x-bind:key="option.id">
             <li x-bind:class="{'text-gray-900 ': !isSelected(option)}" @click.prevent="toggle(option)" @keydown.arrow-down.prevent="$focus.next()" @keydown.arrow-up.prevent="$focus.previous()" tabindex="0" role="option" class="relative flex items-center px-1 my-1 text-gray-900 cursor-default select-none">
-              <input type="checkbox" wire:model="selected" x-bind:id="_id(option.name)" x-bind:value="option.id" x-bind:checked="isSelected(option)" name="hobbies" class="hidden dropdown_checkboxes" autocomplete="off">
+              <input type="checkbox" x-bind:id="_id(option.name)" x-bind:value="option.id" x-bind:checked="isSelected(option)" name="hobbies" class="hidden dropdown_checkboxes" autocomplete="off">
 
               <label x-bind:for="_id(option.name)" class="flex items-center justify-between w-full h-full px-2 py-2 rounded-md hover:bg-gray-200">
                 <span class="block font-normal truncate" x-text="capitalize(option.name)"></span>
@@ -56,7 +57,7 @@
         <template class="hidden" x-for="option in selectedOptions()" x-bind:key="option.id">
           <div class="inline-flex items-center justify-center min-h-6 px-2 py-0.5 text-sm font-medium tracking-tight text-blue-700 rounded-xl bg-blue-500/10 space-x-1 rtl:space-x-reverse">
             <span x-text="capitalize(option.name)" class="pl-1 text-left pointer-events-none"></span>
-            <label tabindex="0" x-bind:for="_id(option.name)" x-on:click.stop="deselectOption(option)" @keydown.enter="deselectOption(option)" class="w-3 h-3 cursor-pointer shrink-0" role="button">
+            <label tabindex="0" x-bind:for="_id(option.name)" x-on:click.stop="deselectOption(option);" @keydown.enter="deselectOption(option)" class="w-3 h-3 cursor-pointer shrink-0" role="button">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-full">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
               </svg>

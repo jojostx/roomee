@@ -83,10 +83,6 @@ input[type=radio]#no:focus {
     box-shadow: none;
 }
 
-input[type=checkbox]:checked+label {
-    background: rgba(229, 231, 235, 1);
-}
-
 input[type=checkbox]+label .icon_check {
     display: none;
 }

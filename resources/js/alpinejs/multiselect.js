@@ -2,6 +2,7 @@ export default ({
     options,
     selectedOptions
 }) => ({
+
     optionsVisible: false,
 
     search: "",
@@ -36,7 +37,7 @@ export default ({
     },
 
     deselectOption(optionToDeselect) {
-        this.selected = this.selected.filter((id) => id !== optionToDeselect.id)
+        this.selected = this.selected.filter((id) => id != optionToDeselect.id)
     },
 
     toggle(item) {

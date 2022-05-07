@@ -127,3 +127,23 @@ $requestTypes = collect(['sent' => 'requester_id', 'recieved' => 'requestee_id']
 
         // auth()->user()->${}
         return RoommateRequest::where($columnName, auth()->id())->orderBy('created_at', 'desc')->get();
+
+
+
+
+        <!-- x-init="$watch('selected', (selectedOptions) => { $wire.set('{{ 'selected'.Str::plural(ucfirst($name)) }}', selectedOptions) })" -->
+<!-- multiSelectFormComponent({
+            getOptionLabelsUsing: async () => {
+                return await $wire.getMultiSelectOptionLabels('{{ $getStatePath() }}')
+            },
+            getOptionsUsing: async () => {
+                return await $wire.getMultiSelectOptions('{{ $getStatePath() }}')
+            },
+            getSearchResultsUsing: async (searchQuery) => {
+                return await $wire.getMultiSelectSearchResults('{{ $getStatePath() }}', searchQuery)
+            },
+            isAutofocused: {{ $isAutofocused() ? 'true' : 'false' }},
+            hasDynamicOptions: {{ $hasDynamicOptions() ? 'true' : 'false' }},
+            options: {{ json_encode($getOptions()) }},
+            state: ,
+        }) -->

@@ -24,7 +24,7 @@
         "tailwindcss": "^3.0.23"
     },
     "dependencies": {
-        "@alpinejs/focus": "^3.9.1",
+        "@alpinejs/focus": "^3.10.2",
         "@alpinejs/intersect": "^3.9.1",
         "@babel/plugin-syntax-dynamic-import": "^7.8.3",
         "@tailwindcss/aspect-ratio": "^0.4.0",
