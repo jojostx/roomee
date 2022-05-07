@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Profile;
 
+use App\Http\Livewire\Components\Filament\Forms\Multiselect as FormsMultiselect;
 use App\Http\Livewire\Traits\WithImageManipulation;
 use App\Models\Course;
 use App\Models\Dislike;
@@ -9,70 +10,75 @@ use App\Models\Hobby;
 use App\Models\School;
 use App\Models\Town;
 use App\Rules\ModelsExist;
+use Filament\Forms\Components\BelongsToManyMultiSelect;
+use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\ViewField;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\WithFileUploads;
 
-class UpdateProfile extends Component
+class UpdateProfile extends Component implements HasForms
 {
-    use WithImageManipulation, WithFileUploads;
+    use WithImageManipulation, WithFileUploads, InteractsWithForms;
 
     public $avatar;
     public $cover_photo;
-    public string $bio;
-    public array $hobbies;
-    public array $dislikes;
-    public Collection $schools;
-    public Collection $courses;
+    public $bio;
+    public $hobbies;
+    public $dislikes;
+    public $school;
+    public $course;
     public $towns;
-    public array $course_levels = [];
-    public array $selectedHobbies;
-    public array $selectedDislikes;
-    public $selectedSchool = NULL;
-    public $selectedCourseLevel = NULL;
-    public array $selectedTowns = [];
-    public $selectedCourse = NULL;
+    public $course_level;
     public $minAllowedBudget = 40000;
     public $maxAllowedBudget = 300000;
-    public $budgetRange = [];
     public $max_budget = NULL;
     public $min_budget = NULL;
     public $rooms = '';
 
     protected $listeners = ['avatarUpload' => 'handleAvatarUpload', 'coverUpload' => 'handleCoverUpload'];
 
+    protected function getFormModel()
+    {
+        return Auth::user();
+    }
+
     public function mount()
-    {        
-        $this->avatar = auth()->user()->avatar ?? '';
-        $this->cover_photo = auth()->user()->cover_photo ?? '';
+    {
+        $this->form->fill([
+            'avatar' => auth()->user()->avatar ?? '',
+            'cover_photo' => auth()->user()->cover_photo ?? '',
+            'rooms' => auth()->user()->rooms ?? '',
+            'bio' => auth()->user()->bio ?? '',
+            'max_budget' => auth()->user()->max_budget ?? '',
+            'min_budget' => auth()->user()->min_budget ?? '',
+            'hobbies' => auth()->user()->hobbies->pluck('id')->toArray(),
+            'dislikes' => auth()->user()->dislikes->pluck('id')->toArray(),
+            'towns' =>  auth()->user()->towns->pluck('id')->toArray(),
+            'school' => auth()->user()->school->id,
+            'course' => auth()->user()->course->id,
+            'course_level' =>  auth()->user()->course_level,
+        ]);
 
-        $this->rooms = auth()->user()->rooms ?? '';
-
-        $this->bio = auth()->user()->bio ?? '';
-
-        $this->budgetRange = range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000));
-        $this->max_budget = auth()->user()->max_budget ?? '';
-        $this->min_budget = auth()->user()->min_budget ?? '';
-
-        $this->hobbies = $this->getHobbies();
-        $this->selectedHobbies =  $this->getUserData('hobbies');
-
-        $this->dislikes = $this->getDislikes();
-        $this->selectedDislikes = $this->getUserData('dislikes');
-
-        $this->towns = auth()->user()->school ? auth()->user()->school->towns : [];
-        $this->selectedTowns =  $this->getUserData('towns');
-
-        $this->schools = $this->getSchools();
-        $this->selectedSchool = auth()->user()->school;
-
-        $this->courses = $this->getCourses();
-        $this->selectedCourse = auth()->user()->course;
-
-        $this->course_levels = $this->getCourseLevels(auth()->user()->course);
-        $this->selectedCourseLevel = auth()->user()->course_level;
+        // \dd($this->hobbies, $this->dislikes);
+        // \dd(
+        //     Hobby::all()->pluck('name', 'id')->toArray(), 
+        //     Dislike::all()->pluck('name', 'id')->toArray(),
+        //     auth()->user()->hobbies->pluck('name', 'id')->toArray(),
+        //     auth()->user()->dislikes->pluck('name', 'id')->toArray(),
+        //     Hobby::where('name', 'like', "%g%")->limit(50)->pluck('name', 'id')->toArray(),
+        //     Dislike::where('name', 'like', "%i%")->limit(50)->pluck('name', 'id')->toArray()
+        // );
     }
 
     public function handleAvatarUpload($avatarImage)
@@ -87,72 +93,25 @@ class UpdateProfile extends Component
         $this->validateOnly('cover_photo');
     }
 
-    public function getCourses(): Collection
-    {
-        $school = auth()->user()->school;
-
-        if ($school) {
-            return $school->courses;
-        }
-
-        return collect([]);
-    }
-
-    public function getDislikes(): array
-    {
-        return Dislike::select('id', 'name')->orderBy('name')->get()->toArray();
-    }
-
-    public function getHobbies(): array
-    {
-        return Hobby::select('id', 'name')->orderBy('name')->get()->toArray();
-    }
-
-    public function getSchools(): Collection
-    {
-        return School::select('id', 'name')->orderBy('name')->get();
-    }
-
-    public function getUserData(string $tableName): array
-    {
-        if (auth()->user()->{$tableName}) {
-            $options = auth()->user()->{$tableName}()->pluck($tableName . '.id')->toArray();
-
-            $options = array_map(function ($item) {
-                return strval($item);
-            }, $options);
-
-            return $options;
-        }
-
-        return [];
-    }
-
     public function getCourseLevels(Course $course = NULL): array
     {
         if ($course) {
-            return range(100, $course->max_level + 100, 100);
+            $result = [];
+
+            foreach ($levels = collect(range(100, $course->max_level + 100, 100)) as $value) {
+                if ($levels->first() == $value) {
+                    $result[$value] = 'Pre-Degree and Fresher';
+                } elseif ($levels->last() == $value) {
+                    $result[$value] = 'Post Graduate';
+                } else {
+                    $result[$value] = $value . ' Level';
+                }
+            }
+
+            return $result;
         }
 
         return [];
-    }
-
-    public function selectedSchoolChange(School $school): void
-    {
-        $this->selectedSchool = $school;
-        $this->selectedCourse = NULL;
-        $this->selectedCourseLevel = NULL;
-        $this->selectedTowns = [];
-        $this->course_levels = [];
-        $this->courses = $school->courses;
-        $this->towns = $school->towns;
-    }
-
-    public function selectedCourseChange(Course $course): void
-    {
-        $this->selectedCourse = $course;
-        $this->selectedCourseLevel = NULL;
-        $this->course_levels = $this->getCourseLevels($course);
     }
 
     public function rules()
@@ -226,10 +185,144 @@ class UpdateProfile extends Component
         'bio' => 'Bio',
     ];
 
-    public function updated($propertyName)
+    // public function updated($propertyName)
+    // {
+    //     $this->validateOnly($propertyName);
+    // }
+
+    protected function getFormSchema(): array
     {
-        dd($propertyName);
-        $this->validateOnly($propertyName);
+        return [
+            ViewField::make('avatar')->view('livewire.components.filament.forms.avatar-upload')->disableLabel(true),
+
+            ViewField::make('cover_photo')->view('livewire.components.filament.forms.cover-photo-upload'),
+
+            Section::make('Personal Information')
+                ->description('These are Information that describe who you are.')
+                ->columns(2)
+                ->schema([
+                    Textarea::make('bio')->label('About')->columnSpan(2)->required(),
+
+                    FormsMultiselect::make('hobbies')
+                        ->label('Hobbies')
+                        ->options(Hobby::select('id', 'name')->orderBy('name')->get()->toArray())
+                        ->required(),
+
+                    FormsMultiselect::make('dislikes')
+                        ->label('Dislikes')
+                        ->options(Dislike::select('id', 'name')->orderBy('name')->get()->toArray())
+                        ->required()
+                ])->collapsible(),
+
+            Section::make('Educational Information')
+                ->description('These are Information about your current Educational arrangement.')
+                ->columns(2)
+                ->schema([
+                    Select::make('school')
+                        ->label('Institute of Study')
+                        ->reactive()
+                        ->searchable()
+                        ->getSearchResultsUsing(fn (string $searchQuery) => School::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id')->toArray())
+                        ->getOptionLabelUsing(fn ($value): ?string => School::find($value)?->name)
+                        ->options(School::all()->pluck('name', 'id')->toArray())
+                        ->afterStateUpdated(function (callable $set)
+                        {
+                            $set('course', null);
+                            $set('course_level', null);
+                            $set('towns', []);
+                        })
+                        ->columnSpan(2)
+                        ->rules([
+                            Rule::in(School::all('id')->pluck('id')->toArray()),
+                            'required'
+                        ]),
+
+                    Select::make('course')
+                        ->label('Course of Study')
+                        ->reactive()
+                        ->searchable()
+                        ->getSearchResultsUsing(fn (string $searchQuery, callable $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
+                        ->getOptionLabelUsing(fn ($value): ?string => Course::find($value)?->name)
+                        ->options(function (callable $get) {
+                            $school =  School::find($get('school'));
+
+                            if (!$school) {
+                                return [];
+                            }
+                            
+                            return $school->courses->pluck('name', 'id')->toArray();
+                        })
+                        ->afterStateUpdated(function (callable $set)
+                        {
+                            $set('course_level', null);
+                        })
+                        ->required(),
+
+                    Select::make('course_level')
+                        ->label('Course Level')
+                        ->options(function (callable $get) {
+                            $course = Course::find($get('course'));
+
+                            if (!$course) {
+                                return [];
+                            }
+
+                            return $this->getCourseLevels($course);
+                        })
+                        ->required(),
+                ])->collapsible(),
+
+            Section::make('Apartment Information')
+                ->description('These are Information that describe your preferred apartment type and location.')
+                ->columns(2)
+                ->schema([
+                    FormsMultiselect::make('towns')
+                        ->label('Preferred property locations')
+                        ->options(function (callable $get) {
+                            $school =  School::find($get('school'));
+
+                            if (!$school) {
+                                return [];
+                            }
+
+                            return $school->towns()->select('id', 'name')->orderBy('name')->get()->toArray();
+                        })
+                        ->required(),
+
+                    // MultiSelect::make('towns')
+                    // ->label('Preferred property locations')
+                    // ->options(function (callable $get) {
+                    //     $school =  School::find($get('school'));
+
+                    //     if (!$school) {
+                    //         return [];
+                    //     }
+
+                    //     return $school->towns->pluck('name', 'id')->toArray();
+                    // })
+                    // ->required(),
+
+                    Select::make('rooms')
+                        ->label('Number of Rooms')
+                        ->options([
+                            '1' => 'Self-contain',
+                            '2' => 'One-bedroom Self-contain',
+                            '3' => 'Two-bedroom self-contain',
+                            '4' => 'Three-bedroom self-contain',
+                            '5' => 'others',
+                        ])->required(),
+
+                    Select::make('min_budget')
+                        ->label('Minimum Budget')
+                        ->options(range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000)))
+                        ->required(),
+
+                    Select::make('max_budget')
+                        ->label('Maximum Budget')
+                        ->options(range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000)))
+                        ->required(),
+                ])->collapsible(),
+        ];
     }
 
     public function save()
@@ -239,7 +332,7 @@ class UpdateProfile extends Component
         }
 
         $this->validate();
-        
+
         $user = auth()->user();
 
         $userCover = $user->cover_photo;

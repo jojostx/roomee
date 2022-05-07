@@ -1,7 +1,12 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
-    content: ['./storage/framework/views/*.php', './resources/views/**/*.blade.php'],
+    content: [
+        './storage/framework/views/*.php',
+        './resources/**/*.blade.php',
+        './vendor/filament/**/*.blade.php'
+    ],
 
     theme: {
         customForms: theme => ({
@@ -22,6 +27,10 @@ module.exports = {
                 reverseSpin: 'reverseSpin 3s linear infinite',
                 'spin-slow': 'spin 3s linear infinite',
                 'slide_up': 'slide_up 1s linear'
+            },
+            colors: {
+                danger: colors.rose,
+                primary: colors.blue,
             },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
@@ -75,5 +84,9 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/aspect-ratio')]
+    plugins: [
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/aspect-ratio'),
+        require('@tailwindcss/typography')
+    ]
 };

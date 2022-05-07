@@ -11,42 +11,42 @@ class CourseSeeder extends Seeder
         [
             'name' => 'Petroleum Engineering',
             'short_name' => 'Pet.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Gas Engineering',
             'short_name' => 'Gas.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Civil Engineering',
             'short_name' => 'Civ.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Computer Engineering',
             'short_name' => 'Comp.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Mechanical Engineering',
             'short_name' => 'Mech.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Chemical Engineering',
             'short_name' => 'Chem.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Mechatronics Engineering',
             'short_name' => 'Met.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
         [
             'name' => 'Electrical Engineering',
             'short_name' => 'Elect.Eng',
-            'max_level' => 500,
+            'max_level' => 600,
         ],
     ];
 

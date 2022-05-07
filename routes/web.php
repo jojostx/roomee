@@ -24,8 +24,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', [UpdateProfileController::class, 'index'])->name('test');
-
 Route::view('/select2', 'pages.select2')->name('select2');
 
 Route::view('/', 'pages.welcome')->name('home');
