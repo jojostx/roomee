@@ -1,6 +1,12 @@
 @props(['name', 'options', 'selectedOptions', 'label', 'isRequired'])
 
-<div x-data="select2_{{ $name }}" class="flex flex-col md:mt-0 md:col-span-1" @click.away="closeListbox()" @keydown.escape.window="closeListbox()">
+<div  x-data="multiselect({ 
+        options: {{ json_encode($getOptions()) }}, 
+        selectedOptions: {{ json_encode($getSelectedOptions()) }}, 
+        })" 
+        class="flex flex-col md:mt-0 md:col-span-1" 
+        @click.away="closeListbox()" 
+        @keydown.escape.window="closeListbox()">
   <div class="flex flex-col mb-2">
     <label for="{{ $name }}_search" class="label">{{ ucfirst($label) }} @if ($isRequired)
       <x-required-field-star /> @endif
@@ -61,71 +67,3 @@
     </div>
   </div>
 </div>
-
-@push('scripts')
-<script>
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('select2_{{ $name }}', () => ({
-      filteredOptions() {
-        return this.options.filter((option) => {
-          return option.name.includes(this.search.toLowerCase());
-        });
-      },
-
-      selectedOptions() {
-        return this.options.filter((option) => {
-          return this.selected.some((_option) => _option == option.id)
-        });
-      },
-
-      toggle(item) {
-        this.selected = this.isSelected(item) ? this.selected.filter(id => id != item.id) : [...this.selected, item.id]
-      },
-
-      selectOption(option) {
-        this.selected = this.isSelected(option) ? this.selected.filter(id => id != option.id) : [...this.selected, option.id]
-      },
-
-      deselectOption(option) {
-        this.selected = this.selected.filter((id) => id !== option.id)
-      },
-
-      isSelected(item) {
-        return this.selected.some(_option => _option == item.id)
-      },
-
-      _id(t) {
-        return t.replace(/\s+/g, '_')
-      },
-
-      capitalize(str) {
-        if (typeof(str) != 'string') {
-          return str;
-        }
-
-        return str[0].toUpperCase() + str.substring(1);
-      },
-
-      openListbox() {
-        this.optionsVisible = true;
-      },
-
-      closeListbox() {
-        this.optionsVisible = false;
-      },
-
-      toggleListboxVisibility() {
-        this.optionsVisible = !this.optionsVisible;
-      },
-
-      optionsVisible: false,
-
-      search: "",
-
-      selected: @js($selectedOptions),
-
-      options: @js($options),
-    }))
-  })
-</script>
-@endpush
