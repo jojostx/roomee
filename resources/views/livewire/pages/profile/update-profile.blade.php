@@ -193,11 +193,11 @@
                     </label>
                     <select wire:change.self.stop="$set('selectedCourseLevel',$event.target.value)" required autocomplete="off" name="course_level" class="select_dropdown" name="level" id="course_level">
                         <option value="" disabled selected>Select your course level</option>
-                        @foreach ($course_levels as $level)
+                        @foreach ($course_levels as $level => $level_label)
                         @if ($selectedCourseLevel)
-                        <x-livewire.option value="{{ $level }}" :selected="($level === $selectedCourseLevel)?true:false">{{ ($loop->last) ? 'Post-Graduate' : $level }}</x-livewire.option>
+                        <x-livewire.option value="{{ $level }}" :selected="($level == $selectedCourseLevel)?true:false">{{ $level_label }}</x-livewire.option>
                         @else
-                        <x-livewire.option value="{{ $level }}">{{ ($loop->last) ? 'Post-Graduate' : $level }}</x-livewire.option>
+                        <x-livewire.option value="{{ $level }}">{{ $level_label }}</x-livewire.option>
                         @endif
                         @endforeach
                     </select>

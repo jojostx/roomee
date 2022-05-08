@@ -644,6 +644,15 @@ select {
   --tw-ring-color: rgb(199 210 254 / var(--tw-ring-opacity));
   --tw-ring-opacity: 0.5;
 }
+.select_dropdown:focus-within {
+  --tw-border-opacity: 1;
+  border-color: rgb(165 180 252 / var(--tw-border-opacity));
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-color: rgb(199 210 254 / var(--tw-ring-opacity));
+  --tw-ring-opacity: 0.5;
+}
 .label {
   margin-bottom: 0.5rem;
   display: block;
@@ -2374,10 +2383,6 @@ option {
 .tab-container input[type="radio"]:checked+label+.content-container {
     display: initial;
 }
-.focus-within\:border-blue-600:focus-within {
-  --tw-border-opacity: 1;
-  border-color: rgb(37 99 235 / var(--tw-border-opacity));
-}
 .focus-within\:ring-1:focus-within {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -2385,10 +2390,6 @@ option {
 }
 .focus-within\:ring-inset:focus-within {
   --tw-ring-inset: inset;
-}
-.focus-within\:ring-blue-600:focus-within {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(37 99 235 / var(--tw-ring-opacity));
 }
 .hover\:border-white:hover {
   --tw-border-opacity: 1;

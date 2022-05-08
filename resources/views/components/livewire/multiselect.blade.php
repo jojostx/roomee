@@ -13,7 +13,7 @@
       <x-required-field-star /> @endif
     </label>
   </div>
-  <div class="relative block w-full transition duration-75 border border-gray-300 divide-y rounded-lg shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600 filament-forms-multi-select-component">
+  <div class="select_dropdown relative block w-full transition duration-75 border border-gray-300 divide-y rounded-lg shadow-sm filament-forms-multi-select-component">
     <div x-on:click.away="closeListbox()" x-on:blur="closeListbox()" x-on:keydown.escape.stop="closeListbox()" class="relative">
       <div x-on:click="openListbox()" aria-haspopup="listbox" tabindex="1" class="relative overflow-hidden rounded-lg">
         <input x-model="search" placeholder="please select your {{ Str::plural($name) }}" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-gray-700 dark:placeholder-gray-400'=> config('forms.dark_mode'),])/>

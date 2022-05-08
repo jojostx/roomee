@@ -11,6 +11,9 @@
     .select_dropdown:focus {
         @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
     }
+    .select_dropdown:focus-within {
+        @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
+    }
     .label {
         @apply block mb-2 font-medium text-gray-700;
     }

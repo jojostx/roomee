@@ -131,7 +131,19 @@ class UpdateProfile extends Component
     public function getCourseLevels(Course $course = NULL): array
     {
         if ($course) {
-            return range(100, $course->max_level + 100, 100);
+            $result = [];
+
+            foreach ($levels = collect(range(100, $course->max_level + 100, 100)) as $value) {
+                if ($levels->first() == $value) {
+                    $result[$value] = 'Pre-Degree and Fresher';
+                } elseif ($levels->last() == $value) {
+                    $result[$value] = 'Post Graduate';
+                } else {
+                    $result[$value] = $value . ' Level';
+                }
+            }
+
+            return $result;
         }
 
         return [];
