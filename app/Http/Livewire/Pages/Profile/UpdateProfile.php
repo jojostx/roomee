@@ -69,16 +69,6 @@ class UpdateProfile extends Component implements HasForms
             'course' => auth()->user()->course->id,
             'course_level' =>  auth()->user()->course_level,
         ]);
-
-        // \dd($this->hobbies, $this->dislikes);
-        // \dd(
-        //     Hobby::all()->pluck('name', 'id')->toArray(), 
-        //     Dislike::all()->pluck('name', 'id')->toArray(),
-        //     auth()->user()->hobbies->pluck('name', 'id')->toArray(),
-        //     auth()->user()->dislikes->pluck('name', 'id')->toArray(),
-        //     Hobby::where('name', 'like', "%g%")->limit(50)->pluck('name', 'id')->toArray(),
-        //     Dislike::where('name', 'like', "%i%")->limit(50)->pluck('name', 'id')->toArray()
-        // );
     }
 
     public function handleAvatarUpload($avatarImage)
@@ -112,6 +102,17 @@ class UpdateProfile extends Component implements HasForms
         }
 
         return [];
+    }
+
+    public function getBudgetOptions(): array
+    {
+        $result = [];
+
+        foreach (collect(range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000))) as $value) {
+            $result[$value] = number_format(floatval($value), 2);
+        }
+        
+        return $result;
     }
 
     public function rules()
@@ -206,10 +207,12 @@ class UpdateProfile extends Component implements HasForms
                     FormsMultiselect::make('hobbies')
                         ->label('Hobbies')
                         ->options(Hobby::select('id', 'name')->orderBy('name')->get()->toArray())
+                        ->placeholder('Please select your hobbies')
                         ->required(),
 
                     FormsMultiselect::make('dislikes')
                         ->label('Dislikes')
+                        ->placeholder('Please select your dislikes')
                         ->options(Dislike::select('id', 'name')->orderBy('name')->get()->toArray())
                         ->required()
                 ])->collapsible(),
@@ -225,11 +228,10 @@ class UpdateProfile extends Component implements HasForms
                         ->getSearchResultsUsing(fn (string $searchQuery) => School::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id')->toArray())
                         ->getOptionLabelUsing(fn ($value): ?string => School::find($value)?->name)
                         ->options(School::all()->pluck('name', 'id')->toArray())
-                        ->afterStateUpdated(function (callable $set)
-                        {
+                        ->afterStateUpdated(function (callable $set, $state) {
                             $set('course', null);
                             $set('course_level', null);
-                            $set('towns', []);
+                            $set('towns', null);
                         })
                         ->columnSpan(2)
                         ->rules([
@@ -245,17 +247,17 @@ class UpdateProfile extends Component implements HasForms
                         ->getOptionLabelUsing(fn ($value): ?string => Course::find($value)?->name)
                         ->options(function (callable $get) {
                             $school =  School::find($get('school'));
-
+                            
                             if (!$school) {
                                 return [];
                             }
                             
                             return $school->courses->pluck('name', 'id')->toArray();
                         })
-                        ->afterStateUpdated(function (callable $set)
-                        {
+                        ->afterStateUpdated(function (callable $set) {
                             $set('course_level', null);
                         })
+                        ->placeholder('Please select your course of study')
                         ->required(),
 
                     Select::make('course_level')
@@ -276,7 +278,7 @@ class UpdateProfile extends Component implements HasForms
                 ->description('These are Information that describe your preferred apartment type and location.')
                 ->columns(2)
                 ->schema([
-                    FormsMultiselect::make('towns')
+                    MultiSelect::make('towns')
                         ->label('Preferred property locations')
                         ->options(function (callable $get) {
                             $school =  School::find($get('school'));
@@ -285,22 +287,9 @@ class UpdateProfile extends Component implements HasForms
                                 return [];
                             }
 
-                            return $school->towns()->select('id', 'name')->orderBy('name')->get()->toArray();
+                            return $school->towns->pluck('name', 'id')->toArray();
                         })
                         ->required(),
-
-                    // MultiSelect::make('towns')
-                    // ->label('Preferred property locations')
-                    // ->options(function (callable $get) {
-                    //     $school =  School::find($get('school'));
-
-                    //     if (!$school) {
-                    //         return [];
-                    //     }
-
-                    //     return $school->towns->pluck('name', 'id')->toArray();
-                    // })
-                    // ->required(),
 
                     Select::make('rooms')
                         ->label('Number of Rooms')
@@ -314,12 +303,16 @@ class UpdateProfile extends Component implements HasForms
 
                     Select::make('min_budget')
                         ->label('Minimum Budget')
-                        ->options(range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000)))
+                        ->prefix('₦ ')
+                        ->options($this->getBudgetOptions())
+                        ->disablePlaceholderSelection()
                         ->required(),
 
                     Select::make('max_budget')
                         ->label('Maximum Budget')
-                        ->options(range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000)))
+                        ->prefix('₦ ')
+                        ->options($this->getBudgetOptions())
+                        ->disablePlaceholderSelection()
                         ->required(),
                 ])->collapsible(),
         ];

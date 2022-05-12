@@ -1,7 +1,8 @@
 @import '../../vendor/filament/forms/dist/module.esm.css';
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
     html {
         font-family: "DM Sans", system-ui, sans-serif;

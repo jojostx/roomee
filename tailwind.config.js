@@ -9,20 +9,10 @@ module.exports = {
     ],
 
     theme: {
-        customForms: theme => ({
-            default: {
-                input: {
-                    '&:focus': {
-                        borderColor: undefined,
-                        boxShadow: undefined,
-                    }
-                }
-            },
-        }),
-        backgroundPosition: {
-            'bottom-right-4': 'right bottom -3rem',
-        },
         extend: {
+            backgroundPosition: {
+                'bottom-right-4': 'right bottom -3rem',
+            },
             animation: {
                 reverseSpin: 'reverseSpin 3s linear infinite',
                 'spin-slow': 'spin 3s linear infinite',
