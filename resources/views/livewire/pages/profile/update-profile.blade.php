@@ -10,7 +10,7 @@
             <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold text-gray-800 list-none bg-gray-100 border rounded-md shadow-sm lg:flex">
                 <li class="relative w-full my-1">
                     <input type="radio" name="section-link" id="personal" class="absolute opacity-0 left-20" autocomplete="off">
-                    <label @click="document.getElementById('personal-information').scrollIntoView()" for="personal" class="flex items-center px-2 py-2 rounded-md hover:bg-gray-300 border border-transparent">
+                    <label @click="document.getElementById('personal-information').scrollIntoView()" for="personal" class="flex items-center px-2 py-2 border border-transparent rounded-md hover:bg-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
@@ -19,7 +19,7 @@
                 </li>
                 <li class="relative w-full my-1">
                     <input type="radio" name="section-link" id="education" class="absolute opacity-0 left-20" autocomplete="off">
-                    <label @click="document.getElementById('educational-information').scrollIntoView()" for="education" class="flex items-center px-2 py-2 rounded-md hover:bg-gray-300 border border-transparent">
+                    <label @click="document.getElementById('educational-information').scrollIntoView()" for="education" class="flex items-center px-2 py-2 border border-transparent rounded-md hover:bg-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 mr-3">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                         </svg>
@@ -28,7 +28,7 @@
                 </li>
                 <li class="relative w-full my-1">
                     <input type="radio" name="section-link" id="apartment" class="absolute opacity-0 left-20" autocomplete="off">
-                    <label @click="document.getElementById('apartment-information').scrollIntoView()" for="apartment" class="flex items-center px-2 py-2 rounded-md hover:bg-gray-300 border border-transparent">
+                    <label @click="document.getElementById('apartment-information').scrollIntoView()" for="apartment" class="flex items-center px-2 py-2 border border-transparent rounded-md hover:bg-gray-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-5 mr-3" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
@@ -61,7 +61,7 @@
     </div>
 </div>
 
-@prepend('scripts')
+@push('scripts')    
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('photo_upload', () => ({
@@ -100,7 +100,7 @@
                         hideableElems: [coverSVG]
                     }
 
-                    this.handleFileUpload(e, 'cover_photo', options);
+                    this.handleFileUpload($event, 'cover_photo', options);
                 }
             },
 
@@ -298,4 +298,4 @@
         }))
     })
 </script>
-@endprepend
+@endpush

@@ -5919,6 +5919,531 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./resources/js/alpinejs/filamentphp/fileupload.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/alpinejs/filamentphp/fileupload.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (Alpine) {
+  Alpine.data('customFileUploadFormComponent', function (_ref) {
+    var acceptedFileTypes = _ref.acceptedFileTypes,
+        canReorder = _ref.canReorder,
+        canPreview = _ref.canPreview,
+        deleteUploadedFileUsing = _ref.deleteUploadedFileUsing,
+        getUploadedFileUrlsUsing = _ref.getUploadedFileUrlsUsing,
+        posterFileUrl = _ref.posterFileUrl,
+        imageCropAspectRatio = _ref.imageCropAspectRatio,
+        imagePreviewHeight = _ref.imagePreviewHeight,
+        imageResizeTargetHeight = _ref.imageResizeTargetHeight,
+        imageResizeTargetWidth = _ref.imageResizeTargetWidth,
+        loadingIndicatorPosition = _ref.loadingIndicatorPosition,
+        panelAspectRatio = _ref.panelAspectRatio,
+        panelLayout = _ref.panelLayout,
+        placeholder = _ref.placeholder,
+        maxSize = _ref.maxSize,
+        minSize = _ref.minSize,
+        removeUploadedFileButtonPosition = _ref.removeUploadedFileButtonPosition,
+        removeUploadedFileUsing = _ref.removeUploadedFileUsing,
+        reorderUploadedFilesUsing = _ref.reorderUploadedFilesUsing,
+        shouldAppendFiles = _ref.shouldAppendFiles,
+        state = _ref.state,
+        uploadButtonPosition = _ref.uploadButtonPosition,
+        uploadProgressIndicatorPosition = _ref.uploadProgressIndicatorPosition,
+        uploadUsing = _ref.uploadUsing;
+    return {
+      fileKeyIndex: {},
+      pond: null,
+      shouldUpdateState: true,
+      state: state,
+      uploadedFileUrlIndex: {},
+      init: function () {
+        var _init = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee12() {
+          var _this = this;
+
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee12$(_context12) {
+            while (1) {
+              switch (_context12.prev = _context12.next) {
+                case 0:
+                  _context12.t0 = FilePond;
+                  _context12.t1 = this.$refs.input;
+                  _context12.t2 = _objectSpread;
+                  _context12.t3 = _objectSpread;
+                  _context12.t4 = acceptedFileTypes;
+                  _context12.t5 = canReorder;
+                  _context12.t6 = canPreview;
+                  _context12.t7 = canPreview;
+                  _context12.t8 = canPreview;
+                  _context12.next = 11;
+                  return this.getFiles();
+
+                case 11:
+                  _context12.t9 = _context12.sent;
+                  _context12.t10 = imageCropAspectRatio;
+                  _context12.t11 = imagePreviewHeight;
+                  _context12.t12 = imageResizeTargetHeight;
+                  _context12.t13 = imageResizeTargetWidth;
+                  _context12.t14 = shouldAppendFiles ? 'after' : 'before';
+                  _context12.t15 = {
+                    acceptedFileTypes: _context12.t4,
+                    allowReorder: _context12.t5,
+                    allowImagePreview: _context12.t6,
+                    allowVideoPreview: _context12.t7,
+                    allowAudioPreview: _context12.t8,
+                    credits: false,
+                    files: _context12.t9,
+                    imageCropAspectRatio: _context12.t10,
+                    imagePreviewHeight: _context12.t11,
+                    imageResizeTargetHeight: _context12.t12,
+                    imageResizeTargetWidth: _context12.t13,
+                    itemInsertLocation: _context12.t14
+                  };
+                  _context12.t16 = placeholder && {
+                    labelIdle: placeholder
+                  };
+                  _context12.t17 = (0, _context12.t3)(_context12.t15, _context12.t16);
+                  _context12.t18 = {};
+                  _context12.t19 = {
+                    maxFileSize: maxSize,
+                    minFileSize: minSize,
+                    styleButtonProcessItemPosition: uploadButtonPosition,
+                    styleButtonRemoveItemPosition: removeUploadedFileButtonPosition,
+                    styleLoadIndicatorPosition: loadingIndicatorPosition,
+                    stylePanelAspectRatio: panelAspectRatio,
+                    stylePanelLayout: panelLayout,
+                    styleProgressIndicatorPosition: uploadProgressIndicatorPosition,
+                    server: {
+                      load: function () {
+                        var _load2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(source, _load) {
+                          var response, blob;
+                          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+                            while (1) {
+                              switch (_context.prev = _context.next) {
+                                case 0:
+                                  _context.next = 2;
+                                  return fetch(source);
+
+                                case 2:
+                                  response = _context.sent;
+                                  _context.next = 5;
+                                  return response.blob();
+
+                                case 5:
+                                  blob = _context.sent;
+
+                                  _load(blob);
+
+                                case 7:
+                                case "end":
+                                  return _context.stop();
+                              }
+                            }
+                          }, _callee);
+                        }));
+
+                        function load(_x, _x2) {
+                          return _load2.apply(this, arguments);
+                        }
+
+                        return load;
+                      }(),
+                      process: function process(fieldName, file, metadata, load, error, progress) {
+                        _this.shouldUpdateState = false;
+                        var fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
+                          return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+                        });
+                        uploadUsing(fileKey, file, function (fileKey) {
+                          _this.shouldUpdateState = true;
+                          load(fileKey);
+                        }, error, progress);
+                      },
+                      remove: function () {
+                        var _remove = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(source, load) {
+                          var _this$uploadedFileUrl;
+
+                          var fileKey;
+                          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+                            while (1) {
+                              switch (_context2.prev = _context2.next) {
+                                case 0:
+                                  fileKey = (_this$uploadedFileUrl = _this.uploadedFileUrlIndex[source]) !== null && _this$uploadedFileUrl !== void 0 ? _this$uploadedFileUrl : null;
+
+                                  if (fileKey) {
+                                    _context2.next = 3;
+                                    break;
+                                  }
+
+                                  return _context2.abrupt("return");
+
+                                case 3:
+                                  _context2.next = 5;
+                                  return deleteUploadedFileUsing(fileKey);
+
+                                case 5:
+                                  load();
+
+                                case 6:
+                                case "end":
+                                  return _context2.stop();
+                              }
+                            }
+                          }, _callee2);
+                        }));
+
+                        function remove(_x3, _x4) {
+                          return _remove.apply(this, arguments);
+                        }
+
+                        return remove;
+                      }(),
+                      revert: function () {
+                        var _revert = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(uniqueFileId, load) {
+                          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+                            while (1) {
+                              switch (_context3.prev = _context3.next) {
+                                case 0:
+                                  _context3.next = 2;
+                                  return removeUploadedFileUsing(uniqueFileId);
+
+                                case 2:
+                                  load();
+
+                                case 3:
+                                case "end":
+                                  return _context3.stop();
+                              }
+                            }
+                          }, _callee3);
+                        }));
+
+                        function revert(_x5, _x6) {
+                          return _revert.apply(this, arguments);
+                        }
+
+                        return revert;
+                      }()
+                    }
+                  };
+                  _context12.t20 = (0, _context12.t2)(_context12.t17, _context12.t18, _context12.t19);
+                  this.pond = _context12.t0.create.call(_context12.t0, _context12.t1, _context12.t20);
+                  this.$watch('state', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+                      while (1) {
+                        switch (_context4.prev = _context4.next) {
+                          case 0:
+                            if (_this.shouldUpdateState) {
+                              _context4.next = 2;
+                              break;
+                            }
+
+                            return _context4.abrupt("return");
+
+                          case 2:
+                            if (!Object.values(_this.state).filter(function (file) {
+                              return file.startsWith('livewire-file:');
+                            }).length) {
+                              _context4.next = 4;
+                              break;
+                            }
+
+                            return _context4.abrupt("return");
+
+                          case 4:
+                            _context4.next = 6;
+                            return _this.getFiles();
+
+                          case 6:
+                            _this.pond.files = _context4.sent;
+
+                          case 7:
+                          case "end":
+                            return _context4.stop();
+                        }
+                      }
+                    }, _callee4);
+                  })));
+                  this.pond.on('reorderfiles', /*#__PURE__*/function () {
+                    var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee5(files) {
+                      var orderedFileKeys;
+                      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee5$(_context5) {
+                        while (1) {
+                          switch (_context5.prev = _context5.next) {
+                            case 0:
+                              orderedFileKeys = files.map(function (file) {
+                                var _this$uploadedFileUrl2;
+
+                                return file.source instanceof File ? file.serverId : (_this$uploadedFileUrl2 = _this.uploadedFileUrlIndex[file.source]) !== null && _this$uploadedFileUrl2 !== void 0 ? _this$uploadedFileUrl2 : null;
+                              }) // file.serverId is null for a file that is not yet uploaded
+                              .filter(function (fileKey) {
+                                return fileKey;
+                              });
+                              _context5.next = 3;
+                              return reorderUploadedFilesUsing(shouldAppendFiles ? orderedFileKeys : orderedFileKeys.reverse());
+
+                            case 3:
+                            case "end":
+                              return _context5.stop();
+                          }
+                        }
+                      }, _callee5);
+                    }));
+
+                    return function (_x7) {
+                      return _ref3.apply(this, arguments);
+                    };
+                  }());
+                  this.pond.on('processfilestart', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee6() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee6$(_context6) {
+                      while (1) {
+                        switch (_context6.prev = _context6.next) {
+                          case 0:
+                            _this.dispatchFormEvent('file-upload-started');
+
+                          case 1:
+                          case "end":
+                            return _context6.stop();
+                        }
+                      }
+                    }, _callee6);
+                  })));
+                  this.pond.on('processfileprogress', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee7() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee7$(_context7) {
+                      while (1) {
+                        switch (_context7.prev = _context7.next) {
+                          case 0:
+                            _this.dispatchFormEvent('file-upload-started');
+
+                          case 1:
+                          case "end":
+                            return _context7.stop();
+                        }
+                      }
+                    }, _callee7);
+                  })));
+                  this.pond.on('processfile', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee8() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee8$(_context8) {
+                      while (1) {
+                        switch (_context8.prev = _context8.next) {
+                          case 0:
+                            _this.dispatchFormEvent('file-upload-finished');
+
+                          case 1:
+                          case "end":
+                            return _context8.stop();
+                        }
+                      }
+                    }, _callee8);
+                  })));
+                  this.pond.on('processfiles', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee9() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee9$(_context9) {
+                      while (1) {
+                        switch (_context9.prev = _context9.next) {
+                          case 0:
+                            _this.dispatchFormEvent('file-upload-finished');
+
+                          case 1:
+                          case "end":
+                            return _context9.stop();
+                        }
+                      }
+                    }, _callee9);
+                  })));
+                  this.pond.on('processfileabort', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee10() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee10$(_context10) {
+                      while (1) {
+                        switch (_context10.prev = _context10.next) {
+                          case 0:
+                            _this.dispatchFormEvent('file-upload-finished');
+
+                          case 1:
+                          case "end":
+                            return _context10.stop();
+                        }
+                      }
+                    }, _callee10);
+                  })));
+                  this.pond.on('processfilerevert', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee11() {
+                    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee11$(_context11) {
+                      while (1) {
+                        switch (_context11.prev = _context11.next) {
+                          case 0:
+                            _this.dispatchFormEvent('file-upload-finished');
+
+                          case 1:
+                          case "end":
+                            return _context11.stop();
+                        }
+                      }
+                    }, _callee11);
+                  })));
+
+                case 32:
+                case "end":
+                  return _context12.stop();
+              }
+            }
+          }, _callee12, this);
+        }));
+
+        function init() {
+          return _init.apply(this, arguments);
+        }
+
+        return init;
+      }(),
+      dispatchFormEvent: function dispatchFormEvent(name) {
+        var _this$$el$closest;
+
+        (_this$$el$closest = this.$el.closest('form')) === null || _this$$el$closest === void 0 ? void 0 : _this$$el$closest.dispatchEvent(new CustomEvent(name, {
+          composed: true,
+          cancelable: true
+        }));
+      },
+      getUploadedFileUrls: function () {
+        var _getUploadedFileUrls = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee13() {
+          var uploadedFileUrls;
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee13$(_context13) {
+            while (1) {
+              switch (_context13.prev = _context13.next) {
+                case 0:
+                  _context13.next = 2;
+                  return getUploadedFileUrlsUsing();
+
+                case 2:
+                  uploadedFileUrls = _context13.sent;
+                  this.fileKeyIndex = uploadedFileUrls !== null && uploadedFileUrls !== void 0 ? uploadedFileUrls : {};
+                  this.uploadedFileUrlIndex = Object.entries(this.fileKeyIndex).filter(function (value) {
+                    return value;
+                  }).reduce(function (obj, _ref10) {
+                    var _ref11 = _slicedToArray(_ref10, 2),
+                        key = _ref11[0],
+                        value = _ref11[1];
+
+                    obj[value] = key;
+                    return obj;
+                  }, {});
+
+                case 5:
+                case "end":
+                  return _context13.stop();
+              }
+            }
+          }, _callee13, this);
+        }));
+
+        function getUploadedFileUrls() {
+          return _getUploadedFileUrls.apply(this, arguments);
+        }
+
+        return getUploadedFileUrls;
+      }(),
+      getFiles: function () {
+        var _getFiles = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee14() {
+          var files, _i2, _Object$values, uploadedFileUrl;
+
+          return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee14$(_context14) {
+            while (1) {
+              switch (_context14.prev = _context14.next) {
+                case 0:
+                  _context14.next = 2;
+                  return this.getUploadedFileUrls();
+
+                case 2:
+                  console.log(posterFileUrl);
+                  files = [];
+                  _i2 = 0, _Object$values = Object.values(this.fileKeyIndex);
+
+                case 5:
+                  if (!(_i2 < _Object$values.length)) {
+                    _context14.next = 13;
+                    break;
+                  }
+
+                  uploadedFileUrl = _Object$values[_i2];
+
+                  if (uploadedFileUrl) {
+                    _context14.next = 9;
+                    break;
+                  }
+
+                  return _context14.abrupt("continue", 10);
+
+                case 9:
+                  files.push({
+                    source: uploadedFileUrl,
+                    options: {
+                      type: 'local'
+                    },
+                    file: {
+                      name: "hedgehog.jpg",
+                      size: 189397,
+                      //correct size of the file
+                      type: "image/png"
+                    },
+                    metadata: {
+                      poster: posterFileUrl
+                    }
+                  });
+
+                case 10:
+                  _i2++;
+                  _context14.next = 5;
+                  break;
+
+                case 13:
+                  return _context14.abrupt("return", shouldAppendFiles ? files : files.reverse());
+
+                case 14:
+                case "end":
+                  return _context14.stop();
+              }
+            }
+          }, _callee14, this);
+        }));
+
+        function getFiles() {
+          return _getFiles.apply(this, arguments);
+        }
+
+        return getFiles;
+      }()
+    };
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/js/alpinejs/filamentphp/multiselect.js":
 /*!**********************************************************!*\
   !*** ./resources/js/alpinejs/filamentphp/multiselect.js ***!
@@ -6207,7 +6732,6 @@ var js_default=function js_default(Alpine){Alpine.plugin(color_picker_default2);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Channel": () => (/* binding */ Channel),
 /* harmony export */   "default": () => (/* binding */ Echo)
 /* harmony export */ });
 function _classCallCheck(instance, Constructor) {
@@ -6336,6 +6860,70 @@ function _createSuper(Derived) {
     return _possibleConstructorReturn(this, result);
   };
 }
+
+var Connector = /*#__PURE__*/function () {
+  /**
+   * Create a new class instance.
+   */
+  function Connector(options) {
+    _classCallCheck(this, Connector);
+
+    /**
+     * Default connector options.
+     */
+    this._defaultOptions = {
+      auth: {
+        headers: {}
+      },
+      authEndpoint: '/broadcasting/auth',
+      broadcaster: 'pusher',
+      csrfToken: null,
+      host: null,
+      key: null,
+      namespace: 'App.Events'
+    };
+    this.setOptions(options);
+    this.connect();
+  }
+  /**
+   * Merge the custom options with the defaults.
+   */
+
+
+  _createClass(Connector, [{
+    key: "setOptions",
+    value: function setOptions(options) {
+      this.options = _extends(this._defaultOptions, options);
+
+      if (this.csrfToken()) {
+        this.options.auth.headers['X-CSRF-TOKEN'] = this.csrfToken();
+      }
+
+      return options;
+    }
+    /**
+     * Extract the CSRF token from the page.
+     */
+
+  }, {
+    key: "csrfToken",
+    value: function csrfToken() {
+      var selector;
+
+      if (typeof window !== 'undefined' && window['Laravel'] && window['Laravel'].csrfToken) {
+        return window['Laravel'].csrfToken;
+      } else if (this.options.csrfToken) {
+        return this.options.csrfToken;
+      } else if (typeof document !== 'undefined' && typeof document.querySelector === 'function' && (selector = document.querySelector('meta[name="csrf-token"]'))) {
+        return selector.getAttribute('content');
+      }
+
+      return null;
+    }
+  }]);
+
+  return Connector;
+}();
 
 /**
  * This class represents a basic channel.
@@ -7122,70 +7710,6 @@ var NullPresenceChannel = /*#__PURE__*/function (_NullChannel) {
 
   return NullPresenceChannel;
 }(NullChannel);
-
-var Connector = /*#__PURE__*/function () {
-  /**
-   * Create a new class instance.
-   */
-  function Connector(options) {
-    _classCallCheck(this, Connector);
-
-    /**
-     * Default connector options.
-     */
-    this._defaultOptions = {
-      auth: {
-        headers: {}
-      },
-      authEndpoint: '/broadcasting/auth',
-      broadcaster: 'pusher',
-      csrfToken: null,
-      host: null,
-      key: null,
-      namespace: 'App.Events'
-    };
-    this.setOptions(options);
-    this.connect();
-  }
-  /**
-   * Merge the custom options with the defaults.
-   */
-
-
-  _createClass(Connector, [{
-    key: "setOptions",
-    value: function setOptions(options) {
-      this.options = _extends(this._defaultOptions, options);
-
-      if (this.csrfToken()) {
-        this.options.auth.headers['X-CSRF-TOKEN'] = this.csrfToken();
-      }
-
-      return options;
-    }
-    /**
-     * Extract the CSRF token from the page.
-     */
-
-  }, {
-    key: "csrfToken",
-    value: function csrfToken() {
-      var selector;
-
-      if (typeof window !== 'undefined' && window['Laravel'] && window['Laravel'].csrfToken) {
-        return window['Laravel'].csrfToken;
-      } else if (this.options.csrfToken) {
-        return this.options.csrfToken;
-      } else if (typeof document !== 'undefined' && typeof document.querySelector === 'function' && (selector = document.querySelector('meta[name="csrf-token"]'))) {
-        return selector.getAttribute('content');
-      }
-
-      return null;
-    }
-  }]);
-
-  return Connector;
-}();
 
 /**
  * This class creates a connector to Pusher.
@@ -13406,7 +13930,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _alpinejs_focus__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @alpinejs/focus */ "./node_modules/@alpinejs/focus/dist/module.esm.js");
 /* harmony import */ var _vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../vendor/filament/forms/dist/module.esm */ "./vendor/filament/forms/dist/module.esm.js");
 /* harmony import */ var _alpinejs_filamentphp_multiselect__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./alpinejs/filamentphp/multiselect */ "./resources/js/alpinejs/filamentphp/multiselect.js");
+/* harmony import */ var _alpinejs_filamentphp_fileupload__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./alpinejs/filamentphp/fileupload */ "./resources/js/alpinejs/filamentphp/fileupload.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+
 
 
 
@@ -13415,6 +13941,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"];
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].data('multiselect', _alpinejs_filamentphp_multiselect__WEBPACK_IMPORTED_MODULE_3__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(_vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_2__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(_alpinejs_filamentphp_fileupload__WEBPACK_IMPORTED_MODULE_4__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].plugin(_alpinejs_focus__WEBPACK_IMPORTED_MODULE_1__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_0__["default"].start();
 })();

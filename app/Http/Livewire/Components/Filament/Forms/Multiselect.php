@@ -7,7 +7,7 @@ use Filament\Forms\Components\Field;
 
 class Multiselect extends Field
 {
-    use Concerns\HasExtraAlpineAttributes;
+    Use \Filament\Support\Concerns\HasExtraAlpineAttributes;
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
     

@@ -47,9 +47,6 @@
           </p>
         </div>
       </div>
-      @error('cover_photo')
-      <x-livewire.error-text>{{ $message }}</x-livewire.error-text>
-      @enderror
     </div>
   </div>
 </x-forms::field-wrapper>

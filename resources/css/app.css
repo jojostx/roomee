@@ -1,4 +1,5 @@
 @import '../../vendor/filament/forms/dist/module.esm.css';
+@import '../../node_modules/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -266,4 +267,49 @@ option {
 
 .tab-container input[type="radio"]:checked+label+.content-container {
     display: initial;
+}
+
+/* use a hand cursor intead of arrow for the action buttons */
+.filepond--file-action-button {
+    cursor: pointer;
+}
+
+/* the background color of the filepond drop area */
+.filepond--panel-root {
+    background-color: #eee;
+}
+
+/* the border radius of the drop area */
+.filepond--panel-root {
+    border-radius: 0.5em;
+}
+
+.filepond--root[data-style-panel-layout~="circle"] .filepond--panel-root {
+    background-color: #eee;
+  }
+
+/* the border radius of the file item */
+.filepond--item-panel {
+    border-radius: 0.5em;
+}
+
+/* the color of the focus ring */
+.filepond--file-action-button:hover,
+.filepond--file-action-button:focus {
+    box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.9);
+}
+
+/* the text color of the file status and info labels */
+.filepond--file {
+    color: white;
+}
+
+/* error state color */
+[data-filepond-item-state*='error'] .filepond--item-panel,
+[data-filepond-item-state*='invalid'] .filepond--item-panel {
+    background-color: red;
+}
+
+[data-filepond-item-state='processing-complete'] .filepond--item-panel {
+    background-color: green;
 }

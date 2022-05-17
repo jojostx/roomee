@@ -231,12 +231,12 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute()
     {
-        return Storage::disk('avatars')->url($this->id.'\\'.$this->avatar)??'';
+        return Storage::disk('avatars')->url($this->id.'/'.$this->avatar)??'';
     }
 
     public function getCoverPhotoPathAttribute()
     {
-        return Storage::disk('cover_photos')->url($this->id.'\\'.$this->cover_photo);
+        return Storage::disk('cover_photos')->url($this->id.'/'.$this->cover_photo);
     }
 
 }

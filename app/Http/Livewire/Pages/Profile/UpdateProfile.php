@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Profile;
 
+use App\Http\Livewire\Components\Filament\Forms\Fileupload as FormsFileupload;
 use App\Http\Livewire\Components\Filament\Forms\Multiselect as FormsMultiselect;
 use App\Http\Livewire\Traits\WithImageManipulation;
 use App\Models\Course;
@@ -10,22 +11,25 @@ use App\Models\Hobby;
 use App\Models\School;
 use App\Models\Town;
 use App\Rules\ModelsExist;
-use Filament\Forms\Components\BelongsToManyMultiSelect;
-use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MultiSelect;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Livewire\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
+use MartinRo\FilamentCharcountField\Components\CharcountedTextarea;
+use MartinRo\FilamentCharcountField\Components\CharcountedTextInput;
 
 class UpdateProfile extends Component implements HasForms
 {
@@ -57,6 +61,8 @@ class UpdateProfile extends Component implements HasForms
     {
         $this->form->fill([
             'avatar' => auth()->user()->avatar ?? '',
+            'firstname' => auth()->user()->firstname,
+            'lastname' => auth()->user()->lastname,
             'cover_photo' => auth()->user()->cover_photo ?? '',
             'rooms' => auth()->user()->rooms ?? '',
             'bio' => auth()->user()->bio ?? '',
@@ -111,7 +117,7 @@ class UpdateProfile extends Component implements HasForms
         foreach (collect(range($this->minAllowedBudget, $this->maxAllowedBudget, env('BUDGET_PRICE_STEP', 20000))) as $value) {
             $result[$value] = number_format(floatval($value), 2);
         }
-        
+
         return $result;
     }
 
@@ -194,23 +200,122 @@ class UpdateProfile extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            ViewField::make('avatar')->view('livewire.components.filament.forms.avatar-upload')->disableLabel(true),
+            // ViewField::make('avatar')->view('livewire.components.filament.forms.avatar-upload')->disableLabel(true),
+            // ViewField::make('cover_photo')->view('livewire.components.filament.forms.cover-photo-upload'),
 
-            ViewField::make('cover_photo')->view('livewire.components.filament.forms.cover-photo-upload'),
+            Card::make()
+                ->schema([
+                    FormsFileupload::make('avatar')
+                        ->disableLabel()
+                        ->avatar()
+                        ->setPosterFileUrl(auth()->user()?->avatarPath)
+                        ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                            return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');
+                        })
+                        ->columnSpan([
+                            'default' => 1,
+                            'sm' => 1,
+                            'md' => 1,
+                            'lg' => 2,
+                        ]),
+
+                    FileUpload::make('cover_photo')
+                        ->label('Cover Photo')
+                        ->image()
+                        ->disk('cover_photos')
+                        ->panelLayout('compact')
+                        ->panelAspectRatio('2:1')
+                        ->imageCropAspectRatio('2:1')
+                        ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                            return (string) str($file->getClientOriginalName())->prepend('cover-photo-', md5(strval(auth()->user()->id)), now() . '-');
+                        })
+                        ->extraAttributes(['class' => 'bg-gray-100'])
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 2,
+                            'md' => 3,
+                            'lg' => 6,
+                        ]),
+
+                    CharcountedTextInput::make('firstname')
+                        ->label('First Name')
+                        ->minCharacters(2)
+                        ->maxCharacters(160)
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 2,
+                            'md' => 2,
+                            'lg' => 4,
+                        ])
+                        ->required(),
+
+                    CharcountedTextInput::make('lastname')
+                        ->label('Last Name')
+                        ->minCharacters(2)
+                        ->maxCharacters(160)
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 2,
+                            'md' => 2,
+                            'lg' => 4,
+                        ])
+                        ->required(),
+
+                    Placeholder::make('Email')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
+                        ->content(auth()->user()->email)
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 2,
+                            'md' => 2,
+                            'lg' => 4,
+                        ]),
+
+                    Placeholder::make('Gender')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
+                        ->content(auth()->user()->gender)
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 2,
+                            'md' => 2,
+                            'lg' => 4,
+                        ]),
+                ])
+                ->columns([
+                    'default' => 2,
+                    'sm' => 2,
+                    'md' => 4,
+                    'lg' => 8,
+                ]),
+
 
             Section::make('Personal Information')
                 ->description('These are Information that describe who you are.')
                 ->columns(2)
                 ->schema([
-                    Textarea::make('bio')->label('About')->columnSpan(2)->required(),
+                    CharcountedTextarea::make('bio')
+                        ->label('About')
+                        ->columnSpan(2)
+                        ->required()
+                        ->rows(4)
+                        ->minCharacters(15)
+                        ->maxCharacters(160),
 
                     FormsMultiselect::make('hobbies')
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 1,
+                            'md' => 1,
+                        ])
                         ->label('Hobbies')
                         ->options(Hobby::select('id', 'name')->orderBy('name')->get()->toArray())
                         ->placeholder('Please select your hobbies')
                         ->required(),
 
                     FormsMultiselect::make('dislikes')
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 1,
+                            'md' => 1,
+                        ])
                         ->label('Dislikes')
                         ->placeholder('Please select your dislikes')
                         ->options(Dislike::select('id', 'name')->orderBy('name')->get()->toArray())
@@ -236,22 +341,27 @@ class UpdateProfile extends Component implements HasForms
                         ->columnSpan(2)
                         ->rules([
                             Rule::in(School::all('id')->pluck('id')->toArray()),
-                            'required'
-                        ]),
+                        ])
+                        ->required(),
 
                     Select::make('course')
                         ->label('Course of Study')
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 1,
+                            'md' => 1,
+                        ])
                         ->reactive()
                         ->searchable()
                         ->getSearchResultsUsing(fn (string $searchQuery, callable $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
                         ->getOptionLabelUsing(fn ($value): ?string => Course::find($value)?->name)
                         ->options(function (callable $get) {
                             $school =  School::find($get('school'));
-                            
+
                             if (!$school) {
                                 return [];
                             }
-                            
+
                             return $school->courses->pluck('name', 'id')->toArray();
                         })
                         ->afterStateUpdated(function (callable $set) {
@@ -262,6 +372,11 @@ class UpdateProfile extends Component implements HasForms
 
                     Select::make('course_level')
                         ->label('Course Level')
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 1,
+                            'md' => 1,
+                        ])
                         ->options(function (callable $get) {
                             $course = Course::find($get('course'));
 
