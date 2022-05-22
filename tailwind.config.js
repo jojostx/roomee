@@ -21,6 +21,7 @@ module.exports = {
             colors: {
                 danger: colors.rose,
                 primary: colors.blue,
+                secondary: colors.orange,
             },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],

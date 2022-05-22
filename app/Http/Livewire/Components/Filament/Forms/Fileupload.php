@@ -9,21 +9,44 @@ class Fileupload extends ComponentsFileUpload
 {
     protected string $view = 'livewire.components.filament.forms.fileupload';
 
-    protected ?Closure $getPosterFileUrlUsing = null;
+    protected bool $hasDefaultState = true;
 
-    public string $posterFileUrl = "";
+    public ?Closure $image = null;
 
-    public function setPosterFileUrl(string $url = null): static
+    protected function setUp(): void
     {
-        $this->posterFileUrl = $url ?? $this->getPosterFileUrl();
+        parent::setUp();
+        
+        // $this->afterStateHydrated(static function ($component, string | array | null $state): void {
+        //     if (blank($state)) {
+        //         $component->state([]);
+
+        //         return;
+        //     }
+
+        //     $files = collect(Arr::wrap($state))
+        //         ->mapWithKeys(static fn (string $file): array => [(string) Str::uuid() => $file])
+        //         ->toArray();
+
+        //     $component->state($files);
+        // });
+
+        // if ($this->hasDefaultState()) {
+        //     $this->setImage($this->getDefaultState());
+        // }else {
+        //     $this->setImage();
+        // }
+    }
+
+    public function setImage($image = "https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=N+A"): static
+    {
+        $this->image = $image;
 
         return $this;
     }
 
-    public function getPosterFileUrl(): string
+    public function getImage(): ?string
     {
-        $email = auth()->user()?->email ?? 'roomee@roomee.com';
-
-        return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "&s=" . 40;
+        return $this->evaluate($this->image);
     }
 }

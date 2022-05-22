@@ -205,10 +205,9 @@ class UpdateProfile extends Component implements HasForms
 
             Card::make()
                 ->schema([
-                    FormsFileupload::make('avatar')
+                    Fileupload::make('avatar')
                         ->disableLabel()
                         ->avatar()
-                        ->setPosterFileUrl(auth()->user()?->avatarPath)
                         ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                             return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');
                         })

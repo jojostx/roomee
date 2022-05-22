@@ -1,103 +1,37 @@
 export default (Alpine) => {
     Alpine.data('customFileUploadFormComponent', ({
-        acceptedFileTypes,
-        canReorder,
-        canPreview,
-        deleteUploadedFileUsing,
-        getUploadedFileUrlsUsing,
-        posterFileUrl,
+        acceptedFileTypes = ["image/jpg", "image/png", "image/jpeg"],
+        isAvatar = false,
+        getAltText,
         imageCropAspectRatio,
-        imagePreviewHeight,
-        imageResizeTargetHeight,
-        imageResizeTargetWidth,
-        loadingIndicatorPosition,
-        panelAspectRatio,
-        panelLayout,
-        placeholder,
-        maxSize,
+        imagePreviewHeight = 320,
+        maxSize = 5242880,
+        hasImage = false,
         minSize,
-        removeUploadedFileButtonPosition,
-        removeUploadedFileUsing,
-        reorderUploadedFilesUsing,
-        shouldAppendFiles,
+        minCroppedWidth = 320,
+        maxCroppedWidth = 960,
+        minCroppedHeight = 320,
         state,
-        uploadButtonPosition,
-        uploadProgressIndicatorPosition,
-        uploadUsing,
+        defaultImageUrl
     }) => {
         return {
-            fileKeyIndex: {},
+            cropper: null,
 
-            pond: null,
-
-            shouldUpdateState: true,
+            aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
 
             state,
 
-            uploadedFileUrlIndex: {},
+            showCropper: false,
 
-            init: async function() {
-                this.pond = FilePond.create(this.$refs.input, {
-                    acceptedFileTypes,
-                    allowReorder: canReorder,
-                    allowImagePreview: canPreview,
-                    allowVideoPreview: canPreview,
-                    allowAudioPreview: canPreview,
-                    credits: false,
-                    files: await this.getFiles(),
-                    imageCropAspectRatio,
-                    imagePreviewHeight,
-                    imageResizeTargetHeight,
-                    imageResizeTargetWidth,
-                    itemInsertLocation: shouldAppendFiles ? 'after' : 'before',
-                    ...(placeholder && { labelIdle: placeholder }),
-                    maxFileSize: maxSize,
-                    minFileSize: minSize,
-                    styleButtonProcessItemPosition: uploadButtonPosition,
-                    styleButtonRemoveItemPosition: removeUploadedFileButtonPosition,
-                    styleLoadIndicatorPosition: loadingIndicatorPosition,
-                    stylePanelAspectRatio: panelAspectRatio,
-                    stylePanelLayout: panelLayout,
-                    styleProgressIndicatorPosition: uploadProgressIndicatorPosition,
-                    server: {
-                        load: async(source, load) => {
-                            let response = await fetch(source)
-                            let blob = await response.blob()
+            hasImage,
 
-                            load(blob)
-                        },
-                        process: (fieldName, file, metadata, load, error, progress) => {
-                            this.shouldUpdateState = false
+            hasCropCanvas: false,
 
-                            let fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
-                                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-                            )
+            imageElement: "",
 
-                            uploadUsing(fileKey, file, (fileKey) => {
-                                this.shouldUpdateState = true
+            currentInputImage: null,
 
-                                load(fileKey)
-                            }, error, progress)
-                        },
-                        remove: async(source, load) => {
-                            let fileKey = this.uploadedFileUrlIndex[source] ?? null
-
-                            if (!fileKey) {
-                                return
-                            }
-
-                            await deleteUploadedFileUsing(fileKey)
-
-                            load()
-                        },
-                        revert: async(uniqueFileId, load) => {
-                            await removeUploadedFileUsing(uniqueFileId)
-
-                            load()
-                        },
-                    },
-                })
-
+            async init() {
                 this.$watch('state', async() => {
                     if (!this.shouldUpdateState) {
                         return;
@@ -107,96 +41,154 @@ export default (Alpine) => {
                     if (Object.values(this.state).filter((file) => file.startsWith('livewire-file:')).length) {
                         return
                     }
-
-                    this.pond.files = await this.getFiles()
-                })
-
-                this.pond.on('reorderfiles', async(files) => {
-                    const orderedFileKeys = files
-                        .map(file => file.source instanceof File ? file.serverId : this.uploadedFileUrlIndex[file.source] ?? null) // file.serverId is null for a file that is not yet uploaded
-                        .filter(fileKey => fileKey)
-
-                    await reorderUploadedFilesUsing(shouldAppendFiles ? orderedFileKeys : orderedFileKeys.reverse())
-                })
-
-                this.pond.on('processfilestart', async() => {
-                    this.dispatchFormEvent('file-upload-started')
-                })
-
-                this.pond.on('processfileprogress', async() => {
-                    this.dispatchFormEvent('file-upload-started')
-                })
-
-                this.pond.on('processfile', async() => {
-                    this.dispatchFormEvent('file-upload-finished')
-                })
-
-                this.pond.on('processfiles', async() => {
-                    this.dispatchFormEvent('file-upload-finished')
-                })
-
-                this.pond.on('processfileabort', async() => {
-                    this.dispatchFormEvent('file-upload-finished')
-                })
-
-                this.pond.on('processfilerevert', async() => {
-                    this.dispatchFormEvent('file-upload-finished')
                 })
             },
 
-            dispatchFormEvent: function(name) {
-                this.$el.closest('form')?.dispatchEvent(
-                    new CustomEvent(name, {
-                        composed: true,
-                        cancelable: true,
-                    })
-                )
+            initCropper() {
+                elem = this.$refs.cropCanvas;
+                
+                if (!this.isValidHTMLImageElement(elem)) {
+                    return;
+                }
+                
+                this.cropper = new Cropper(elem, {
+                    aspectRatio: this.aspectRatio,
+                    viewMode: 3,
+                    dragMode: 'move',
+                    rotatable: false,
+                    scalable: false,
+                    toggleDragModeOnDblclick: false,
+
+                    data: {
+                        width: minCroppedWidth,
+                        height: minCroppedHeight
+                    },
+
+                    crop: function(event) {
+                        let width = event.detail.width;
+                        let height = event.detail.height;
+
+                        if (
+                            width < minCroppedWidth ||
+                            height < minCroppedHeight ||
+                            width > maxCroppedWidth
+                        ) {
+                            cropper.setData({
+                                width: Math.max(minCroppedWidth, Math.min(maxCroppedWidth, width)),
+                            });
+                        }
+                    },
+                });
             },
 
-            getUploadedFileUrls: async function() {
-                const uploadedFileUrls = await getUploadedFileUrlsUsing()
+            handlefileInputChange() {
+                let files = this.$el.files;
+                let file;
 
-                this.fileKeyIndex = uploadedFileUrls ?? {}
+                if (files && files.length > 0) {
+                    file = files[0];
 
-                this.uploadedFileUrlIndex = Object.entries(this.fileKeyIndex)
-                    .filter(value => value)
-                    .reduce((obj, [key, value]) => {
-                        obj[value] = key
-
-                        return obj
-                    }, {})
-            },
-
-            getFiles: async function() {
-                await this.getUploadedFileUrls()
-
-                console.log(posterFileUrl);
-
-                let files = []
-
-                for (const uploadedFileUrl of Object.values(this.fileKeyIndex)) {
-                    if (!uploadedFileUrl) {
-                        continue
+                    if (!this.validFileSize(file.size) || !this.validFileType(file.type)) {
+                        return false;
                     }
 
-                    files.push({
-                        source: uploadedFileUrl,
-                        options: {
-                            type: 'local',
-                        },
-                        file: {
-                          name: "hedgehog.jpg",
-                          size: 189397, //correct size of the file
-                          type: "image/png"
-                        },
-                        metadata: {
-                            poster: posterFileUrl,
-                        },
-                    })
+                    if (URL) {
+                        this.updateCropCanvas(URL.createObjectURL(file));
+                        
+                        this.initCropper();
+                    } else if (FileReader) {
+                        let reader = new FileReader();
+                        
+                        reader.onload = (e) => {
+                            if (e.loaded) {
+                                this.updateCropCanvas(reader.result)
+                            }
+                        };
+                        
+                        reader.readAsDataURL(file);
+                        
+                        this.initCropper();
+                    }
+
+                }
+            },
+
+            updateCropCanvas(imageSrc = ""){
+                if (!imageSrc.trim()) {
+                    return;
                 }
 
-                return shouldAppendFiles ? files : files.reverse()
+                this.$refs.cropCanvas.src = imageSrc;
+
+                this.hasCropCanvas = true;
+            },
+
+            updatePreview(imageSrc){
+                if (typeof imageSrc !== String && !imageSrc.trim()) {
+                    return;
+                }
+
+                this.$refs.poster.src = imageSrc;
+            },
+
+            // implement later
+            swap() {
+                //update som kind of array
+            },
+
+            // implement later
+            edit() {
+                //show modal by dispatching event 
+            },
+
+            cropAndSave() {
+                if (this.cropper) {
+                    let canvas = this.cropper.getCroppedCanvas({
+                        width: imageCropAspectRatio * imagePreviewHeight,
+                        height: imagePreviewHeight,
+                    })
+
+                    // convert canvas output to blob and upload to Livewire com:
+                    canvas.toBlob(function (blob) {
+
+                    }, currentInputImage.type);
+
+                    //if image upload is successful set the preview
+                    this.updatePreview(canvas.toDataURL(currentInputImage.type));
+                }
+            },
+
+            // called when modal is close
+            resetCropper(){
+                if (this.cropper) {
+                    this.cropper.destroy();
+                    this.cropper = null;
+                }
+            },
+
+            getAltText(){
+                if (isAvatar) {
+                    return getAltText ?? 'avatar image';
+                }
+
+                return getAltText ?? 'cover image';
+            },
+
+            validFileType(fileType) {
+                return acceptedFileTypes.includes(fileType);
+            },
+
+            validFileSize(fileSize) {
+                return fileSize < maxSize || fileSize > minSize;
+            },
+
+            isValidHTMLImageElement(elem){
+                if (elem?.src && typeof elem == HTMLImageElement) {
+                    return true;
+                }
+
+                return false;
             }
-        }
+        };
     })
 }
