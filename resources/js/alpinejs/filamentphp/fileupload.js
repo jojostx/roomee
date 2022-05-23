@@ -2,34 +2,38 @@ export default (Alpine) => {
     Alpine.data('customFileUploadFormComponent', ({
         acceptedFileTypes = ["image/jpg", "image/png", "image/jpeg"],
         isAvatar = false,
-        getAltText,
         imageCropAspectRatio,
         imagePreviewHeight = 320,
         maxSize = 5242880,
-        hasImage = false,
-        minSize,
+        minSize = 52428,
         minCroppedWidth = 320,
         maxCroppedWidth = 960,
         minCroppedHeight = 320,
+        defaultImageUrl,
+        deleteUploadedFileUsing,
+        uploadUsing,
         state,
-        defaultImageUrl
     }) => {
         return {
-            cropper: null,
-
-            aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
-
             state,
+
+            hasImage: defaultImageUrl? true : false,
+
+            croppable: false,
+
+            cropper: null,
 
             showCropper: false,
 
-            hasImage,
+            aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
 
             hasCropCanvas: false,
 
-            imageElement: "",
-
             currentInputImage: null,
+
+            uploadedFileUrlIndex: {},
+
+            shouldUpdateState: true,
 
             async init() {
                 this.$watch('state', async() => {
@@ -45,19 +49,19 @@ export default (Alpine) => {
             },
 
             initCropper() {
-                elem = this.$refs.cropCanvas;
-                
+                let elem = this.$refs.cropCanvas;
+
                 if (!this.isValidHTMLImageElement(elem)) {
                     return;
                 }
-                
+
                 this.cropper = new Cropper(elem, {
                     aspectRatio: this.aspectRatio,
                     viewMode: 3,
                     dragMode: 'move',
                     rotatable: false,
                     scalable: false,
-                    toggleDragModeOnDblclick: false,
+                    toggleDragModeOnDblclick: true,
 
                     data: {
                         width: minCroppedWidth,
@@ -73,16 +77,18 @@ export default (Alpine) => {
                             height < minCroppedHeight ||
                             width > maxCroppedWidth
                         ) {
-                            cropper.setData({
+                            this.cropper.setData({
                                 width: Math.max(minCroppedWidth, Math.min(maxCroppedWidth, width)),
                             });
                         }
                     },
                 });
+
+                this.croppable = true;
             },
 
-            handlefileInputChange() {
-                let files = this.$el.files;
+            handleFileInputChange() {
+                let files = this.$refs.input.files;
                 let file;
 
                 if (files && files.length > 0) {
@@ -91,6 +97,8 @@ export default (Alpine) => {
                     if (!this.validFileSize(file.size) || !this.validFileType(file.type)) {
                         return false;
                     }
+
+                    this.currentInputImage = file;
 
                     if (URL) {
                         this.updateCropCanvas(URL.createObjectURL(file));
@@ -131,16 +139,6 @@ export default (Alpine) => {
                 this.$refs.poster.src = imageSrc;
             },
 
-            // implement later
-            swap() {
-                //update som kind of array
-            },
-
-            // implement later
-            edit() {
-                //show modal by dispatching event 
-            },
-
             cropAndSave() {
                 if (this.cropper) {
                     let canvas = this.cropper.getCroppedCanvas({
@@ -149,13 +147,44 @@ export default (Alpine) => {
                     })
 
                     // convert canvas output to blob and upload to Livewire com:
-                    canvas.toBlob(function (blob) {
+                    // canvas.toBlob(function (blob) {
+                    //     this.upload(blob, (fileKey) => {
+                    //         //if image upload is successful set the preview
+                    //         this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
+                    //         this.resetCropper();
+                    //     })
+                    // }, this.currentInputImage?.type);
 
-                    }, currentInputImage.type);
+                    this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
 
-                    //if image upload is successful set the preview
-                    this.updatePreview(canvas.toDataURL(currentInputImage.type));
+                    this.resetCropper();
                 }
+            },
+
+            upload(file, load, error, progress) {
+                this.shouldUpdateState = false
+
+                let fileKey = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                )
+
+                uploadUsing(fileKey, file, (fileKey) => {
+                    this.shouldUpdateState = true
+
+                    load(fileKey)
+                }, error, progress)
+            },
+
+            remove: async (source, load) => {
+                let fileKey = this.uploadedFileUrlIndex[source] ?? null
+
+                if (! fileKey) {
+                    return
+                }
+
+                await deleteUploadedFileUsing(fileKey)
+
+                load()
             },
 
             // called when modal is close
@@ -164,14 +193,8 @@ export default (Alpine) => {
                     this.cropper.destroy();
                     this.cropper = null;
                 }
-            },
 
-            getAltText(){
-                if (isAvatar) {
-                    return getAltText ?? 'avatar image';
-                }
-
-                return getAltText ?? 'cover image';
+                this.hasImage = false;
             },
 
             validFileType(fileType) {
@@ -183,7 +206,7 @@ export default (Alpine) => {
             },
 
             isValidHTMLImageElement(elem){
-                if (elem?.src && typeof elem == HTMLImageElement) {
+                if (elem?.src) {
                     return true;
                 }
 

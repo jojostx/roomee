@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Profile;
 
+use Filament\Forms\Components\FileUpload;
 use App\Http\Livewire\Components\Filament\Forms\Fileupload as FormsFileupload;
 use App\Http\Livewire\Components\Filament\Forms\Multiselect as FormsMultiselect;
 use App\Http\Livewire\Traits\WithImageManipulation;
@@ -12,14 +13,10 @@ use App\Models\School;
 use App\Models\Town;
 use App\Rules\ModelsExist;
 use Filament\Forms\Components\Card;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
@@ -61,9 +58,9 @@ class UpdateProfile extends Component implements HasForms
     {
         $this->form->fill([
             'avatar' => auth()->user()->avatar ?? '',
+            'cover_photo' => auth()->user()->cover_photo ?? '',
             'firstname' => auth()->user()->firstname,
             'lastname' => auth()->user()->lastname,
-            'cover_photo' => auth()->user()->cover_photo ?? '',
             'rooms' => auth()->user()->rooms ?? '',
             'bio' => auth()->user()->bio ?? '',
             'max_budget' => auth()->user()->max_budget ?? '',
@@ -200,12 +197,22 @@ class UpdateProfile extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            // ViewField::make('avatar')->view('livewire.components.filament.forms.avatar-upload')->disableLabel(true),
-            // ViewField::make('cover_photo')->view('livewire.components.filament.forms.cover-photo-upload'),
-
             Card::make()
                 ->schema([
-                    Fileupload::make('avatar')
+                    // Fileupload::make('avatar')
+                    //     ->disableLabel()
+                    //     ->avatar()
+                    //     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                    //         return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');
+                    //     })
+                    //     ->columnSpan([
+                    //         'default' => 1,
+                    //         'sm' => 1,
+                    //         'md' => 1,
+                    //         'lg' => 2,
+                    //     ]),
+                        
+                    FormsFileupload::make('avatar')
                         ->disableLabel()
                         ->avatar()
                         ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
