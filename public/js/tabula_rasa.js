@@ -5972,7 +5972,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       cropper: null,
       showCropper: false,
       aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
-      hasCropCanvas: false,
       currentInputImage: null,
       uploadedFileUrlIndex: {},
       shouldUpdateState: true,
@@ -6022,8 +6021,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }, _callee2);
         }))();
       },
-      initCropper: function initCropper() {
-        var elem = this.$refs.cropCanvas;
+      initCropper: function initCropper(id, fileUrl) {
+        var _this$$refs$cropCanva;
+
+        var elem = (_this$$refs$cropCanva = this.$refs.cropCanvas) !== null && _this$$refs$cropCanva !== void 0 ? _this$$refs$cropCanva : document.getElementById('cropCanvas');
+        elem.src = elem ? fileUrl : '';
 
         if (!this.isValidHTMLImageElement(elem)) {
           return;
@@ -6052,8 +6054,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         });
         this.croppable = true;
+        this.$dispatch('open-modal', {
+          id: id
+        });
       },
-      handleFileInputChange: function handleFileInputChange() {
+      handleFileInputChange: function handleFileInputChange(id) {
         var _this3 = this;
 
         var files = this.$refs.input.files;
@@ -6069,31 +6074,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           this.currentInputImage = file;
 
           if (URL) {
-            this.updateCropCanvas(URL.createObjectURL(file));
-            this.initCropper();
+            this.initCropper(id, URL.createObjectURL(file));
           } else if (FileReader) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
               if (e.loaded) {
-                _this3.updateCropCanvas(reader.result);
+                _this3.initCropper(id, reader.result);
               }
             };
 
             reader.readAsDataURL(file);
-            this.initCropper();
           }
         }
-      },
-      updateCropCanvas: function updateCropCanvas() {
-        var imageSrc = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
-
-        if (!imageSrc.trim()) {
-          return;
-        }
-
-        this.$refs.cropCanvas.src = imageSrc;
-        this.hasCropCanvas = true;
       },
       updatePreview: function updatePreview(imageSrc) {
         if (_typeof(imageSrc) !== String && !imageSrc.trim()) {
@@ -6102,9 +6095,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         this.$refs.poster.src = imageSrc;
       },
+      // called when modal is closed
+      resetCropper: function resetCropper() {
+        if (this.cropper) {
+          this.cropper.destroy();
+          this.cropper = null;
+        }
+
+        this.hasImage = false;
+        this.croppable = false;
+      },
       cropAndSave: function cropAndSave() {
         if (this.cropper) {
-          var _this$this$currentInp;
+          var _this$currentInputIma;
 
           var canvas = this.cropper.getCroppedCanvas({
             width: imageCropAspectRatio * imagePreviewHeight,
@@ -6118,7 +6121,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           //     })
           // }, this.currentInputImage?.type);
 
-          this.updatePreview(canvas.toDataURL((_this$this$currentInp = this["this"].currentInputImage) === null || _this$this$currentInp === void 0 ? void 0 : _this$this$currentInp.type));
+          this.updatePreview(canvas.toDataURL((_this$currentInputIma = this.currentInputImage) === null || _this$currentInputIma === void 0 ? void 0 : _this$currentInputIma.type));
           this.resetCropper();
         }
       },
@@ -6173,15 +6176,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
         return remove;
       }(),
-      // called when modal is close
-      resetCropper: function resetCropper() {
-        if (this.cropper) {
-          this.cropper.destroy();
-          this.cropper = null;
-        }
-
-        this.hasImage = false;
-      },
       validFileType: function validFileType(fileType) {
         return acceptedFileTypes.includes(fileType);
       },

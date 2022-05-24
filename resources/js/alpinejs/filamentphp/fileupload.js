@@ -27,8 +27,6 @@ export default (Alpine) => {
 
             aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
 
-            hasCropCanvas: false,
-
             currentInputImage: null,
 
             uploadedFileUrlIndex: {},
@@ -48,8 +46,10 @@ export default (Alpine) => {
                 })
             },
 
-            initCropper() {
-                let elem = this.$refs.cropCanvas;
+            initCropper(id, fileUrl) {
+                let elem = this.$refs.cropCanvas ?? document.getElementById('cropCanvas');
+
+                elem.src = elem ? fileUrl : '';
 
                 if (!this.isValidHTMLImageElement(elem)) {
                     return;
@@ -85,9 +85,11 @@ export default (Alpine) => {
                 });
 
                 this.croppable = true;
+
+                this.$dispatch('open-modal', {id});
             },
 
-            handleFileInputChange() {
+            handleFileInputChange(id) {
                 let files = this.$refs.input.files;
                 let file;
 
@@ -100,35 +102,22 @@ export default (Alpine) => {
 
                     this.currentInputImage = file;
 
-                    if (URL) {
-                        this.updateCropCanvas(URL.createObjectURL(file));
-                        
-                        this.initCropper();
+                    if (URL) {                        
+                        this.initCropper(id, URL.createObjectURL(file));
                     } else if (FileReader) {
                         let reader = new FileReader();
                         
                         reader.onload = (e) => {
                             if (e.loaded) {
-                                this.updateCropCanvas(reader.result)
+                                this.initCropper(id, reader.result);
                             }
                         };
                         
                         reader.readAsDataURL(file);
                         
-                        this.initCropper();
                     }
 
                 }
-            },
-
-            updateCropCanvas(imageSrc = ""){
-                if (!imageSrc.trim()) {
-                    return;
-                }
-
-                this.$refs.cropCanvas.src = imageSrc;
-
-                this.hasCropCanvas = true;
             },
 
             updatePreview(imageSrc){
@@ -137,6 +126,17 @@ export default (Alpine) => {
                 }
 
                 this.$refs.poster.src = imageSrc;
+            },
+            
+            // called when modal is closed
+            resetCropper(){
+                if (this.cropper) {
+                    this.cropper.destroy();
+                    this.cropper = null;
+                }
+
+                this.hasImage = false;
+                this.croppable = false;
             },
 
             cropAndSave() {
@@ -155,7 +155,7 @@ export default (Alpine) => {
                     //     })
                     // }, this.currentInputImage?.type);
 
-                    this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
+                    this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
 
                     this.resetCropper();
                 }
@@ -185,16 +185,6 @@ export default (Alpine) => {
                 await deleteUploadedFileUsing(fileKey)
 
                 load()
-            },
-
-            // called when modal is close
-            resetCropper(){
-                if (this.cropper) {
-                    this.cropper.destroy();
-                    this.cropper = null;
-                }
-
-                this.hasImage = false;
             },
 
             validFileType(fileType) {

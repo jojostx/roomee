@@ -219,7 +219,7 @@ class UpdateProfile extends Component implements HasForms
                             return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');
                         })
                         ->columnSpan([
-                            'default' => 1,
+                            'default' => 'full',
                             'sm' => 1,
                             'md' => 1,
                             'lg' => 2,
