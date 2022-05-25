@@ -48,7 +48,7 @@
     >
         <button
             @if ($id)
-                x-on:click="$dispatch('close-modal', {id: '{{ $id }}' })"
+                x-on:click="$dispatch('{{ $closeEventName }}', {id: '{{ $id }}' })"
             @else
                 x-on:click="isOpen = false"
             @endif
@@ -61,7 +61,7 @@
             x-show="isOpen"
             x-trap="isOpen"
             @if ($id)
-                x-on:keydown.window.escape="$dispatch('close-modal', {id: '{{ $id }}' })"
+                x-on:keydown.window.escape="$dispatch('{{ $closeEventName }}', {id: '{{ $id }}' })"
             @else
                 x-on:keydown.window.escape="isOpen = false"
             @endif
