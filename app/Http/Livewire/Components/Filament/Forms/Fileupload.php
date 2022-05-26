@@ -35,6 +35,10 @@ class Fileupload extends BaseFileUpload
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->afterStateHydrated(static function (BaseFileUpload $component, string | array | null $state): void {
+            $component->imageUrl = $state;
+        });
     }
 
     public function avatar(): static

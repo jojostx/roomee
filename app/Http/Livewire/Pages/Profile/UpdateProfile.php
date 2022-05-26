@@ -24,16 +24,15 @@ use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\TemporaryUploadedFile;
-use Livewire\WithFileUploads;
 use MartinRo\FilamentCharcountField\Components\CharcountedTextarea;
 use MartinRo\FilamentCharcountField\Components\CharcountedTextInput;
 
 class UpdateProfile extends Component implements HasForms
 {
-    use WithImageManipulation, WithFileUploads, InteractsWithForms;
+    use InteractsWithForms;
 
-    public $avatar;
-    public $cover_photo;
+    public $avatar_image;
+    public $cover_image;
     public $bio;
     public $hobbies;
     public $dislikes;
@@ -57,8 +56,8 @@ class UpdateProfile extends Component implements HasForms
     public function mount()
     {
         $this->form->fill([
-            'avatar' => auth()->user()->avatar ?? '',
-            'cover_photo' => auth()->user()->cover_photo ?? '',
+            'avatar_image' => auth()->user()->avatarPath,
+            'cover_image' => auth()->user()->coverPhotoPath ?? '',
             'firstname' => auth()->user()->firstname,
             'lastname' => auth()->user()->lastname,
             'rooms' => auth()->user()->rooms ?? '',
@@ -72,6 +71,24 @@ class UpdateProfile extends Component implements HasForms
             'course' => auth()->user()->course->id,
             'course_level' =>  auth()->user()->course_level,
         ]);
+
+        // dd(
+        //     \data_get($this, 'avatar_image'),
+        //     \data_get($this, 'cover_image'),
+        //     \data_get($this, 'firstname'),
+        //     \data_get($this, 'lastname'),
+        //     \data_get($this, 'rooms'),
+        //     \data_get($this, 'bio'),
+        //     \data_get($this, 'bio'),
+        //     \data_get($this, 'max_budget'),
+        //     \data_get($this, 'min_budget'),
+        //     \data_get($this, 'hobbies'),
+        //     \data_get($this, 'dislikes'),
+        //     \data_get($this, 'towns'),
+        //     \data_get($this, 'school'),
+        //     \data_get($this, 'course'),
+        //     \data_get($this, 'course_level'),
+        // );
     }
 
     public function handleAvatarUpload($avatarImage)
@@ -212,7 +229,7 @@ class UpdateProfile extends Component implements HasForms
                     //         'lg' => 2,
                     //     ]),
                         
-                    FormsFileupload::make('avatar')
+                    FormsFileupload::make('avatar_image')
                         ->disableLabel()
                         ->avatar()
                         ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
@@ -225,7 +242,7 @@ class UpdateProfile extends Component implements HasForms
                             'lg' => 2,
                         ]),
 
-                    FileUpload::make('cover_photo')
+                    FileUpload::make('cover_image')
                         ->label('Cover Photo')
                         ->image()
                         ->disk('cover_photos')

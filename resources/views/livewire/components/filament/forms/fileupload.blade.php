@@ -47,7 +47,7 @@
                 ]) 
                 title="Change your avatar">
                 <img 
-                    src="{{ ($imageSrc = $getImageUrl()) ? "'{$imageSrc}'" : ($isAvatar() ? 'https://www.gravatar.com/avatar/00?d=mp' : 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=N+A') }}" 
+                    src="{{ ($imageSrc = $getImageUrl()) ? $imageSrc : ($isAvatar() ? 'https://www.gravatar.com/avatar/00?d=mp' : 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=N+A') }}" 
                     x-ref="poster" 
                     alt="{{ $getAltText() }}" 
                     width="100%">
@@ -78,7 +78,7 @@
                             id="cropCanvas"
                             x-ref="cropCanvas"
                             x-cloak 
-                            src="{{ ($imageSrc = $getImageUrl()) ? "'{$imageSrc}'" : ($isAvatar() ? 'https://www.gravatar.com/avatar/00?d=mp' : 'https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=N+A') }}" 
+                            src="" 
                             class="w-full"
                             alt="crop canvas image" 
                             width="100%">
