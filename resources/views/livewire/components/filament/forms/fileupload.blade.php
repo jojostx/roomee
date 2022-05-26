@@ -70,7 +70,7 @@
 
 
         <!-- trap focus on modal when open -->
-        <x-livewire.support.modal.index width="2xl" id="photo-upload-cropper-{{ $getStatePath() }}" heading="Crop Image" x-on:close-modal.window="if($event.detail.id == 'photo-upload-cropper-{{ $getStatePath() }}' ) { resetCropper(); }">
+        <x-filament::modal width="2xl" id="photo-upload-cropper-{{ $getStatePath() }}" heading="Crop Image" x-on:close-modal.window="if($event.detail.id == 'photo-upload-cropper-{{ $getStatePath() }}' ) { resetCropper(); }">
             <div class="relative bg-white rounded-lg dark:bg-gray-700">
                 <div class="flex flex-col items-center justify-center mt-1">
                     <div class="flex items-center justify-center w-full overflow-hidden rounded-lg">
@@ -97,6 +97,6 @@
                     </x-filament::button>
                 </div>
             </x-slot>
-        </x-livewire.support.modal.index>
+        </x-filament::modal>
     </div>
 </x-forms::field-wrapper>
