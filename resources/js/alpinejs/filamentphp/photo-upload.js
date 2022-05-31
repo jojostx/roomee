@@ -113,10 +113,8 @@ export default (Alpine) => {
                             }
                         };
                         
-                        reader.readAsDataURL(file);
-                        
+                        reader.readAsDataURL(file); 
                     }
-
                 }
             },
 
@@ -146,18 +144,18 @@ export default (Alpine) => {
                         height: imagePreviewHeight,
                     })
 
-                    // convert canvas output to blob and upload to Livewire com:
-                    // canvas.toBlob(function (blob) {
-                    //     this.upload(blob, (fileKey) => {
-                    //         //if image upload is successful set the preview
-                    //         this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
-                    //         this.resetCropper();
-                    //     })
-                    // }, this.currentInputImage?.type);
+                    // convert canvas output to blob and upload to Livewire component
+                    canvas.toBlob(function (blob) {
+                        this.upload(blob, (fileKey) => {
+                            //if image upload is successful set the preview
+                            this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
+                            this.resetCropper();
+                        })
+                    }, this.currentInputImage?.type);
 
-                    this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
+                    // this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
 
-                    this.resetCropper();
+                    // this.resetCropper();
                 }
             },
 
