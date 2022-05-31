@@ -8,7 +8,7 @@
     :required="$isRequired()" 
     :state-path="$getStatePath()">
     <div 
-        x-data="customFileUploadFormComponent({
+        x-data="customPhotoUploadFormComponent({
             state: $wire.{{ $applyStateBindingModifiers('entangle(\'' . $getStatePath() . '\')') }},
             acceptedFileTypes: {{ json_encode($getAcceptedFileTypes()) }},
             isAvatar: {{ $isAvatar() ? 'true' : 'false' }},

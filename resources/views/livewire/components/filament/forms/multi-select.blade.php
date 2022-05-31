@@ -1,5 +1,13 @@
-<x-forms::field-wrapper :id="$getId()" :label="$getLabel()" :label-sr-only="$isLabelHidden()" :helper-text="$getHelperText()" :hint="$getHint()" :hint-icon="$getHintIcon()" :required="$isRequired()" :state-path="$getStatePath()">
-    <div x-data="multiselect({ 
+<x-forms::field-wrapper 
+    :id="$getId()" 
+    :label="$getLabel()" 
+    :label-sr-only="$isLabelHidden()" 
+    :helper-text="$getHelperText()" 
+    :hint="$getHint()" 
+    :hint-icon="$getHintIcon()" 
+    :required="$isRequired()" 
+    :state-path="$getStatePath()">
+    <div x-data="multi-select({ 
         options: {{ json_encode($getOptions()) }}, 
         selectedOptions: {{ json_encode($getSelectedOptions()) }}, 
         })" {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} {{ $attributes->merge($getExtraAttributes())->class([

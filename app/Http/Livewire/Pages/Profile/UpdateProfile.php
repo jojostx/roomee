@@ -3,9 +3,8 @@
 namespace App\Http\Livewire\Pages\Profile;
 
 use Filament\Forms\Components\FileUpload;
-use App\Http\Livewire\Components\Filament\Forms\Fileupload as FormsFileupload;
+use App\Http\Livewire\Components\Filament\Forms\PhotoUpload as PhotoUpload;
 use App\Http\Livewire\Components\Filament\Forms\Multiselect as FormsMultiselect;
-use App\Http\Livewire\Traits\WithImageManipulation;
 use App\Models\Course;
 use App\Models\Dislike;
 use App\Models\Hobby;
@@ -71,24 +70,6 @@ class UpdateProfile extends Component implements HasForms
             'course' => auth()->user()->course->id,
             'course_level' =>  auth()->user()->course_level,
         ]);
-
-        // dd(
-        //     \data_get($this, 'avatar_image'),
-        //     \data_get($this, 'cover_image'),
-        //     \data_get($this, 'firstname'),
-        //     \data_get($this, 'lastname'),
-        //     \data_get($this, 'rooms'),
-        //     \data_get($this, 'bio'),
-        //     \data_get($this, 'bio'),
-        //     \data_get($this, 'max_budget'),
-        //     \data_get($this, 'min_budget'),
-        //     \data_get($this, 'hobbies'),
-        //     \data_get($this, 'dislikes'),
-        //     \data_get($this, 'towns'),
-        //     \data_get($this, 'school'),
-        //     \data_get($this, 'course'),
-        //     \data_get($this, 'course_level'),
-        // );
     }
 
     public function handleAvatarUpload($avatarImage)
@@ -229,7 +210,7 @@ class UpdateProfile extends Component implements HasForms
                     //         'lg' => 2,
                     //     ]),
                         
-                    FormsFileupload::make('avatar_image')
+                    PhotoUpload::make('avatar_image')
                         ->disableLabel()
                         ->avatar()
                         ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {

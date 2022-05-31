@@ -11,7 +11,7 @@ class Multiselect extends Field
     use Concerns\HasOptions;
     use Concerns\HasPlaceholder;
     
-    protected string $view = 'livewire.components.filament.forms.multiselect';
+    protected string $view = 'livewire.components.filament.forms.multi-select';
 
     protected function setUp(): void
     {

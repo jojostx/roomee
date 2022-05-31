@@ -8,13 +8,13 @@ use Filament\Forms\Components\Concerns\HasExtraInputAttributes;
 use Filament\Forms\Components\Concerns\HasPlaceholder;
 use Filament\Support\Concerns\HasExtraAlpineAttributes;
 
-class Fileupload extends BaseFileUpload
+class PhotoUpload extends BaseFileUpload
 {
     use HasExtraInputAttributes;
     use HasPlaceholder;
     use HasExtraAlpineAttributes;
     
-    protected string $view = 'livewire.components.filament.forms.fileupload';
+    protected string $view = 'livewire.components.filament.forms.photo-upload';
 
     public ?string $imageUrl = '';
 
