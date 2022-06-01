@@ -29,6 +29,7 @@
                 }, error, progress)
             }
             })" 
+            
             {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} 
             {{ $attributes->merge($getExtraAttributes())->class([
                 'filament-forms-file-upload-component',

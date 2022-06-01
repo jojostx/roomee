@@ -7,7 +7,7 @@
     :hint-icon="$getHintIcon()" 
     :required="$isRequired()" 
     :state-path="$getStatePath()">
-    <div x-data="multi-select({ 
+    <div x-data="multiselect({ 
         options: {{ json_encode($getOptions()) }}, 
         selectedOptions: {{ json_encode($getSelectedOptions()) }}, 
         })" {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} {{ $attributes->merge($getExtraAttributes())->class([

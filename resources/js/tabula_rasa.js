@@ -10,7 +10,7 @@ import customPhotoUploadFormComponent from './alpinejs/filamentphp/photo-upload'
 window.Alpine = Alpine;
 window.Cropper = Cropper;
 
-Alpine.data('multi-select', multiselect);
+Alpine.data('multiselect', multiselect);
 
 Alpine.plugin(FormsAlpinePlugin)
 Alpine.plugin(customPhotoUploadFormComponent)

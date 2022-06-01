@@ -6441,8 +6441,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (files && files.length > 0) {
           file = files[0];
 
-          if (!this.validFileSize(file.size) || !this.validFileType(file.type)) {
-            return false;
+          if (!this.validFileSize(file.size)) {
+            this.$dispatch('open-alert', {
+              alert_type: 'danger',
+              message: "only images between ".concat((minSize / 1000000).toFixed(1), "MB & ").concat((maxSize / 1000000).toFixed(1), "MB are allowed")
+            });
+            return;
+          } else if (!this.validFileType(file.type)) {
+            this.$dispatch('open-alert', {
+              alert_type: 'danger',
+              message: "Invalid image type. Accepted types: (".concat(acceptedFileTypes.map(function (val) {
+                val.split('/').pop();
+              }).join(', '), ")")
+            });
+            return;
           }
 
           this.currentInputImage = file;
@@ -6480,34 +6492,49 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.croppable = false;
       },
       cropAndSave: function cropAndSave() {
+        var _this4 = this;
+
         if (this.cropper) {
           var _this$currentInputIma;
 
           var canvas = this.cropper.getCroppedCanvas({
             width: imageCropAspectRatio * imagePreviewHeight,
             height: imagePreviewHeight
-          }); // convert canvas output to blob and upload to Livewire com:
-          // canvas.toBlob(function (blob) {
-          //     this.upload(blob, (fileKey) => {
-          //         //if image upload is successful set the preview
-          //         this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
-          //         this.resetCropper();
-          //     })
-          // }, this.currentInputImage?.type);
+          }); // convert canvas output to blob and upload to Livewire component
 
-          this.updatePreview(canvas.toDataURL((_this$currentInputIma = this.currentInputImage) === null || _this$currentInputIma === void 0 ? void 0 : _this$currentInputIma.type));
-          this.resetCropper();
+          canvas.toBlob(function (blob) {
+            _this4.upload(blob, function (fileKey) {
+              var _this4$currentInputIm;
+
+              //if image upload is successful set the preview
+              _this4.updatePreview(canvas.toDataURL((_this4$currentInputIm = _this4.currentInputImage) === null || _this4$currentInputIm === void 0 ? void 0 : _this4$currentInputIm.type));
+
+              _this4.resetCropper();
+
+              _this4.$dispatch('open-alert', {
+                alert_type: 'success',
+                message: "Successfully uploaded file"
+              });
+            }, function () {
+              _this4.$dispatch('open-alert', {
+                alert_type: 'danger',
+                message: "Unable to upload file"
+              });
+            }, function (event) {
+              console.log(event);
+            });
+          }, (_this$currentInputIma = this.currentInputImage) === null || _this$currentInputIma === void 0 ? void 0 : _this$currentInputIma.type);
         }
       },
       upload: function upload(file, load, error, progress) {
-        var _this4 = this;
+        var _this5 = this;
 
         this.shouldUpdateState = false;
         var fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
           return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
         });
         uploadUsing(fileKey, file, function (fileKey) {
-          _this4.shouldUpdateState = true;
+          _this5.shouldUpdateState = true;
           load(fileKey);
         }, error, progress);
       },
@@ -18939,7 +18966,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"];
 window.Cropper = (cropperjs__WEBPACK_IMPORTED_MODULE_0___default());
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].data('multi-select', _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_4__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].data('multiselect', _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_4__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_3__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_5__["default"]);
 alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_focus__WEBPACK_IMPORTED_MODULE_2__["default"]);

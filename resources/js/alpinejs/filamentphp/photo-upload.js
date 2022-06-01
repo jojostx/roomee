@@ -96,8 +96,20 @@ export default (Alpine) => {
                 if (files && files.length > 0) {
                     file = files[0];
 
-                    if (!this.validFileSize(file.size) || !this.validFileType(file.type)) {
-                        return false;
+                    if (!this.validFileSize(file.size)) {
+                        this.$dispatch('open-alert', {
+                            alert_type: 'danger',
+                            message: `only images between ${ (minSize/1000000).toFixed(1) }MB & ${ (maxSize/1000000).toFixed(1) }MB are allowed`
+                        });
+
+                        return;
+                    } else if (!this.validFileType(file.type)) {
+                        this.$dispatch('open-alert', {
+                            alert_type: 'danger',
+                            message: `Invalid image type. Accepted types: (${ acceptedFileTypes.map((val) => { val.split('/').pop() }).join(', ') })`
+                        });
+
+                        return;
                     }
 
                     this.currentInputImage = file;
@@ -145,17 +157,29 @@ export default (Alpine) => {
                     })
 
                     // convert canvas output to blob and upload to Livewire component
-                    canvas.toBlob(function (blob) {
-                        this.upload(blob, (fileKey) => {
-                            //if image upload is successful set the preview
-                            this.updatePreview(canvas.toDataURL(this.this.currentInputImage?.type));
-                            this.resetCropper();
-                        })
+                    canvas.toBlob((blob) => {
+                        this.upload(
+                            blob, 
+                            (fileKey) => {
+                                //if image upload is successful set the preview
+                                this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
+                                this.resetCropper();
+                                this.$dispatch('open-alert', {
+                                    alert_type: 'success',
+                                    message: `Successfully uploaded file`
+                                });
+                            }, 
+                            () => {                         
+                                this.$dispatch('open-alert', {
+                                    alert_type: 'danger',
+                                    message: `Unable to upload file`
+                                })
+                            },
+                            (event) => { 
+                                console.log(event);
+                            }
+                        )
                     }, this.currentInputImage?.type);
-
-                    // this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
-
-                    // this.resetCropper();
                 }
             },
 
