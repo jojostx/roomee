@@ -6349,6 +6349,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       currentInputImage: null,
       uploadedFileUrlIndex: {},
       shouldUpdateState: true,
+      isUploading: false,
       init: function init() {
         var _this2 = this;
 
@@ -6444,7 +6445,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           if (!this.validFileSize(file.size)) {
             this.$dispatch('open-alert', {
               alert_type: 'danger',
-              message: "only images between ".concat((minSize / 1000000).toFixed(1), "MB & ").concat((maxSize / 1000000).toFixed(1), "MB are allowed")
+              message: "only images between ".concat((minSize / 1000000).toFixed(1), "MB & ").concat((maxSize / 1000000).toFixed(1), "MB are allowed"),
+              closeAfterTimeout: true
             });
             return;
           } else if (!this.validFileType(file.type)) {
@@ -6452,7 +6454,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               alert_type: 'danger',
               message: "Invalid image type. Accepted types: (".concat(acceptedFileTypes.map(function (val) {
                 val.split('/').pop();
-              }).join(', '), ")")
+              }).join(', '), ")"),
+              closeAfterTimeout: true
             });
             return;
           }
@@ -6507,21 +6510,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               var _this4$currentInputIm;
 
               //if image upload is successful set the preview
+              _this4.isUploading = false;
+
               _this4.updatePreview(canvas.toDataURL((_this4$currentInputIm = _this4.currentInputImage) === null || _this4$currentInputIm === void 0 ? void 0 : _this4$currentInputIm.type));
 
               _this4.resetCropper();
 
               _this4.$dispatch('open-alert', {
                 alert_type: 'success',
-                message: "Successfully uploaded file"
+                message: "Successfully uploaded file",
+                closeAfterTimeout: true
               });
             }, function () {
               _this4.$dispatch('open-alert', {
                 alert_type: 'danger',
-                message: "Unable to upload file"
+                message: "Unable to upload file",
+                closeAfterTimeout: false
               });
             }, function (event) {
-              console.log(event);
+              _this4.isUploading = true;
             });
           }, (_this$currentInputIma = this.currentInputImage) === null || _this$currentInputIma === void 0 ? void 0 : _this$currentInputIma.type);
         }

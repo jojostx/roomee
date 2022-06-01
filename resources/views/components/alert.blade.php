@@ -1,4 +1,4 @@
-@props(['hasCloseButton', 'showAlert', 'type'])
+@props(['hasCloseButton', 'showAlert', 'type', 'closeAfterTimeout' => false])
 
 <div x-data="alert" x-bind="dialogue" x-cloak class="alert" role="alert">
   <div class="flex w-full text-sm font-medium md:justify-center md:items-center">
@@ -22,8 +22,10 @@
         Alpine.data('alert', () => ({
           // Data //
           show_alert: '{{ $showAlert }}',
-
+          
           show_close_button: '{{ $hasCloseButton }}',
+          
+          closeAfterTimeout: '{{ $closeAfterTimeout }}',
 
           message: '{{ $slot }}',
 
@@ -90,7 +92,7 @@
             },
 
             ['@open-alert.window']($event) {
-              if (!$event.detail.message || !$event.detail.alert_type) {
+              if (!$event.detail?.message || !$event.detail?.alert_type) {
                 return;
               }
 
@@ -103,6 +105,12 @@
               this.alert_type = (alert_type in this.alert_types) ? alert_type : 'default';
 
               this.show_alert = true;
+
+              if (this.closeAfterTimeout || $event.detail?.closeAfterTimeout) {
+                setInterval(() => {
+                  this.show_alert = false;
+                }, 5000);
+              }
             },
 
             ['@close-alert.window']() {

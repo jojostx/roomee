@@ -33,6 +33,8 @@ export default (Alpine) => {
 
             shouldUpdateState: true,
 
+            isUploading: false,
+
             async init() {
                 this.$watch('state', async() => {
                     if (!this.shouldUpdateState) {
@@ -99,14 +101,16 @@ export default (Alpine) => {
                     if (!this.validFileSize(file.size)) {
                         this.$dispatch('open-alert', {
                             alert_type: 'danger',
-                            message: `only images between ${ (minSize/1000000).toFixed(1) }MB & ${ (maxSize/1000000).toFixed(1) }MB are allowed`
+                            message: `only images between ${ (minSize/1000000).toFixed(1) }MB & ${ (maxSize/1000000).toFixed(1) }MB are allowed`,
+                            closeAfterTimeout: true
                         });
 
                         return;
                     } else if (!this.validFileType(file.type)) {
                         this.$dispatch('open-alert', {
                             alert_type: 'danger',
-                            message: `Invalid image type. Accepted types: (${ acceptedFileTypes.map((val) => { val.split('/').pop() }).join(', ') })`
+                            message: `Invalid image type. Accepted types: (${ acceptedFileTypes.map((val) => { val.split('/').pop() }).join(', ') })`,
+                            closeAfterTimeout: true
                         });
 
                         return;
@@ -162,21 +166,24 @@ export default (Alpine) => {
                             blob, 
                             (fileKey) => {
                                 //if image upload is successful set the preview
+                                this.isUploading = false;
                                 this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
                                 this.resetCropper();
                                 this.$dispatch('open-alert', {
                                     alert_type: 'success',
-                                    message: `Successfully uploaded file`
+                                    message: `Successfully uploaded file`,
+                                    closeAfterTimeout: true
                                 });
                             }, 
                             () => {                         
                                 this.$dispatch('open-alert', {
                                     alert_type: 'danger',
-                                    message: `Unable to upload file`
+                                    message: `Unable to upload file`,
+                                    closeAfterTimeout: false
                                 })
                             },
-                            (event) => { 
-                                console.log(event);
+                            (event) => {
+                                this.isUploading = true;
                             }
                         )
                     }, this.currentInputImage?.type);
