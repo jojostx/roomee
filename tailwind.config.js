@@ -8,6 +8,10 @@ module.exports = {
         './vendor/filament/**/*.blade.php'
     ],
 
+    safelist: [{
+        pattern: /aspect-.+/
+    }, ],
+
     theme: {
         extend: {
             backgroundPosition: {
@@ -73,6 +77,10 @@ module.exports = {
         extend: {
             opacity: ['disabled'],
         },
+    },
+
+    corePlugins: {
+        aspectRatio: false,
     },
 
     plugins: [

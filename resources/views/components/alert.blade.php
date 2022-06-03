@@ -109,7 +109,7 @@
               if (this.closeAfterTimeout || $event.detail?.closeAfterTimeout) {
                 setInterval(() => {
                   this.show_alert = false;
-                }, 5000);
+                }, 10000);
               }
             },
 

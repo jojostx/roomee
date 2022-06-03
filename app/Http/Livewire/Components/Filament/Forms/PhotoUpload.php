@@ -26,7 +26,7 @@ class PhotoUpload extends BaseFileUpload
 
     protected int | Closure | null $minCroppedHeight = 320;
 
-    protected float | int | Closure | null $imageCropAspectRatio = null;
+    protected string | Closure | null $imageCropAspectRatio = null;
 
     protected int | Closure | null $imagePreviewHeight = null;
 
@@ -38,7 +38,23 @@ class PhotoUpload extends BaseFileUpload
 
         $this->afterStateHydrated(static function (BaseFileUpload $component, string | array | null $state): void {
             $component->imageUrl = $state;
+
+            if (blank($component->getMinSize())) {
+                // kilobytes
+                $component->minSize(10);
+            }
+
+            if (blank($component->getMaxSize())) {
+                $component->maxSize(5242);
+            }
         });
+    }
+
+    public function idleLabel(string | Closure | null $label): static
+    {
+        $this->placeholder($label);
+
+        return $this;
     }
 
     public function avatar(): static
@@ -85,7 +101,7 @@ class PhotoUpload extends BaseFileUpload
         return $this;
     }
 
-    public function imageCropAspectRatio(float | int | Closure | null $ratio): static
+    public function imageCropAspectRatio(string | Closure | null $ratio): static
     {
         $this->imageCropAspectRatio = $ratio;
 
@@ -115,30 +131,34 @@ class PhotoUpload extends BaseFileUpload
 
     public function getAltText(): ?string
     {
-        if (is_null($this->evaluate($this->altText))) {
+        if (blank($this->evaluate($this->altText))) {
             return  $this->isAvatar() ? 'avatar image' : 'cover image';
         }
 
         return $this->evaluate($this->altText);
     }
 
-    public function getImageUrl(): string
+    public function getImageUrl(): ?string
     {
+        if (blank($this->evaluate($this->imageUrl))) {
+            return '';
+        }
+
         return $this->evaluate($this->imageUrl);
     }
 
-    public function getMinCroppedWidth(): int
+    public function getMinCroppedWidth(): ?int
     {
-        if (is_null($this->evaluate($this->minCroppedWidth))) {
+        if (blank($this->evaluate($this->minCroppedWidth))) {
             return $this->isAvatar() ? 320 : (16 / 9) * 320;
         }
 
         return $this->evaluate($this->minCroppedWidth);
     }
 
-    public function getMaxCroppedWidth(): int
+    public function getMaxCroppedWidth(): ?int
     {
-        if (is_null($this->evaluate($this->maxCroppedWidth))) {
+        if (blank($this->evaluate($this->maxCroppedWidth))) {
             return $this->isAvatar() ? 320 : (16 / 9) * 320;
         }
 
@@ -147,25 +167,25 @@ class PhotoUpload extends BaseFileUpload
 
     public function getMinCroppedHeight(): int
     {
-        if (is_null($this->evaluate($this->minCroppedHeight))) {
+        if (blank($this->evaluate($this->minCroppedHeight))) {
             return $this->isAvatar() ? 320 : (16 / 9) / 320;
         }
 
         return $this->evaluate($this->minCroppedHeight);
     }
 
-    public function getImageCropAspectRatio(): int
+    public function getImageCropAspectRatio(): string
     {
-        if (is_null($this->evaluate($this->imageCropAspectRatio))) {
-            return $this->isAvatar() ? 1 : (16 / 9);
+        if (blank($this->evaluate($this->imageCropAspectRatio))) {
+            return $this->isAvatar() ? '1:1' : '16:9';
         }
 
-        return $this->evaluate($this->imageCropAspectRatio);
+        return $this->isAvatar() ? '1:1' : $this->evaluate($this->imageCropAspectRatio);
     }
 
     public function getImagePreviewHeight(): int
     {
-        if (is_null($this->evaluate($this->imagePreviewHeight))) {
+        if (blank($this->evaluate($this->imagePreviewHeight))) {
             return $this->isAvatar() ? 320 : (16 / 9) / 320;
         }
 

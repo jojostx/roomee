@@ -56,7 +56,7 @@ class UpdateProfile extends Component implements HasForms
     {
         $this->form->fill([
             'avatar_image' => auth()->user()->avatarPath,
-            'cover_image' => auth()->user()->coverPhotoPath ?? '',
+            'cover_image' => auth()->user()->coverPhotoPath,
             'firstname' => auth()->user()->firstname,
             'lastname' => auth()->user()->lastname,
             'rooms' => auth()->user()->rooms ?? '',
@@ -196,23 +196,11 @@ class UpdateProfile extends Component implements HasForms
     {
         return [
             Card::make()
-                ->schema([
-                    // Fileupload::make('avatar')
-                    //     ->disableLabel()
-                    //     ->avatar()
-                    //     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                    //         return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');
-                    //     })
-                    //     ->columnSpan([
-                    //         'default' => 1,
-                    //         'sm' => 1,
-                    //         'md' => 1,
-                    //         'lg' => 2,
-                    //     ]),
-                        
+                ->schema([                        
                     PhotoUpload::make('avatar_image')
-                        ->disableLabel()
+                        ->label('Avatar Photo')
                         ->avatar()
+                        ->disk('avatar_photos')
                         ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                             return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');
                         })
@@ -223,17 +211,13 @@ class UpdateProfile extends Component implements HasForms
                             'lg' => 2,
                         ]),
 
-                    FileUpload::make('cover_image')
+                    PhotoUpload::make('cover_image')
                         ->label('Cover Photo')
                         ->image()
                         ->disk('cover_photos')
-                        ->panelLayout('compact')
-                        ->panelAspectRatio('2:1')
-                        ->imageCropAspectRatio('2:1')
                         ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                             return (string) str($file->getClientOriginalName())->prepend('cover-photo-', md5(strval(auth()->user()->id)), now() . '-');
                         })
-                        ->extraAttributes(['class' => 'bg-gray-100'])
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 2,

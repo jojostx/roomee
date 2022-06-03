@@ -6306,7 +6306,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var _this = undefined;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
@@ -6322,48 +6332,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         acceptedFileTypes = _ref$acceptedFileType === void 0 ? ["image/jpg", "image/png", "image/jpeg"] : _ref$acceptedFileType,
         _ref$isAvatar = _ref.isAvatar,
         isAvatar = _ref$isAvatar === void 0 ? false : _ref$isAvatar,
-        imageCropAspectRatio = _ref.imageCropAspectRatio,
-        _ref$imagePreviewHeig = _ref.imagePreviewHeight,
-        imagePreviewHeight = _ref$imagePreviewHeig === void 0 ? 320 : _ref$imagePreviewHeig,
+        _ref$imageCropAspectR = _ref.imageCropAspectRatio,
+        imageCropAspectRatio = _ref$imageCropAspectR === void 0 ? 1 : _ref$imageCropAspectR,
         _ref$maxSize = _ref.maxSize,
-        maxSize = _ref$maxSize === void 0 ? 5242880 : _ref$maxSize,
+        maxSize = _ref$maxSize === void 0 ? 5242 : _ref$maxSize,
         _ref$minSize = _ref.minSize,
-        minSize = _ref$minSize === void 0 ? 52428 : _ref$minSize,
+        minSize = _ref$minSize === void 0 ? 10 : _ref$minSize,
         _ref$minCroppedWidth = _ref.minCroppedWidth,
         minCroppedWidth = _ref$minCroppedWidth === void 0 ? 320 : _ref$minCroppedWidth,
         _ref$maxCroppedWidth = _ref.maxCroppedWidth,
         maxCroppedWidth = _ref$maxCroppedWidth === void 0 ? 960 : _ref$maxCroppedWidth,
-        _ref$minCroppedHeight = _ref.minCroppedHeight,
-        minCroppedHeight = _ref$minCroppedHeight === void 0 ? 320 : _ref$minCroppedHeight,
         defaultImageUrl = _ref.defaultImageUrl,
         deleteUploadedFileUsing = _ref.deleteUploadedFileUsing,
+        getUploadedFileUrlsUsing = _ref.getUploadedFileUrlsUsing,
         uploadUsing = _ref.uploadUsing,
-        state = _ref.state;
+        state = _ref.state,
+        statePath = _ref.statePath;
     return {
       state: state,
+      cropCanvasId: "cropCanvas_".concat(statePath),
+      posterId: "poster_".concat(statePath),
+      isAvatar: isAvatar,
       hasImage: defaultImageUrl ? true : false,
       croppable: false,
       cropper: null,
       showCropper: false,
-      aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
       currentInputImage: null,
+      fileKeyIndex: {},
       uploadedFileUrlIndex: {},
       shouldUpdateState: true,
       isUploading: false,
+      minCroppedHeight: minCroppedWidth / imageCropAspectRatio,
+      maxCroppedHeight: maxCroppedWidth / imageCropAspectRatio,
       init: function init() {
-        var _this2 = this;
+        var _this = this;
 
         return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
           return _regeneratorRuntime().wrap(function _callee2$(_context2) {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  _this2.$watch('state', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+                  _this.$watch('state', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
                     return _regeneratorRuntime().wrap(function _callee$(_context) {
                       while (1) {
                         switch (_context.prev = _context.next) {
                           case 0:
-                            if (_this2.shouldUpdateState) {
+                            if (_this.shouldUpdateState) {
                               _context.next = 2;
                               break;
                             }
@@ -6371,16 +6385,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                             return _context.abrupt("return");
 
                           case 2:
-                            if (!Object.values(_this2.state).filter(function (file) {
+                            document.createElement('p').hasAttribute('multiple'); // We don't want to overwrite the files that are already in the input, if they haven't been saved yet.
+
+                            if (!Object.values(_this.state).filter(function (file) {
                               return file.startsWith('livewire-file:');
                             }).length) {
-                              _context.next = 4;
+                              _context.next = 5;
                               break;
                             }
 
                             return _context.abrupt("return");
 
-                          case 4:
+                          case 5:
                           case "end":
                             return _context.stop();
                         }
@@ -6397,9 +6413,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }))();
       },
       initCropper: function initCropper(id, fileUrl) {
-        var _this$$refs$cropCanva;
+        var _this$$refs$this$crop;
 
-        var elem = (_this$$refs$cropCanva = this.$refs.cropCanvas) !== null && _this$$refs$cropCanva !== void 0 ? _this$$refs$cropCanva : document.getElementById('cropCanvas');
+        var elem = (_this$$refs$this$crop = this.$refs[this.cropCanvasId]) !== null && _this$$refs$this$crop !== void 0 ? _this$$refs$this$crop : document.getElementById(this.cropCanvasId);
         elem.src = elem ? fileUrl : '';
 
         if (!this.isValidHTMLImageElement(elem)) {
@@ -6407,24 +6423,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
 
         this.cropper = new Cropper(elem, {
-          aspectRatio: this.aspectRatio,
-          viewMode: 3,
-          dragMode: 'move',
+          aspectRatio: imageCropAspectRatio,
+          viewMode: 1,
           rotatable: false,
+          dragMode: 'move',
           scalable: false,
-          toggleDragModeOnDblclick: true,
-          data: {
-            width: minCroppedWidth,
-            height: minCroppedHeight
-          },
-          crop: function crop(event) {
-            var width = event.detail.width;
-            var height = event.detail.height;
-
-            if (width < minCroppedWidth || height < minCroppedHeight || width > maxCroppedWidth) {
-              this.cropper.setData({
-                width: Math.max(minCroppedWidth, Math.min(maxCroppedWidth, width))
-              });
+          autoCropArea: 0.8,
+          restore: false,
+          guides: false,
+          center: false,
+          highlight: false,
+          cropBoxMovable: false,
+          cropBoxResizable: false,
+          toggleDragModeOnDblclick: false,
+          zoom: function zoom(event) {
+            if (event.detail.ratio >= 1.25 || this.cropper.getImageData().naturalWidth < minCroppedWidth) {
+              event.preventDefault(); // Prevent zoom in
             }
           }
         });
@@ -6434,57 +6448,117 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       },
       handleFileInputChange: function handleFileInputChange(id) {
-        var _this3 = this;
+        var _this2 = this;
 
-        var files = this.$refs.input.files;
-        var file;
+        return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
+          var files, file, isValidDimensions, reader;
+          return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+            while (1) {
+              switch (_context3.prev = _context3.next) {
+                case 0:
+                  files = _this2.$refs.input.files;
+                  _context3.prev = 1;
 
-        if (files && files.length > 0) {
-          file = files[0];
+                  if (!(files && files.length > 0)) {
+                    _context3.next = 18;
+                    break;
+                  }
 
-          if (!this.validFileSize(file.size)) {
-            this.$dispatch('open-alert', {
-              alert_type: 'danger',
-              message: "only images between ".concat((minSize / 1000000).toFixed(1), "MB & ").concat((maxSize / 1000000).toFixed(1), "MB are allowed"),
-              closeAfterTimeout: true
-            });
-            return;
-          } else if (!this.validFileType(file.type)) {
-            this.$dispatch('open-alert', {
-              alert_type: 'danger',
-              message: "Invalid image type. Accepted types: (".concat(acceptedFileTypes.map(function (val) {
-                val.split('/').pop();
-              }).join(', '), ")"),
-              closeAfterTimeout: true
-            });
-            return;
-          }
+                  file = files[0];
 
-          this.currentInputImage = file;
+                  if (_this2.validFileType(file.type)) {
+                    _context3.next = 7;
+                    break;
+                  }
 
-          if (URL) {
-            this.initCropper(id, URL.createObjectURL(file));
-          } else if (FileReader) {
-            var reader = new FileReader();
+                  _this2.$dispatch('open-alert', {
+                    alert_type: 'danger',
+                    message: "Invalid image type. Accepted types: (".concat(acceptedFileTypes.map(function (val) {
+                      val.split('/').pop();
+                    }).join(', '), ")"),
+                    closeAfterTimeout: true
+                  });
 
-            reader.onload = function (e) {
-              if (e.loaded) {
-                _this3.initCropper(id, reader.result);
+                  return _context3.abrupt("return");
+
+                case 7:
+                  _context3.next = 9;
+                  return _this2.validFileDimensions(file);
+
+                case 9:
+                  isValidDimensions = _context3.sent;
+
+                  if (isValidDimensions) {
+                    _context3.next = 13;
+                    break;
+                  }
+
+                  _this2.$dispatch('open-alert', {
+                    alert_type: 'danger',
+                    message: "The Image dimensions are not valid",
+                    closeAfterTimeout: true
+                  });
+
+                  return _context3.abrupt("return");
+
+                case 13:
+                  if (_this2.validFileSize(file.size)) {
+                    _context3.next = 16;
+                    break;
+                  }
+
+                  _this2.$dispatch('open-alert', {
+                    alert_type: 'danger',
+                    message: "Only images between ".concat(minSize, "KB & ").concat((maxSize / 1024).toFixed(1), "MB are allowed"),
+                    closeAfterTimeout: true
+                  });
+
+                  return _context3.abrupt("return");
+
+                case 16:
+                  _this2.currentInputImage = file;
+
+                  if (URL) {
+                    _this2.initCropper(id, URL.createObjectURL(file));
+                  } else if (FileReader) {
+                    reader = new FileReader();
+
+                    reader.onloadend = function () {
+                      _this2.initCropper(id, reader.result);
+                    };
+
+                    reader.readAsDataURL(file);
+                  }
+
+                case 18:
+                  _context3.next = 23;
+                  break;
+
+                case 20:
+                  _context3.prev = 20;
+                  _context3.t0 = _context3["catch"](1);
+
+                  _this2.$dispatch('open-alert', {
+                    alert_type: 'danger',
+                    message: "Error in loading file",
+                    closeAfterTimeout: true
+                  });
+
+                case 23:
+                case "end":
+                  return _context3.stop();
               }
-            };
-
-            reader.readAsDataURL(file);
-          }
-        }
+            }
+          }, _callee3, null, [[1, 20]]);
+        }))();
       },
       updatePreview: function updatePreview(imageSrc) {
         if (_typeof(imageSrc) !== String && !imageSrc.trim()) {
           return;
         }
 
-        this.$refs.poster.src = imageSrc;
+        this.$refs[this.posterId].src = imageSrc;
       },
-      // called when modal is closed
       resetCropper: function resetCropper() {
         if (this.cropper) {
           this.cropper.destroy();
@@ -6495,76 +6569,82 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.croppable = false;
       },
       cropAndSave: function cropAndSave() {
-        var _this4 = this;
+        var _this3 = this;
 
         if (this.cropper) {
           var _this$currentInputIma;
 
           var canvas = this.cropper.getCroppedCanvas({
-            width: imageCropAspectRatio * imagePreviewHeight,
-            height: imagePreviewHeight
+            minWidth: 256,
+            minHeight: 256,
+            maxWidth: 4096,
+            maxHeight: 4096
           }); // convert canvas output to blob and upload to Livewire component
 
           canvas.toBlob(function (blob) {
-            _this4.upload(blob, function (fileKey) {
-              var _this4$currentInputIm;
+            _this3.upload(blob, function (fileKey) {
+              var _this3$currentInputIm;
 
               //if image upload is successful set the preview
-              _this4.isUploading = false;
+              _this3.remove(_this3.uploadedFilekey);
 
-              _this4.updatePreview(canvas.toDataURL((_this4$currentInputIm = _this4.currentInputImage) === null || _this4$currentInputIm === void 0 ? void 0 : _this4$currentInputIm.type));
+              _this3.uploadedFilekey = fileKey;
+              _this3.isUploading = false;
 
-              _this4.resetCropper();
+              _this3.updatePreview(canvas.toDataURL((_this3$currentInputIm = _this3.currentInputImage) === null || _this3$currentInputIm === void 0 ? void 0 : _this3$currentInputIm.type));
 
-              _this4.$dispatch('open-alert', {
+              _this3.resetCropper();
+
+              _this3.$dispatch('open-alert', {
                 alert_type: 'success',
                 message: "Successfully uploaded file",
                 closeAfterTimeout: true
               });
             }, function () {
-              _this4.$dispatch('open-alert', {
+              _this3.$dispatch('open-alert', {
                 alert_type: 'danger',
                 message: "Unable to upload file",
                 closeAfterTimeout: false
               });
             }, function (event) {
-              _this4.isUploading = true;
+              _this3.isUploading = true;
             });
           }, (_this$currentInputIma = this.currentInputImage) === null || _this$currentInputIma === void 0 ? void 0 : _this$currentInputIma.type);
         }
       },
       upload: function upload(file, load, error, progress) {
-        var _this5 = this;
+        var _this4 = this;
 
         this.shouldUpdateState = false;
         var fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
           return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
         });
         uploadUsing(fileKey, file, function (fileKey) {
-          _this5.shouldUpdateState = true;
+          _this4.shouldUpdateState = true;
           load(fileKey);
         }, error, progress);
       },
+      // WIP
       remove: function () {
-        var _remove = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(source, load) {
+        var _remove = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(source) {
           var _this$uploadedFileUrl;
 
           var fileKey;
-          return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          return _regeneratorRuntime().wrap(function _callee4$(_context4) {
             while (1) {
-              switch (_context3.prev = _context3.next) {
+              switch (_context4.prev = _context4.next) {
                 case 0:
-                  fileKey = (_this$uploadedFileUrl = _this.uploadedFileUrlIndex[source]) !== null && _this$uploadedFileUrl !== void 0 ? _this$uploadedFileUrl : null;
+                  fileKey = (_this$uploadedFileUrl = this.uploadedFileUrlIndex[source]) !== null && _this$uploadedFileUrl !== void 0 ? _this$uploadedFileUrl : null;
 
                   if (fileKey) {
-                    _context3.next = 3;
+                    _context4.next = 3;
                     break;
                   }
 
-                  return _context3.abrupt("return");
+                  return _context4.abrupt("return");
 
                 case 3:
-                  _context3.next = 5;
+                  _context4.next = 5;
                   return deleteUploadedFileUsing(fileKey);
 
                 case 5:
@@ -6572,30 +6652,152 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 case 6:
                 case "end":
-                  return _context3.stop();
+                  return _context4.stop();
               }
             }
-          }, _callee3);
+          }, _callee4, this);
         }));
 
-        function remove(_x, _x2) {
+        function remove(_x) {
           return _remove.apply(this, arguments);
         }
 
         return remove;
       }(),
-      validFileType: function validFileType(fileType) {
-        return acceptedFileTypes.includes(fileType);
-      },
-      validFileSize: function validFileSize(fileSize) {
-        return fileSize < maxSize || fileSize > minSize;
-      },
+      getUploadedFileUrls: function () {
+        var _getUploadedFileUrls = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+          var uploadedFileUrls;
+          return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+            while (1) {
+              switch (_context5.prev = _context5.next) {
+                case 0:
+                  _context5.next = 2;
+                  return getUploadedFileUrlsUsing();
+
+                case 2:
+                  uploadedFileUrls = _context5.sent;
+                  this.fileKeyIndex = uploadedFileUrls !== null && uploadedFileUrls !== void 0 ? uploadedFileUrls : {};
+                  this.uploadedFileUrlIndex = Object.entries(this.fileKeyIndex).filter(function (value) {
+                    return value;
+                  }).reduce(function (obj, _ref3) {
+                    var _ref4 = _slicedToArray(_ref3, 2),
+                        key = _ref4[0],
+                        value = _ref4[1];
+
+                    obj[value] = key;
+                    return obj;
+                  }, {});
+
+                case 5:
+                case "end":
+                  return _context5.stop();
+              }
+            }
+          }, _callee5, this);
+        }));
+
+        function getUploadedFileUrls() {
+          return _getUploadedFileUrls.apply(this, arguments);
+        }
+
+        return getUploadedFileUrls;
+      }(),
+      getFiles: function () {
+        var _getFiles = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+          var files, _i2, _Object$values, uploadedFileUrl;
+
+          return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+            while (1) {
+              switch (_context6.prev = _context6.next) {
+                case 0:
+                  _context6.next = 2;
+                  return this.getUploadedFileUrls();
+
+                case 2:
+                  files = [];
+                  _i2 = 0, _Object$values = Object.values(this.fileKeyIndex);
+
+                case 4:
+                  if (!(_i2 < _Object$values.length)) {
+                    _context6.next = 12;
+                    break;
+                  }
+
+                  uploadedFileUrl = _Object$values[_i2];
+
+                  if (uploadedFileUrl) {
+                    _context6.next = 8;
+                    break;
+                  }
+
+                  return _context6.abrupt("continue", 9);
+
+                case 8:
+                  files.push({
+                    source: uploadedFileUrl,
+                    options: {
+                      type: 'local'
+                    }
+                  });
+
+                case 9:
+                  _i2++;
+                  _context6.next = 4;
+                  break;
+
+                case 12:
+                  return _context6.abrupt("return", shouldAppendFiles ? files : files.reverse());
+
+                case 13:
+                case "end":
+                  return _context6.stop();
+              }
+            }
+          }, _callee6, this);
+        }));
+
+        function getFiles() {
+          return _getFiles.apply(this, arguments);
+        }
+
+        return getFiles;
+      }(),
       isValidHTMLImageElement: function isValidHTMLImageElement(elem) {
         if (elem !== null && elem !== void 0 && elem.src) {
           return true;
         }
 
         return false;
+      },
+      validFileType: function validFileType(fileType) {
+        return acceptedFileTypes.includes(fileType);
+      },
+      validFileSize: function validFileSize(file_Size) {
+        if (Number.isNaN(fileSize) || fileSize === 0) {
+          return false;
+        } // fileSize in bytes, minSize & maxSize in kilobytes
+
+
+        var fileSize = file_Size / 1024;
+        return fileSize < maxSize && fileSize > minSize;
+      },
+      validFileDimensions: function validFileDimensions(file) {
+        return new Promise(function (resolve, reject) {
+          var reader = new FileReader();
+
+          reader.onloadend = function () {
+            var img = new Image();
+            img.src = reader.result;
+
+            img.onload = function () {
+              var result = img.width > minCroppedWidth;
+              resolve(result);
+            };
+          };
+
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
       }
     };
   });

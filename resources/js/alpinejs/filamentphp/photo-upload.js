@@ -2,32 +2,38 @@ export default (Alpine) => {
     Alpine.data('customPhotoUploadFormComponent', ({
         acceptedFileTypes = ["image/jpg", "image/png", "image/jpeg"],
         isAvatar = false,
-        imageCropAspectRatio,
-        imagePreviewHeight = 320,
-        maxSize = 5242880,
-        minSize = 52428,
+        imageCropAspectRatio = 1,
+        maxSize = 5242,
+        minSize = 10,
         minCroppedWidth = 320,
         maxCroppedWidth = 960,
-        minCroppedHeight = 320,
         defaultImageUrl,
         deleteUploadedFileUsing,
+        getUploadedFileUrlsUsing,
         uploadUsing,
         state,
+        statePath,
     }) => {
         return {
             state,
 
-            hasImage: defaultImageUrl? true : false,
+            cropCanvasId: `cropCanvas_${statePath}`,
+            
+            posterId: `poster_${statePath}`,
 
+            isAvatar,
+
+            hasImage: defaultImageUrl? true : false,
+            
             croppable: false,
 
             cropper: null,
 
             showCropper: false,
 
-            aspectRatio: isAvatar ? 1 : imageCropAspectRatio,
-
             currentInputImage: null,
+
+            fileKeyIndex: {},
 
             uploadedFileUrlIndex: {},
 
@@ -35,11 +41,17 @@ export default (Alpine) => {
 
             isUploading: false,
 
+            minCroppedHeight: minCroppedWidth / imageCropAspectRatio,
+
+            maxCroppedHeight: maxCroppedWidth / imageCropAspectRatio,
+
             async init() {
                 this.$watch('state', async() => {
                     if (!this.shouldUpdateState) {
                         return;
                     }
+
+                    document.createElement('p').hasAttribute('multiple')
 
                     // We don't want to overwrite the files that are already in the input, if they haven't been saved yet.
                     if (Object.values(this.state).filter((file) => file.startsWith('livewire-file:')).length) {
@@ -49,7 +61,7 @@ export default (Alpine) => {
             },
 
             initCropper(id, fileUrl) {
-                let elem = this.$refs.cropCanvas ?? document.getElementById('cropCanvas');
+                let elem = this.$refs[this.cropCanvasId] ?? document.getElementById(this.cropCanvasId);
 
                 elem.src = elem ? fileUrl : '';
 
@@ -58,32 +70,25 @@ export default (Alpine) => {
                 }
 
                 this.cropper = new Cropper(elem, {
-                    aspectRatio: this.aspectRatio,
-                    viewMode: 3,
-                    dragMode: 'move',
+                    aspectRatio:  imageCropAspectRatio,
+                    viewMode: 1,
                     rotatable: false,
+                    dragMode: 'move',
                     scalable: false,
-                    toggleDragModeOnDblclick: true,
+                    autoCropArea: 0.8,
+                    restore: false,
+                    guides: false,
+                    center: false,
+                    highlight: false,
+                    cropBoxMovable: false,
+                    cropBoxResizable: false,
+                    toggleDragModeOnDblclick: false,
 
-                    data: {
-                        width: minCroppedWidth,
-                        height: minCroppedHeight
-                    },
-
-                    crop: function(event) {
-                        let width = event.detail.width;
-                        let height = event.detail.height;
-
-                        if (
-                            width < minCroppedWidth ||
-                            height < minCroppedHeight ||
-                            width > maxCroppedWidth
-                        ) {
-                            this.cropper.setData({
-                                width: Math.max(minCroppedWidth, Math.min(maxCroppedWidth, width)),
-                            });
-                        }
-                    },
+                    zoom: function(event) {
+                        if (event.detail.ratio >= 1.25 || this.cropper.getImageData().naturalWidth < minCroppedWidth) {
+                            event.preventDefault(); // Prevent zoom in
+                          }
+                    }
                 });
 
                 this.croppable = true;
@@ -91,47 +96,68 @@ export default (Alpine) => {
                 this.$dispatch('open-modal', {id});
             },
 
-            handleFileInputChange(id) {
+            async handleFileInputChange(id) {
                 let files = this.$refs.input.files;
                 let file;
 
-                if (files && files.length > 0) {
-                    file = files[0];
+                try {
+                    if (files && files.length > 0) {
+                        file = files[0];
 
-                    if (!this.validFileSize(file.size)) {
-                        this.$dispatch('open-alert', {
-                            alert_type: 'danger',
-                            message: `only images between ${ (minSize/1000000).toFixed(1) }MB & ${ (maxSize/1000000).toFixed(1) }MB are allowed`,
-                            closeAfterTimeout: true
-                        });
+                        if (!this.validFileType(file.type)) {
+                            this.$dispatch('open-alert', {
+                                alert_type: 'danger',
+                                message: `Invalid image type. Accepted types: (${ acceptedFileTypes.map((val) => { val.split('/').pop() }).join(', ') })`,
+                                closeAfterTimeout: true
+                            });
+    
+                            return;
+                        }
 
-                        return;
-                    } else if (!this.validFileType(file.type)) {
-                        this.$dispatch('open-alert', {
-                            alert_type: 'danger',
-                            message: `Invalid image type. Accepted types: (${ acceptedFileTypes.map((val) => { val.split('/').pop() }).join(', ') })`,
-                            closeAfterTimeout: true
-                        });
+                        const isValidDimensions = await this.validFileDimensions(file)
+    
+                        if(!isValidDimensions){
+                            this.$dispatch('open-alert', {
+                                alert_type: 'danger',
+                                message: `The Image dimensions are not valid`,
+                                closeAfterTimeout: true
+                            });
 
-                        return;
-                    }
+                            return;
+                        }
 
-                    this.currentInputImage = file;
-
-                    if (URL) {                        
-                        this.initCropper(id, URL.createObjectURL(file));
-                    } else if (FileReader) {
-                        let reader = new FileReader();
-                        
-                        reader.onload = (e) => {
-                            if (e.loaded) {
+                        if (!this.validFileSize(file.size)) {
+                            this.$dispatch('open-alert', {
+                                alert_type: 'danger',
+                                message: `Only images between ${ minSize }KB & ${ (maxSize/1024).toFixed(1) }MB are allowed`,
+                                closeAfterTimeout: true
+                            });
+    
+                            return;
+                        } 
+                            
+                        this.currentInputImage = file;
+    
+                        if (URL) {                        
+                            this.initCropper(id, URL.createObjectURL(file));
+                        } else if (FileReader) {
+                            let reader = new FileReader();
+                            
+                            reader.onloadend = () => {
                                 this.initCropper(id, reader.result);
-                            }
-                        };
-                        
-                        reader.readAsDataURL(file); 
+                            };
+                            
+                            reader.readAsDataURL(file); 
+                        }
                     }
+                } catch (error) {
+                    this.$dispatch('open-alert', {
+                        alert_type: 'danger',
+                        message: `Error in loading file`,
+                        closeAfterTimeout: true
+                    });
                 }
+
             },
 
             updatePreview(imageSrc){
@@ -139,10 +165,9 @@ export default (Alpine) => {
                     return;
                 }
 
-                this.$refs.poster.src = imageSrc;
+                this.$refs[this.posterId].src = imageSrc;
             },
             
-            // called when modal is closed
             resetCropper(){
                 if (this.cropper) {
                     this.cropper.destroy();
@@ -156,8 +181,10 @@ export default (Alpine) => {
             cropAndSave() {
                 if (this.cropper) {
                     let canvas = this.cropper.getCroppedCanvas({
-                        width: imageCropAspectRatio * imagePreviewHeight,
-                        height: imagePreviewHeight,
+                        minWidth: 256,
+                        minHeight: 256,
+                        maxWidth: 4096,
+                        maxHeight: 4096,
                     })
 
                     // convert canvas output to blob and upload to Livewire component
@@ -166,9 +193,16 @@ export default (Alpine) => {
                             blob, 
                             (fileKey) => {
                                 //if image upload is successful set the preview
+                                this.remove(this.uploadedFilekey);
+                                
+                                this.uploadedFilekey = fileKey;
+
                                 this.isUploading = false;
+                                
                                 this.updatePreview(canvas.toDataURL(this.currentInputImage?.type));
+                                
                                 this.resetCropper();
+                                
                                 this.$dispatch('open-alert', {
                                     alert_type: 'success',
                                     message: `Successfully uploaded file`,
@@ -204,7 +238,8 @@ export default (Alpine) => {
                 }, error, progress)
             },
 
-            remove: async (source, load) => {
+            // WIP
+            remove: async function (source) {
                 let fileKey = this.uploadedFileUrlIndex[source] ?? null
 
                 if (! fileKey) {
@@ -216,12 +251,39 @@ export default (Alpine) => {
                 load()
             },
 
-            validFileType(fileType) {
-                return acceptedFileTypes.includes(fileType);
+            getUploadedFileUrls: async function () {
+                const uploadedFileUrls = await getUploadedFileUrlsUsing()
+
+                this.fileKeyIndex = uploadedFileUrls ?? {}
+
+                this.uploadedFileUrlIndex = Object.entries(this.fileKeyIndex)
+                    .filter(value => value)
+                    .reduce((obj, [key, value]) => {
+                        obj[value] = key
+
+                        return obj
+                    }, {})
             },
 
-            validFileSize(fileSize) {
-                return fileSize < maxSize || fileSize > minSize;
+            getFiles: async function () {
+                await this.getUploadedFileUrls()
+
+                let files = []
+
+                for (const uploadedFileUrl of Object.values(this.fileKeyIndex)) {
+                    if (! uploadedFileUrl) {
+                        continue
+                    }
+
+                    files.push({
+                        source: uploadedFileUrl,
+                        options: {
+                            type: 'local',
+                        },
+                    })
+                }
+
+                return shouldAppendFiles ? files : files.reverse()
             },
 
             isValidHTMLImageElement(elem){
@@ -230,7 +292,44 @@ export default (Alpine) => {
                 }
 
                 return false;
-            }
+            },
+
+            validFileType(fileType) {
+                return acceptedFileTypes.includes(fileType);
+            },
+    
+            validFileSize(file_Size) {
+                if (Number.isNaN(fileSize) || fileSize === 0) {
+                    return false;
+                }
+                
+                // fileSize in bytes, minSize & maxSize in kilobytes
+                let fileSize = file_Size / 1024;
+
+                return fileSize < maxSize && fileSize > minSize;
+            },
+    
+            validFileDimensions(file) {
+                return new Promise((resolve, reject) => {
+                    let reader = new FileReader();                        
+                    
+                    reader.onloadend = () => {
+                        let img = new Image();
+                        img.src = reader.result;
+                        
+                        img.onload = () => {
+                            let result = img.width > minCroppedWidth;
+                        
+                            resolve(result);
+                        }
+                    };
+                                
+                    reader.onerror = reject;
+
+                    reader.readAsDataURL(file); 
+                })
+    
+            },
         };
     })
 }
