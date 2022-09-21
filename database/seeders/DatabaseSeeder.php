@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Course;
-use App\Models\School;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,10 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call(SchoolSeeder::class);
         $this->call(CourseSeeder::class);
         $this->call(CourseSchoolSeeder::class);
-        $this->call(DislikeSeeder::class);     
-        $this->call(HobbySeeder::class);     
-        $this->call(ReportSeeder::class);     
-        $this->call(TownSeeder::class);     
-        $this->call(UserSeeder::class);     
+        $this->call(DislikeSeeder::class);
+        $this->call(HobbySeeder::class);
+        $this->call(ReportSeeder::class);
+        $this->call(TownSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(SchoolTownSeeder::class);
     }
 }

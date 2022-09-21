@@ -42,8 +42,8 @@ class UserSeeder extends Seeder
                 'bio'=> 'I am very devoted christian and therefore I want a roommate who is preferably a christian',
                 'created_at' => now(),
                 'updated_at' => now(),
-                'avatar' => '1628767762-IFP0x5qg.png',
-                'cover_photo' => '1628767762-uVxWFIwt.png',
+                'avatar' => asset('images/avatar_placeholder.png'),
+                'cover_photo' => asset('images/cover_placeholder.png'),
             ],
         ];
 

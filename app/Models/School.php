@@ -24,11 +24,11 @@ class School extends Model
 
 
     /**
-     * The towns that belong to this school.
+     * The towns that belong to the school.
      */
     public function towns()
     {
-        return  $this->hasMany(Town::class);
+        return $this->belongsToMany(Town::class)->withTimestamps();
     }
 
     /**

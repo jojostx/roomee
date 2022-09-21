@@ -40,11 +40,6 @@ class SchoolSeeder extends Seeder
         ],
     ];
 
-    // public function __construct()
-    // {
-    //     $this->schools = collect($this->schools);
-    // }
-
     /**
      * Run the database seeds.
      *

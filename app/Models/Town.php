@@ -8,13 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Town extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'name',
+    ];
 
     /**
      * The School that the town belongs to.
      */
     public function School()
     {
-        return $this->belongsTo(School::class);
+        return $this->belongsToMany(School::class);
     }
 
     /**

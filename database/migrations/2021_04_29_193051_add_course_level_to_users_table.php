@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\BudgetLimit;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +15,7 @@ class AddCourseLevelToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('course_level', false, true)->default(100);
+            $table->integer('course_level', false, true)->default(BudgetLimit::MIN);
         });
     }
 
