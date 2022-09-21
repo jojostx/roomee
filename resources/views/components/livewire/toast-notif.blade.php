@@ -1,4 +1,4 @@
-<div id="toast_notif" wire:ignore style="display: none;" class="fixed left-0 z-50 flex items-center justify-between w-full max-w-2xl px-4 py-4 overflow-hidden text-white bg-blue-500 shadow-lg md:px-6 md:ml-8 md:w-1/2 md:rounded-md bottom-8">
+<div id="toast_notif" wire:ignore style="display: none;" class="fixed left-0 z-50 flex items-center justify-between w-full max-w-2xl px-4 py-4 overflow-hidden text-white bg-primary-500 shadow-lg md:px-6 md:ml-8 md:w-1/2 md:rounded-md bottom-8">
 </div>
 @prepend('scripts')
 <script>
@@ -13,7 +13,7 @@
             p = `<p>You have succesfully ${actionTaken}ed 
                     <span class="font-semibold">${username}</span>
                  </p>
-                 <a href="{{ route('blocklist') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-blue-100 md:text-base">
+                 <a href="{{ route('blocklist') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   View blocklist
                  </a>`;
         }
@@ -29,7 +29,7 @@
                     <span class="font-semibold">${username}</span>
                     ${actionTaken}s
                  </p>
-                 <a href="{{ route('favorites') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-blue-100 md:text-base">
+                 <a href="{{ route('favorites') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   View favorites
                  </a>`;
         }
@@ -44,7 +44,7 @@
             p = `<p>Your roommate ${actionTaken} has been sent to 
                     <span class="font-semibold">${username}</span>
                  </p>
-                 <a href="{{ route('requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-blue-100 md:text-base">
+                 <a href="{{ route('requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   View all requests
                  </a>`;
         }
@@ -53,7 +53,7 @@
             p = `<p><span class="font-semibold">${username}</span>
                     Sent you a roommate request.
                  </p>
-                 <a href="{{ route('requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-blue-100 md:text-base">
+                 <a href="{{ route('requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   View requests
                  </a>`;
         }
@@ -62,7 +62,7 @@
             p = `<p><span class="font-semibold">${username}</span>
                     Accepted your roommate request.
                  </p>
-                 <a href="#" class="flex-shrink-0 ml-2 text-sm underline hover:text-blue-100 md:text-base">
+                 <a href="#" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   Contact
                  </a>`;
         }

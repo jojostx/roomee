@@ -2,9 +2,9 @@
     <x-page-header>
         <div class="flex items-center justify-between w-full">
             <p>Requests</p>
-            <div class="flex items-center overflow-hidden text-xs text-blue-800 border border-blue-800 rounded-md sm:text-sm">
-                <button wire:click="switchPage" class="px-1 sm:px-2 py-1 @if ($currentPage=='recieved') bg-blue-200 @endif border-r border-blue-800 focus:outline-none focus:bg-blue-200">Recieved requests</button>
-                <button wire:click="switchPage" class="px-1 sm:px-2 py-1 @if ($currentPage=='sent') bg-blue-200 @endif hover:text-blue-600 focus:outline-none focus:bg-blue-200">Sent requests</button>
+            <div class="flex items-center overflow-hidden text-xs text-primary-800 border border-primary-800 rounded-md sm:text-sm">
+                <button wire:click="switchPage" class="px-1 sm:px-2 py-1 @if ($currentPage=='recieved') bg-primary-200 @endif border-r border-primary-800 focus:outline-none focus:bg-primary-200">Recieved requests</button>
+                <button wire:click="switchPage" class="px-1 sm:px-2 py-1 @if ($currentPage=='sent') bg-primary-200 @endif hover:text-primary-600 focus:outline-none focus:bg-primary-200">Sent requests</button>
             </div>
         </div>
     </x-page-header>

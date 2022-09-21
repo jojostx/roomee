@@ -11,10 +11,10 @@
                 <span class="font-semibold user-name">{{ $username }}</span> will no longer be able to view your profile or send you a roommate request.
             </p>
             <div class="flex justify-end">
-                <button wire:click="reset_" class="px-2 py-2 mr-2 font-semibold hover:text-blue-500 focus:text-blue-600">Cancel</button>
+                <button wire:click="reset_" class="px-2 py-2 mr-2 font-semibold hover:text-primary-500 focus:text-primary-600">Cancel</button>
                 <form method="post" @submit.prevent="">
                     @csrf
-                    <button wire:click="submit" type="button" class="px-2 py-2 font-semibold hover:text-blue-500 focus:text-blue-600">Block</button>
+                    <button wire:click="submit" type="button" class="px-2 py-2 font-semibold hover:text-primary-500 focus:text-primary-600">Block</button>
                 </form>
             </div>
         </div>
@@ -31,8 +31,8 @@
                 @endforeach  
             </ul>
             <div class="flex justify-end px-2">
-                <button wire:click="reset_" class="px-1 py-2 mr-2 font-semibold hover:text-blue-500 focus:text-blue-600 focus:outline-none">Cancel</button>
-                <button wire:click="submit" class="px-1 py-2 font-semibold hover:text-blue-500 focus:text-blue-600 focus:outline-none">Report</button>
+                <button wire:click="reset_" class="px-1 py-2 mr-2 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Cancel</button>
+                <button wire:click="submit" class="px-1 py-2 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Report</button>
             </div>
             @if ($errors->any())
             <div class="bg-red-100 border-t border-red-500">

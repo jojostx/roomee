@@ -23,7 +23,7 @@
                             Roomee helps you find the best roommate for you.
                         </h2>
                     </div>
-                    <x-ctaButton href="#howItWorks" class="font-bold text-gray-100 bg-blue-500 hover:text-gray-100 hover:bg-blue-600">
+                    <x-ctaButton href="#howItWorks" class="font-bold text-gray-100 bg-primary-500 hover:text-gray-100 hover:bg-primary-600">
                         LEARN MORE
                     </x-ctaButton>
                     <x-ctaButton href="{{ route('register') }}" class="font-bold text-gray-200 bg-transparent border-gray-200 sm:ml-6 xs:ml-2 sm:mt-0 hover:text-gray-900 hover:bg-white hover:border-white">
@@ -54,7 +54,7 @@
                             <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
                         </svg>
                     </i>
-                    <i class="text-blue-500 animate-reverseSpin animate-delay-2">
+                    <i class="text-primary-500 animate-reverseSpin animate-delay-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
                             <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
                         </svg>
@@ -70,14 +70,14 @@
                 <div class="flex flex-col items-center w-full md:items-end">
                     <x-steps>
                         <x-slot name="icon">
-                            <div class="p-2 mr-6 bg-blue-200 rounded-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <div class="p-2 mr-6 bg-primary-200 rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 text-primary-500" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
                                 </svg>
                             </div>
                         </x-slot>
                         <div>
-                            <p class="mb-2 text-base font-bold text-blue-900 sm:text-lg">CREATE ACCOUNT</p>
+                            <p class="mb-2 text-base font-bold text-primary-900 sm:text-lg">CREATE ACCOUNT</p>
                             <p class="max-w-sm text-sm sm:text-base">Create a Roomee account, complete your profile and Carefully fill in your preferences, educational info and budget.</p>
                         </div>
                     </x-steps>
@@ -143,7 +143,7 @@
                             <div class="w-full h-full px-4 flex flex-col justify-center space-y-4 overflow-hidden bg-white max-w-sm rounded-lg">
                                 <div class="flex flex-col items-center">
                                     <p class="font-semibold text-sm">CREATE ACCOUNT</p>
-                                    <p class="text-xs">Already have an account? <a href="http://roomee.test/login" class="text-blue-600 underline hover:text-blue-900">Log In</a></p>
+                                    <p class="text-xs">Already have an account? <a href="http://roomee.test/login" class="text-primary-600 underline hover:text-primary-900">Log In</a></p>
                                 </div>
 
                                 <!-- name -->
@@ -223,7 +223,7 @@
         </div>
 
         <!-- curvy bg -->
-        <div x-show="shown" x-transition:enter.duration.1400ms class="absolute bottom-0 left-0 z-0 w-full text-blue-100">
+        <div x-show="shown" x-transition:enter.duration.1400ms class="absolute bottom-0 left-0 z-0 w-full text-primary-100">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                 <path fill="currentColor" fill-opacity="1">
                     <animate repeatCount="indefinite" attributeName="d" dur="20s" values="M0,64L48,80C96,96,192,128,288,149.3C384,171,480,181,576,154.7C672,128,768,64,864,42.7C960,21,1056,43,1152,74.7C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;M0,128L48,117.3C96,107,192,85,288,90.7C384,96,480,128,576,154.7C672,181,768,203,864,186.7C960,171,1056,117,1152,90.7C1248,64,1344,64,1392,64L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;                                   M0,160L48,133.3C96,107,192,53,288,53.3C384,53,480,107,576,122.7C672,139,768,117,864,90.7C960,64,1056,32,1152,26.7C1248,21,1344,43,1392,53.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z; M0,64L48,80C96,96,192,128,288,149.3C384,171,480,181,576,154.7C672,128,768,64,864,42.7C960,21,1056,43,1152,74.7C1248,107,1344,149,1392,170.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;" />
@@ -234,13 +234,13 @@
     <!-- End of How it Works Section -->
 
     <!-- CTA section -->
-    <div class="flex flex-col items-center justify-center w-full px-16 pt-6 pb-16 text-center bg-blue-100 md:py-16 md:pb-24 md:pt-10">
+    <div class="flex flex-col items-center justify-center w-full px-16 pt-6 pb-16 text-center bg-primary-100 md:py-16 md:pb-24 md:pt-10">
         <p class="mb-6 text-3xl font-bold text-gray-800">Ready to find the perfect roommate?</p>
         @auth
-        <x-ctaButton href=" {{ route('dashboard') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-blue-800">Sign Up</x-ctaButton>
+        <x-ctaButton href=" {{ route('dashboard') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-primary-800">Sign Up</x-ctaButton>
         @endauth
         @guest
-        <x-ctaButton href=" {{ route('register') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-blue-800">Sign Up</x-ctaButton>
+        <x-ctaButton href=" {{ route('register') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-gray-800 rounded-full md:text-xl hover:bg-primary-800">Sign Up</x-ctaButton>
         @endguest
     </div>
     <!-- End of CTA section -->
@@ -556,7 +556,7 @@
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
                     <h2 class="mb-2 text-3xl font-medium text-gray-700"><span class="font-extrabold text-gray-900 ">Install</span> to homescreen</h2>
-                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a class="font-semibold text-blue-600 no-underline hover:text-blue-700 focus:text-red-500" href="#">PWA
+                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-red-500" href="#">PWA
                                 (progressive web app)</a></span> that can be installed to your homescreen through your
                         browser. This way you get instant access, notifications, faster browsing with an app-like
                         performance and lots more. it also takes considerably less storage space. </p>
@@ -566,7 +566,7 @@
                 <div class="mb-8 text-3xl font-bold md:mb-10">
                     <h1>Find the perfect roommate today!!!</h1>
                 </div>
-                <a href="{{ route('register') }}" class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-gray-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-blue-900">Sign
+                <a href="{{ route('register') }}" class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-gray-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-primary-900">Sign
                     up for free
                 </a>
             </div>
@@ -574,7 +574,7 @@
     </section>
 
     <!-- Carousel Section -->
-    <section class="bg-blue-100 py-14 md:py-16 lg:py-24">
+    <section class="bg-primary-100 py-14 md:py-16 lg:py-24">
         <div class="flex flex-col items-center justify-center">
             <p class="mb-8 text-4xl font-bold text-center text-gray-700 md:text-5xl">Lots of happy users</p>
             <div class="flex mb-4">

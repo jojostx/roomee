@@ -8,18 +8,22 @@
     :required="$isRequired()" 
     :state-path="$getStatePath()">
     <div x-data="multiselect({ 
-        options: {{ json_encode($getOptions()) }}, 
+        placeholder: {{ json_encode($getPlaceholder()) }},
+        options: {{ json_encode($getOptions()) }},
         selectedOptions: {{ json_encode($getSelectedOptions()) }}, 
-        })" {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} {{ $attributes->merge($getExtraAttributes())->class([
+        })"
+        {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} {{ $attributes->merge($getExtraAttributes())->class([
             'block w-full transition duration-75 divide-y rounded-lg shadow-sm border focus-within:border-primary-600 focus-within:ring-1 focus-within:ring-primary-600 filament-forms-multi-select-component',
             'dark:bg-gray-700 dark:divide-gray-600' => config('forms.dark_mode'),
             'border-gray-300' => ! $errors->has($getStatePath()),
             'dark:border-gray-600' => (! $errors->has($getStatePath())) && config('forms.dark_mode'),
             'border-danger-600 ring-danger-600' => $errors->has($getStatePath()),
-        ]) }} {{ $getExtraAlpineAttributeBag() }}>
+        ]) }} 
+        {{ $getExtraAlpineAttributeBag() }}
+    >
         <div x-on:click.away="closeListbox()" x-on:blur="closeListbox()" x-on:keydown.escape.stop="closeListbox()" class="relative">
             <div x-on:click="openListbox()" aria-haspopup="listbox" tabindex="1" class="relative overflow-hidden rounded-lg">
-                <input x-model="search" placeholder="{{ $getPlaceholder() }}" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-gray-700 dark:placeholder-gray-400'=> config('forms.dark_mode'),])/>
+                <input x-model="search" x-bind:placeholder="optionsVisible ? 'Start typing to search...' : placeholder" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-gray-700 dark:placeholder-gray-400'=> config('forms.dark_mode'),])/>
 
                 <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none rtl:right-auto rtl:left-0 rtl:pr-0 rtl:pl-2">
                     <svg class="w-5 h-5" x-bind:class="optionsVisible && 'rotate-180'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -32,7 +36,7 @@
                 <ul class="py-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
 
                     <template x-for="(option, index) in filteredOptions()" x-bind:key="option.id">
-                        <li x-bind:id="'{{ $getName() }}' + 'Option' + option.id" x-on:click="selectOption(option)" role="option" class="relative flex items-center py-2 pl-3 text-gray-900 cursor-default select-none pr-9  @if (config('forms.dark_mode')) dark:text-gray-200 @endif">
+                        <li x-bind:id="'{{ $getName() }}' + 'Option' + option.id" x-on:click.prevent="toggleSelection(option)" x-on:keydown.enter="toggleSelection(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-gray-900 ': !isSelected(option)}" class="relative flex items-center px-1 text-gray-900 border-y border-transparent cursor-default select-none hover:bg-gray-200 focus:border-gray-400 focus:bg-gray-100 focus:outline-none py-2 pl-3 pr-9  @if (config('forms.dark_mode')) dark:text-gray-200 @endif" tabindex="0" role="option">
                             <span x-text="capitalize(option.name)" x-bind:class="{
                                         'font-medium': isSelected(option),
                                         'font-normal': !isSelected(option),
@@ -46,12 +50,8 @@
                         </li>
                     </template>
 
-                    <div x-show="!Object.keys(options).length" x-cloak @class([ 'px-3 py-2 text-sm text-gray-700 cursor-default select-none' , 'dark:text-gray-200'=> config('forms.dark_mode'),])>
-                        <span x-show="filteredOptions().length != 0">
-                            Start typing to search...
-                        </span>
-
-                        <span x-show="filteredOptions().length == 0" x-cloak>
+                    <div x-show="filteredOptions().length == 0" x-cloak @class([ 'px-3 py-2 text-sm text-gray-700 cursor-default select-none' , 'dark:text-gray-200'=> config('forms.dark_mode'),])>
+                        <span>
                             No options match your search.
                         </span>
                     </div>

@@ -11,7 +11,7 @@
 
             <div class="flex flex-col items-center mb-4">
                 <p class="font-semibold">CREATE ACCOUNT</p>
-                <p class="text-xs">Already have an account? <a href="{{ route('login') }}" class="text-blue-600 underline hover:text-blue-900">{{ __('Log In') }}</a></p>
+                <p class="text-xs">Already have an account? <a href="{{ route('login') }}" class="text-primary-600 underline hover:text-primary-900">{{ __('Log In') }}</a></p>
             </div>
             <div class="grid grid-cols-2 col-span-1 gap-2 mb-2">
                 <div class="flex flex-col col-span-1 form_input">
@@ -113,7 +113,7 @@
                 </x-button>
             </div>
             <div class="mt-3">
-                <p class="text-xs">By registering, you agree to Roomee's <a href="{{ route('terms') }}" class="text-blue-600 underline hover:text-blue-900">Terms and Conditions</a></p>
+                <p class="text-xs">By registering, you agree to Roomee's <a href="{{ route('terms') }}" class="text-primary-600 underline hover:text-primary-900">Terms and Conditions</a></p>
             </div>
 
         </form>

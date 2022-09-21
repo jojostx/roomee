@@ -1,6 +1,6 @@
 <x-landing-layout>
     <x-slot name="banner">
-        <div class="flex items-center justify-center text-center bg-blue-100 h-60 md:h-80">
+        <div class="flex items-center justify-center text-center bg-primary-100 h-60 md:h-80">
             <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl lg:text-5xl">Privacy and Cookie Policy.</p>
         </div>
     </x-slot>
@@ -15,10 +15,10 @@
                     <x-slot name="term_body">
                         <p class="font-normal text-gray-700">
                             Roomee, Ltd., Federal Republic Nigeria company registered office: Blk B flat 7, INEC quarters, Area 10 Garki,
-                            Abuja, Nigeria ("Roomee", "us", "our", or "we"), focuses on assuring that the <a class="font-medium text-blue-600 hover:underline" href="{{ route('home') }}">Roomee.com.ng</a> website ("Site") and the Roomee application (the "Application"), as well as the general ecosystem provides a safe environment for both website visitors and application users ("Customer", "You"). We need to collect, process and store some Personal and Navigational information in order to provide you with an ability to review the Roomee website content, allow for using Roomee application service and subscribe to it, submit support requests and product ideas for our consideration.
+                            Abuja, Nigeria ("Roomee", "us", "our", or "we"), focuses on assuring that the <a class="font-medium text-primary-600 hover:underline" href="{{ route('home') }}">Roomee.com.ng</a> website ("Site") and the Roomee application (the "Application"), as well as the general ecosystem provides a safe environment for both website visitors and application users ("Customer", "You"). We need to collect, process and store some Personal and Navigational information in order to provide you with an ability to review the Roomee website content, allow for using Roomee application service and subscribe to it, submit support requests and product ideas for our consideration.
                         </p>
                         <p class="mt-4 font-normal text-gray-700">
-                            We are dedicated to protecting your privacy. This Privacy Policy (herein the "Policy") applies to the Site and the Application, and it administers the ways we collect, process and store data. The Policy has a direct reference to the <a class="font-medium text-blue-600 hover:underline" href="{{ route('terms') }}"> Terms of Service</a> and applies to it. It also explains how website visitors and customers can exercise their rights to obtain, access, erase, use or rectify their Personal Information that was of their own free will submitted to us.
+                            We are dedicated to protecting your privacy. This Privacy Policy (herein the "Policy") applies to the Site and the Application, and it administers the ways we collect, process and store data. The Policy has a direct reference to the <a class="font-medium text-primary-600 hover:underline" href="{{ route('terms') }}"> Terms of Service</a> and applies to it. It also explains how website visitors and customers can exercise their rights to obtain, access, erase, use or rectify their Personal Information that was of their own free will submitted to us.
                         </p>
                         <p class="mt-4 font-normal text-gray-700">
                             When you browse the Site, subscribe to the Application plan, use the Application, leave support requests, submit product ideas, fill out a survey, add comments to the blog posts or perform an online payment, you give consent and fully agree to the Policy under which Roomee collects, processes, uses, stores and discloses Personal Information. If you do not agree with the points stated in this Policy, you should not browse the Site, use the Application, submit support requests and product ideas, and perform other activities, which may result in supplying us with your Personal and Navigational Information.
@@ -177,7 +177,7 @@
                             </ul>
 
                             <p class="mb-6">
-                                To complain to a data protection authority about our collection and use of your Personal Information. Contact details for data protection authorities in Nigeria can be found <a class="font-medium text-blue-600 hover:underline" href="https://nitda.gov.ng/contact/" class="">here</a>
+                                To complain to a data protection authority about our collection and use of your Personal Information. Contact details for data protection authorities in Nigeria can be found <a class="font-medium text-primary-600 hover:underline" href="https://nitda.gov.ng/contact/" class="">here</a>
                             </p>
                             <p class="mb-6">
                                 In order to exercise any of these rights, please email us at privacy@roomee. We will provide response to your request as soon as possible, informing you about the steps we have taken to ensure that your rights are exercised.
@@ -185,7 +185,7 @@
 
                             <p class="mb-2 font-bold">4.2 Opting Out from Our Communication</p>
                             <p class="mb-6">
-                                You may opt out from our marketing communications by pressing the 'unsubscribe' link, which is located at the bottom of our email, or sending your unsubscribe request at <a class="font-medium text-blue-600 hover:underline" href="mailto:privacy@roomee.com.ng" class="">privacy@roomee.com.ng</a>
+                                You may opt out from our marketing communications by pressing the 'unsubscribe' link, which is located at the bottom of our email, or sending your unsubscribe request at <a class="font-medium text-primary-600 hover:underline" href="mailto:privacy@roomee.com.ng" class="">privacy@roomee.com.ng</a>
                             </p>
                             <p class="mb-6">
                                 You cannot unsubscribe from our transactional emailing (which also includes Welcome, Forgot password, Confirmation, as well as Critical Product updates), and other information which refers to your Roomee Application account.
@@ -194,7 +194,7 @@
 
                             <p class="mb-2 font-bold">4.3 Children's Information</p>
                             <p class="mb-6">
-                                Our Site and Application are not intended for children's use. We do not knowingly accumulate any data from children under the age of 16. If you think that we might have gathered some information from children under the age of 16, please let us know at <a class="font-medium text-blue-600 hover:underline" href="mailto:privacy@roomee.com.ng" class="">privacy@roomee.com.ng</a> and we will delete this data from our databases and other applicable resources, if any.
+                                Our Site and Application are not intended for children's use. We do not knowingly accumulate any data from children under the age of 16. If you think that we might have gathered some information from children under the age of 16, please let us know at <a class="font-medium text-primary-600 hover:underline" href="mailto:privacy@roomee.com.ng" class="">privacy@roomee.com.ng</a> and we will delete this data from our databases and other applicable resources, if any.
                             </p>
                         </div>
                     </x-slot>
@@ -309,7 +309,7 @@
         </div>
     </div>
     <!-- call to action //links to contact page -->
-    <div class="flex justify-center bg-blue-300">
+    <div class="flex justify-center bg-primary-300">
         <div class="flex flex-col items-center justify-between w-11/12 my-12 py-14 md:flex-row">
             <div class="max-w-lg p-8 border-2 border-gray-800 sm:p-12 md:mb-0">
                 <p class="text-2xl font-bold md:text-3xl">Feel free to contact us if this article did not answer all your questions.</p>
@@ -318,7 +318,7 @@
             <div class="w-1 h-12 border-l-2 border-gray-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
             <!-- <button class="bg-gray-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-blue-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
     <!-- end of call to action -->

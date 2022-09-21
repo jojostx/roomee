@@ -1,6 +1,6 @@
 <x-landing-layout>
     <x-slot name="banner">
-        <div class="flex items-center justify-center text-center bg-blue-100 h-60 md:h-80">
+        <div class="flex items-center justify-center text-center bg-primary-100 h-60 md:h-80">
             <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl">Terms of Use.</p>
         </div>
     </x-slot>
@@ -21,7 +21,7 @@
                             IMPORTANT -- READ CAREFULLY: BY CREATING AN ACCOUNT OR BY UTILIZING THE ROOMEE SERVICE YOU AGREE TO BE BOUND BY THESE TERMS AND CONDITIONS.
                         </p>
                         <p class="font-normal text-gray-700">
-                            Welcome to the <span><a class="font-medium text-blue-600 hover:underline" href="{{ route('home') }}">Roomee.com.ng</a></span> service and website (collectively, the "Service"). Your use of the Service is subject to these Terms of Service and Roomee’s <span><a class="font-medium text-blue-600 hover:underline" href="{{ route('privacy') }}">Privacy Policy</a></span> (collectively, the "Terms of Service" or “Agreement”). These Terms of Service are a legal agreement between You and <span class="font-boldr">Roomee ltd.</span> (“Roomee”), a Nigerian Companny, for use of the Roomee service. "You" refers to any individual who creates an account on the Service. If You do not agree with the terms of this Agreement, do not use the Service. Roomee reserves the right to update and change the Agreement from time to time without notice or acceptance by You. The Agreement will also be applicable to the use of the Service on tiers. By using the Service, You signify Your irrevocable acceptance of this Agreement. The website and any downloadable Material associated with the Service are protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties.
+                            Welcome to the <span><a class="font-medium text-primary-600 hover:underline" href="{{ route('home') }}">Roomee.com.ng</a></span> service and website (collectively, the "Service"). Your use of the Service is subject to these Terms of Service and Roomee’s <span><a class="font-medium text-primary-600 hover:underline" href="{{ route('privacy') }}">Privacy Policy</a></span> (collectively, the "Terms of Service" or “Agreement”). These Terms of Service are a legal agreement between You and <span class="font-boldr">Roomee ltd.</span> (“Roomee”), a Nigerian Companny, for use of the Roomee service. "You" refers to any individual who creates an account on the Service. If You do not agree with the terms of this Agreement, do not use the Service. Roomee reserves the right to update and change the Agreement from time to time without notice or acceptance by You. The Agreement will also be applicable to the use of the Service on tiers. By using the Service, You signify Your irrevocable acceptance of this Agreement. The website and any downloadable Material associated with the Service are protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties.
                         </p>
                     </x-slot>
                 </x-term>
@@ -185,7 +185,7 @@
                             All notices or other correspondence to Mailtrap under this Agreement must be sent to the following electronic mail address for such purpose: <br>
 
                             <p class="my-4">
-                                <span><a class="font-medium text-blue-600 hover:underline" target="_blank" href="mailto:support@roomee.com.ng">support@Roomee.com.ng</a></span>
+                                <span><a class="font-medium text-primary-600 hover:underline" target="_blank" href="mailto:support@roomee.com.ng">support@Roomee.com.ng</a></span>
                             </p>
                             <p class="my-4">
                                 Or the following physical address:
@@ -209,7 +209,7 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-center bg-blue-300">
+    <div class="flex justify-center bg-primary-300">
         <div class="flex flex-col items-center justify-between w-11/12 my-12 py-14 md:flex-row">
             <div class="max-w-lg p-8 border-2 border-gray-800 sm:p-10 md:mb-0">
                 <p class="text-2xl font-bold md:text-3xl">For any additional questions or inquiries, Reach us and we'll get back to you!</p>
@@ -218,7 +218,7 @@
             <div class="w-1 h-12 border-l-2 border-gray-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
             <!-- <button class="bg-gray-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-blue-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
 </x-landing-layout>

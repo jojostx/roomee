@@ -1,10 +1,10 @@
 <footer class="flex justify-center w-full text-gray-600 bg-white border-t border-gray-800">
     <div class="flex items-center justify-between w-full pl-2 sm:pl-0 sm:w-11/12">
         <div class="py-1">
-            <a href="{{ route('terms') }}" class="pr-1 text-xs sm:pr-2 sm:text-base hover:text-blue-600">Terms</a>|
-            <a href="{{ route('privacy') }}" class="px-1 text-xs sm:px-2 sm:text-base hover:text-blue-600">Privacy</a>|
-            <a href="{{ route('faqs') }}" class="px-1 text-xs sm:px-2 hover:text-blue-600 sm:text-base">FAQs</a>|
-            <a href="{{ route('contact') }}" class="px-1 text-xs sm:pl-2 hover:text-blue-600 sm:text-base">Contact</a>
+            <a href="{{ route('terms') }}" class="pr-1 text-xs sm:pr-2 sm:text-base hover:text-primary-600">Terms</a>|
+            <a href="{{ route('privacy') }}" class="px-1 text-xs sm:px-2 sm:text-base hover:text-primary-600">Privacy</a>|
+            <a href="{{ route('faqs') }}" class="px-1 text-xs sm:px-2 hover:text-primary-600 sm:text-base">FAQs</a>|
+            <a href="{{ route('contact') }}" class="px-1 text-xs sm:pl-2 hover:text-primary-600 sm:text-base">Contact</a>
         </div>
 
         <a href="{{ route('home') }}" aria-label="Application logo" title="application logo" class="px-2 py-2 text-gray-800 border-l border-r border-gray-800 hover:text-white hover:bg-gray-800 w-28 max-w">

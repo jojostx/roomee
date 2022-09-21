@@ -1,6 +1,6 @@
 <x-landing-layout>
     <x-slot name="banner">
-        <div class="flex items-center justify-center h-screen text-center bg-blue-100 md:h-screen">
+        <div class="flex items-center justify-center h-screen text-center bg-primary-100 md:h-screen">
             <div class="mb-4 text-center md:mb-12">
                 <h1 class="mb-4 text-4xl font-extrabold md:text-5xl">Feature-packed</h1>
                 <p class="text-xl font-medium leading-tight text-gray-600 md:text-2xl">it's free, fast, user-friendly, intuitive and 
@@ -351,7 +351,7 @@
                     <h2 class="mb-2 text-3xl font-medium text-gray-700"><span
                             class="font-extrabold text-gray-900 ">Install</span> to homescreen</h2>
                     <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a
-                                class="font-semibold text-blue-600 no-underline hover:text-blue-700 focus:text-red-500"
+                                class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-red-500"
                                 href="#">PWA
                                 (progressive web app)</a></span> that can be installed to your homescreen through your
                         browser. This way you get instant access, notifications, faster browsing with an app-like
@@ -363,7 +363,7 @@
                     <h1>Find the perfect roommate today!!!</h1>
                 </div>
                 <a href="{{ route('register') }}"
-                    class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-gray-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-blue-900">Sign
+                    class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-gray-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-primary-900">Sign
                     up for free
                 </a>
             </div>

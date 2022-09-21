@@ -20,14 +20,14 @@
             </div>
 
             <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" class="absolute z-30 w-full my-1 transition bg-white border border-gray-300 rounded-lg shadow-md focus:outline-none" style="bottom: 40px; display: none;">
-                <ul class="py-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
+                <ul class="py-1 space-y-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
                     <template x-for="(option, index) in filteredOptions()" x-bind:key="option.id">
-                        <li x-bind:class="{'text-gray-900 ': !isSelected(option)}" @click.prevent="toggle(option)" @keydown.arrow-down.prevent="$focus.next()" @keydown.arrow-up.prevent="$focus.previous()" tabindex="0" role="option" class="relative flex items-center px-1 text-gray-900 cursor-default select-none">
+                        <li @click.prevent="toggle(option)" x-on:keydown.enter="toggle(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-gray-900 ': !isSelected(option)}" tabindex="0" role="option" class="relative flex items-center px-1 text-gray-900 border border-transparent rounded-md cursor-default select-none hover:bg-gray-200 focus:border-gray-400 focus:bg-gray-100 focus:outline-none">
                             <input type="checkbox" wire:model="{{ 'selected'.$slot }}" x-bind:id="_id(option.name)" x-bind:value="option.id" x-bind:checked="isSelected(option)" name="{{ $name }}" class="hidden dropdown_checkboxes" autocomplete="off">
 
                             <label x-bind:for="_id(option.name)" class="flex items-center justify-between w-full h-full px-2 py-2 rounded-md">
                                 <span class="block font-normal truncate" x-text="capitalize(option.name)"></span>
-                                <svg class="flex items-center hidden w-4 text-primary-500" x-bind:class="{ 'hidden': !isSelected(option) }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <svg class="flex items-center w-4 text-primary-500" x-bind:class="{ 'hidden': !isSelected(option) }" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </label>
@@ -105,6 +105,13 @@
 
             isSelected(item) {
                 return this.selected.some(_option => _option == item.id)
+            },
+
+            previousUp(event) {
+                (event.target.previousElementSibling) ? event.target.previousElementSibling.focus(): '';
+            },
+            nextDown(event) {
+                (event.target.nextElementSibling) ? event.target.nextElementSibling.focus(): '';
             },
 
             _id(t) {

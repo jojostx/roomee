@@ -14,7 +14,7 @@
 
             <div class="flex flex-col items-center mb-4">
                 <p class="font-semibold">LOGIN</p>
-                <p class="text-xs">New here? <a href="{{ route('register') }}" class="text-blue-600 underline hover:text-blue-900">{{ __('Register') }}</a></p>
+                <p class="text-xs">New here? <a href="{{ route('register') }}" class="underline text-primary-600 hover:text-primary-900">{{ __('Register') }}</a></p>
             </div>
 
             <!-- Email Address -->

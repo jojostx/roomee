@@ -1,6 +1,6 @@
 <x-landing-layout>
     <x-slot name="banner">
-        <div class="flex items-center justify-center text-center bg-blue-100 h-60 md:h-80">
+        <div class="flex items-center justify-center text-center bg-primary-100 h-60 md:h-80">
             <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl lg:text-5xl">Frequently Asked Questions</p>
         </div>
     </x-slot>
@@ -90,12 +90,12 @@
                     </label>
                 </div>
 
-                <x-button type="Submit" class="flex items-center justify-center font-bold text-gray-100 bg-gray-800 rounded-full w-28 hover:text-gray-100 hover:bg-blue-500">
+                <x-button type="Submit" class="flex items-center justify-center font-bold text-gray-100 bg-gray-800 rounded-full w-28 hover:text-gray-100 hover:bg-primary-500">
                     Submit
                 </x-button>
             </form>
 
-            <div id="flash" class="hidden px-4 py-2 font-bold text-blue-600 bg-white border rounded-md shadow-md">
+            <div id="flash" class="hidden px-4 py-2 font-bold text-primary-600 bg-white border rounded-md shadow-md">
             </div>
 
         </div>
@@ -103,7 +103,7 @@
     <!-- End of Feedback Section -->
 
     <!-- call to action //links to contact page -->
-    <div class="flex justify-center bg-blue-300">
+    <div class="flex justify-center bg-primary-300">
         <div class="flex flex-col items-center justify-between w-11/12 my-12 py-14 md:flex-row">
             <div class="max-w-lg p-8 border-2 border-gray-800 sm:p-12 md:mb-0">
                 <p class="text-2xl font-bold md:text-3xl">Feel free to contact us if this article did not answer all your questions.</p>
@@ -112,7 +112,7 @@
             <div class="w-1 h-12 border-l-2 border-gray-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
             <!-- <button class="bg-gray-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-blue-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
     <!-- end of call to action -->

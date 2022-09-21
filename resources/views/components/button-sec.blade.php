@@ -1,5 +1,5 @@
 @php
-    $classes = "inline-flex items-center px-1 xs:px-2 py-1 font-semibold text-xs sm:text-sm text-blue-100 transition duration-150 ease-in-out bg-blue-600 rounded-md hover:text-blue-100 hover:bg-blue-800 focus:outline-none focus:bg-blue-800 focus:text-blue-100";
+    $classes = "inline-flex items-center px-1 xs:px-2 py-1 font-semibold text-xs sm:text-sm text-primary-100 transition duration-150 ease-in-out bg-primary-600 rounded-md hover:text-primary-100 hover:bg-primary-800 focus:outline-none focus:bg-primary-800 focus:text-primary-100";
 @endphp
 
 <button {{ $attributes->merge(['class' => $classes]) }}>

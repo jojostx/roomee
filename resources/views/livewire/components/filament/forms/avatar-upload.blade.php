@@ -8,10 +8,10 @@
     :required="$isRequired()"
     :state-path="$getStatePath()"
     >
-    <div x-bind="avatar" class="flex flex-col items-center justify-start px-4 py-4 mb-6 rounded-lg sm:flex-row bg-blue-50 sm:py-6">
+    <div x-bind="avatar" class="flex flex-col items-center justify-start px-4 py-4 mb-6 rounded-lg sm:flex-row bg-primary-50 sm:py-6">
       <div class="mb-4 sm:w-2/5 sm:mb-0">
         <div class="flex flex-col items-center justify-center mt-1">
-          <div wire:ignore class="block w-24 h-24 mb-4 overflow-hidden bg-blue-200 rounded-full">
+          <div wire:ignore class="block w-24 h-24 mb-4 overflow-hidden bg-primary-200 rounded-full">
             @if (auth()->user()->avatar)
             <img id="avatar_img" src="{{ auth()->user()->avatarPath }}" alt="avatar image" class="h-full" width="100%" height="100%">
             @else
