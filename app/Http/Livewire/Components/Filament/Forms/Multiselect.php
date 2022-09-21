@@ -27,7 +27,7 @@ class Multiselect extends Field
             $component->state([]);
         });
 
-        $this->placeholder(__('forms::components.multi_select.placeholder'));
+        $this->placeholder(__('Please select at least one option'));
     }
 
     public function getSelectedOptions()
