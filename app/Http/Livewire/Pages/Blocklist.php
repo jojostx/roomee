@@ -13,9 +13,12 @@ class Blocklist extends Component
     {
         return auth()->user()->blocklists;
     }
-    
+        
     public function render()
     {
-        return view('livewire.pages.blocklist')->layout('layouts.guest');
+        /** @var \Illuminate\View\View */
+        $view = view('livewire.pages.blocklist');
+
+        return $view->layout('layouts.guest');
     }
 }

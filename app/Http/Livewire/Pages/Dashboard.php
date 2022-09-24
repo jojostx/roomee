@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Pages;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -11,6 +12,27 @@ class Dashboard extends Component
     public $blocklist;
     public $blockers;
     public $users;
+
+    public function mount()
+    {
+        $user = $this->getAuthModel();
+
+        $this->blockers = DB::table('blocklists')
+            ->where([
+                'blockee_id' => $user->id
+            ])
+            ->get('id');
+
+        $this->blocklist =  $user->blocklists()->pluck('blockee_id');
+
+        $this->users = User::excludeUser($user->id)
+            ->gender($user->gender)
+            ->school($user->school_id)
+            ->whereIntegerNotInRaw('id', $this->blocklist)
+            ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name'])
+            ->get()
+            ->sortByDesc('similarity_score');
+    }
 
     protected function getListeners()
     {
@@ -23,22 +45,9 @@ class Dashboard extends Component
         ];
     }
 
-    public function mount()
+    protected function getAuthModel(): ?User
     {
-        $authUser = auth()->user();
-
-        $this->blockers = DB::table('blocklists')->where([
-            'blockee_id' => auth()->id()
-        ])->get('id');
-
-        $this->blocklist =  $authUser->blocklists()->pluck('blockee_id');
-
-        $this->users = User::excludeUser($authUser->id)
-            ->gender($authUser->gender)
-            ->school($authUser->school_id)
-            ->whereIntegerNotInRaw('id', $this->blocklist)
-            ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name', 'towns:id,name'])
-            ->get()->sortByDesc('similarity_score');
+        return Auth::user();
     }
 
     // fires when the authenticated user blocks another user
@@ -46,7 +55,7 @@ class Dashboard extends Component
     {
         if ($action === 'block') {
             $this->users = $this->users->except(
-                auth()->user()->blocklists()->pluck('blockee_id')->toArray(),
+                $this->getAuthModel()->blocklists()->pluck('blockee_id')->toArray(),
             );
         }
 
@@ -90,9 +99,12 @@ class Dashboard extends Component
     {
         $this->emit('actionTakenOnUser', $name, $status);
     }
-    
+
     public function render()
     {
-        return view('livewire.pages.dashboard')->layout('layouts.guest');
+        /** @var \Illuminate\View\View */
+        $view = view('livewire.pages.dashboard');
+
+        return $view->layout('layouts.guest');
     }
 }

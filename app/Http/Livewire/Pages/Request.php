@@ -102,9 +102,12 @@ class Request extends Component
     {
         $this->emit('actionTakenOnUser', $name, $status);
     }
-    
+
     public function render()
     {
-        return view('livewire.pages.request')->layout('layouts.guest');
+        /** @var \Illuminate\View\View */
+        $view = view('livewire.pages.request');
+
+        return $view->layout('layouts.guest');
     }
 }

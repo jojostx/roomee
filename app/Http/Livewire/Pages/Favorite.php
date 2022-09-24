@@ -15,6 +15,9 @@ class Favorite extends Component
     
     public function render()
     {
-        return view('livewire.pages.favorite')->layout('layouts.guest');
+        /** @var \Illuminate\View\View */
+        $view = view('livewire.pages.favorite');
+
+        return $view->layout('layouts.guest');
     }
 }

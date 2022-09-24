@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Pages;
 
 use App\Models\User;
-use Auth;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth ;
 use Livewire\Component;
 
 class Notification extends Component
@@ -44,6 +44,9 @@ class Notification extends Component
 
     public function render()
     {
-        return view('livewire.pages.notification')->layout('layouts.guest');
+        /** @var \Illuminate\View\View */
+        $view = view('livewire.pages.notification');
+
+        return $view->layout('layouts.guest');
     }
 }

@@ -9,7 +9,7 @@
         @empty
         <div class="flex items-center justify-center w-full my-2">
             <div class="p-3 my-4 bg-white border rounded-md shadow">
-                There is currently no user that matches your preferences.
+                There are currently no users that matches your preferences.
             </div>
         </div>
         @endforelse
