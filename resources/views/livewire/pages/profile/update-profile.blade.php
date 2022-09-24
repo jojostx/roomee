@@ -40,7 +40,7 @@
             <div class="flex flex-col items-center justify-start px-4 py-4 mb-6 rounded-lg sm:flex-row bg-primary-50 sm:py-6">
                 <div class="mb-4 sm:w-2/5 sm:mb-0">
                     <div class="flex flex-col items-center justify-center mt-1">
-                        <div wire:ignore class="block w-24 h-24 mb-4 overflow-hidden bg-primary-200 rounded-full">
+                        <div wire:ignore class="block w-24 h-24 mb-4 overflow-hidden rounded-full bg-primary-200">
                             @if (auth()->user()->avatar)
                             <img id="avatar_img" src="{{ auth()->user()->avatarPath }}" alt="avatar image" class="h-full" width="100%" height="100%">
                             @else
@@ -146,9 +146,8 @@
                     <x-livewire.error-text>{{ $message }}</x-livewire.error-text>
                     @enderror
                 </div>
-                <x-livewire.multi-select :isRequired="true" :name="$hobby = 'hobby'" :options="$hobbies" :selectedOptions="$selectedHobbies" :label="$label = 'Hobbies & Interests'">Hobbies</x-livewire.multi-select>
-                
-                <x-livewire.select2 :isRequired="true" :name="$dislike = 'dislike'" :options="$dislikes" :selectedOptions="$selectedDislikes" :label="$label = 'Dislikes'">Dislikes</x-livewire.select2>
+                <x-livewire.multi-select :isRequired="true" :name="'hobby'" :options="$hobbies" :selectedOptions="$selectedHobbies" :label="$label = 'Hobbies & Interests'">Hobbies</x-livewire.multi-select>
+                <x-livewire.multi-select :isRequired="true" :name="'dislike'" :options="$dislikes" :selectedOptions="$selectedDislikes" :label="$label = 'Dislikes'">Dislikes</x-livewire.multi-select>
             </div>
 
             <div class="grid pt-6 gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2 field_set" data-link="li-edu">
@@ -194,11 +193,11 @@
                     </label>
                     <select wire:change.self.stop="$set('selectedCourseLevel',$event.target.value)" required autocomplete="off" name="course_level" class="select_dropdown" name="level" id="course_level">
                         <option value="" disabled selected>Select your course level</option>
-                        @foreach ($course_levels as $level)
+                        @foreach ($course_levels as $level => $level_label)
                         @if ($selectedCourseLevel)
-                        <x-livewire.option value="{{ $level }}" :selected="($level === $selectedCourseLevel)?true:false">{{ ($loop->last) ? 'Post-Graduate' : $level }}</x-livewire.option>
+                        <x-livewire.option value="{{ $level }}" :selected="($level == $selectedCourseLevel)?true:false">{{ $level_label }}</x-livewire.option>
                         @else
-                        <x-livewire.option value="{{ $level }}">{{ ($loop->last) ? 'Post-Graduate' : $level }}</x-livewire.option>
+                        <x-livewire.option value="{{ $level }}">{{ $level_label }}</x-livewire.option>
                         @endif
                         @endforeach
                     </select>
@@ -214,7 +213,7 @@
                     <h1 class="text-xl font-semibold">Apartment Information</h1>
                 </div>
 
-                <x-livewire.select2 :name="$town = 'town'" :isRequired="true" :options="$towns" :selectedOptions="$selectedTowns" :label="$label = 'Preferred property locations'">Towns</x-livewire.select2>
+                <x-livewire.multi-select :name="'town'" :isRequired="true" :options="$towns" :selectedOptions="$selectedTowns" :label="$label = 'Preferred property locations'">Towns</x-livewire.multi-select>
 
                 <div class="col-span-1 mb-2">
                     <label for="rooms" class="label">Number of Rooms
@@ -328,7 +327,6 @@
 <script>
     function switchActive() {
         const links = document.getElementsByClassName('profile_links');
-
         for (const link of links) {
             link.addEventListener('click', (e) => {
                 for (const a of links) {
@@ -338,14 +336,11 @@
             })
         }
     };
-
     switchActive();
-
     const avatarInput = document.getElementById('avatar_photo');
     avatarInput.addEventListener('change', (e) => {
         const img_ava = document.getElementById('avatar_img');
         let loader = document.querySelector('.loader');
-
         let options = {
             max_size: 5507566,
             aspectRatio: 1,
@@ -355,16 +350,13 @@
             output: img_ava,
             hideableElems: []
         }
-
         handleFileUpload(e, 'avatar', options)
     })
-
     const coverInput = document.getElementById('cover_photo');
     coverInput.addEventListener('change', (e) => {
         const cover = document.getElementById('cover_out');
         let loader = document.getElementById('loader_cover');
         let coverSVG = document.getElementById('cover-svg');
-
         let options = {
             max_size: 4507566,
             aspectRatio: 1.5,
@@ -374,10 +366,8 @@
             output: cover,
             hideableElems: [coverSVG]
         }
-
         handleFileUpload(e, 'cover_photo', options);
     })
-
     //image manipulation utility functions
     function handleFileUpload(event, livewireProperty, options) {
         let {
@@ -392,43 +382,34 @@
         const avatar = event.target.files[0];
         const IMG_TYPES = ['image/jpg', 'image/png', 'image/jpeg'];
         const MAX_FILE_SIZE = max_size ? max_size : 5242880;
-
         //check file type
         if (avatar.type && !IMG_TYPES.includes(avatar.type)) {
             console.log('only images of MIME types: JPG, JPEG and PNG are allowed');
             return
         }
-
         //check file size for validity
         if (avatar.size > MAX_FILE_SIZE) {
             console.log(`only images less than ${ (MAX_FILE_SIZE/1000000).toFixed(1) }MB are allowed`);
             return
         }
-
         let reader = new FileReader();
-
         reader.onloadstart = () => {
             if (loader) {
                 loader.style.display = 'flex';
             }
         }
-
         reader.onloadend = async () => {
             const result = await cropImage(reader.result, aspectRatio);
             const resizedImage = await resizeImage(result, maxWidth, maxHeight);
-
             displayImage(output, resizedImage);
             hideElements(loader, ...hideableElems);
-
             @this.upload(livewireProperty, b64toBlob(resizedImage), (uploadedFilename) => {
                 console.log(uploadedFilename);
             }, () => {
                 console.log('unable to upload photo please try again');
             });
-
             // window.Livewire.emit(livewireProperty, resizedImage);
         }
-
         reader.readAsDataURL(avatar);
     }
 
@@ -436,14 +417,12 @@
         return new Promise((resolve) => {
             let img = new Image();
             img.src = base64Str;
-
             img.onload = () => {
                 let canvas = document.createElement('canvas')
                 const MAX_WIDTH = maxWidth
                 const MAX_HEIGHT = maxHeight
                 let width = img.width
                 let height = img.height
-
                 if (width > height) {
                     if (width > MAX_WIDTH) {
                         height *= MAX_WIDTH / width
@@ -468,15 +447,12 @@
         return new Promise((resolve) => {
             let img = new Image();
             img.src = base64Str;
-
             img.onload = () => {
                 // let's store the width and height of our image
                 const inputWidth = img.naturalWidth;
                 const inputHeight = img.naturalHeight;
-
                 // get the aspect ratio of the input image
                 const imgAspectRatio = inputWidth / inputHeight;
-
                 // if it's bigger than our target aspect ratio
                 let outputWidth = inputWidth;
                 let outputHeight = inputHeight;
@@ -485,18 +461,14 @@
                 } else if (imgAspectRatio < aspectRatio) {
                     outputHeight = inputWidth / aspectRatio;
                 }
-
                 // calculate the position to draw the image at
                 const outputX = (outputWidth - inputWidth) * 0.5;
                 const outputY = (outputHeight - inputHeight) * 0.5;
-
                 // create a canvas that will present the output image
                 const outputImage = document.createElement("canvas");
-
                 // set it to the same size as the image
                 outputImage.width = outputWidth;
                 outputImage.height = outputHeight;
-
                 // draw our image at position 0, 0 on the canvas
                 const ctx = outputImage.getContext("2d");
                 ctx.drawImage(img, outputX, outputY);
@@ -504,13 +476,11 @@
             }
         })
     }
-
     //dom helper functions
     function hideElements(...elements) {
         if (!elements && !(elements instanceof Array)) {
             return
         }
-
         elements.forEach(element => {
             element.style.display = 'none';
         });
@@ -523,7 +493,6 @@
             return
         }
     }
-
     /**
      * Convert a base64 string in a Blob according to the data and contentType.
      * 
@@ -540,29 +509,22 @@
         contentType = block[0].split(":")[1] || '';
         // get the real base64 content of the file
         b64Data = block[1].split(",")[1]; // In this case "R0lGODlhPQBEAPeoAJosM...."
-
         sliceSize = sliceSize || 512;
-
         var byteCharacters = atob(b64Data);
         var byteArrays = [];
-
         for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
             var slice = byteCharacters.slice(offset, offset + sliceSize);
-
             var byteNumbers = new Array(slice.length);
             for (var i = 0; i < slice.length; i++) {
                 byteNumbers[i] = slice.charCodeAt(i);
             }
-
             var byteArray = new Uint8Array(byteNumbers);
-
             byteArrays.push(byteArray);
         }
-
         var blob = new Blob(byteArrays, {
             type: contentType
         });
-        
+
         return blob;
     }
 </script>
