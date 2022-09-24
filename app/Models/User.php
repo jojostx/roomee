@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Storage;
 
 //implements MustVerifyEmail
 
+/**
+ * @mixin IdeHelperUser
+ */
 class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable, Requestable, Blockable;
@@ -78,50 +81,19 @@ class User extends Authenticatable
     //RELATIONSHIPS
 
     /**
-     * The blocklist for the user.
+     * The Course that the user belongs to (the course that the user offers).
      */
-    public function blocklists()
+    public function course()
     {
-        return $this->belongsToMany(User::class, 'blocklists', 'blocker_id', 'blockee_id')
-        ->withTimestamps()->orderByPivot('created_at', 'desc');
+        return $this->belongsTo(Course::class);
     }
-    
+
     /**
-     * The users who are currently blocking this user.
+     * The School that the user belongs to.
      */
-    public function blockers()
+    public function school()
     {
-        return $this->belongsToMany(User::class, 'blocklists', 'blockee_id' ,'blocker_id')
-        ->withTimestamps();
-    }
-    
-    /**
-     * The requests for the user.
-     */
-    public function recievedRequests()
-    {
-        return $this->belongsToMany(User::class, 'roommate_requests', 'requestee_id', 'requester_id')
-        ->as('roommateRequests')
-        ->withTimestamps()->orderByPivot('created_at', 'desc');
-    }
-    
-    /**
-     * The requests sent by the user.
-     */
-    public function sentRequests()
-    {
-        return $this->belongsToMany(User::class, 'roommate_requests', 'requester_id', 'requestee_id')
-        ->as('roommateRequests')
-        ->withTimestamps()->orderByPivot('created_at', 'desc');
-    }
-  
-    /**
-     * The favorited users for a user.
-     */
-    public function favorites()
-    {
-        return $this->belongsToMany(User::class, 'favorites', 'favoriter_id', 'favoritee_id')
-        ->withTimestamps()->orderByPivot('created_at', 'desc');
+        return $this->belongsTo(School::class);
     }
 
     /**
@@ -141,27 +113,20 @@ class User extends Authenticatable
     }
 
     /**
-     * The Course that the user belongs to (the course that the user offers).
-     */
-    public function course()
-    {
-        return $this->belongsTo(Course::class);
-    }
-
-    /**
-     * The School that the user belongs to.
-     */
-    public function school()
-    {
-        return $this->belongsTo(School::class);
-    }
-
-    /**
      * The towns that belong to the user.
      */
     public function towns()
     {
         return $this->belongsToMany(Town::class)->withTimestamps();
+    }
+
+    /**
+     * The favorited users for a user.
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'favoriter_id', 'favoritee_id')
+            ->withTimestamps()->orderByPivot('created_at', 'desc');
     }
 
     /**
@@ -171,8 +136,45 @@ class User extends Authenticatable
     {
         return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')->withPivot('reportee_id')->withTimestamps();
     }
-   
-    
+
+    /**
+     * The blocklist for the user.
+     */
+    public function blocklists()
+    {
+        return $this->belongsToMany(User::class, 'blocklists', 'blocker_id', 'blockee_id')
+            ->withTimestamps()->orderByPivot('created_at', 'desc');
+    }
+
+    /**
+     * The users who are currently blocking this user.
+     */
+    public function blockers()
+    {
+        return $this->belongsToMany(User::class, 'blocklists', 'blockee_id', 'blocker_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * The requests for the user.
+     */
+    public function recievedRequests()
+    {
+        return $this->belongsToMany(User::class, 'roommate_requests', 'requestee_id', 'requester_id')
+            ->as('roommateRequests')
+            ->withTimestamps()->orderByPivot('created_at', 'desc');
+    }
+
+    /**
+     * The requests sent by the user.
+     */
+    public function sentRequests()
+    {
+        return $this->belongsToMany(User::class, 'roommate_requests', 'requester_id', 'requestee_id')
+            ->as('roommateRequests')
+            ->withTimestamps()->orderByPivot('created_at', 'desc');
+    }
+
     //SCOPES//
 
     /**
@@ -184,9 +186,9 @@ class User extends Authenticatable
      */
     public function scopeGender($query, $gender)
     {
-       return $query->where('gender', $gender);
+        return $query->where('gender', $gender);
     }
-    
+
     /**
      * Scope a query to only include users that attend the same school.
      *
@@ -196,7 +198,7 @@ class User extends Authenticatable
      */
     public function scopeSchool($query, $school_id)
     {
-       return $query->where('school_id', $school_id);
+        return $query->where('school_id', $school_id);
     }
 
     /**
@@ -208,7 +210,7 @@ class User extends Authenticatable
      */
     public function scopeExcludeUser($query, $user_id)
     {
-       return $query->where('id', '<>', $user_id);
+        return $query->where('id', '<>', $user_id);
     }
 
 
@@ -217,25 +219,25 @@ class User extends Authenticatable
 
     public function getFullnameAttribute()
     {
-        return $this->firstname.' '.$this->lastname;
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function getSimilarityScoreAttribute()
     {
         if (request()->routeIs('dashboard')) {
             return (new UserSimilarity())->calculateUserSimilarityScore($this);
-        } 
-        
+        }
+
         return 0;
     }
 
     public function getAvatarPathAttribute()
     {
-        return filled($this->avatar) ? Storage::disk('avatars')->url($this->id.'/'. $this->avatar) : '';
+        return filled($this->avatar) ? Storage::disk('avatars')->url($this->avatar) : '';
     }
 
     public function getCoverPhotoPathAttribute()
     {
-        return filled($this->cover_photo) ? Storage::disk('cover_photos')->url($this->id. '/' . $this->cover_photo) : '';
+        return filled($this->cover_photo) ? Storage::disk('cover_photos')->url($this->cover_photo) : '';
     }
 }
