@@ -39,7 +39,7 @@
                 minCroppedWidth: {{ ($width = $getMinCroppedWidth) ? $width : 'null' }},
                 maxCroppedWidth: {{ ($width = $getMaxCroppedWidth) ? $width : 'null' }},
                 minCroppedHeight: {{ ($height = $getMinCroppedHeight()) ? $height : 'null' }},
-                defaultImageUrl: {{ ($imageSrc = $getImageUrl()) ? "'{$imageSrc}'" : 'null' }},
+                defaultImageUrl: {{ ($imageSrc = $getPreviewImageUrl()) ? "'{$imageSrc}'" : 'null' }},
                 getUploadedFileUrlsUsing: async () => {
                     return await $wire.getUploadedFileUrls('{{ $getStatePath() }}')
                 },
@@ -49,7 +49,7 @@
                 uploadUsing: (fileKey, file, success, error, progress) => {
                     $wire.upload(`{{ $getStatePath() }}.${fileKey}`, file, () => {
                         success(fileKey)
-                    }, error, progress)
+                    }, error, progress);
                 }
             })" 
             
@@ -70,7 +70,7 @@
              ])>
             <img 
                 class="object-cover"
-                src="{{ ($imageSrc = $getImageUrl()) ? $imageSrc : ($isAvatar() ? asset('images/avatar_placeholder.png') : asset('images/cover_placeholder.png')) }}" 
+                src="{{ ($imageSrc = $getPreviewImageUrl()) ? $imageSrc : ($isAvatar() ? asset('images/avatar_placeholder.png') : asset('images/cover_placeholder.png')) }}" 
                 x-ref="poster_{{ $getStatePath() }}" 
                 alt="{{ $getAltText() }}" 
                 width="100%">

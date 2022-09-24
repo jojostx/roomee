@@ -7,16 +7,21 @@ use Filament\Forms\Components\BaseFileUpload;
 use Filament\Forms\Components\Concerns\HasExtraInputAttributes;
 use Filament\Forms\Components\Concerns\HasPlaceholder;
 use Filament\Support\Concerns\HasExtraAlpineAttributes;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Intervention\Image\Image;
+use Livewire\TemporaryUploadedFile;
+use Throwable;
 
 class PhotoUpload extends BaseFileUpload
 {
     use HasExtraInputAttributes;
     use HasPlaceholder;
     use HasExtraAlpineAttributes;
-    
+
     protected string $view = 'livewire.components.filament.forms.photo-upload';
 
-    public ?string $imageUrl = '';
+    public ?string $previewImageUrl = '';
 
     protected bool | Closure $isAvatar = false;
 
@@ -30,15 +35,19 @@ class PhotoUpload extends BaseFileUpload
 
     protected int | Closure | null $imagePreviewHeight = null;
 
+    protected int | Closure | null $imageResizeTargetHeight = null;
+
+    protected int | Closure | null $imageResizeTargetWidth = null;
+
     protected string | Closure | null $altText = null;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->afterStateHydrated(static function (BaseFileUpload $component, string | array | null $state): void {
-            $component->imageUrl = $state;
+        $this->image();
 
+        $this->afterStateHydrated(static function (PhotoUpload $component, string | array | null $state): void {
             if (blank($component->getMinSize())) {
                 // kilobytes
                 $component->minSize(10);
@@ -47,6 +56,94 @@ class PhotoUpload extends BaseFileUpload
             if (blank($component->getMaxSize())) {
                 $component->maxSize(5242);
             }
+
+            if (blank($state)) {
+                $component->state([]);
+
+                return;
+            }
+
+            $files = collect(Arr::wrap($state))
+                ->filter(static fn (string $file) => blank($file) || $component->getDisk()->exists($file))
+                ->mapWithKeys(static fn (string $file): array => [((string) Str::uuid()) => $file])
+                ->all();
+
+            $component->state($files);
+        });
+
+        $this->afterStateUpdated(static function (PhotoUpload $component, $state) {
+            if ($state instanceof TemporaryUploadedFile) {
+                try {
+                    if (!is_array($stateArray = $component->getState())) {
+                        return;
+                    }
+
+                    $key = array_search($state, $stateArray, true);
+
+                    $cropData = json_decode(str($key)->after('::')->value(), true);
+
+                    if (filled($cropData) && is_array($cropData)) {
+                        $cropData = array_merge([
+                            'width' => null,
+                            'height' => null,
+                            'x' => null,
+                            'y' => null
+                        ], $cropData);
+
+                        [
+                            'width' => $width,
+                            'height' => $height,
+                            'x' => $x,
+                            'y' => $y
+                        ] = $cropData;
+
+                        !static::hasBlankElement($width, $height, $x, $y) &&
+                            $state->manipulate(function (Image $image) use ($width, $height, $x, $y, $component) {
+                                $resizeWidth = $component->getImageResizeTargetWidth();
+                                $resizeHeight = $component->getImageResizeTargetHeight();
+
+                                if ($resizeWidth || $resizeHeight) {
+                                    $image
+                                        ->crop($width, $height, $x, $y)
+                                        ->resize(
+                                            $resizeWidth,
+                                            $resizeHeight,
+                                            function ($constraint) {
+                                                $constraint->aspectRatio();
+                                            }
+                                        );
+                                } else {
+                                    $image->crop($width, $height, $x, $y);
+                                }
+
+                                return [];
+                            });
+                    };
+
+                    return;
+                } catch (Throwable $th) {
+                    return;
+                }
+
+                return;
+            }
+
+            if (blank($state)) {
+                return;
+            }
+
+            if (is_array($state)) {
+                return;
+            }
+
+            $component->state([(string) Str::uuid() => $state]);
+        });
+    }
+
+    public static function hasBlankElement(...$args)
+    {
+        return collect($args)->contains(function ($value) {
+            return blank($value);
         });
     }
 
@@ -76,6 +173,20 @@ class PhotoUpload extends BaseFileUpload
     public function image(): static
     {
         $this->acceptedFileTypes(['image/jpg', 'image/png', 'image/jpeg']);
+
+        return $this;
+    }
+
+    public function imageResizeTargetWidth(float | int | Closure | null $imageResizeTargetWidth): static
+    {
+        $this->imageResizeTargetWidth = $imageResizeTargetWidth;
+
+        return $this;
+    }
+
+    public function imageResizeTargetHeight(float | int | Closure | null $imageResizeTargetHeight): static
+    {
+        $this->imageResizeTargetHeight = $imageResizeTargetHeight;
 
         return $this;
     }
@@ -115,18 +226,27 @@ class PhotoUpload extends BaseFileUpload
         return $this;
     }
 
-    public function imageUrl(string | Closure | null $imageUrl): static
-    {
-        $this->imageUrl = $imageUrl;
-
-        return $this;
-    }
-
     public function altText(string | Closure | null $altText): static
     {
         $this->altText = $altText;
 
         return $this;
+    }
+
+    public function getPreviewImageUrlUsing(string | Closure | null $previewImageUrl): static
+    {
+        $this->previewImageUrl = $previewImageUrl;
+
+        return $this;
+    }
+
+    public function getPreviewImageUrl(): ?string
+    {
+        if (blank($this->evaluate($this->previewImageUrl))) {
+            return '';
+        }
+
+        return $this->evaluate($this->previewImageUrl);
     }
 
     public function getAltText(): ?string
@@ -138,13 +258,14 @@ class PhotoUpload extends BaseFileUpload
         return $this->evaluate($this->altText);
     }
 
-    public function getImageUrl(): ?string
+    public function getImageResizeTargetWidth(): ?int
     {
-        if (blank($this->evaluate($this->imageUrl))) {
-            return '';
-        }
+        return $this->evaluate($this->imageResizeTargetWidth);
+    }
 
-        return $this->evaluate($this->imageUrl);
+    public function getImageResizeTargetHeight(): ?int
+    {
+        return $this->evaluate($this->imageResizeTargetHeight);
     }
 
     public function getMinCroppedWidth(): ?int
@@ -190,5 +311,33 @@ class PhotoUpload extends BaseFileUpload
         }
 
         return $this->evaluate($this->imagePreviewHeight);
+    }
+
+    public function getUploadedFileNameForStorage(TemporaryUploadedFile $file): string
+    {
+        $name = $this->evaluate($this->getUploadedFileNameForStorageUsing, [
+            'file' => $file,
+        ]);
+
+        // @todo || str($name)->test() - check if filename endsWith a valid extension 
+        // or with an extension present in the acceptable types array
+        if ($extension = $file->guessExtension()) {
+            $extension = '.' . $extension;
+        }
+
+        $name = $this->normalizeFilename($name);
+
+        return $name . $extension;
+    }
+
+    public function normalizeFilename(?string $name = null): string
+    {
+        if (blank($name)) {
+            $name = Str::random(40);
+        }
+
+        $name = trim($name, '/ \t\n\r\0\x0B');
+
+        return $name;
     }
 }

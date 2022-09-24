@@ -192,7 +192,7 @@ export default (Alpine) => {
                 },
 
                 cropAndSave() {
-                    if (this.cropper) {
+                    if (this.cropper && this.currentInputImage) {
                         let canvas = this.cropper.getCroppedCanvas({
                             minWidth: minCroppedWidth,
                             maxWidth: maxCroppedWidth,
@@ -200,48 +200,46 @@ export default (Alpine) => {
                             maxHeight: this.maxCroppedHeight,
                         });
 
+                        let cropData = JSON.stringify(this.cropper.getData(true));
+
                         // convert canvas output to blob and upload to Livewire component
-                        canvas.toBlob((blob) => {
-                            this.upload(
-                                blob,
-                                (fileKey) => {
-                                    //if image upload is successful set the preview
-                                    this.remove(this.uploadedFilekey);
+                        this.upload(
+                            this.currentInputImage,
+                            (fileKey) => {
+                                this.uploadedFilekey = fileKey;
 
-                                    this.uploadedFilekey = fileKey;
+                                this.isUploading = false;
 
-                                    this.isUploading = false;
+                                this.updatePreview(
+                                    canvas.toDataURL(
+                                        this.currentInputImage?.type
+                                    )
+                                );
 
-                                    this.updatePreview(
-                                        canvas.toDataURL(
-                                            this.currentInputImage?.type
-                                        )
-                                    );
+                                this.resetCropper();
 
-                                    this.resetCropper();
-
-                                    this.$dispatch("open-alert", {
-                                        alert_type: "success",
-                                        message: `Successfully uploaded file`,
-                                        closeAfterTimeout: true,
-                                    });
-                                },
-                                () => {
-                                    this.$dispatch("open-alert", {
-                                        alert_type: "danger",
-                                        message: `Unable to upload file`,
-                                        closeAfterTimeout: false,
-                                    });
-                                },
-                                (event) => {
-                                    this.isUploading = true;
-                                }
-                            );
-                        }, this.currentInputImage?.type, 1);
+                                this.$dispatch("open-alert", {
+                                    alert_type: "success",
+                                    message: `Successfully uploaded file`,
+                                    closeAfterTimeout: true,
+                                });
+                            },
+                            () => {
+                                this.$dispatch("open-alert", {
+                                    alert_type: "danger",
+                                    message: `Unable to upload file`,
+                                    closeAfterTimeout: false,
+                                });
+                            },
+                            (event) => {
+                                this.isUploading = true;
+                            },
+                            cropData
+                        );
                     }
                 },
 
-                upload(file, load, error, progress) {
+                upload(file, load, error, progress, cropData = '') {
                     this.shouldUpdateState = false;
 
                     let fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
@@ -253,6 +251,8 @@ export default (Alpine) => {
                                     (15 >> (c / 4)))
                             ).toString(16)
                     );
+
+                    fileKey += `::${cropData}`;
 
                     uploadUsing(
                         fileKey,
