@@ -9,11 +9,13 @@
 
         <!-- Settings Dropdown -->
         <div class="flex items-center ml-6">
-            <a href="{{ route('dashboard')}}" style="border-width: 1.5px;" class="items-center justify-start hidden px-2 py-1 mr-4 text-sm text-primary-700 transition duration-150 ease-in-out border border-primary-700 rounded-md md:flex sm:text-base hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">Dashboard</a>
+            @unless (request()->routeIs('dashboard'))
+                <a href="{{ route('dashboard') }}" style="border-width: 1.5px;" class="items-center justify-start hidden px-2 py-1 mr-4 text-sm transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 md:flex sm:text-base hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">Dashboard</a>
+            @endunless
             <x-dropdown align="right" width="56">
                 <x-slot name="trigger">
-                    <button aria-label="settings dropdown button" title="settings dropdown button" class="flex items-center text-sm font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300">
-                        <div class="mr-2 overflow-hidden rounded-full lg:mr-4 w-9 h-9 lg:w-12 lg:h-12">
+                    <button aria-label="menu trigger button" title="menu trigger button" class="flex items-center text-sm font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300">
+                        <div class="mr-2 overflow-hidden border-2 rounded-full border-primary-500 lg:mr-4 w-9 h-9">
                             @if (auth()->user()->avatar)
                             <img id="avatar" src="{{ auth()->user()->avatarPath }}" alt="avatar image" width="100%" height="100%">
                             @else
@@ -22,7 +24,7 @@
                             </svg>
                             @endif
                         </div>
-                        <div>{{ Auth::user()->firstname }}</div>
+
                         <div class="ml-1">
                             <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -36,9 +38,12 @@
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 
+                        @unless (request()->routeIs('dashboard'))
                         <x-dropdown-link :href="route('dashboard')">
                             {{ __('Dashboard') }}
                         </x-dropdown-link>
+                        @endunless
+
                         <x-dropdown-link :href="route('profile.view', ['user' => auth()->user() ])" :active="request()->fullUrl() == route('profile.view', [ 'user'=> auth()->user() ])">
                             {{ __('Profile') }}
                         </x-dropdown-link>
