@@ -6,9 +6,6 @@
     </x-slot>
 
     <div>
-        @livewire('components.popups.report-or-block-popup')
-        @livewire('components.popups.delete-request-popup')
-
         @livewire('pages.dashboard')
 
         <x-livewire.toast-notif></x-livewire.toast-notif>

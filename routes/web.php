@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Livewire\Pages\Blocklist as PagesBlocklist;
+use App\Http\Livewire\Pages\Blocklist;
+use App\Http\Livewire\Pages\Dashboard;
 use App\Http\Livewire\Pages\Favorite;
 use App\Http\Livewire\Pages\Notification;
 use App\Http\Livewire\Pages\Profile\UpdatePage;
@@ -41,11 +41,11 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 
 
 Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     // Route::get('/profile/update', UpdateProfile::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
+    Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/profile/update', UpdatePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
     Route::get('/profile/view/{user}', ViewProfile::class)->name('profile.view');
-    Route::get('/blocklist', PagesBlocklist::class)->name('blocklist');
+    Route::get('/blocklist', Blocklist::class)->name('blocklist');
     Route::get('/favorites', Favorite::class)->name('favorites');
     Route::get('/requests', Request::class)->name('requests');
     Route::get('/notifications', Notification::class)->name('notifications');
