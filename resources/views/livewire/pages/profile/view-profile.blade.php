@@ -5,7 +5,7 @@
                 <div class="relative flex flex-col items-center justify-start w-full md:w-1/2 md:mr-2">
                     <div class="absolute z-20 sm:static -top-14 md:top-0 sm:w-2/5 sm:mb-0">
                         <div class="flex flex-col items-center justify-center mt-1">
-                            <div class="block w-24 h-24 mb-2 overflow-hidden border-4 border-white rounded-full bg-primary-200">
+                            <div class="block w-24 h-24 mb-2 overflow-hidden border-4 rounded-full border-primary-700/50 bg-primary-200">
                                 @if ($user->avatar)
                                 <img id="avatar_img" src="{{ $user->avatarPath }}" alt="avatar image" width="100%" height="100%" class="h-full">
                                 @else
@@ -74,15 +74,13 @@
                     </div>
                 </div>
                 <div class="relative flex items-center justify-center w-full mt-1 overflow-hidden md:w-1/2">
+                    <div class="overflow-hidden border-4 rounded-lg border-primary-700/50">
                     @if ($user->cover_photo)
-                    <div>
-                        <img src="{{ $user->coverPhotoPath }}" id="cover_out" width="100%" height="100%" class="z-10 block w-full rounded-lg shadow-lg" alt="{{ $user->firstname }}'s cover photo">
-                    </div>
+                        <img src="{{ $user->cover_photo_path }}" id="cover_out" class="w-full" width="100%" height="100%" alt="{{ $user->firstname }}'s cover photo">
                     @else
-                    <svg id="cover-svg" class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
+                        <img src="{{ asset('images/cover_placeholder.png') }}" class="w-full" id="cover_placeholder" width="100%" height="100%" alt="cover photo placeholder">
                     @endif
+                    </div>
                 </div>
             </div>
             @can('interactWith', $user)
