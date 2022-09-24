@@ -25,13 +25,14 @@
         "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {
-        "spatie/laravel-ignition": "^1.0",
         "barryvdh/laravel-debugbar": "^3.6",
+        "barryvdh/laravel-ide-helper": "^2.12",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.10",
+        "spatie/laravel-ignition": "^1.0"
     },
     "config": {
         "optimize-autoloader": true,
@@ -58,6 +59,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "@php artisan ide-helper:generate -M -H", 
+            "@php artisan ide-helper:models --dir='app/Models' -M"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

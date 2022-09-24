@@ -6710,54 +6710,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       cropAndSave: function cropAndSave() {
         var _this3 = this;
 
-        if (this.cropper) {
-          var _this$currentInputIma;
-
+        if (this.cropper && this.currentInputImage) {
           var canvas = this.cropper.getCroppedCanvas({
             minWidth: minCroppedWidth,
             maxWidth: maxCroppedWidth,
             minHeight: this.minCroppedHeight,
             maxHeight: this.maxCroppedHeight
-          }); // convert canvas output to blob and upload to Livewire component
+          });
+          var cropData = JSON.stringify(this.cropper.getData(true)); // convert canvas output to blob and upload to Livewire component
 
-          canvas.toBlob(function (blob) {
-            _this3.upload(blob, function (fileKey) {
-              var _this3$currentInputIm;
+          this.upload(this.currentInputImage, function (fileKey) {
+            var _this3$currentInputIm;
 
-              //if image upload is successful set the preview
-              _this3.remove(_this3.uploadedFilekey);
+            _this3.uploadedFilekey = fileKey;
+            _this3.isUploading = false;
 
-              _this3.uploadedFilekey = fileKey;
-              _this3.isUploading = false;
+            _this3.updatePreview(canvas.toDataURL((_this3$currentInputIm = _this3.currentInputImage) === null || _this3$currentInputIm === void 0 ? void 0 : _this3$currentInputIm.type));
 
-              _this3.updatePreview(canvas.toDataURL((_this3$currentInputIm = _this3.currentInputImage) === null || _this3$currentInputIm === void 0 ? void 0 : _this3$currentInputIm.type));
+            _this3.resetCropper();
 
-              _this3.resetCropper();
-
-              _this3.$dispatch("open-alert", {
-                alert_type: "success",
-                message: "Successfully uploaded file",
-                closeAfterTimeout: true
-              });
-            }, function () {
-              _this3.$dispatch("open-alert", {
-                alert_type: "danger",
-                message: "Unable to upload file",
-                closeAfterTimeout: false
-              });
-            }, function (event) {
-              _this3.isUploading = true;
+            _this3.$dispatch("open-alert", {
+              alert_type: "success",
+              message: "Successfully uploaded file",
+              closeAfterTimeout: true
             });
-          }, (_this$currentInputIma = this.currentInputImage) === null || _this$currentInputIma === void 0 ? void 0 : _this$currentInputIma.type, 1);
+          }, function () {
+            _this3.$dispatch("open-alert", {
+              alert_type: "danger",
+              message: "Unable to upload file",
+              closeAfterTimeout: false
+            });
+          }, function (event) {
+            _this3.isUploading = true;
+          }, cropData);
         }
       },
       upload: function upload(file, load, error, progress) {
         var _this4 = this;
 
+        var cropData = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
         this.shouldUpdateState = false;
         var fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, function (c) {
           return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
         });
+        fileKey += "::".concat(cropData);
         uploadUsing(fileKey, file, function (fileKey) {
           _this4.shouldUpdateState = true;
           load(fileKey);
