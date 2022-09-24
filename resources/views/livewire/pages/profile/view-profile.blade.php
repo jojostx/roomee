@@ -1,11 +1,11 @@
-<div class="w-11/12 m-auto mt-6 mb-6" wire:poll>
+<div class="w-11/12 m-auto mt-6 mb-6" wire:poll.15s>
     <div class="flex justify-center w-full md:mt-12">
         <div class="w-full max-w-3xl pb-6">
             <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 border rounded-lg sm:flex-row">
                 <div class="relative flex flex-col items-center justify-start w-full md:w-1/2 md:mr-2">
                     <div class="absolute z-20 sm:static -top-14 md:top-0 sm:w-2/5 sm:mb-0">
                         <div class="flex flex-col items-center justify-center mt-1">
-                            <div class="block w-24 h-24 mb-2 overflow-hidden bg-primary-200 border-4 border-white rounded-full">
+                            <div class="block w-24 h-24 mb-2 overflow-hidden border-4 border-white rounded-full bg-primary-200">
                                 @if ($user->avatar)
                                 <img id="avatar_img" src="{{ $user->avatarPath }}" alt="avatar image" width="100%" height="100%" class="h-full">
                                 @else
@@ -34,7 +34,7 @@
                         </div>
                         <div class="flex justify-center w-full">
                             @can('update', $user)
-                                <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-primary-700 transition duration-150 ease-in-out border border-primary-700 rounded-md sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
                                     <span class="pr-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -50,7 +50,7 @@
                                     @endcan
 
                                     @cannot('interactWith', $user)
-                                        <button wire:click="block()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-primary-700 transition duration-150 ease-in-out border border-primary-700 rounded-md sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                        <button wire:click="block()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
                                             <span class="pr-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
@@ -60,7 +60,7 @@
                                         </button>
                                     @endcannot
                                 @elsecannot('block', $user)
-                                    <button wire:click="unblock()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs text-primary-700 transition duration-150 ease-in-out border border-primary-700 rounded-md sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                    <button wire:click="unblock()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
                                         <span class="pr-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -112,7 +112,7 @@
                             </x-livewire.label>
                             <div class="px-2 pt-2 border border-gray-300 rounded-md">
                                 @foreach ($user->hobbies as $hobby)
-                                <span class="inline-flex items-center justify-center px-3 py-1 mb-2 mr-1 text-primary-800 bg-primary-100 rounded-md">{{ ucfirst($hobby['name']) }}</span>
+                                <span class="inline-flex items-center justify-center px-3 py-1 mb-2 mr-1 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($hobby['name']) }}</span>
                                 @endforeach
                             </div>
                         </div>
@@ -151,7 +151,7 @@
                                 </x-slot>
                                 Institute of Study
                             </x-livewire.label>
-                            <p class="block py-2 pl-3 pr-4 text-base font-medium text-primary-800 border-l-4 border-primary-400 bg-primary-50">
+                            <p class="block py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 bg-primary-50">
                                 {{ $user->school['name'] }}
                             </p>
                         </div>
@@ -164,7 +164,7 @@
                                 </x-slot>
                                 Course of Study
                             </x-livewire.label>
-                            <p class="block py-2 pl-3 pr-4 text-base font-medium text-primary-800 border-l-4 border-primary-400 bg-primary-50">
+                            <p class="block py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 bg-primary-50">
                                 {{ $user->course['name'] }}
                             </p>
                         </div>
@@ -175,7 +175,7 @@
                                 </x-slot>
                                 Course Level
                             </x-livewire.label>
-                            <p class="block py-2 pl-3 pr-4 text-base font-medium text-primary-800 border-l-4 border-primary-400 bg-primary-50">
+                            <p class="block py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 bg-primary-50">
                                 {{ $user['course_level'] }}
                             </p>
                         </div>
@@ -203,7 +203,7 @@
                             </x-livewire.label>
                             <div class="px-2 pt-2 border border-gray-300 rounded-md">
                                 @foreach ($user->towns as $town)
-                                <span class="inline-flex items-center justify-center px-3 py-1 mb-2 text-primary-800 bg-primary-100 rounded-md">{{ ucfirst($town['name']) }}</span>
+                                <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($town['name']) }}</span>
                                 @endforeach
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                                 </x-slot>
                                 Number of Rooms
                             </x-livewire.label>
-                            <p class="block py-3 pl-3 pr-4 text-base font-medium text-primary-800 border-l-4 border-primary-400 bg-primary-50">
+                            <p class="block py-3 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 bg-primary-50">
                                 {{ $user->rooms }} @if ($user->rooms != 1) Rooms @else Room @endif
                             </p>
                         </div>
@@ -225,7 +225,7 @@
                                 </x-slot>
                                 Budget
                             </x-livewire.label>
-                            <div class="flex py-2 pl-3 pr-4 text-base font-medium text-primary-800 border-l-4 border-primary-400 justify-evenly bg-primary-50">
+                            <div class="flex py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 justify-evenly bg-primary-50">
                                 <div class="mr-4">
                                     <p class="mb-1 text-sm text-primary-600 opacity-70">Minimum</p>
                                     <p class="text-xl leading-tight">
