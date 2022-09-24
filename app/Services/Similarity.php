@@ -7,15 +7,15 @@ class Similarity
     public static function simple_Diff_Sim(
         int $value_1,
         int $value_2,
-        $min_value = 100, 
+        $min_value = 100,
         $max_value = 700
     ): float {
         return 1 - (abs($value_1 - $value_2) / ($max_value - $min_value));
     }
 
     public static function minMaxNorm(
-        int $value_1, 
-        $min = 100, 
+        int $value_1,
+        $min = 100,
         $max = 700
     ): float {
         $numerator = $value_1 - $min;
@@ -68,7 +68,7 @@ class Similarity
     }
 
     public static function jaccard(
-        $arr_1 = [], 
+        $arr_1 = [],
         $arr_2 = []
     ): float {
         $intersection = array_unique(array_intersect($arr_1, $arr_2));
