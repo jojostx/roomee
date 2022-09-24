@@ -48,7 +48,6 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(functi
     Route::get('/blocklist', Blocklist::class)->name('blocklist');
     Route::get('/favorites', Favorite::class)->name('favorites');
     Route::get('/requests', Request::class)->name('requests');
-    Route::get('/notifications', Notification::class)->name('notifications');
 });
 
 require __DIR__ . '/auth.php';

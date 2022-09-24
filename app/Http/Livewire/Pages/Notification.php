@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Pages;
 
+use App\Models\User;
+use Auth;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
@@ -13,18 +15,31 @@ class Notification extends Component
 
     public function mount()
     {
-        $this->notifications = auth()->user()->notifications()->select('id', 'type', 'data', 'read_at', 'created_at')->get();
+        $this->notifications = $this->getAuthModel()
+            ->notifications()
+            ->select('id', 'type', 'data', 'read_at', 'created_at')->get();
 
-        $this->requestAcceptedNotifications = $this->notifications->where('type', 'App\Notifications\RoommateRequestAccepted')->unique('data')->values()->all();
+        $this->requestAcceptedNotifications = $this->notifications
+            ->where('type', 'App\Notifications\RoommateRequestAccepted')
+            ->unique('data')
+            ->values()
+            ->all();
 
-        $this->requestRecievedNotifications = $this->notifications->where('type', 'App\Notifications\RoommateRequestRecieved')->unique('data')->values()->all();
+        $this->requestRecievedNotifications = $this->notifications
+            ->where('type', 'App\Notifications\RoommateRequestRecieved')
+            ->unique('data')
+            ->values()
+            ->all();
+    }
 
-        $this->markAsRead();
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
     }
 
     public function markAsRead()
     {
-        auth()->user()->unreadNotifications->markAsRead();
+        $this->getAuthModel()->unreadNotifications->markAsRead();
     }
 
     public function render()
