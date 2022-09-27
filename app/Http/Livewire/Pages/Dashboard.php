@@ -23,15 +23,27 @@ class Dashboard extends Component
             ])
             ->get('id');
 
-        $this->blocklist =  $user->blocklists()->pluck('blockee_id');
+        $this->blocklist = $user->blocklists()->pluck('blockee_id');
 
-        $this->users = User::excludeUser($user->id)
+        $this->users = $this->getSimilarUsers(true);
+    }
+
+    public function getSimilarUsers(bool $append_similarity_score = true)
+    {
+        $user = $this->getAuthModel();
+
+        $similar_users = User::excludeUser($user->id)
             ->gender($user->gender)
             ->school($user->school_id)
             ->whereIntegerNotInRaw('id', $this->blocklist)
             ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name'])
-            ->get()
-            ->sortByDesc('similarity_score');
+            ->get();
+
+        if ($append_similarity_score) {
+            $similar_users = $user->calculateUsersSimilarityScore($similar_users);
+        }
+
+        return $similar_users;
     }
 
     protected function getListeners()

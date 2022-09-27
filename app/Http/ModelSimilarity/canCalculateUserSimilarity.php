@@ -9,8 +9,8 @@ use Illuminate\Support\Collection;
 trait canCalculateUserSimilarity
 {
     protected $hobbyWeight = 0.8;
-    protected $dislikeWeight = 1.2;
-    protected $budgetWeight = 1.2;
+    protected $dislikeWeight = 1;
+    protected $budgetWeight = 1.4;
     protected $roomsWeight = 1;
     protected $courseLevelWeight = 0.8;
     protected $propertyLocationWeight = 1;
