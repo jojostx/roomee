@@ -6,6 +6,7 @@ use App\Http\Livewire\Traits\Favoriting;
 use App\Models\User;
 use App\Notifications\RoommateRequestRecieved;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ViewProfile extends Component
@@ -20,16 +21,21 @@ class ViewProfile extends Component
         $this->user = $user;
     }
 
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
+    }
+
     public function block()
     {
-        auth()->user()->block($this->user);
+        $this->getAuthModel()->block($this->user);
         
         $this->emit('actionTakenOnUser', $this->user->fullname, 'block');
     }
 
     public function unblock()
     {
-        $blocked = auth()->user()->unblock($this->user);
+        $blocked = $this->getAuthModel()->unblock($this->user);
 
         if ($blocked) {
             $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
@@ -38,11 +44,11 @@ class ViewProfile extends Component
 
     public function sendRequest()
     {
-        auth()->user()->sendRoommateRequest($this->user);
+        $this->getAuthModel()->sendRoommateRequest($this->user);
 
         $this->emit('actionTakenOnUser', $this->user->fullname, 'request');
                 
-        $this->user->notify(new RoommateRequestRecieved(auth()->user()));
+        $this->user->notify(new RoommateRequestRecieved($this->getAuthModel()));
     }
 
     public function showDeleteRequestPopup()
@@ -52,6 +58,9 @@ class ViewProfile extends Component
 
     public function render()
     {
-        return view('livewire.pages.profile.view-profile')->layout('layouts.guest');
+        /** @var \Illuminate\View\View */
+        $view = view('livewire.pages.profile.view-profile');
+
+        return $view->layout('layouts.guest');
     }
 }

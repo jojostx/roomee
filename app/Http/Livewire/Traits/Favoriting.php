@@ -2,20 +2,28 @@
 
 namespace App\Http\Livewire\Traits;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
 trait Favoriting
 {
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
+    }
+
     public function favorite()
     {
-        if (auth()->user()->isBlockedBy($this->user)) {
+        if ($this->getAuthModel()->isBlockedBy($this->user)) {
             return;
         }
-        
-        auth()->user()->favorites()->attach($this->user->id);
+
+        $this->getAuthModel()->favorites()->attach($this->user->id);
         $this->emit('actionTakenOnUser', $this->user->fullname, 'favorite');
     }
-    
+
     public function unfavorite()
     {
-        auth()->user()->favorites()->detach($this->user->id);
+        $this->getAuthModel()->favorites()->detach($this->user->id);
     }
 }

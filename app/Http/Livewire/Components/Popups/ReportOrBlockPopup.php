@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Rules\IsBlockable;
 use App\Rules\IsReportable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -23,9 +24,19 @@ class ReportOrBlockPopup extends Component
 
     protected $listeners = ['blockOrReport' => 'assignVariables'];
 
+    protected array $messages = [
+        'selectedReports' => 'choose at least one report',
+        'selectedReports.*' => 'choose at least one report',
+    ];
+
     public function mount()
     {
         $this->reports = Report::pluck('desc', 'id');
+    }
+
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
     }
 
     //sets the id, username and show properties to their required properties
@@ -63,14 +74,9 @@ class ReportOrBlockPopup extends Component
             'action' => ['required', Rule::in($actions)],
             'selectedReports' => ['required', 'array'],
             'selectedReports.*' => ['required', 'numeric', Rule::in($report_ids)],
-            'user_id' => ['required', 'numeric', 'not_in:' . auth()->user()->id, new IsReportable()],
+            'user_id' => ['required', 'numeric', 'not_in:' . $this->getAuthModel()->id, new IsReportable()],
         ];
     }
-
-    protected array $messages = [
-        'selectedReports' => 'choose at least one report',
-        'selectedReports.*' => 'choose at least one report',
-    ];
 
     //performs the submission of reports and blocking of user actions by saving to the database
     // it additionally emits an event after successfully saving to database; for each possible action taken
@@ -85,7 +91,7 @@ class ReportOrBlockPopup extends Component
                         $timestamp = now();
 
                         return [
-                            'reporter_id' => auth()->user()->id,
+                            'reporter_id' => $this->getAuthModel()->id,
                             'reportee_id' => intval($this->user_id),
                             'report_id' => intval($item),
                             'created_at' => $timestamp,
@@ -101,14 +107,14 @@ class ReportOrBlockPopup extends Component
                     $user = User::find($this->user_id);
 
                     //block user 
-                    auth()->user()->block($user);
+                    $this->getAuthModel()->block($user);
 
                     // delete any existing roommate request
-                    auth()->user()->deleteRoommateRequest($user);
+                    $this->getAuthModel()->deleteRoommateRequest($user);
 
                     // remove user from favorites, delete sent and recieved requests
-                    auth()->user()->favorites()->detach($this->user_id);
-                    
+                    $this->getAuthModel()->favorites()->detach($this->user_id);
+
                     //emit the event to show toast notification //js notif.
                     $this->emit('actionTakenOnUser', $this->username, $this->action);
 
@@ -121,6 +127,7 @@ class ReportOrBlockPopup extends Component
 
         $this->reset_();
     }
+
     public function render()
     {
         return view('livewire.components.popups.report-or-block-popup');

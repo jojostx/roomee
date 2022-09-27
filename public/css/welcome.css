@@ -2005,11 +2005,17 @@ button[disabled]:hover {
 .max-w-2xl {
   max-width: 42rem;
 }
+.max-w-\[140px\] {
+  max-width: 140px;
+}
 .max-w-xl {
   max-width: 36rem;
 }
 .max-w-6xl {
   max-width: 72rem;
+}
+.max-w-\[120px\] {
+  max-width: 120px;
 }
 .max-w-none {
   max-width: none;
@@ -2549,6 +2555,9 @@ button[disabled]:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.overflow-ellipsis {
+  text-overflow: ellipsis;
 }
 .whitespace-normal {
   white-space: normal;
@@ -3157,10 +3166,6 @@ button[disabled]:hover {
   font-size: 1.125rem;
   line-height: 1.75rem;
 }
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -3172,6 +3177,10 @@ button[disabled]:hover {
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 .text-3xl {
   font-size: 1.875rem;
@@ -3212,11 +3221,11 @@ button[disabled]:hover {
 .not-italic {
   font-style: normal;
 }
-.leading-tight {
-  line-height: 1.25;
-}
 .leading-5 {
   line-height: 1.25rem;
+}
+.leading-tight {
+  line-height: 1.25;
 }
 .leading-none {
   line-height: 1;
@@ -3253,10 +3262,6 @@ button[disabled]:hover {
 }
 .tracking-wide {
   letter-spacing: 0.025em;
-}
-.text-gray-800 {
-  --tw-text-opacity: 1;
-  color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 .text-gray-500 {
   --tw-text-opacity: 1;
@@ -3330,6 +3335,10 @@ button[disabled]:hover {
   --tw-text-opacity: 1;
   color: rgb(96 165 250 / var(--tw-text-opacity));
 }
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
 .text-indigo-700 {
   --tw-text-opacity: 1;
   color: rgb(67 56 202 / var(--tw-text-opacity));
@@ -3397,6 +3406,10 @@ button[disabled]:hover {
 .text-warning-500 {
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity));
+}
+.text-secondary-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 .text-danger-700 {
   --tw-text-opacity: 1;
@@ -6335,6 +6348,10 @@ table tr td {
 
   .lg\:mr-4 {
     margin-right: 1rem;
+  }
+
+  .lg\:mr-3 {
+    margin-right: 0.75rem;
   }
 
   .lg\:mt-12 {

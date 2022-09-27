@@ -1,3 +1,5 @@
+@props(['user' => null])
+
 <div>
     <!-- favoriting section -->
     @if (auth()->user()->favorites->contains($user))

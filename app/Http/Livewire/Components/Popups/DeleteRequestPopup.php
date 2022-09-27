@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Components\Popups;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class DeleteRequestPopup extends Component
@@ -11,6 +12,11 @@ class DeleteRequestPopup extends Component
     public User $user;
 
     protected $listeners = ['showDeleteRequestPopup' => 'AssignVariables'];
+
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
+    }
 
     public function AssignVariables(User $id): void
     {
@@ -25,8 +31,7 @@ class DeleteRequestPopup extends Component
 
     public function deleteRequest()
     {
-
-        auth()->user()->deleteRoommateRequest($this->user);
+        $this->getAuthModel()->deleteRoommateRequest($this->user);
             
         $this->emit("refreshChildren:{$this->user->id}");
         $this->emit("resetUsers", $this->user->id);

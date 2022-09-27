@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Components\Cards\Requests;
 
+use App\Models\User;
 use App\Notifications\RoommateRequestAccepted;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class RecievedRequestCard extends Component
@@ -17,38 +19,43 @@ class RecievedRequestCard extends Component
         ];
     }
 
+    public function mount()
+    {
+        $this->user = $this->request->sender;
+    }
+
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
+    }
+
     public function showDeleteRequestPopup()
     {
         $this->emit('showDeleteRequestPopup', $this->user->id);
     }
 
-    public function mount()
-    {     
-        $this->user = $this->request->sender;        
-    }
-
     public function acceptRequest()
-    {        
-        $wasUpdated = auth()->user()->acceptRoommateRequest($this->user);
-        
+    {
+        $wasUpdated = $this->getAuthModel()->acceptRoommateRequest($this->user);
+
         if ($wasUpdated) {
-            $this->user->notify(new RoommateRequestAccepted(auth()->user()));   
+            $this->user->notify(new RoommateRequestAccepted($this->getAuthModel()));
         }
 
         $this->request->refresh();
     }
-    
+
     public function declineRequest()
-    {        
-        $wasUpdated = auth()->user()->denyRoommateRequest($this->user);
-        
+    {
+        $wasUpdated = $this->getAuthModel()->denyRoommateRequest($this->user);
+
         if ($wasUpdated) {
-            $this->user->notify(new RoommateRequestAccepted(auth()->user()));   
+            $this->user->notify(new RoommateRequestAccepted($this->getAuthModel()));
         }
 
         $this->request->refresh();
     }
-  
+
     public function render()
     {
         return view('livewire.components.cards.requests.recieved-request-card');

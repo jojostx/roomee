@@ -2,14 +2,21 @@
 
 namespace App\Http\Livewire\Components\Cards;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class FavoriteCard extends Component
 {
-
     public $user;
-    
-    public function mount(){
+
+    public function mount()
+    {
+    }
+
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
     }
 
     public function unfavorite()
@@ -17,10 +24,10 @@ class FavoriteCard extends Component
         if ($this->user->id === auth()->user()->id) {
             return;
         }
-        
-        auth()->user()->favorites()->detach($this->user->id);
 
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'unfavorite');        
+        $this->getAuthModel()->favorites()->detach($this->user->id);
+
+        $this->emit('actionTakenOnUser', $this->user->fullname, 'unfavorite');
 
         $this->user = null;
     }
