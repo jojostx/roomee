@@ -28,8 +28,8 @@ class UpdatePage extends Component implements HasForms
 {
     use InteractsWithForms;
 
-    public $cover_image = [];
-    public $avatar_image = [];
+    public $cover_image;
+    public $avatar_image;
     public $bio;
     public $hobbies;
     public $dislikes;
