@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use App\Http\ModelSimilarity\UserSimilarity;
 use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\ModelSimilarity\canCalculateUserSimilarity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, Requestable, Blockable;
+    use HasFactory, HasApiTokens, Notifiable, Requestable, Blockable, canCalculateUserSimilarity;
 
     /**
      * The default values of attributes.
@@ -29,13 +28,6 @@ class User extends Authenticatable
     protected $attributes = [
         'profile_updated' => false,
     ];
-
-    /**
-     * The appended attributes.
-     *
-     * @var array
-     */
-    protected $appends = ['similarity_score'];
 
     /**
      * The attributes that are mass assignable.
@@ -216,19 +208,9 @@ class User extends Authenticatable
 
 
     //ACCESSORS
-
     public function getFullnameAttribute()
     {
         return $this->firstname . ' ' . $this->lastname;
-    }
-
-    public function getSimilarityScoreAttribute()
-    {
-        if (request()->routeIs('dashboard')) {
-            return (new UserSimilarity())->calculateUserSimilarityScore($this);
-        }
-
-        return 0;
     }
 
     public function getAvatarPathAttribute()

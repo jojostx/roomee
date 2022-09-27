@@ -306,7 +306,6 @@ namespace App\Models{
  * @property-read mixed $avatar_path
  * @property-read mixed $cover_photo_path
  * @property-read mixed $fullname
- * @property-read mixed $similarity_score
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Hobby[] $hobbies
  * @property-read int|null $hobbies_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
