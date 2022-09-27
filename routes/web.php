@@ -5,7 +5,6 @@ use App\Http\Controllers\ContactsController;
 use App\Http\Livewire\Pages\Blocklist;
 use App\Http\Livewire\Pages\Dashboard;
 use App\Http\Livewire\Pages\Favorite;
-use App\Http\Livewire\Pages\Notification;
 use App\Http\Livewire\Pages\Profile\UpdatePage;
 use App\Http\Livewire\Pages\Profile\ViewProfile;
 use App\Http\Livewire\Pages\Request;

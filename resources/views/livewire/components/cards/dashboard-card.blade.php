@@ -1,3 +1,3 @@
 <div>
-    lorem
+    {{ $user->name }}
 </div>
