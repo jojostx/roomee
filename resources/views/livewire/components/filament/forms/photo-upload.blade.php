@@ -50,7 +50,7 @@
                     $wire.upload(`{{ $getStatePath() }}.${filekey}`, file, () => {
                         success(filekey)
                     }, error, progress);
-                }
+                },
             })" 
             
             {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} 

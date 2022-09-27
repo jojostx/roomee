@@ -1,3 +1,7 @@
+        
+// $user_1_dislikes = $user_1->dislikes()->select('name')->get()->pluck('name')->toArray();
+// $user_2_dislikes = $user_2->dislikes()->select('name')->get()->pluck('name')->toArray();
+
 // \dd($this->validate());
 // \dd($this->form->getState());
 // [

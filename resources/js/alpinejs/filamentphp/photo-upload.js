@@ -19,6 +19,8 @@ export default (Alpine) => {
             return {
                 state,
 
+                lastState: null,
+
                 cropCanvasId: `cropCanvas_${statePath}`,
 
                 posterId: `poster_${statePath}`,
@@ -35,7 +37,7 @@ export default (Alpine) => {
 
                 currentInputImage: null,
 
-                fileKeyIndex: {},
+                filekeyIndex: {},
 
                 uploadedFileUrlIndex: {},
 
@@ -53,8 +55,6 @@ export default (Alpine) => {
                             return;
                         }
 
-                        document.createElement("p").hasAttribute("multiple");
-
                         // We don't want to overwrite the files that are already in the input, if they haven't been saved yet.
                         if (
                             Object.values(this.state).filter((file) =>
@@ -63,6 +63,13 @@ export default (Alpine) => {
                         ) {
                             return;
                         }
+
+                        // Don't do anything if the state hasn't changed
+                        if (JSON.stringify(this.state) === this.lastState) {
+                            return;
+                        }
+
+                        this.lastState = JSON.stringify(this.state);
                     });
                 },
 
@@ -92,7 +99,11 @@ export default (Alpine) => {
                         toggleDragModeOnDblclick: false,
 
                         zoom: function (event) {
-                            if (event.detail.ratio >= 1.25 || this.cropper.getImageData().naturalWidth < minCroppedWidth) {
+                            if (
+                                event.detail.ratio >= 1.25 ||
+                                this.cropper.getImageData().naturalWidth <
+                                    minCroppedWidth
+                            ) {
                                 event.preventDefault(); // Prevent zoom in
                             }
                         },
@@ -200,13 +211,15 @@ export default (Alpine) => {
                             maxHeight: this.maxCroppedHeight,
                         });
 
-                        let cropData = JSON.stringify(this.cropper.getData(true));
+                        let cropData = JSON.stringify(
+                            this.cropper.getData(true)
+                        );
 
                         // convert canvas output to blob and upload to Livewire component
                         this.upload(
                             this.currentInputImage,
-                            (fileKey) => {
-                                this.uploadedFilekey = fileKey;
+                            (filekey) => {
+                                this.uploadedfilekey = filekey;
 
                                 this.isUploading = false;
 
@@ -239,10 +252,10 @@ export default (Alpine) => {
                     }
                 },
 
-                upload(file, load, error, progress, cropData = '') {
+                upload(file, load, error, progress, cropData = "") {
                     this.shouldUpdateState = false;
 
-                    let fileKey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
+                    let filekey = ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(
                         /[018]/g,
                         (c) =>
                             (
@@ -252,15 +265,15 @@ export default (Alpine) => {
                             ).toString(16)
                     );
 
-                    fileKey += `::${cropData}`;
+                    filekey += `::${cropData}`;
 
                     uploadUsing(
-                        fileKey,
+                        filekey,
                         file,
-                        (fileKey) => {
+                        (filekey) => {
                             this.shouldUpdateState = true;
 
-                            load(fileKey);
+                            load(filekey);
                         },
                         error,
                         progress
@@ -269,13 +282,13 @@ export default (Alpine) => {
 
                 // WIP
                 remove: async function (source) {
-                    let fileKey = this.uploadedFileUrlIndex[source] ?? null;
+                    let filekey = this.uploadedFileUrlIndex[source] ?? null;
 
-                    if (!fileKey) {
+                    if (!filekey) {
                         return;
                     }
 
-                    await deleteUploadedFileUsing(fileKey);
+                    await deleteUploadedFileUsing(filekey);
 
                     load();
                 },
@@ -283,10 +296,10 @@ export default (Alpine) => {
                 getUploadedFileUrls: async function () {
                     const uploadedFileUrls = await getUploadedFileUrlsUsing();
 
-                    this.fileKeyIndex = uploadedFileUrls ?? {};
+                    this.filekeyIndex = uploadedFileUrls ?? {};
 
                     this.uploadedFileUrlIndex = Object.entries(
-                        this.fileKeyIndex
+                        this.filekeyIndex
                     )
                         .filter((value) => value)
                         .reduce((obj, [key, value]) => {
@@ -302,7 +315,7 @@ export default (Alpine) => {
                     let files = [];
 
                     for (const uploadedFileUrl of Object.values(
-                        this.fileKeyIndex
+                        this.filekeyIndex
                     )) {
                         if (!uploadedFileUrl) {
                             continue;
