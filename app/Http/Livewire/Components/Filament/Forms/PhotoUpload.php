@@ -47,6 +47,8 @@ class PhotoUpload extends BaseFileUpload
 
         $this->image();
 
+        $this->enableReordering();
+
         $this->afterStateHydrated(static function (PhotoUpload $component, string | array | null $state): void {
             if (blank($component->getMinSize())) {
                 // kilobytes
@@ -71,14 +73,46 @@ class PhotoUpload extends BaseFileUpload
             $component->state($files);
         });
 
+        /**
+         * @todo - bug
+         *          the uploadedfile object is not updated as the component's state 
+         *          if the component was hydrated with a previous state via
+         *          $this->fill() or [FilamentField]->default() methods
+         */
         $this->afterStateUpdated(static function (PhotoUpload $component, $state) {
+            // if the component does not support multiple file upload
+            // and the component has an oldState, delete oldState (mixed),
+            if (!$component->isMultiple() && filled($component->getOldState())) {
+                foreach ($component->getOldState() as $key => $value) {
+                    $component->deleteUploadedFile($key);
+                };
+            }
+
+            // \dd(
+            //     // Arr::where($component->getState(), fn (string $file): bool => $file == $state),
+            //     // collect($get($component->getStatePath()))->last(),
+            //     // collect(Arr::wrap($component->getOldState()))->each(static fn ($state) => $component->deleteUploadedFile($state)),
+            //     // collect($component->getState())
+            //     //     ->filter(function (string $file) use ($state) {
+            //     //         return $file != $state;
+            //     //     })
+            //     //     ->all(),
+            //     // $component->reorderUploadedFiles(),
+            //     // array_search($state, $component->getState(), true),
+            //     $state,
+            //     $component->getOldState(),
+            //     $component->getState(),
+            //     $component->getStateToDehydrate(),
+            // );
+
+            // transform newState using Intervention image (gd driver)
             if ($state instanceof TemporaryUploadedFile) {
                 try {
-                    if (!is_array($stateArray = $component->getState())) {
+                    $key = array_search($state, Arr::wrap($component->getState()), true);
+
+                    if (blank($key) || !is_string($key)) {
                         return;
                     }
-
-                    $key = array_search($state, $stateArray, true);
 
                     $cropData = json_decode(str($key)->after('::')->value(), true);
 
@@ -97,7 +131,7 @@ class PhotoUpload extends BaseFileUpload
                             'y' => $y
                         ] = $cropData;
 
-                        !static::hasBlankElement($width, $height, $x, $y) &&
+                        !\hasAnyBlankElement($width, $height, $x, $y) &&
                             $state->manipulate(function (Image $image) use ($width, $height, $x, $y, $component) {
                                 $resizeWidth = $component->getImageResizeTargetWidth();
                                 $resizeHeight = $component->getImageResizeTargetHeight();
@@ -122,7 +156,7 @@ class PhotoUpload extends BaseFileUpload
 
                     return;
                 } catch (Throwable $th) {
-                    return;
+                    throw $th;
                 }
 
                 return;
@@ -140,11 +174,17 @@ class PhotoUpload extends BaseFileUpload
         });
     }
 
-    public static function hasBlankElement(...$args)
+    public function callAfterStateUpdated(): static
     {
-        return collect($args)->contains(function ($value) {
-            return blank($value);
-        });
+        if ($callback = $this->afterStateUpdated) {
+            $state = $this->getState();
+
+            $this->evaluate($callback, [
+                'state' => $this->isMultiple() ? $state : Arr::last($state ?? []),
+            ]);
+        }
+
+        return $this;
     }
 
     public function idleLabel(string | Closure | null $label): static

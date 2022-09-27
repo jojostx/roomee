@@ -23,6 +23,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use MartinRo\FilamentCharcountField\Components\CharcountedTextarea;
 use MartinRo\FilamentCharcountField\Components\CharcountedTextInput;
 use App\Http\Livewire\Components\Filament\Forms\PhotoUpload as PhotoUpload;
+use Illuminate\Support\Facades\Storage;
 
 class UpdatePage extends Component implements HasForms
 {
@@ -286,7 +287,7 @@ class UpdatePage extends Component implements HasForms
                 ])->collapsible(),
         ];
     }
-    
+
     protected function showAlertOnSaveError()
     {
         $this->dispatchBrowserEvent(
@@ -304,11 +305,19 @@ class UpdatePage extends Component implements HasForms
         $data = $this->form->getState();
 
         $user = $this->getFormModel();
-        $userAvatar = $user->avatar !== $data['avatar_image'] ? $data['avatar_image'] : $user->avatar;
-        $userCover = $user->cover_photo !== $data['cover_image'] ? $data['cover_image'] : $user->cover_photo;
+
+        $userAvatar = (filled($data['avatar_image']) && $user->avatar !== $data['avatar_image']) ? $data['avatar_image'] : $user->avatar;
+        $userCover = (filled($data['cover_image']) && $user->cover_photo !== $data['cover_image']) ? $data['cover_image'] : $user->cover_photo;
+
+        try {
+            $canProceed = Storage::disk('avatars')->exists($userAvatar ?? '') &&
+                Storage::disk('cover_photos')->exists($userCover ?? '');
+        } catch (\Throwable $th) {
+            $canProceed = false;
+        }
 
         //store data using db transactions & set profile_updated field to true
-        if ($userAvatar && $userCover) {
+        if ($canProceed) {
             DB::beginTransaction();
 
             try {
