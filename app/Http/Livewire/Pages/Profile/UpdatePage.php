@@ -28,8 +28,8 @@ class UpdatePage extends Component implements HasForms
 {
     use InteractsWithForms;
 
-    public $cover_image;
-    public $avatar_image;
+    public $cover_image = [];
+    public $avatar_image = [];
     public $bio;
     public $hobbies;
     public $dislikes;
@@ -43,21 +43,23 @@ class UpdatePage extends Component implements HasForms
 
     public function mount()
     {
+        $user = $this->getFormModel();
+
         $this->form->fill([
-            'avatar_image' => auth()->user()->avatar,
-            'cover_image' => auth()->user()->cover_photo,
-            'firstname' => auth()->user()->firstname,
-            'lastname' => auth()->user()->lastname,
-            'rooms' => auth()->user()->rooms ?? '',
-            'bio' => auth()->user()->bio ?? '',
-            'max_budget' => auth()->user()->max_budget ?? '',
-            'min_budget' => auth()->user()->min_budget ?? '',
-            'hobbies' => auth()->user()->hobbies->pluck('id')->toArray(),
-            'dislikes' => auth()->user()->dislikes->pluck('id')->toArray(),
-            'towns' =>  auth()->user()->towns->pluck('id')->toArray(),
-            'school' => auth()->user()->school_id,
-            'course' => auth()->user()->course_id,
-            'course_level' =>  auth()->user()->course_level,
+            'avatar_image' => $user->avatar,
+            'cover_image' => $user->cover_photo,
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'rooms' => $user->rooms ?? '',
+            'bio' => $user->bio ?? '',
+            'max_budget' => $user->max_budget ?? '',
+            'min_budget' => $user->min_budget ?? '',
+            'hobbies' => $user->hobbies->pluck('id')->toArray(),
+            'dislikes' => $user->dislikes->pluck('id')->toArray(),
+            'towns' =>  $user->towns->pluck('id')->toArray(),
+            'school' => $user->school_id,
+            'course' => $user->course_id,
+            'course_level' =>  $user->course_level,
         ]);
     }
 

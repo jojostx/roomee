@@ -46,9 +46,9 @@
                 deleteUploadedFileUsing: async (fileKey) => {
                     return await $wire.deleteUploadedFile('{{ $getStatePath() }}', fileKey)
                 },
-                uploadUsing: (fileKey, file, success, error, progress) => {
-                    $wire.upload(`{{ $getStatePath() }}.${fileKey}`, file, () => {
-                        success(fileKey)
+                uploadUsing: (filekey, file, success, error, progress) => {
+                    $wire.upload(`{{ $getStatePath() }}.${filekey}`, file, () => {
+                        success(filekey)
                     }, error, progress);
                 }
             })" 
