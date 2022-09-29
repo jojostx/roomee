@@ -24,6 +24,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/tabula_rasa.js') }}" defer></script>
+    @livewireScripts
+    @stack('scripts')
 </head>
 
 <body class="relative min-h-screen font-sans antialiased text-gray-900">
@@ -40,9 +42,7 @@
     </main>
     
     @include('sections.footer-alt')
-    
-    @livewireScripts
-</body>
 
-@stack('scripts')
+    @livewire('notifications')
+</body>
 </html>

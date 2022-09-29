@@ -1,21 +1,25 @@
 require('./bootstrap');
 
 import Cropper from "cropperjs";
-import multiselect from './alpinejs/filamentphp/multi-select'
-import customPhotoUploadFormComponent from './alpinejs/filamentphp/photo-upload'
-import focus from '@alpinejs/focus'
 
 import Alpine from 'alpinejs'
-import FormsAlpinePlugin from '../../vendor/filament/forms/dist/module.esm'
+import focus from '@alpinejs/focus'
+import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
+import customPhotoUploadFormComponent from './alpinejs/filamentphp/photo-upload'
 import NotificationsAlpinePlugin from '../../vendor/filament/notifications/dist/module.esm'
-
-window.Alpine = Alpine
+import multiselect from './alpinejs/filamentphp/multi-select'
+import FormsAlpinePlugin from '../../vendor/filament/forms/dist/module.esm'
+ 
 window.Cropper = Cropper;
 
-Alpine.data('multiselect', multiselect);
-Alpine.plugin(customPhotoUploadFormComponent)
-Alpine.plugin(focus)
 Alpine.plugin(FormsAlpinePlugin)
+Alpine.plugin(focus)
+Alpine.plugin(AlpineFloatingUI)
 Alpine.plugin(NotificationsAlpinePlugin)
+
+Alpine.plugin(customPhotoUploadFormComponent)
+Alpine.data('multiselect', multiselect);
+
+window.Alpine = Alpine
 
 Alpine.start();
