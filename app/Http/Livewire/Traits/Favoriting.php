@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Traits;
 
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
 trait Favoriting
@@ -19,11 +20,20 @@ trait Favoriting
         }
 
         $this->getAuthModel()->favorites()->attach($this->user->id);
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'favorite');
+
+        Notification::make()
+            ->title("You have succesfully added **{$this->user->fullname}** to your Favorites.")
+            ->success()
+            ->send();
     }
 
     public function unfavorite()
     {
         $this->getAuthModel()->favorites()->detach($this->user->id);
+
+        Notification::make()
+            ->title("You have unfavorited **{$this->user->fullname}**.")
+            ->success()
+            ->send();
     }
 }

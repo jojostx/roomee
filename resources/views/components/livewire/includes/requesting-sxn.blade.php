@@ -1,4 +1,4 @@
-@props(['user' => null])
+@props(['user'])
 
 <div class="flex items-center w-full gap-2">
     <!-- requesting and contacting section -->
@@ -7,7 +7,7 @@
         Contact
     </x-filament-support::button>
     @elseif (auth()->user()->hasSentRoommateRequestTo($user))
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestPopup()" size="sm" icon="heroicon-s-user-remove" aria-label="delete request" title="delete request">
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal()" size="sm" icon="heroicon-s-user-remove" aria-label="delete request" title="delete request">
         Requested
     </x-filament-support::button>
     @elseif (auth()->user()->hasRoommateRequestFrom($user))

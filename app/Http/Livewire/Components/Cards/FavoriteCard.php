@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Components\Cards;
 
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -27,7 +28,10 @@ class FavoriteCard extends Component
 
         $this->getAuthModel()->favorites()->detach($this->user->id);
 
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'unfavorite');
+        Notification::make()
+            ->title("You have unfavorited **{$this->user->fullname}**.")
+            ->success()
+            ->send();
 
         $this->user = null;
     }

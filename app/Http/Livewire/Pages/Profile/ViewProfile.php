@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Pages\Profile;
 use App\Http\Livewire\Traits\Favoriting;
 use App\Models\User;
 use App\Notifications\RoommateRequestRecieved;
+use Filament\Notifications\Notification;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -29,8 +30,12 @@ class ViewProfile extends Component
     public function block()
     {
         $this->getAuthModel()->block($this->user);
-        
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'block');
+
+        Notification::make()
+            ->title("User blocked succesfully")
+            ->title("You have succesfully blocked **{$this->user->fullname}**. They will be unable to view your profile or send you roommate request.")
+            ->success()
+            ->send();
     }
 
     public function unblock()
@@ -38,7 +43,11 @@ class ViewProfile extends Component
         $blocked = $this->getAuthModel()->unblock($this->user);
 
         if ($blocked) {
-            $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
+            Notification::make()
+                ->title('User unblocked successfully')
+                ->success()
+                ->body("You have succesfully unblocked **{$this->user->fullname}**")
+                ->send();
         }
     }
 
@@ -46,14 +55,23 @@ class ViewProfile extends Component
     {
         $this->getAuthModel()->sendRoommateRequest($this->user);
 
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'request');
-                
+        Notification::make()
+            ->title('Request sent successfully')
+            ->success()
+            ->body("Your roommate request have been sent to **{$this->user->fullname}**. You will be notified when they accept.")
+            ->send();
+
         $this->user->notify(new RoommateRequestRecieved($this->getAuthModel()));
     }
 
-    public function showDeleteRequestPopup()
+    public function showDeleteRequestModal()
     {
-        $this->emit('showDeleteRequestPopup', $this->user->id);
+        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->id]);
+    }
+
+    public function showReportOrBlockModal()
+    {
+        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->id]);
     }
 
     public function render()

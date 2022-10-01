@@ -14,7 +14,7 @@
             @endunless
 
             <div class="mx-4">
-                @livewire('components.notifications')
+                @livewire('notifications')
             </div>
 
             <x-dropdown align="right" width="56">

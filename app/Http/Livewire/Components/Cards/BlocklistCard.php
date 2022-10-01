@@ -3,22 +3,25 @@
 namespace App\Http\Livewire\Components\Cards;
 
 use App\Models\User;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class BlocklistCard extends Component
 {
     public User $user;
 
-    public function mount()
-    {
-    }
-
     public function unblockUser()
     {
-        $blocked = $this->authUser->unblock($this->user);
+        $unblocked = $this->authUser->unblock($this->user);
 
-        if ($blocked) {
-            $this->emit('actionTakenOnUser', $this->user->fullname, 'unblock');
+        if ($unblocked) {
+            Notification::make()
+                ->title('User unblocked successfully')
+                ->success()
+                ->body("You have succesfully unblocked **{$this->user->fullname}**")
+                ->send();
+
+            $this->emit('actionTakenOnUser', $this->user->fullname);
         }
 
         $this->user = null;

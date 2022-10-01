@@ -20,5 +20,4 @@
             @endforeach
         @endif       
     </div>
-    <x-livewire.toast-notif></x-livewire.toast-notif>
 </div>

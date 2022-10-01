@@ -14,8 +14,4 @@
         </div>
         @endforelse
     </div>
-
-    <x-livewire.toast-notif></x-livewire.toast-notif>
-    @livewire('components.popups.report-or-block-popup')
-    @livewire('components.popups.delete-request-popup')
 </div>

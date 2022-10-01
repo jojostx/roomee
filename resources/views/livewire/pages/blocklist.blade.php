@@ -16,6 +16,4 @@
         </div>
         @endforelse
     </div>
-
-    <x-livewire.toast-notif></x-livewire.toast-notif>
 </div>

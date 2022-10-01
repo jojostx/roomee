@@ -2,16 +2,23 @@
 
 namespace App\Http\Livewire\Pages;
 
+use App\Enums\RequestType;
+use App\Enums\RoommateRequestStatus;
+use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\RoommateRequest;
 use App\Models\User;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Request extends Component
 {
+    use CanReactToRoommateRequestUpdate;
+
     public Collection $recievedRequests;
     public Collection $sentRequests;
-    public $currentPage = 'recieved';
+    public RequestType $currentPage = RequestType::RECIEVED;
 
     protected function getListeners()
     {
@@ -27,80 +34,60 @@ class Request extends Component
     public function mount()
     {
         //remember to paginate
-        if ($this->currentPage === "sent") {
-            $this->sentRequests = $this->fetchRequestsByType('sent');
+        if ($this->currentPage === RequestType::SENT) {
+            $this->sentRequests = $this->fetchRequestsByType(RequestType::SENT);
 
             $this->recievedRequests = collect([]);
         } else {
-            $this->recievedRequests = $this->fetchRequestsByType('recieved');
+            $this->recievedRequests = $this->fetchRequestsByType(RequestType::RECIEVED);
 
             $this->sentRequests = collect([]);
         }
     }
 
-    public function fetchRequestsByType(string $requestType): Collection
+    public function switchPage(string $requestType)
     {
-        $requestTypes = collect(['sent', 'recieved']);
+        $requestType = RequestType::tryFrom($requestType);
 
-        if (!$requestTypes->contains($requestType)) {
-            return collect([]);
+        switch ($requestType) {
+            case RequestType::SENT:
+                $this->sentRequests = $this->fetchRequestsByType(RequestType::SENT);
+                $this->currentPage = RequestType::SENT;
+
+                break;
+            case RequestType::RECIEVED:
+                $this->recievedRequests = $this->fetchRequestsByType(RequestType::RECIEVED);
+                $this->currentPage = RequestType::RECIEVED;
+
+                break;
+            default:
+                break;
         }
+    }
 
-        if ($requestType === 'sent') {
+    protected function fetchRequestsByType(RequestType $requestType): Collection
+    {
+        if ($requestType == RequestType::SENT) {
             return RoommateRequest::where('requester_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
-            // return RoommateRequest::where('requester_id',  auth()->id())->with('recipient:id,firstname,lastname,avatar,course_id')->orderBy('created_at', 'desc')->get();
-        } else {
+        }
+
+        if ($requestType == RequestType::RECIEVED) {
             return RoommateRequest::Where('requestee_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
-            // return RoommateRequest::Where('requestee_id',  auth()->id())->with('sender:id,firstname,lastname,avatar,course_id')->orderBy('created_at', 'desc')->get();
-        }
-    }
-
-    public function switchPage()
-    {
-        if ($this->currentPage === "sent") {
-            $this->recievedRequests = $this->fetchRequestsByType('recieved');
-            $this->currentPage = "recieved";
-            return;
         }
 
-        $this->sentRequests = $this->fetchRequestsByType('sent');
-        $this->currentPage = "sent";
-        return;
+        return collect([]);
     }
 
-    public function resetUsersWhenSentRequestIsDeleted($id)
+    protected function resetUsersWhenSentRequestIsDeleted($id)
     {
         $this->recievedRequests = $this->recievedRequests->except([$id]);
     }
 
-    public function handleRoommateRequestUpdatedEvent($data)
-    {
-        $user = User::find($data['requester_id']);
-
-        $this->emit('refreshChildren:' . $user->id);
-
-        switch ($data['status']) {
-            case 'deleted':
-                break;
-            case 'accepted':
-                $this->showRecievedRequestToastNotification($user->fullname, 'request.Accepted');
-                break;
-            default:
-                $this->showRecievedRequestToastNotification($user->fullname);
-                break;
-        }
-    }
-
     // fires a card component refresh when another user blocks the currently authenticated user
-    public function handleUserblockedEvent($data)
+    protected function handleUserblockedEvent($data)
     {
         $this->emit('refreshChildren:' . $data['blocker_id']);
         $this->emit('resetUsers', $data['blocker_id']);
-    }
-
-    public function showRecievedRequestToastNotification($name, string $status = 'request.Recieved')
-    {
-        $this->emit('actionTakenOnUser', $name, $status);
     }
 
     public function render()

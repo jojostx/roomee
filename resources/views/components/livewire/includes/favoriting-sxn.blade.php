@@ -1,4 +1,4 @@
-@props(['user' => null])
+@props(['user'])
 
 <div class="flex items-center w-full gap-2">
     <!-- favoriting section -->

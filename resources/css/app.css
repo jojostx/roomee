@@ -5,6 +5,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    .min-h-calc-screen {
+        min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+        min-height: calc(var(--vh, 1vh) * 100);
+    }
+}
+
 @layer base {
     html {
         font-family: "DM Sans", system-ui, sans-serif;

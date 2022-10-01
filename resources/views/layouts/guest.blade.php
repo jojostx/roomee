@@ -18,7 +18,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
-        [x-cloak] { display: none !important; }
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
     @livewireStyles
 
@@ -32,17 +34,31 @@
     <x-alert :type="'info'" :hasCloseButton="true" :showAlert="false"></x-alert>
 
     @auth
-    <header class="relative z-40 flex flex-row items-center justify-center w-full bg-white border-b ">
+    <header class="relative z-10 flex flex-row items-center justify-center w-full bg-white border-b ">
         @include('sections.navbar-alt')
     </header>
     @endauth
-    
+
     <main>
         {{ $slot }}
     </main>
-    
+
     @include('sections.footer-alt')
 
-    @livewire('notifications')
+    @livewire('livewire-ui-modal')
+    <script type="application/javascript">
+        function setCustomCSSViewportHeightVariable() {
+            // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+            let vh = window.innerHeight * 0.01;
+
+            // Then we set the value in the --vh custom property to the root of the document
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        setCustomCSSViewportHeightVariable();
+
+        window.addEventListener('resize', () => setCustomCSSViewportHeightVariable());
+    </script>
 </body>
+
 </html>

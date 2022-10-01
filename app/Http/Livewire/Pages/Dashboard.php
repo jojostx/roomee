@@ -2,40 +2,53 @@
 
 namespace App\Http\Livewire\Pages;
 
+use App\Enums\OnUserAction;
+use App\Enums\RoommateRequestStatus;
+use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\User;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
-    public $blocklist;
-    public $blockers;
-    public $users;
+    use CanReactToRoommateRequestUpdate;
+
+    public Collection $users;
 
     public function mount()
     {
-        $user = $this->getAuthModel();
-
-        $this->blockers = DB::table('blocklists')
-            ->where([
-                'blockee_id' => $user->id
-            ])
-            ->get('id');
-
-        $this->blocklist = $user->blocklists()->pluck('blockee_id');
-
         $this->users = $this->getSimilarUsers(true);
     }
 
-    public function getSimilarUsers(bool $append_similarity_score = true)
+    protected function getAuthModel(): ?User
+    {
+        return Auth::user();
+    }
+
+    protected function getListeners()
+    {
+        $id = auth()->id();
+
+        return [
+            'actionTakenOnUser' => '$refresh',
+            "echo-private:request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
+            "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
+        ];
+    }
+
+    public function getSimilarUsers(bool $append_similarity_score = true): Collection
     {
         $user = $this->getAuthModel();
 
         $similar_users = User::excludeUser($user->id)
             ->gender($user->gender)
             ->school($user->school_id)
-            ->whereIntegerNotInRaw('id', $this->blocklist)
+            ->whereIntegerNotInRaw('id', $this->blockedUsers)
+            ->whereIntegerNotInRaw('id', $this->blockers)
             ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name'])
             ->get();
 
@@ -46,70 +59,20 @@ class Dashboard extends Component
         return $similar_users;
     }
 
-    protected function getListeners()
+    public function getBlockedUsersProperty()
     {
-        $id = auth()->id();
-
-        return [
-            'actionTakenOnUser' => 'resetUsers',
-            "echo-private:request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
-            "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
-        ];
+        return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
     }
 
-    protected function getAuthModel(): ?User
+    public function getBlockersProperty()
     {
-        return Auth::user();
-    }
-
-    // fires when the authenticated user blocks another user
-    public function resetUsers($username, $action)
-    {
-        if ($action === 'block') {
-            $this->users = $this->users->except(
-                $this->getAuthModel()->blocklists()->pluck('blockee_id')->toArray(),
-            );
-        }
-
-        return true;
-    }
-
-    public function handleRoommateRequestUpdatedEvent($data)
-    {
-        $user = $this->users->find($data['requester_id']);
-
-        $this->emit('refreshChildren:' . $user->id);
-
-        if ($data['status'] == 'deleted') {
-            return;
-        }
-
-        if ($data['status'] == 'accepted') {
-
-            return;
-        }
-
-        switch ($data['status']) {
-            case 'deleted':
-                break;
-            case 'accepted':
-                $this->showRecievedRequestToastNotification($user->fullname, 'request.Accepted');
-                break;
-            default:
-                $this->showRecievedRequestToastNotification($user->fullname);
-                break;
-        }
+        return DB::table('blocklists')->where(['blockee_id' => $this->getAuthModel()->id])->get('blocker_id');
     }
 
     // fires a card component refresh when another user blocks the currently authenticated user
     public function handleUserblockedEvent($data)
     {
         $this->emit('refreshChildren:' . $data['blocker_id']);
-    }
-
-    public function showRecievedRequestToastNotification($name, string $status = 'request.Recieved')
-    {
-        $this->emit('actionTakenOnUser', $name, $status);
     }
 
     public function render()

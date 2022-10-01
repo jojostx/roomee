@@ -20,14 +20,20 @@ class IsBlockable implements Rule
     public function __construct(User $user = null)
     {
         if (!$user) {
-            $user = auth()->user();            
+            $user = auth()->user();
         }
 
-        $this->blocklist = Blocklist::where('blocker_id', $user->id)->pluck('blockee_id')->toArray();
-        
-        $this->blockable_users = User::gender($user->gender)
-        ->school($user->school_id)->excludeUser($user->id)->whereIntegerNotInRaw('id', $this->blocklist)
-        ->get();        
+        $this->blocklist = Blocklist::query()
+            ->where('blocker_id', $user->id)
+            ->pluck('blockee_id')
+            ->toArray();
+
+        $this->blockable_users = User::query()
+            ->gender($user->gender)
+            ->school($user->school_id)
+            ->excludeUser($user->id)
+            ->whereIntegerNotInRaw('id', $this->blocklist)
+            ->get();
     }
 
     /**

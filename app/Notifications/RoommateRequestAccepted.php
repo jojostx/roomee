@@ -7,6 +7,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 
 class RoommateRequestAccepted extends Notification implements ShouldQueue
 {
@@ -44,9 +46,28 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('Roommate Request Accepted.')
+            ->line("{$this->requestee->fullname} accepted your Roommate Request.")
+            ->action('View profile', route('profile.view', ['user' => $this->requestee], true))
+            ->line('Thank you for using our application!');
+    }
+
+    public function toDatabase(User $notifiable): array
+    {
+        return array_merge(
+            FilamentNotification::make()
+                ->title('Roommate Request Accepted')
+                ->body("{$this->requestee->fullname} accepted your Roommate Request.")
+                ->actions([
+                    Action::make('view')
+                        ->button()
+                        ->url(route('profile.view', ['user' => $this->requestee]), shouldOpenInNewTab: true)
+                ])
+                ->getDatabaseMessage(),
+            [
+                'requestee_id' => $this->requestee->id,
+            ]
+        );
     }
 
     /**

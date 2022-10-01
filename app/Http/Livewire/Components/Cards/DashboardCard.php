@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Http\Livewire\Traits\Favoriting;
 use App\Models\User;
 use App\Notifications\RoommateRequestRecieved;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -38,14 +39,23 @@ class DashboardCard extends Component
     {
         $this->getAuthModel()->sendRoommateRequest($this->user);
 
-        $this->emit('actionTakenOnUser', $this->user->fullname, 'request');
-                
+        Notification::make()
+            ->title('Request sent successfully')
+            ->success()
+            ->body("Your roommate request have been sent to **{$this->user->fullname}**. You will be notified when they accept.")
+            ->send();
+
         $this->user->notify(new RoommateRequestRecieved($this->getAuthModel()));
     }
 
-    public function showDeleteRequestPopup()
+    public function showDeleteRequestModal()
     {
-        $this->emit('showDeleteRequestPopup', $this->user->id);
+        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->id]);
+    }
+
+    public function showReportOrBlockModal()
+    {
+        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->id]);
     }
 
     public function getIsBlockerProperty()
