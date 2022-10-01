@@ -53,22 +53,12 @@
     </div>
     @else
     <ul class="py-2">
-        <x-responsive-nav-link wire:click="reportUser()">
-            <span class="inline p-2 mr-4 rounded-full w-9 h-9 bg-secondary-100">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-full" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-                </svg>
-            </span>
+        <x-responsive-nav-link wire:click="reportUser()" icon_before="heroicon-o-flag">
             <p>
                 {{ __('Report') }}&nbsp;<span class="font-semibold user-name">{{ $user->fullname }}</span>
             </p>
         </x-responsive-nav-link>
-        <x-responsive-nav-link wire:click="blockUser()">
-            <span class="inline p-2 mr-4 rounded-full w-9 h-9 bg-secondary-100">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-full" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                </svg>
-            </span>
+        <x-responsive-nav-link wire:click="blockUser()" icon_before="heroicon-o-ban">
             <p>
                 {{ __('Block') }}&nbsp;<span class="font-semibold user-name">{{ $user->fullname }}</span>
             </p>
