@@ -97,15 +97,15 @@
                     </x-steps>
                     <x-steps>
                         <x-slot name="icon">
-                            <div class="p-2 mr-6 bg-yellow-200 rounded-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+                            <div class="p-2 mr-6 bg-warning-200 rounded-xl">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-10 text-warning-500" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
                                     <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
                                 </svg>
                             </div>
                         </x-slot>
                         <div>
-                            <p class="mb-2 text-base font-bold text-yellow-800 sm:text-lg">DISCUSS CONDITIONS</p>
+                            <p class="mb-2 text-base font-bold text-warning-800 sm:text-lg">DISCUSS CONDITIONS</p>
                             <p class="max-w-sm text-sm sm:text-base">When the user accepts your roommate request, you
                                 can chat with them to discuss conditions and reach an agreement.</p>
                         </div>
