@@ -42,7 +42,7 @@
             <div class="flex flex-col items-start justify-center mt-4">
 
                  <!-- Validation Errors -->
-                 <x-auth-validation-errors class="w-full px-2 py-2 mb-4 border border-red-600 rounded-lg" :errors="$errors" />
+                 <x-auth-validation-errors class="w-full px-2 py-2 mb-4 border border-danger-600 rounded-lg" :errors="$errors" />
 
                 <x-button class="flex items-center justify-center w-full mb-4 rounded-full">
                     {{ __('Login') }}

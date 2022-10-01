@@ -351,7 +351,7 @@
                     <h2 class="mb-2 text-3xl font-medium text-gray-700"><span
                             class="font-extrabold text-gray-900 ">Install</span> to homescreen</h2>
                     <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a
-                                class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-red-500"
+                                class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-danger-500"
                                 href="#">PWA
                                 (progressive web app)</a></span> that can be installed to your homescreen through your
                         browser. This way you get instant access, notifications, faster browsing with an app-like

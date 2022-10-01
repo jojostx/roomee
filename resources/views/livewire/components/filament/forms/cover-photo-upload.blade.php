@@ -10,7 +10,7 @@
 >
   <div x-bind="cover" class="mb-2 gap-x-6 lg:gap-y-2 sm:grid-cols-2">
     <div>
-      <div id="cover_inp" class="overflow-hidden relative flex items-center justify-center px-4 pt-4 pb-4 mt-1 border-2 border-gray-300 @error('cover_photo') border-red-300 @enderror border-dashed rounded-md">
+      <div id="cover_inp" class="overflow-hidden relative flex items-center justify-center px-4 pt-4 pb-4 mt-1 border-2 border-gray-300 @error('cover_photo') border-danger-300 @enderror border-dashed rounded-md">
         <div class="relative w-full space-y-1 text-center">
           @if (auth()->user()->cover_photo)
           <svg wire:ignore id="cover-svg" class="hidden w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">

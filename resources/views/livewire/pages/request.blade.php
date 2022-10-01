@@ -3,8 +3,8 @@
         <div class="flex items-center justify-between w-full">
             <p>Requests</p>
             <div class="flex items-center overflow-hidden text-xs border rounded-md text-primary-800 border-primary-800 sm:text-sm">
-                <button wire:click="switchPage('recieved')" class="px-1 sm:px-2 py-1 @if ($currentPage == App\Enums\RequestType::RECIEVED) bg-primary-200 @endif border-r border-primary-800 focus:outline-none focus:bg-primary-200">Recieved requests</button>
-                <button wire:click="switchPage('sent')" class="px-1 sm:px-2 py-1 @if ($currentPage == App\Enums\RequestType::SENT) bg-primary-200 @endif hover:text-primary-600 focus:outline-none focus:bg-primary-200">Sent requests</button>
+                <button wire:click="switchPage('recieved')" class="px-2 py-1 @if ($currentPage == App\Enums\RequestType::RECIEVED) bg-primary-200 @endif border-r border-primary-800 focus:outline-none focus:bg-primary-200">Recieved requests</button>
+                <button wire:click="switchPage('sent')" class="px-2 py-1 @if ($currentPage == App\Enums\RequestType::SENT) bg-primary-200 @endif hover:text-primary-600 focus:outline-none focus:bg-primary-200">Sent requests</button>
             </div>
         </div>
     </x-page-header>

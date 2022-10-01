@@ -49,7 +49,7 @@
             <div>
                 <h1 class="text-3xl font-extrabold md:text-5xl">How It Works</h1>
                 <div class="flex items-center justify-center w-full my-5 lg:my-8">
-                    <i class="-mr-2 text-red-500 animate-spin-slow animate-delay-2">
+                    <i class="-mr-2 text-danger-500 animate-spin-slow animate-delay-2">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
                             <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
                         </svg>
@@ -83,14 +83,14 @@
                     </x-steps>
                     <x-steps>
                         <x-slot name="icon">
-                            <div class="p-2 mr-6 bg-red-200 rounded-xl">
-                                <svg class="w-10 text-red-500" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" fill-rule="evenodd">
+                            <div class="p-2 mr-6 bg-danger-200 rounded-xl">
+                                <svg class="w-10 text-danger-500" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" fill-rule="evenodd">
                                     <path d="M8.89371 0.551933C8.72415 0.213618 8.37814 0 7.99971 0C7.62128 0 7.27527 0.213618 7.10571 0.551933L0.105712 14.5519C-0.0717616 14.9066 -0.0228425 15.3327 0.230403 15.6379C0.48365 15.9432 0.893355 16.0699 1.27471 15.9609L6.27471 14.5319C6.70407 14.4091 6.99996 14.0165 6.99971 13.5699L6.99971 8.99893C6.99971 8.64167 7.19031 8.31154 7.49971 8.13291C7.80911 7.95428 8.19031 7.95428 8.49971 8.13291C8.80911 8.31154 8.99971 8.64167 8.99971 8.99893L8.99971 13.5699C8.9995 14.0166 9.29541 14.4092 9.72478 14.532L14.7247 15.9599C15.1059 16.0691 15.5157 15.9427 15.7691 15.6377C16.0226 15.3327 16.0718 14.9067 15.8947 14.5519L8.89471 0.551935L8.89371 0.551933Z" transform="matrix(0.9999999 0 0 0.9999999 2 2.0019531)" />
                                 </svg>
                             </div>
                         </x-slot>
                         <div>
-                            <p class="mb-2 text-base font-bold text-red-800 sm:text-lg">SEND A REQUEST</p>
+                            <p class="mb-2 text-base font-bold text-danger-800 sm:text-lg">SEND A REQUEST</p>
                             <p class="max-w-sm text-sm sm:text-base">Pick a roommate of your choice from
                                 Roomee's suggested roommates page and send them a roommate request.</p>
                         </div>
@@ -556,7 +556,7 @@
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
                     <h2 class="mb-2 text-3xl font-medium text-gray-700"><span class="font-extrabold text-gray-900 ">Install</span> to homescreen</h2>
-                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-red-500" href="#">PWA
+                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-danger-500" href="#">PWA
                                 (progressive web app)</a></span> that can be installed to your homescreen through your
                         browser. This way you get instant access, notifications, faster browsing with an app-like
                         performance and lots more. it also takes considerably less storage space. </p>

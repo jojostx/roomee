@@ -1,5 +1,5 @@
 <div x-data="{ isOpen: false }" x-trap.noscroll="isOpen" x-on:close-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = false" x-on:open-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = true" role="dialog" aria-modal="true" class="inline-block filament-modal">
-  <button @click="$dispatch('open-modal', { id: 'nav-menu-panel' });" class="flex items-center justify-between">
+  <button @click="$dispatch('open-modal', { id: 'nav-menu-panel' });" title="open menu" class="flex items-center justify-between">
     <div class="mr-2 overflow-hidden border-2 rounded-full border-primary-500 lg:mr-2 w-9 h-9">
       @if (auth()->user()->avatar)
       <img id="avatar" src="{{ auth()->user()->avatarPath }}" alt="avatar image" class="w-full">

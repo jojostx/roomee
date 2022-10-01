@@ -12,7 +12,7 @@
             </p>
             <div class="flex justify-end pt-2">
                 <button wire:click="$emit('closeModal')" class="px-1 py-2 mr-4 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Cancel</button>
-                <button wire:click="submit" class="px-1 py-2 font-semibold text-red-500 hover:text-red-700 focus:text-red-700 focus:outline-none">Block</button>
+                <button wire:click="submit" class="px-1 py-2 font-semibold text-danger-500 hover:text-danger-700 focus:text-danger-700 focus:outline-none">Block</button>
             </div>
         </div>
     </div>
@@ -36,11 +36,11 @@
             </ul>
             <div class="flex justify-end px-4">
                 <button wire:click="$emit('closeModal')" class="px-1 py-2 mr-4 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Cancel</button>
-                <button wire:click="submit" class="px-1 py-2 font-semibold text-red-500 hover:text-red-700 focus:text-red-700 focus:outline-none">Block</button>
+                <button wire:click="submit" class="px-1 py-2 font-semibold text-danger-500 hover:text-danger-700 focus:text-danger-700 focus:outline-none">Block</button>
             </div>
             @if ($errors->any())
-            <div class="bg-red-100 border-t border-red-500">
-                <div class="px-4 py-2 text-red-600">
+            <div class="bg-danger-100 border-t border-danger-500">
+                <div class="px-4 py-2 text-danger-600">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>

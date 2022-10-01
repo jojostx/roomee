@@ -143,7 +143,7 @@
                                 </x-livewire.label>
                                 <div class="px-2 pt-2 border border-gray-300 rounded-md">
                                     @foreach ($user->dislikes as $dislike)
-                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 text-red-800 bg-red-100 rounded-md">{{ ucfirst($dislike['name']) }}</span>
+                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 text-danger-800 bg-danger-100 rounded-md">{{ ucfirst($dislike['name']) }}</span>
                                     @endforeach
                                 </div>
                             </div>

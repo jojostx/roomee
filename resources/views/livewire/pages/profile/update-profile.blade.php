@@ -90,7 +90,7 @@
                     <label for="cover_photo" class="label">Cover photo
                         <x-required-field-star />
                     </label>
-                    <div id="cover_inp" class="overflow-hidden relative flex items-center justify-center px-4 pt-4 pb-4 mt-1 border-2 border-gray-300 @error('cover_photo') border-red-300 @enderror border-dashed rounded-md">
+                    <div id="cover_inp" class="overflow-hidden relative flex items-center justify-center px-4 pt-4 pb-4 mt-1 border-2 border-gray-300 @error('cover_photo') border-danger-300 @enderror border-dashed rounded-md">
                         <div class="relative w-full space-y-1 text-center">
                             @if (auth()->user()->cover_photo)
                             <svg wire:ignore id="cover-svg" class="hidden w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
@@ -141,7 +141,7 @@
                     <label for="bio" class="label">About
                         <x-required-field-star /> <span class="text-xs text-primary-800">(25-255 characters long)</span>
                     </label>
-                    <textarea rows="3" name="bio" class="select_dropdown @error('bio') border-red-500 @enderror" id="bio" wire:model.lazy="bio" placeholder="Write about how you would describe yourself">{{ $bio }}</textarea>
+                    <textarea rows="3" name="bio" class="select_dropdown @error('bio') border-danger-500 @enderror" id="bio" wire:model.lazy="bio" placeholder="Write about how you would describe yourself">{{ $bio }}</textarea>
                     @error('bio')
                     <x-livewire.error-text>{{ $message }}</x-livewire.error-text>
                     @enderror
@@ -297,7 +297,7 @@
 
             @if ($errors->any())
             <div class="section">
-                <div class="px-4 py-4 mb-2 text-red-600 bg-red-100 rounded-md">
+                <div class="px-4 py-4 mb-2 text-danger-600 bg-danger-100 rounded-md">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>

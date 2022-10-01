@@ -8,7 +8,7 @@
                         have any questions or compliants, Feel free to reach us by phone, mail, sending a message below
                         or through our social media handles.</p>
                 </div>
-                <div class="z-0 hidden pt-2 ml-16 bg-red-300 border rounded-full rounded-b-none mt-14 right-10 md:block w-72 top-28">
+                <div class="z-0 hidden pt-2 ml-16 bg-danger-300 border rounded-full rounded-b-none mt-14 right-10 md:block w-72 top-28">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 461.14 507.78">
                         <defs>
                             <style>
@@ -148,14 +148,14 @@
             <div class="flex-1 w-full max-w-md pb-12 md:pb-0 md:pr-14 sm:text-left">
 
                 <!-- Validation Errors -->
-                <x-auth-validation-errors class="px-2 py-2 mt-2 mb-4 border border-red-600 rounded-lg" :errors="$errors" />
+                <x-auth-validation-errors class="px-2 py-2 mt-2 mb-4 border border-danger-600 rounded-lg" :errors="$errors" />
 
                 <form method="POST" id="contact_form" x-on:submit.prevent="submitForm('http://127.0.0.1:8000/contact-us')" x-data="form('contact_form')" class="mb-4">
                     @csrf
 
                     <!-- FirstName -->
                     <div>
-                        <x-label for="firstname" class="font-bold">First Name <span class="text-red-500">*</span>
+                        <x-label for="firstname" class="font-bold">First Name <span class="text-danger-500">*</span>
                         </x-label>
                         <x-input id="firstname" class="block w-full mt-1 text-sm font-medium" type="text" name="firstname" :value="old('first name')" required />
                     </div>
@@ -168,19 +168,19 @@
 
                     <!-- Email Address -->
                     <div class="mt-4">
-                        <x-label for="email" class="font-bold">Email <span class="text-red-500">*</span></x-label>
+                        <x-label for="email" class="font-bold">Email <span class="text-danger-500">*</span></x-label>
                         <x-input id="email" class="block w-full mt-1 text-sm font-medium" type="email" name="email" :value="old('email')" required />
                     </div>
 
                     <div class="mt-4">
                         <x-label for="message" class="font-bold">
                             Message
-                            <span class="text-red-500">*</span>
+                            <span class="text-danger-500">*</span>
                         </x-label>
                         <x-textarea name="message" id="message" cols="30" rows="10" class="block w-full mt-1 text-sm font-medium" :value="old('message')" required />
                     </div>
 
-                    <p class="px-2 py-2 mt-2 mb-2 text-red-500">* The field is required</p>
+                    <p class="px-2 py-2 mt-2 mb-2 text-danger-500">* The field is required</p>
 
                     <div class="mt-2">
                         <x-button class="flex items-center justify-center rounded-full hover:bg-primary-500">
@@ -239,7 +239,7 @@
                     </a>
                 </div>
                 <p class="mt-4 font-semibold text-primary-500">Thanks for vibing with us we are happy to help!!!
-                    <i class="inline-block w-4 text-red-600">
+                    <i class="inline-block w-4 text-danger-600">
                         <svg viewBox="0 0 32 56" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path id="Shape" d="m11 34c0 .5522847.4477153 1 1 1h1.28c-.217479-.6428465-.2958769-1.3245676-.23-2h-1.05c-.5522847 0-1 .4477153-1 1z" />
                             <path id="Shape" d="m18.92.07c-.77843-.16598375-1.5909143-.01582593-2.258599.41741889-.6676846.43324483-1.1358368 1.11406176-1.301401 1.89258111l-2.88 18.36c-.1293819.6987293-.7284376 1.212699-1.4387142 1.2343685s-1.33954984-.4548258-1.5112858-1.1443685l-3.53-16.24c-.15744606-1.08577689-.89503943-1.99900707-1.92338293-2.38138169-1.0283435-.38237463-2.18339895-.17289847-3.01197655.54623981s-1.19850521 1.83322397-.96464052 2.90514188l3.35 18.34c.25841173 1.3964914.24142675 2.8300232-.05 4.22 1.02262075-1.0092632 2.11534735-1.9449312 3.27-2.8 1.2012848-.9163406 2.66912604-1.4149852 4.18-1.42h6.68l3.7-20.36c.1689571-.77989716.0202334-1.59497214-.413275-2.26493969s-1.1160754-1.1396145-1.896725-1.30506031z" />

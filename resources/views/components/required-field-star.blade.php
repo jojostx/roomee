@@ -1,1 +1,1 @@
-<span class="font-bold text-red-600">*</span>
+<span class="font-bold text-danger-600">*</span>
