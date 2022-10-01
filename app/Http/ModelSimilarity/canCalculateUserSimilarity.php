@@ -4,6 +4,7 @@ namespace App\Http\ModelSimilarity;
 
 use App\Models\User;
 use App\Services\Similarity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Collection;
 
 trait canCalculateUserSimilarity
@@ -42,12 +43,12 @@ trait canCalculateUserSimilarity
     public function calculateUsersSimilarityScore(?Collection $users): Collection
     {
         return $users->each(function ($user) {
-            $user->similarity_score =  round($this->calculateSimilarityScore($user), 2) * 100;
+            $user->similarity_score = round($this->calculateSimilarityScore($user), 2) * 100;
         });
     }
-  
-    public function calculateUserSimilarityScore(User $user): float
+
+    public function calculateUserSimilarityScore(?User $user): float
     {
-        return round($this->calculateSimilarityScore($this, $user), 2) * 100;
+        return filled($user)? round($this->calculateSimilarityScore($this, $user), 2) * 100 : 0.0;
     }
 }

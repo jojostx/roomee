@@ -2,7 +2,7 @@
     <x-page-header>Dashboard</x-page-header>
 
     <div class="flex flex-wrap px-3 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        @forelse ($users as $user)
+        @forelse ($this->users as $user)
         <div class="grid w-full gap-4 lg:gap-6 grid-col-1 sm:grid-cols-2 md:grid-cols-3">
             @livewire('components.cards.dashboard-card', ['user' => $user], key($user->id))
         </div>

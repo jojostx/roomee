@@ -11,8 +11,6 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 
-//implements MustVerifyEmail
-
 /**
  * @mixin IdeHelperUser
  */
@@ -70,8 +68,7 @@ class User extends Authenticatable
         'profile_updated' => 'boolean'
     ];
 
-    //RELATIONSHIPS
-
+    // -------- RELATIONSHIPS -------- //
     /**
      * The Course that the user belongs to (the course that the user offers).
      */
@@ -167,8 +164,7 @@ class User extends Authenticatable
             ->withTimestamps()->orderByPivot('created_at', 'desc');
     }
 
-    //SCOPES//
-
+    // -------- SCOPES -------- //
     /**
      * Scope a query to only include users of the same gender.
      *
@@ -205,9 +201,7 @@ class User extends Authenticatable
         return $query->where('id', '<>', $user_id);
     }
 
-
-
-    //ACCESSORS
+    // -------- ACCESSORS -------- //
     public function getFullnameAttribute()
     {
         return $this->firstname . ' ' . $this->lastname;

@@ -17,13 +17,6 @@ class Dashboard extends Component
 {
     use CanReactToRoommateRequestUpdate;
 
-    public Collection $users;
-
-    public function mount()
-    {
-        $this->users = $this->getSimilarUsers(true);
-    }
-
     protected function getAuthModel(): ?User
     {
         return Auth::user();
@@ -31,7 +24,7 @@ class Dashboard extends Component
 
     protected function getListeners()
     {
-        $id = auth()->id();
+        $id = $this->getAuthModel()->id;
 
         return [
             'actionTakenOnUser' => '$refresh',
@@ -40,23 +33,19 @@ class Dashboard extends Component
         ];
     }
 
-    public function getSimilarUsers(bool $append_similarity_score = true): Collection
+    public function getUsersProperty(): Collection
     {
         $user = $this->getAuthModel();
 
-        $similar_users = User::excludeUser($user->id)
-            ->gender($user->gender)
-            ->school($user->school_id)
+        $users = User::excludeUser($user->id)
             ->whereIntegerNotInRaw('id', $this->blockedUsers)
             ->whereIntegerNotInRaw('id', $this->blockers)
+            ->gender($user->gender)
+            ->school($user->school_id)
             ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name'])
             ->get();
 
-        if ($append_similarity_score) {
-            $similar_users = $user->calculateUsersSimilarityScore($similar_users);
-        }
-
-        return $similar_users;
+        return $user->calculateUsersSimilarityScore($users);
     }
 
     public function getBlockedUsersProperty()

@@ -10,15 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class SendRoommateRequestUpdatedNotifications implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+    use InteractsWithQueue;
 
     /**
      * Handle the event.
