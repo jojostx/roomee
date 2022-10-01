@@ -40,7 +40,6 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 
 
 Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
-    // Route::get('/profile/update', UpdateProfile::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/profile/update', UpdatePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
     Route::get('/profile/view/{user}', ViewProfile::class)->name('profile.view');
