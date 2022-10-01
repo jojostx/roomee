@@ -2,12 +2,8 @@
 
 namespace App\Http\Livewire\Pages;
 
-use App\Enums\OnUserAction;
-use App\Enums\RoommateRequestStatus;
 use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\User;
-use Filament\Notifications\Actions\Action;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
