@@ -30,7 +30,7 @@
     @stack('scripts')
 </head>
 
-<body class="relative min-h-screen font-sans antialiased text-gray-900">
+<body class="relative min-h-screen font-sans antialiased text-secondary-900">
     <x-alert :type="'info'" :hasCloseButton="true" :showAlert="false"></x-alert>
 
     @auth

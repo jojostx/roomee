@@ -16,7 +16,7 @@
                 @php
                     $slugOptionName = str($option['name'])->slug('_')->value();
                 @endphp
-            <li tabindex="0" x-on:keydown.arrow-up.prevent="previousUp($event)" x-on:keydown.arrow-down.prevent="nextDown($event)" x-on:keydown.enter="toggleCheckbox($refs.{{ $slugOptionName }}_tag, $refs.{{ $slugOptionName }}_checkbox)" class="flex flex-row-reverse items-center justify-between mb-1 border border-transparent rounded-md hover:bg-gray-200 focus:border-gray-400 focus:bg-gray-100 focus:outline-none">
+            <li tabindex="0" x-on:keydown.arrow-up.prevent="previousUp($event)" x-on:keydown.arrow-down.prevent="nextDown($event)" x-on:keydown.enter="toggleCheckbox($refs.{{ $slugOptionName }}_tag, $refs.{{ $slugOptionName }}_checkbox)" class="flex flex-row-reverse items-center justify-between mb-1 border border-transparent rounded-md hover:bg-secondary-200 focus:border-secondary-400 focus:bg-secondary-100 focus:outline-none">
                 <x-livewire.checkbox type="checkbox" id="{{ $slugOptionName }}" wire:model="{{ 'selected'.$slot }}" name="{{ $name }}[]" value="{{$option['id']}}" x-ref="{{ $slugOptionName }}_checkbox" :checked="in_array($option['id'], $selectedOptions)?'true':''" class="hidden {{ $name }}_checkboxes" autocomplete="off" />
                 <label for="{{ $slugOptionName }}" class="flex items-center justify-between w-full h-full px-2 py-2 rounded-md labels_{{ $name }}">
                     {{ ucfirst($option['name']) }}

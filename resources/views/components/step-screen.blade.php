@@ -8,10 +8,10 @@
         {{ $slot }}
     </div>
     <div class="flex flex-col items-center not-italic">
-        <div class="w-12 mb-2 overflow-hidden bg-gray-300 rounded-full">
+        <div class="w-12 mb-2 overflow-hidden bg-secondary-300 rounded-full">
             {{ $avatar }}
         </div>
-        <p class="text-gray-500"> {{ $fullname }} </p>
+        <p class="text-secondary-500"> {{ $fullname }} </p>
         <p class="text-xs text-primary-500"> {{ $username }} </p>
     </div>
 </div>

@@ -3,7 +3,7 @@
         <!-- Logo -->
         <div class="flex items-center flex-shrink-0">
             <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
-                <x-application-logo class="block w-auto h-10 text-gray-600 fill-current" />
+                <x-application-logo class="block w-auto h-10 text-secondary-600 fill-current" />
             </a>
         </div>
 

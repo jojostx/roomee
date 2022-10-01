@@ -2,11 +2,11 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="text-gray-500 fill-current h-14" />
+                <x-application-logo class="text-secondary-500 fill-current h-14" />
             </a>
         </x-slot>
 
-        <div class="mb-4 text-sm text-gray-600">
+        <div class="mb-4 text-sm text-secondary-600">
             {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
         </div>
 
@@ -30,7 +30,7 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 
-                <button type="submit" class="ml-4 text-sm text-gray-600 underline hover:text-primary-700">
+                <button type="submit" class="ml-4 text-sm text-secondary-600 underline hover:text-primary-700">
                     {{ __('Logout') }}
                 </button>
             </form>

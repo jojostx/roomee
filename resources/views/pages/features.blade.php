@@ -3,7 +3,7 @@
         <div class="flex items-center justify-center h-screen text-center bg-primary-100 md:h-screen">
             <div class="mb-4 text-center md:mb-12">
                 <h1 class="mb-4 text-4xl font-extrabold md:text-5xl">Feature-packed</h1>
-                <p class="text-xl font-medium leading-tight text-gray-600 md:text-2xl">it's free, fast, user-friendly, intuitive and 
+                <p class="text-xl font-medium leading-tight text-secondary-600 md:text-2xl">it's free, fast, user-friendly, intuitive and 
                 <br> light-weight
                 </p>
             </div>
@@ -13,9 +13,9 @@
     <div class="absolute top-0 h-screen hero">
     </div>
 
-    <section class="flex justify-center min-h-screen py-10 bg-gray-50 lg:py-24">
+    <section class="flex justify-center min-h-screen py-10 bg-secondary-50 lg:py-24">
         <div class="relative z-20 flex flex-col items-center justify-center w-11/12 pt-6 features md:w-5/6 lg:pt-4">
-            <div class="flex flex-col-reverse w-full gap-6 py-16 border-b-2 border-gray-300 sm:flex-row">
+            <div class="flex flex-col-reverse w-full gap-6 py-16 border-b-2 border-secondary-300 sm:flex-row">
                 <div class="flex items-center justify-center w-full sm:mr-0">
                     <i class="w-full max-w-xs">
                         <svg viewBox="0 0 2889 2596" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -39,15 +39,15 @@
                     </i>
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
-                    <h2 class="mb-2 text-3xl font-medium text-gray-700"><span
-                            class="font-extrabold text-gray-900">Accurate </span>Recommendations</h2>
-                    <p class="max-w-md text-base text-gray-700 lg:leading-tight lg:text-lg">
+                    <h2 class="mb-2 text-3xl font-medium text-secondary-700"><span
+                            class="font-extrabold text-secondary-900">Accurate </span>Recommendations</h2>
+                    <p class="max-w-md text-base text-secondary-700 lg:leading-tight lg:text-lg">
                         Roomee recommends roommates that match your personality perfectly based on your preferences and
                         profile.
                         This is made possible by a user-based content filtering algorithm.</p>
                 </div>
             </div>
-            <div class="flex flex-col-reverse w-full gap-6 py-16 border-b-2 border-gray-300 sm:flex-row">
+            <div class="flex flex-col-reverse w-full gap-6 py-16 border-b-2 border-secondary-300 sm:flex-row">
                 <div class="flex items-center justify-center w-full md:h-64">
                     <i class="w-full max-w-xs">
                         <svg viewBox="0 0 2889 2596" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,14 +77,14 @@
                     </i>
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
-                    <h2 class="mb-2 text-3xl font-medium text-gray-700"><span
-                            class="font-extrabold text-gray-900 ">Real-time </span>Notifications</h2>
-                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Be immediately notified when you recieve a roommate
+                    <h2 class="mb-2 text-3xl font-medium text-secondary-700"><span
+                            class="font-extrabold text-secondary-900 ">Real-time </span>Notifications</h2>
+                    <p class="text-base text-secondary-700 lg:leading-tight lg:text-lg">Be immediately notified when you recieve a roommate
                         request, your roommate request is accepted or declined, and when a user sends you a message.
                         This may be through SMS, Email or In-app notifications.</p>
                 </div>
             </div>
-            <div class="flex flex-col-reverse w-full gap-6 py-16 border-b-2 border-gray-300 sm:flex-row">
+            <div class="flex flex-col-reverse w-full gap-6 py-16 border-b-2 border-secondary-300 sm:flex-row">
                 <div class="flex items-center justify-center w-full md:h-64">
                     <i class="w-full max-w-xs">
                         <svg viewBox="0 0 2889 2596" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -320,9 +320,9 @@
                     </i>
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
-                    <h2 class="mb-2 text-3xl font-medium text-gray-700"><span
-                            class="font-extrabold text-gray-900">Instant </span>Messaging</h2>
-                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee provides fast and secure in-app chat
+                    <h2 class="mb-2 text-3xl font-medium text-secondary-700"><span
+                            class="font-extrabold text-secondary-900">Instant </span>Messaging</h2>
+                    <p class="text-base text-secondary-700 lg:leading-tight lg:text-lg">Roomee provides fast and secure in-app chat
                         functionality.
                         This helps you keep all your roomee interactions in one place. You can also discuss agreements
                         and conditions on the fly and finally sign a Roomee roommate agreement form.</p>
@@ -348,9 +348,9 @@
                     </i>
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
-                    <h2 class="mb-2 text-3xl font-medium text-gray-700"><span
-                            class="font-extrabold text-gray-900 ">Install</span> to homescreen</h2>
-                    <p class="text-base text-gray-700 lg:leading-tight lg:text-lg">Roomee is a <span><a
+                    <h2 class="mb-2 text-3xl font-medium text-secondary-700"><span
+                            class="font-extrabold text-secondary-900 ">Install</span> to homescreen</h2>
+                    <p class="text-base text-secondary-700 lg:leading-tight lg:text-lg">Roomee is a <span><a
                                 class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-danger-500"
                                 href="#">PWA
                                 (progressive web app)</a></span> that can be installed to your homescreen through your
@@ -363,7 +363,7 @@
                     <h1>Find the perfect roommate today!!!</h1>
                 </div>
                 <a href="{{ route('register') }}"
-                    class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-gray-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-primary-900">Sign
+                    class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-secondary-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-primary-900">Sign
                     up for free
                 </a>
             </div>

@@ -3,7 +3,7 @@
     <!-- Application Logo -->
     <div class="flex items-center flex-shrink-0">
         <a href="{{ route('home') }}">
-            <x-application-logo class="block text-gray-200 fill-current h-14" />
+            <x-application-logo class="block text-secondary-200 fill-current h-14" />
         </a>
     </div>
 
@@ -28,15 +28,15 @@
             <div class="py-2 sm:block">
                 @auth
                 @if (Auth::user()->profile_updated)
-                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Dashboard</a>
                 @else
-                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Profile</a>
                 @endif
                 @endauth
 
                 @guest
-                <a href="{{ route('register') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">SIGN UP</a>
-                <a href="{{ route('login') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900">SIGN IN</a>
+                <a href="{{ route('register') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">SIGN UP</a>
+                <a href="{{ route('login') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900">SIGN IN</a>
                 @endguest
             </div>
             @endif
@@ -46,14 +46,14 @@
     <!-- Responsive Navigation Menu -->
     <div x-data="{ open: false }" class="relative z-40 block sm:hidden">
         <div class="flex items-center sm:hidden">
-            <button x-on:click="open = !open" class="inline-flex items-center justify-center p-2 text-gray-200 transition duration-150 ease-in-out rounded-md hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900">
+            <button x-on:click="open = !open" class="inline-flex items-center justify-center p-2 text-secondary-200 transition duration-150 ease-in-out rounded-md hover:text-secondary-900 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-900">
                 <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                     <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                     <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
-        <div x-show="open" x-trap.noscroll="open" x-on:click.outside="open = false" x-cloak class="absolute right-0 flex flex-col items-center justify-between pb-4 overflow-hidden w-[320px] bg-gray-900 border border-gray-700 rounded-md shadow-lg top-14">
+        <div x-show="open" x-trap.noscroll="open" x-on:click.outside="open = false" x-cloak class="absolute right-0 flex flex-col items-center justify-between pb-4 overflow-hidden w-[320px] bg-secondary-900 border border-secondary-700 rounded-md shadow-lg top-14">
             <div class="flex flex-col justify-between flex-shrink-0 w-full">
                 <x-dark-dropdown-link :href="route('home')" :active="request()->routeIs('home')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
@@ -86,19 +86,19 @@
                     {{ __('Contact Us') }}
                 </x-dark-dropdown-link>
             </div>
-            <div class="relative flex items-center justify-center w-full px-4 pt-4 border-t border-gray-700 sm:items-center sm:pt-0 ">
+            <div class="relative flex items-center justify-center w-full px-4 pt-4 border-t border-secondary-700 sm:items-center sm:pt-0 ">
                 @if (Route::has('login'))
                 @auth
                 @if (Auth::user()->profile_updated)
-                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Dashboard</a>
                 @else
-                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900 focus:bg-white focus:text-gray-900 ">Profile</a>
+                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Profile</a>
                 @endif
                 @endauth
 
                 @guest
-                <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN IN</a>
-                <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-gray-200 border-2 border-white rounded-full hover:bg-white hover:text-gray-900">SIGN UP</a>
+                <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900">SIGN IN</a>
+                <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900">SIGN UP</a>
                 @endguest
                 @endif
             </div>

@@ -5,7 +5,7 @@
                 <img id="avatar" src="{{ $user->avatar_path ?? asset('images/avatar_placeholder.png') }}" alt="{{ $user->firstname }}'s avatar" class="w-full">
             </div>
             <div class="max-w-[160px]">
-                <p class="overflow-x-hidden text-base font-semibold text-gray-700 text-ellipsis">
+                <p class="overflow-x-hidden text-base font-semibold text-secondary-700 text-ellipsis">
                     {{ $user->fullname }}
                 </p>
                 <p title="{{ $user->course->name }}" class="overflow-x-hidden text-sm text-ellipsis text-secondary-500">
@@ -37,7 +37,7 @@
             wire:click='showReportOrBlockModal' 
             wire:loading.attr="disabled" 
             style="border-radius: 0.5rem;" 
-            class="border border-gray-300 rounded-lg disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
+            class="border border-secondary-300 rounded-lg disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
             color="secondary" 
             size="sm" 
             icon="heroicon-s-dots-horizontal" 

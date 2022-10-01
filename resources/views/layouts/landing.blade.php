@@ -22,10 +22,10 @@
     <script src="{{ asset('js/welcome.js') }}" defer></script>
 </head>
 
-<body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-gray-100 vh">
+<body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-secondary-100 vh">
 
     <!-- Navigation Bar -->
-    <header class="z-40 flex flex-row items-center justify-center w-full h-16 bg-gray-900 border-b border-gray-800">
+    <header class="z-40 flex flex-row items-center justify-center w-full h-16 bg-secondary-900 border-b border-secondary-800">
         @include('sections.navbar')
     </header>
     <!-- End of Navigation Bar -->
@@ -43,7 +43,7 @@
 
     @include('sections.footer')
 
-    <button onclick="backToTop()" id="topButton" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-gray-700 rounded-full shadow-lg focus:outline-black focus:bg-gray-600 hover:bg-primary-600 text-gray-50 bottom-8 right-8">
+    <button onclick="backToTop()" id="topButton" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-secondary-700 rounded-full shadow-lg focus:outline-black focus:bg-secondary-600 hover:bg-primary-600 text-secondary-50 bottom-8 right-8">
         <p class="mr-2 font-semibold">Back to top</p>
         <i class="block w-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

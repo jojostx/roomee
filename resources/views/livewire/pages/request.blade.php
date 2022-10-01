@@ -1,4 +1,4 @@
-<div class="w-full h-screen mx-auto bg-gray-100 max-w-7xl">
+<div class="w-full h-screen mx-auto bg-secondary-100 max-w-7xl">
     <x-page-header>
         <div class="flex items-center justify-between w-full">
             <p>Requests</p>

@@ -20,7 +20,7 @@
     ]);
 
     $detailClasses = \Illuminate\Support\Arr::toCssClasses([
-        'ml-auto text-xs text-gray-500',
+        'ml-auto text-xs text-secondary-500',
         'group-hover:text-primary-100 group-focus:text-primary-100' => ($color === 'primary' || $color === 'secondary') && $hasHoverAndFocusState,
         'group-hover:text-danger-100 group-focus:text-danger-100' => $color === 'danger' && $hasHoverAndFocusState,
         'group-hover:text-success-100 group-focus:text-success-100' => $color === 'success' && $hasHoverAndFocusState,
@@ -34,7 +34,7 @@
         'group-hover:text-white group-focus:text-white' => $hasHoverAndFocusState,
         'text-primary-500' => $color === 'primary',
         'text-danger-500' => $color === 'danger',
-        'text-gray-500' => $color === 'secondary',
+        'text-secondary-500' => $color === 'secondary',
         'text-success-500' => $color === 'success',
         'text-warning-500' => $color === 'warning',
     ]);

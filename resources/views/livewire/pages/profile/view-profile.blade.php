@@ -20,7 +20,7 @@
                         <div class="flex items-center justify-center mb-4 overflow-hidden">
                             <span class="font-semibold xs:text-lg">{{ ucfirst($user->firstname) }} {{ ucfirst($user->lastname) }}</span>
                             &nbsp;
-                            <span class="text-gray-500">
+                            <span class="text-secondary-500">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     @if ($user->gender == "male")
                                     <path d="M0 2.47475C0 1.10798 1.13964 0 2.54545 0C3.95127 0 5.09091 1.10798 5.09091 2.47475C5.09091 3.84151 3.95127 4.94949 2.54545 4.94949C1.13964 4.94949 0 3.84151 0 2.47475Z" transform="translate(9.45459 0.86364746)" fill="currentColor" fill-rule="evenodd" stroke="none" />
@@ -52,7 +52,7 @@
                                             wire:click='showReportOrBlockModal' 
                                             wire:loading.attr="disabled" 
                                             style="border-radius: 0.5rem;" 
-                                            class="border border-gray-300 rounded-lg disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
+                                            class="border border-secondary-300 rounded-lg disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
                                             color="secondary" 
                                             size="sm" 
                                             icon="heroicon-s-dots-horizontal" 
@@ -97,7 +97,7 @@
                 </div>
             </div>
             @can('interactWith', $user)
-                <div id="profile__box" class="w-full border border-gray-300 rounded-md tab-container justify-evenly">
+                <div id="profile__box" class="w-full border border-secondary-300 rounded-md tab-container justify-evenly">
                     <input type="radio" name="tab" id="tab1" checked="checked">
                     <x-livewire.tab-label for="tab1">
                         <x-slot name="svg_path">
@@ -117,7 +117,7 @@
                                     </x-slot>
                                     Bio
                                 </x-livewire.label>
-                                <div class="px-2 py-4 border border-gray-300 rounded-md">
+                                <div class="px-2 py-4 border border-secondary-300 rounded-md">
                                     <p class="px-1 text-primary-800" style="overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;">{{ $user->bio}}</p>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                     </x-slot>
                                     Hobbies and Interests
                                 </x-livewire.label>
-                                <div class="px-2 pt-2 border border-gray-300 rounded-md">
+                                <div class="px-2 pt-2 border border-secondary-300 rounded-md">
                                     @foreach ($user->hobbies as $hobby)
                                     <span class="inline-flex items-center justify-center px-3 py-1 mb-2 mr-1 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($hobby['name']) }}</span>
                                     @endforeach
@@ -141,7 +141,7 @@
                                     </x-slot>
                                     Dislikes
                                 </x-livewire.label>
-                                <div class="px-2 pt-2 border border-gray-300 rounded-md">
+                                <div class="px-2 pt-2 border border-secondary-300 rounded-md">
                                     @foreach ($user->dislikes as $dislike)
                                     <span class="inline-flex items-center justify-center px-3 py-1 mb-2 text-danger-800 bg-danger-100 rounded-md">{{ ucfirst($dislike['name']) }}</span>
                                     @endforeach
@@ -219,7 +219,7 @@
                                     </x-slot>
                                     Preferred property locations
                                 </x-livewire.label>
-                                <div class="px-2 pt-2 border border-gray-300 rounded-md">
+                                <div class="px-2 pt-2 border border-secondary-300 rounded-md">
                                     @foreach ($user->towns as $town)
                                     <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($town['name']) }}</span>
                                     @endforeach
@@ -269,7 +269,7 @@
             @endcan
         </div>
     </div>
-    <p class="text-xs text-center text-gray-500">
+    <p class="text-xs text-center text-secondary-500">
         &copy; 2020 Roomee. All rights reserved
     </p>
 </div>

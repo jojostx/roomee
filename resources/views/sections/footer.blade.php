@@ -1,10 +1,10 @@
-<footer class="flex justify-center w-full pb-8 text-gray-400 bg-gray-900 pt-14 lg:pt-24">
+<footer class="flex justify-center w-full pb-8 text-secondary-400 bg-secondary-900 pt-14 lg:pt-24">
     <div class="w-11/12">
         <div class="grid grid-cols-1 gap-8 pb-8 lg:pb-12 md:grid-cols-8">
             <div class="pb-8 sm:col-span-3">
                 <div class="flex items-center flex-shrink-0 mb-6">
                     <a href="{{ route('home') }}">
-                        <x-application-logo class="block w-auto h-10 text-gray-200 fill-current" />
+                        <x-application-logo class="block w-auto h-10 text-secondary-200 fill-current" />
                     </a>
                 </div>
                 <div class="max-w-sm mb-6 mr-0 xs:mr-2 sm:mr-6">Go beyond finding a roommate to getting a perfect roommate without tedious searching.</div>
@@ -25,26 +25,26 @@
             </div>
             <div class="grid grid-cols-2 gap-4 sm:col-span-5 gap-y-8 sm:gap-y-4 md:grid-cols-3">
                 <div class="flex flex-col mr-auto">
-                    <p class="mb-2 font-semibold text-gray-500">PAGES</p>
+                    <p class="mb-2 font-semibold text-secondary-500">PAGES</p>
                     <x-footer-link href="{{ route('home') }}" :active="request()->routeIs('home')">{{ __('Home') }} </x-footer-link>
                     <x-footer-link href="{{ route('features') }}" :active="request()->routeIs('features')">{{ __('Features') }} </x-footer-link>
                     <x-footer-link href="{{ route('faqs') }}" :active="request()->routeIs('faqs')">{{ __('FAQs') }} </x-footer-link>
                 </div>
                 <div class="flex flex-col mr-auto">
-                    <p class="mb-2 font-semibold text-gray-500">COMPANY</p>
+                    <p class="mb-2 font-semibold text-secondary-500">COMPANY</p>
                     <x-footer-link href="{{ route('about') }}" :active="request()->routeIs('about')">{{ __('About Us') }}</x-footer-link>
                     <x-footer-link href="{{ route('contact') }}" :active="request()->routeIs('contact')">{{ __('Contact Us') }}</x-footer-link>
                     <x-footer-link>Blog</x-footer-link>
                 </div>
                 <div class="flex flex-col mr-auto">
-                    <p class="mb-2 font-semibold text-gray-500">LEGAL</p>
+                    <p class="mb-2 font-semibold text-secondary-500">LEGAL</p>
                     <x-footer-link href="{{ route('terms') }}" :active="request()->routeIs('terms')" >{{ __('Terms') }}</x-footer-link>
                     <x-footer-link href="{{ route('privacy') }}" :active="request()->routeIs('privacy')" >{{ __('Privacy Policy') }}</x-footer-link>
                     <x-footer-link href="{{ route('rules') }}" :active="request()->routeIs('rules')" >{{ __('Rules and Guidelines') }}</x-footer-link>
                 </div>
             </div>
         </div>
-        <div class="pt-8 text-xs font-medium text-center border-t border-gray-800">
+        <div class="pt-8 text-xs font-medium text-center border-t border-secondary-800">
             <p>&copy; 2021 Roomee, Inc. All rights reserved.</p>
         </div>
     </div>

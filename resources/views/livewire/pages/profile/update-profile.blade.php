@@ -3,12 +3,12 @@
         <div class="flex items-center justify-between mb-5 sm:w-64 md:72 col-span-full lg:fixed sm:block">
             <div class="mb-3 text-2xl md:mb-6">
                 <p class="mb-1 font-semibold">Update Profile</p>
-                <p class="text-sm text-gray-700">Please fill all the basic details to get started.</p>
+                <p class="text-sm text-secondary-700">Please fill all the basic details to get started.</p>
                 <p class="inline-flex px-4 py-1 text-sm text-orange-700 bg-orange-200 rounded-full">All fields are required</p>
             </div>
-            <ul wire:ignore class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold text-gray-800 list-none bg-gray-100 border rounded-md shadow-sm lg:flex">
+            <ul wire:ignore class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold text-secondary-800 list-none bg-secondary-100 border rounded-md shadow-sm lg:flex">
                 <li class="w-full my-1">
-                    <a href="#pers_info" id="li-pers" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-gray-300">
+                    <a href="#pers_info" id="li-pers" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-secondary-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
@@ -16,7 +16,7 @@
                     </a>
                 </li>
                 <li class="w-full my-1">
-                    <a href="#edu_info" id="li-edu" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-gray-300">
+                    <a href="#edu_info" id="li-edu" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-secondary-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 mr-3">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                         </svg>
@@ -24,7 +24,7 @@
                     </a>
                 </li>
                 <li class="w-full my-1">
-                    <a href="#apart_info" id="li-apart" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-gray-300">
+                    <a href="#apart_info" id="li-apart" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-secondary-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-5 mr-3" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
@@ -65,21 +65,21 @@
                     <div class="flex justify-start gap-4 mb-6">
                         <div class="w-1/2 mr-6">
                             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->firstname) }}</span>
-                            <label class="block text-sm text-gray-700">First Name</label>
+                            <label class="block text-sm text-secondary-700">First Name</label>
                         </div>
                         <div>
                             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->lastname) }}</span>
-                            <label class="block text-sm text-gray-700">Last Name</label>
+                            <label class="block text-sm text-secondary-700">Last Name</label>
                         </div>
                     </div>
                     <div class="flex justify-start gap-4">
                         <div class="w-1/2 mr-6 overflow-hidden">
                             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->email) }}</span>
-                            <label class="block text-sm text-gray-700">Email Address</label>
+                            <label class="block text-sm text-secondary-700">Email Address</label>
                         </div>
                         <div>
                             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->gender) }}</span>
-                            <label class="block text-sm text-gray-700">Gender</label>
+                            <label class="block text-sm text-secondary-700">Gender</label>
                         </div>
                     </div>
                 </div>
@@ -90,24 +90,24 @@
                     <label for="cover_photo" class="label">Cover photo
                         <x-required-field-star />
                     </label>
-                    <div id="cover_inp" class="overflow-hidden relative flex items-center justify-center px-4 pt-4 pb-4 mt-1 border-2 border-gray-300 @error('cover_photo') border-danger-300 @enderror border-dashed rounded-md">
+                    <div id="cover_inp" class="overflow-hidden relative flex items-center justify-center px-4 pt-4 pb-4 mt-1 border-2 border-secondary-300 @error('cover_photo') border-danger-300 @enderror border-dashed rounded-md">
                         <div class="relative w-full space-y-1 text-center">
                             @if (auth()->user()->cover_photo)
-                            <svg wire:ignore id="cover-svg" class="hidden w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <svg wire:ignore id="cover-svg" class="hidden w-12 h-12 mx-auto text-secondary-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <div wire:ignore>
                                 <img src="{{ auth()->user()->coverPhotoPath }}" id="cover_out" class="z-10 block w-full mb-5 rounded-lg shadow-lg" alt="" height="100%" width="100%">
                             </div>
                             @else
-                            <svg wire:ignore id="cover-svg" class="w-12 h-12 mx-auto text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <svg wire:ignore id="cover-svg" class="w-12 h-12 mx-auto text-secondary-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <div wire:ignore>
                                 <img src="" id="cover_out" class="z-10 hidden block w-full mb-5 rounded-lg shadow-lg" alt="">
                             </div>
                             @endif
-                            <div class="flex flex-col items-center mt-6 text-sm text-gray-600">
+                            <div class="flex flex-col items-center mt-6 text-sm text-secondary-600">
                                 <label tabindex="0" for="cover_photo" class="relative flex items-center justify-between px-3 py-2 mb-2 font-semibold leading-4 text-white bg-indigo-600 rounded-md shadow-sm cursor-pointer hover:bg-indigo-700 hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <!-- flex items-center justify-between px-3 py-2 text-sm font-semibold leading-4 text-white bg-indigo-600 rounded-md shadow-sm cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 -->
                                     <div wire:ignore class="mr-1.5 loader" id="loader_cover" style="display: none;">
@@ -122,7 +122,7 @@
                                     <input wire:ignore id="cover_photo" name="cover_photo" type="file" class="sr-only">
                                 </label>
                             </div>
-                            <p class="text-xs text-gray-500">
+                            <p class="text-xs text-secondary-500">
                                 PNG, JPG, GIF images of up to 5MB
                             </p>
                         </div>
@@ -240,7 +240,7 @@
                     </label>
                     <div class="relative mt-1 rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">
+                            <span class="text-secondary-500 sm:text-sm">
                                 ₦
                             </span>
                         </div>
@@ -270,7 +270,7 @@
                     </label>
                     <div class="relative mt-1 rounded-md shadow-sm">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <span class="text-gray-500 sm:text-sm">
+                            <span class="text-secondary-500 sm:text-sm">
                                 ₦
                             </span>
                         </div>
@@ -307,13 +307,13 @@
             </div>
             @endif
 
-            <div class="my-8 text-gray-500 lg:mt-0">
+            <div class="my-8 text-secondary-500 lg:mt-0">
                 <button id="save" type="submit" @if ($errors->any()) disabled @endif class="block w-full px-4 py-3 font-semibold leading-4 text-white bg-indigo-600 rounded-md shadow-sm lg:text-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     Save Changes
                 </button>
             </div>
 
-            <div class="px-4 py-4 text-gray-600 bg-gray-100 rounded-md">
+            <div class="px-4 py-4 text-secondary-600 bg-secondary-100 rounded-md">
                 <p class="text-xs lg:text-sm">
                     * Please make sure all the details you have provided are accurate and the photos you have provided are recent photos of you. Uploading offensive or sensitive photos or
                     Bio would lead to your account being blocked and deactivated. For more info read Roomee's <a href="{{ route('terms') }}" class="text-primary-600 hover:underline"> Terms of Use</a>

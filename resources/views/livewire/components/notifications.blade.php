@@ -73,7 +73,7 @@
   wire:poll.30s
   class="relative flex items-center"
   >
-  <button @click="$dispatch('open-modal', { id: 'database-notifications-panel' });" title="Open Notifications" type="button" class="relative flex items-center justify-center w-10 h-10 text-sm font-medium text-center text-gray-500 rounded-md hover:text-gray-900 dark:hover:text-white dark:text-gray-400 filament-icon-button hover:bg-gray-500/5 focus:outline-none focus:text-primary-500 focus:bg-primary-500/10" aria-expanded="false" aria-controls="panel-1uT4AAWg">
+  <button @click="$dispatch('open-modal', { id: 'database-notifications-panel' });" title="Open Notifications" type="button" class="relative flex items-center justify-center w-10 h-10 text-sm font-medium text-center text-secondary-500 rounded-md hover:text-secondary-900 dark:hover:text-white dark:text-secondary-400 filament-icon-button hover:bg-secondary-500/5 focus:outline-none focus:text-primary-500 focus:bg-primary-500/10" aria-expanded="false" aria-controls="panel-1uT4AAWg">
     <span class="sr-only">
       Notifications
     </span>
@@ -81,7 +81,7 @@
     <x-heroicon-s-bell class="w-6 h-6 filament-icon-button-icon" />
 
     @if ($this->hasUnreadNotifications)
-    <span class="absolute block w-3 h-3 border-2 border-white rounded-full bg-danger-500 top-1 right-2 dark:border-gray-900"></span>
+    <span class="absolute block w-3 h-3 border-2 border-white rounded-full bg-danger-500 top-1 right-2 dark:border-secondary-900"></span>
     @endif
   </button>
 
@@ -94,7 +94,7 @@
   >
     <div class="flex items-center justify-between w-full">
       <div>
-        <p class="text-lg font-semibold text-gray-700 dark:text-white">
+        <p class="text-lg font-semibold text-secondary-700 dark:text-white">
           Notifications
         </p>
         
@@ -112,7 +112,7 @@
       </x-filament-support::icon-button>
     </div>
 
-    <div class="h-full py-2 overflow-y-auto text-sm text-gray-700 dark:text-gray-200">
+    <div class="h-full py-2 overflow-y-auto text-sm text-secondary-700 dark:text-secondary-200">
       @forelse ($notifications as $notification)
         <div>
             {{ $notification->read_at }}
@@ -120,7 +120,7 @@
         @if ($loop->last)
           <div class="flex items-center justify-between px-3">
             <hr class="w-full">
-            <p tabindex="0" class="flex flex-shrink-0 px-3 py-8 text-sm leading-normal text-gray-500 focus:outline-none">Thats it for now :)</p>
+            <p tabindex="0" class="flex flex-shrink-0 px-3 py-8 text-sm leading-normal text-secondary-500 focus:outline-none">Thats it for now :)</p>
             <hr class="w-full">
           </div>
         @endif

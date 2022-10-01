@@ -41,7 +41,7 @@ switch ($width) {
         x-bind:class="open && 'text-primary-600 outline-none'"
         aria-label="menu trigger button" 
         title="menu trigger button" 
-        class="flex items-center justify-center text-sm font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300"
+        class="flex items-center justify-center text-sm font-medium text-secondary-500 transition duration-150 ease-in-out hover:text-secondary-700 hover:border-secondary-300 focus:outline-none focus:text-secondary-700 focus:border-secondary-300"
      >
         {{ $trigger }}
     </button>
@@ -52,7 +52,7 @@ switch ($width) {
         x-cloak
         x-ref="dropdown_panel"
         x-float.placement.bottom-end.offset.shift="{ offset: 10 }" 
-        class="absolute z-20 w-full max-w-sm overflow-hidden bg-white rounded-md shadow-xl filament-action-group-dropdown ring-1 ring-gray-900/10 dark:bg-gray-700" aria-modal="true" role="dialog">
+        class="absolute z-20 w-full max-w-sm overflow-hidden bg-white rounded-md shadow-xl filament-action-group-dropdown ring-1 ring-secondary-900/10 dark:bg-secondary-700" aria-modal="true" role="dialog">
         {{ $content }}
     </div>
 </div>

@@ -1,7 +1,7 @@
 <x-landing-layout>
     <x-slot name="banner">
         <div class="flex items-center justify-center text-center bg-primary-100 h-60 md:h-80">
-            <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl">Terms of Use.</p>
+            <p class="mt-10 mb-6 text-3xl font-extrabold text-secondary-700 md:text-4xl">Terms of Use.</p>
         </div>
     </x-slot>
 
@@ -20,7 +20,7 @@
                         <p class="mb-4 font-medium leading-tight uppercase md:mb-8 md:leading-snug">
                             IMPORTANT -- READ CAREFULLY: BY CREATING AN ACCOUNT OR BY UTILIZING THE ROOMEE SERVICE YOU AGREE TO BE BOUND BY THESE TERMS AND CONDITIONS.
                         </p>
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             Welcome to the <span><a class="font-medium text-primary-600 hover:underline" href="{{ route('home') }}">Roomee.com.ng</a></span> service and website (collectively, the "Service"). Your use of the Service is subject to these Terms of Service and Roomee’s <span><a class="font-medium text-primary-600 hover:underline" href="{{ route('privacy') }}">Privacy Policy</a></span> (collectively, the "Terms of Service" or “Agreement”). These Terms of Service are a legal agreement between You and <span class="font-boldr">Roomee ltd.</span> (“Roomee”), a Nigerian Companny, for use of the Roomee service. "You" refers to any individual who creates an account on the Service. If You do not agree with the terms of this Agreement, do not use the Service. Roomee reserves the right to update and change the Agreement from time to time without notice or acceptance by You. The Agreement will also be applicable to the use of the Service on tiers. By using the Service, You signify Your irrevocable acceptance of this Agreement. The website and any downloadable Material associated with the Service are protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties.
                         </p>
                     </x-slot>
@@ -30,7 +30,7 @@
                         <p>Description of Service</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             The Service includes, and is limited to, a service and web site that allows You access to and use of a single Roomee Account. "Roomee" referred to herein means an online platform that connects potential roommates by matching using collaborative filters and algorithms performed on the user supplied data. The Service may contain information, data, text, photographs, videos, audio clips, graphics, and interactive features generated, provided, or otherwise made accessible on or through the Service (collectively, “Content”). Subject to these Terms of Service, Roomee grants to You and each user of the Service a worldwide, non-exclusive, non-sublicensable and non-transferable license to use Content solely for purposes of using the Service. Use, reproduction, modification, distribution or storage of any Content for other than purposes of using the Service is expressly prohibited without prior written permission from us. You shall not sell, license, rent, or otherwise use or exploit any Content for commercial use or in any way that violates any third party right. For the purposes of these Terms of Service, “Content” also includes all User Content (as defined below).
 
                         <p class="my-4 text-indent">A "Roomee Account" or "Account" referred to herein means a service or web site, provided by Roomee, where You may use Roomee to create, update, share, and send data, text, messages or other materials ("User Content").</p>
@@ -44,7 +44,7 @@
                         <p>Registration</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             In order to use the Service, You must have a valid Account.
                             To acquire an Account for the Service, You must provide Roomee with an electronic mail address and other information ("Registration Data"). You are responsible for maintaining the confidentiality of the access data for Your Account, and are fully responsible for all activities that occur under Your Account. You agree to (a) immediately notify Roomee of any unauthorized use of Your Account or any other breach of security, and (b) ensure that You exit from Your Account at the end of each session. Roomee cannot and will not be liable for any loss or damage arising from Your failure to comply with this section. In consideration of use of the Service, You agree to: (a) provide true, accurate, current and complete information about Yourself as prompted by the Service's registration form, and (b) maintain and promptly update the Registration Data to keep it true, accurate, current and complete. Roomee assumes no duty to verify such information as further detailed in the CONTENT OF THE SERVICE section of these Terms of Service. If You provide any information that is untrue, inaccurate, not current or incomplete, or Roomee has reasonable grounds to suspect that such information is untrue, inaccurate, not current or incomplete, Roomee has the right to suspend or terminate Your Account and refuse any and all current or future use of the Service (or any portion thereof). By using the Service (and registering an Account on the Service), You represent and warrant that You are at least 16 years of age. No one under the age of 16 may use the Service. Roomee may, in its sole discretion, refuse to offer the Service to any person or entity and change its eligibility criteria at any time. You are solely responsible for ensuring that these Terms of Service are in compliance with all laws, rules and regulations applicable to you and the right to access the Service is revoked where these Terms of Service or use of the Service is prohibited or to the extent offering, sale or provision of the Service conflicts with any applicable law, rule or regulation.
                         </p>
@@ -55,7 +55,7 @@
                         <p>Disclaimer of Warranties</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             The Website and apps are provided "as is". Roomee Ltd and its suppliers and licensors hereby disclaim all warranties of any kind, express or implied, including, without limitation, the warranties of merchantability, fitness for a particular purpose and non-infringement. Neither Roomee Ltd nor its suppliers and licensors, makes any warranty that the Website and apps will be error free or that access thereto will be continuous or uninterrupted. You understand that you download from, or otherwise obtain content or services through, the Website at your own discretion and risk.
                         </p>
                     </x-slot>
@@ -65,7 +65,7 @@
                         <p>Indemnity</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             You agree to indemnify, defend and hold harmless Roomee its affiliates, officers, directors, employees, consultants, agents, suppliers and Resellers from any and all third party claims, liability, damages and/or costs (including, but not limited to, attorneys fees as and when incurred) arising from Your use of the Service, Your use of Your Account, Your violation of these Terms of Service or the infringement or violation by You or any other User of Your Account, of any intellectual property relating to the Service (including without limitation Your User Content) or other right of any person or entity.
                         </p>
                     </x-slot>
@@ -75,7 +75,7 @@
                         <p>Limitation of Liability</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             In no event will Roomee or its affiliates, suppliers or Resellers be liable for any special, incidental, indirect, exemplary or consequential damages whatsoever (including, without limitation, damages for loss of Personal funds, business interruption, loss of personal information, or any other pecuniary loss or damage) arising out of the use of or inability to use the Service, or the provision of or failure to provide technical or other support service, whether arising in tort (including negligence) contract or any other legal theory, even if Roomee, its affiliates, suppliers or Resellers have been advised of the possibility of such damages. In any case, Roomee’s, its affiliates', suppliers' and Resellers' maximum cumulative liability and Your exclusive remedy for any claims arising out of or related to this Agreement will be limited to the amount actually paid by You for the Service (if any) in the previous twelve (12) months.
                         </p>
                     </x-slot>
@@ -85,7 +85,7 @@
                         <p>Modification of Service</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             Roomee reserves the right at any time and from time to time to modify or discontinue, temporarily or permanently, the Service (or any part thereof) with or without notice at any time. You agree that Roomee shall not be liable to You or to any third party for any modification, suspension, termination or discontinuance of the Service.
                         </p>
                     </x-slot>
@@ -95,7 +95,7 @@
                         <p>Termination, Breach, Suspension and Cancellation</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             If You Violate any agreement or terms in this document, Roomee may disable Your access toyour account. Roomee may, at its sole discretion, at any time and for any reason, terminate the Service, terminate this Agreement, or suspend or terminate Your Account. In the event of suspension or termination, Your account will be disabled and You may not be granted access to Your Account or any files or other Content contained in Your Account. In the event of termination, Mailtrap may also withdraw and at its discretion reallocate the public web address of Your Account.
 
                             If You terminate Your Account, via means provided for cancellation on the Roomee website, or via telephone call or electronic mail to Roomee and You request that Roomee delete Your User Content contained in Your Account, Roomee will make all reasonable efforts to do so.
@@ -107,7 +107,7 @@
                         <p>Proper Use</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                         <p>
                             Roomee does not claim ownership over any User Content submitted on or through the Service. Your User Content belongs to You. However, by uploading any User Content to the Service, You agree that Roomee may store and display (only to You, to the extent that You make such User Content private) Your User Content solely as necessary in connection with the Service. To the extent You choose to share any of Your User Content with other users of the Service, You agree to allow these users (i.e., only the users you specify) to view Your User Content and, to the extent applicable, collaborate with You and Your User Content.
                         </p>
@@ -211,14 +211,14 @@
     </div>
     <div class="flex justify-center bg-primary-300">
         <div class="flex flex-col items-center justify-between w-11/12 my-12 py-14 md:flex-row">
-            <div class="max-w-lg p-8 border-2 border-gray-800 sm:p-10 md:mb-0">
+            <div class="max-w-lg p-8 border-2 border-secondary-800 sm:p-10 md:mb-0">
                 <p class="text-2xl font-bold md:text-3xl">For any additional questions or inquiries, Reach us and we'll get back to you!</p>
             </div>
 
-            <div class="w-1 h-12 border-l-2 border-gray-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
+            <div class="w-1 h-12 border-l-2 border-secondary-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
-            <!-- <button class="bg-gray-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <!-- <button class="bg-secondary-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
+            <button class="flex-shrink-0 bg-secondary-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
 </x-landing-layout>

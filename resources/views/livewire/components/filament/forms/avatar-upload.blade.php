@@ -36,21 +36,21 @@
         <div class="flex justify-start gap-4 mb-6">
           <div class="w-1/2 mr-6">
             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->firstname) }}</span>
-            <label class="block text-sm text-gray-700">First Name</label>
+            <label class="block text-sm text-secondary-700">First Name</label>
           </div>
           <div>
             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->lastname) }}</span>
-            <label class="block text-sm text-gray-700">Last Name</label>
+            <label class="block text-sm text-secondary-700">Last Name</label>
           </div>
         </div>
         <div class="flex justify-start gap-4">
           <div class="w-1/2 mr-6 overflow-hidden">
             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->email) }}</span>
-            <label class="block text-sm text-gray-700">Email Address</label>
+            <label class="block text-sm text-secondary-700">Email Address</label>
           </div>
           <div>
             <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->gender) }}</span>
-            <label class="block text-sm text-gray-700">Gender</label>
+            <label class="block text-sm text-secondary-700">Gender</label>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="text-gray-500 fill-current h-14" />
+                <x-application-logo class="text-secondary-500 fill-current h-14" />
             </a>
         </x-slot>
 
@@ -58,7 +58,7 @@
             <div class="relative mt-3" x-data="{ show: true}">
                 <x-label for="password" :value="__('Password')" />
                 <x-input id="password" class="block w-full mt-1 text-sm font-medium" name="password" required autocomplete="new-password" x-bind:type="show ? 'password' : 'text'" />
-                <button class="absolute w-4 text-gray-600 transform md:w-5 -translate-y-7 right-4" type="button" @click.prevent="show = !show">
+                <button class="absolute w-4 text-secondary-600 transform md:w-5 -translate-y-7 right-4" type="button" @click.prevent="show = !show">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <g :class="{ 'hidden' : !show, 'inline-flex' : show }">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -86,7 +86,7 @@
             </div>
 
             <fieldset class="flex flex-col px-3 py-2 mt-2 mb-2 rounded-md order">
-                <label class="mb-1 text-sm text-gray-600">Choose your Gender:</label>
+                <label class="mb-1 text-sm text-secondary-600">Choose your Gender:</label>
                 <div class="flex">
                     <div>
                         <label for="male" class="mr-1 text-sm">Male</label>

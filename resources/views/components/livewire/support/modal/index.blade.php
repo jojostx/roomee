@@ -77,7 +77,7 @@
             <div
                 @class([
                     'w-full mx-auto p-2 space-y-2 bg-white rounded-xl cursor-default pointer-events-auto filament-modal-window',
-                    'dark:bg-gray-800' => $darkMode,
+                    'dark:bg-secondary-800' => $darkMode,
                     'hidden' => ! $visible,
                     'max-w-xs' => $width === 'xs',
                     'max-w-sm' => $width === 'sm',

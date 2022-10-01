@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="text-gray-500 fill-current h-14" />
+                <x-application-logo class="text-secondary-500 fill-current h-14" />
             </a>
         </x-slot>
 
@@ -34,8 +34,8 @@
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="text-indigo-600 border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
-                    <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                    <input id="remember_me" type="checkbox" class="text-indigo-600 border-secondary-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
+                    <span class="ml-2 text-sm text-secondary-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
 
@@ -49,7 +49,7 @@
                 </x-button>
 
                 @if (Route::has('password.request'))
-                <a class="text-xs text-gray-600 underline hover:text-gray-900" href="{{ route('password.request') }}">
+                <a class="text-xs text-secondary-600 underline hover:text-secondary-900" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
                 @endif

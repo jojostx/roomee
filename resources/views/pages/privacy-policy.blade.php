@@ -1,7 +1,7 @@
 <x-landing-layout>
     <x-slot name="banner">
         <div class="flex items-center justify-center text-center bg-primary-100 h-60 md:h-80">
-            <p class="mt-10 mb-6 text-3xl font-extrabold text-gray-700 md:text-4xl lg:text-5xl">Privacy and Cookie Policy.</p>
+            <p class="mt-10 mb-6 text-3xl font-extrabold text-secondary-700 md:text-4xl lg:text-5xl">Privacy and Cookie Policy.</p>
         </div>
     </x-slot>
 
@@ -13,14 +13,14 @@
                         <p>Introduction</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <p class="font-normal text-gray-700">
+                        <p class="font-normal text-secondary-700">
                             Roomee, Ltd., Federal Republic Nigeria company registered office: Blk B flat 7, INEC quarters, Area 10 Garki,
                             Abuja, Nigeria ("Roomee", "us", "our", or "we"), focuses on assuring that the <a class="font-medium text-primary-600 hover:underline" href="{{ route('home') }}">Roomee.com.ng</a> website ("Site") and the Roomee application (the "Application"), as well as the general ecosystem provides a safe environment for both website visitors and application users ("Customer", "You"). We need to collect, process and store some Personal and Navigational information in order to provide you with an ability to review the Roomee website content, allow for using Roomee application service and subscribe to it, submit support requests and product ideas for our consideration.
                         </p>
-                        <p class="mt-4 font-normal text-gray-700">
+                        <p class="mt-4 font-normal text-secondary-700">
                             We are dedicated to protecting your privacy. This Privacy Policy (herein the "Policy") applies to the Site and the Application, and it administers the ways we collect, process and store data. The Policy has a direct reference to the <a class="font-medium text-primary-600 hover:underline" href="{{ route('terms') }}"> Terms of Service</a> and applies to it. It also explains how website visitors and customers can exercise their rights to obtain, access, erase, use or rectify their Personal Information that was of their own free will submitted to us.
                         </p>
-                        <p class="mt-4 font-normal text-gray-700">
+                        <p class="mt-4 font-normal text-secondary-700">
                             When you browse the Site, subscribe to the Application plan, use the Application, leave support requests, submit product ideas, fill out a survey, add comments to the blog posts or perform an online payment, you give consent and fully agree to the Policy under which Roomee collects, processes, uses, stores and discloses Personal Information. If you do not agree with the points stated in this Policy, you should not browse the Site, use the Application, submit support requests and product ideas, and perform other activities, which may result in supplying us with your Personal and Navigational Information.
                         </p>
                     </x-slot>
@@ -30,7 +30,7 @@
                         <p>1. Application User and Site Visitor Data</p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-4 font-bold">1.1 Data You Provide</p>
                             <p class="mb-4">
                                 When you register an account, subscribe to the Application, participate in a survey, subscribe to the Application free or paid plan, email us or in any other way submit your Personal Information to us, Roomee may collect, process and store the following data: your first and last name, your email and posting address.
@@ -39,7 +39,7 @@
                                 You will know when we gather your data through the Mailtrap website or Application, as you will provide your data on one of the Site's web pages and perform an action that will authorize it to be sent to us.
                             </p>
                         </div>
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-4 font-bold">1.2 Data We Collect Automatically</p>
                             <p class="mb-4">
                                 Roomee may collect information through our Site and Application.The data we gather from your device: it's type, IP address, the browser you are using, OS (operating system), as well as the referral site from which you entered the Roomee website. We may also monitor your online behavior, including the time of your visit, your online activity at the website including the URL clickstream through the Roomee website, the pages you visited, the time you spent viewing them, and the frequency of your visits. We gather this data automatically through the commonly used data-gathering technologies, like cookies and web beacons in order to understand how Customers and website visitors browse the Site and use the Application. This data helps us manage the Site and Application, analyze general online behavior and usage trends, and provide targeted advertisements. We also collect demographic information about our Application user and Site visitor base that helps us tailor both the Site's content and the Application functionality in order to meet your expectations and requirements.
@@ -48,7 +48,7 @@
                                 When you browse the Site or use the Application, we collect Personal and Navigational Information along with the unique User IDs. In addition, we aggregate extra data that refers to the user flow, such as the start and the end of a web session, page views, purchase and checkout. We may associate this data with the information we store within the analytics software to Personal Information that you submitted to us. We do this to enhance our Application and Site content and UX, as well as use this data to improve the Application functionality, our marketing communication and analytics.
                             </p>
                         </div>
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-4 font-bold">1.3 Facebook and Google Sign-in Authentication</p>
                             <p class="mb-4">
                                 You may log into our Site and Application using either Facebook or Google Sign-in authentication system. When you use either Facebook or Google Sign-in authentication, you give us access to your full name and email address. This data is stored by us in compliance with the Privacy Policy.
@@ -63,7 +63,7 @@
                         </p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-4 font-bold">2.1 Personal Information</p>
                             <p class="mb-4">
                                 We may collect, use, store and transfer different kinds of personal information about you which we have grouped together follows:
@@ -94,7 +94,7 @@
                         </p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-2 font-bold">3.1 Compliance with this Privacy Policy</p>
                             <p class="mb-6">
                                 Roomee uses the data it collects only in compliance and according to this Privacy Policy. Therefore, both the website visitors and the Application users should read carefully this Privacy Policy and other agreements published on the Site or as part of the Application before proceeding with browsing the site or using the Application.
@@ -156,7 +156,7 @@
                         </p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-2 font-bold">4.1 Website Visitor and Application User Rights</p>
                             <p class="mb-6">
                                 Our Site visitors and Application users have the following rights:
@@ -206,14 +206,14 @@
                         </p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-6">
                                 Roomee uses a range of third-party sub-processors that are authorized to process the Application user and customer data, and help us deliver the Application functionality, as well as the accompanying support services in full.
                             </p>
 
-                            <table class="w-full border border-gray-300">
+                            <table class="w-full border border-secondary-300">
                                 <tbody>
-                                    <tr class="font-bold bg-gray-300 table-heading">
+                                    <tr class="font-bold bg-secondary-300 table-heading">
                                         <th>Entity Name</th>
                                         <th>Purpose</th>
                                         <th>Location</th>
@@ -261,7 +261,7 @@
                         </p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-2 font-bold">6.1 Changes to the Privacy Policy</p>
                             <p class="mb-6">
                                 We reserve the right to review and make amendments to this Policy. When the changes are made, we will publish the new version of the Privacy Policy on our Site and update the 'effective' date, which is indicated in the top left corner of this Policy, to the day when the latest amendments were published on the Site.
@@ -276,7 +276,7 @@
                         </p>
                     </x-slot>
                     <x-slot name="term_body">
-                        <div class="font-normal text-gray-700">
+                        <div class="font-normal text-secondary-700">
                             <p class="mb-6">
                                 Our Site uses cookies and similar technologies to distinguish you from other users of our Site. This helps us to provide you with a good experience when you browse our Site and allows us to improve our Site. We may also use such technologies to track you across the Internet and to display targeted advertisements to you on our Site and third party websites and social media platforms based on your preferences and likely interests.
                                 <br>
@@ -311,14 +311,14 @@
     <!-- call to action //links to contact page -->
     <div class="flex justify-center bg-primary-300">
         <div class="flex flex-col items-center justify-between w-11/12 my-12 py-14 md:flex-row">
-            <div class="max-w-lg p-8 border-2 border-gray-800 sm:p-12 md:mb-0">
+            <div class="max-w-lg p-8 border-2 border-secondary-800 sm:p-12 md:mb-0">
                 <p class="text-2xl font-bold md:text-3xl">Feel free to contact us if this article did not answer all your questions.</p>
             </div>
 
-            <div class="w-1 h-12 border-l-2 border-gray-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
+            <div class="w-1 h-12 border-l-2 border-secondary-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
-            <!-- <button class="bg-gray-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-gray-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <!-- <button class="bg-secondary-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
+            <button class="flex-shrink-0 bg-secondary-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
     <!-- end of call to action -->

@@ -7,7 +7,7 @@
         </label>
 
     </div>
-    <div class="relative block w-full transition duration-75 border border-gray-300 divide-y rounded-lg shadow-sm focus-within:border-primary-600 focus-within:ring-1 focus-within:ring-primary-600 filament-forms-multi-select-component">
+    <div class="relative block w-full transition duration-75 border border-secondary-300 divide-y rounded-lg shadow-sm focus-within:border-primary-600 focus-within:ring-1 focus-within:ring-primary-600 filament-forms-multi-select-component">
         <div x-on:click.away="closeListbox()" x-on:blur="closeListbox()" x-on:keydown.escape.stop="closeListbox()" class="relative">
             <div x-bind:aria-expanded="optionsVisible" aria-haspopup="listbox" tabindex="1" class="relative overflow-hidden rounded-lg" aria-expanded="false">
                 <x-input x-on:click="openListbox()" id="{{ $name }}_search" type="text" x-model="search" placeholder="Select an option" type="text" autocomplete="off" class="block w-full border-0" aria-haspopup="true" />
@@ -19,10 +19,10 @@
                 </span>
             </div>
 
-            <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" class="absolute z-30 w-full my-1 transition bg-white border border-gray-300 rounded-lg shadow-md focus:outline-none" style="bottom: 40px; display: none;">
+            <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" class="absolute z-30 w-full my-1 transition bg-white border border-secondary-300 rounded-lg shadow-md focus:outline-none" style="bottom: 40px; display: none;">
                 <ul class="py-1 space-y-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
                     <template x-for="(option, index) in filteredOptions()" x-bind:key="option.id">
-                        <li @click.prevent="toggle(option)" x-on:keydown.enter="toggle(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-gray-900 ': !isSelected(option)}" tabindex="0" role="option" class="relative flex items-center px-1 text-gray-900 border border-transparent rounded-md cursor-default select-none hover:bg-gray-200 focus:border-gray-400 focus:bg-gray-100 focus:outline-none">
+                        <li @click.prevent="toggle(option)" x-on:keydown.enter="toggle(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-secondary-900 ': !isSelected(option)}" tabindex="0" role="option" class="relative flex items-center px-1 text-secondary-900 border border-transparent rounded-md cursor-default select-none hover:bg-secondary-200 focus:border-secondary-400 focus:bg-secondary-100 focus:outline-none">
                             <input type="checkbox" wire:model="{{ 'selected'.$slot }}" x-bind:id="_id(option.name)" x-bind:value="option.id" x-bind:checked="isSelected(option)" name="{{ $name }}" class="hidden dropdown_checkboxes" autocomplete="off">
 
                             <label x-bind:for="_id(option.name)" class="flex items-center justify-between w-full h-full px-2 py-2 rounded-md">
@@ -34,7 +34,7 @@
                         </li>
                     </template>
 
-                    <div x-show="!Object.keys(options).length" class="px-3 py-2 text-sm text-gray-700 cursor-default select-none" x-cloak>
+                    <div x-show="!Object.keys(options).length" class="px-3 py-2 text-sm text-secondary-700 cursor-default select-none" x-cloak>
                         <span x-show="filteredOptions().length != 0">
                             Start typing to search...
                         </span>

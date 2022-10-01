@@ -44,11 +44,11 @@
 
 @layer components {
     .dropdown_ul {
-        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-gray-50;
+        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-secondary-50;
     }
 
     .select_dropdown {
-        @apply w-full text-gray-500 border-gray-300 rounded-md shadow-sm;
+        @apply w-full text-secondary-500 border-secondary-300 rounded-md shadow-sm;
     }
 
     .select_dropdown:focus {
@@ -56,15 +56,15 @@
     }
 
     .label {
-        @apply block mb-2 font-medium text-gray-700;
+        @apply block mb-2 font-medium text-secondary-700;
     }
 
     button[disabled] {
-        @apply bg-gray-500 cursor-default;
+        @apply bg-secondary-500 cursor-default;
     }
 
     button[disabled]:hover {
-        @apply bg-gray-500;
+        @apply bg-secondary-500;
     }
 
     .alert {
@@ -88,7 +88,7 @@
     }
 
     .alert-default {
-        @apply text-gray-700 bg-gray-100 dark:bg-gray-200 dark:text-gray-800;
+        @apply text-secondary-700 bg-secondary-100 dark:bg-secondary-200 dark:text-secondary-800;
     }
 
     .close-button {
@@ -112,11 +112,11 @@
     }
     
     .close-button__default {
-        @apply text-gray-500 bg-gray-100 rounded-lg focus:ring-2 focus:ring-gray-400 hover:bg-gray-200 dark:bg-gray-200 dark:text-gray-600 dark:hover:bg-gray-300;
+        @apply text-secondary-500 bg-secondary-100 rounded-lg focus:ring-2 focus:ring-secondary-400 hover:bg-secondary-200 dark:bg-secondary-200 dark:text-secondary-600 dark:hover:bg-secondary-300;
     }
 
     .toast {
-        @apply fixed z-50 flex items-center w-full max-w-sm p-4 mb-4 text-gray-500 bg-white rounded-lg shadow bottom-5 right-5 sm:max-w-md dark:text-gray-400 dark:bg-gray-800;
+        @apply fixed z-50 flex items-center w-full max-w-sm p-4 mb-4 text-secondary-500 bg-white rounded-lg shadow bottom-5 right-5 sm:max-w-md dark:text-secondary-400 dark:bg-secondary-800;
     }
 
     .toast-icon {
@@ -141,7 +141,7 @@
 }
 
 .toast.toast-default > div.toast-icon {
-    @apply text-gray-500 bg-gray-100 dark:bg-gray-800 dark:text-gray-200;
+    @apply text-secondary-500 bg-secondary-100 dark:bg-secondary-800 dark:text-secondary-200;
 }
 
 input[type=radio]#yes:checked+label {

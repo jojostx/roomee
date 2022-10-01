@@ -14,16 +14,16 @@
         })"
         {!! ($id=$getId()) ? "id=\" {$id}\"" : null !!} {{ $attributes->merge($getExtraAttributes())->class([
             'block w-full transition duration-75 divide-y rounded-lg shadow-sm border focus-within:border-primary-600 focus-within:ring-1 focus-within:ring-primary-600 filament-forms-multi-select-component',
-            'dark:bg-gray-700 dark:divide-gray-600' => config('forms.dark_mode'),
-            'border-gray-300' => ! $errors->has($getStatePath()),
-            'dark:border-gray-600' => (! $errors->has($getStatePath())) && config('forms.dark_mode'),
+            'dark:bg-secondary-700 dark:divide-secondary-600' => config('forms.dark_mode'),
+            'border-secondary-300' => ! $errors->has($getStatePath()),
+            'dark:border-secondary-600' => (! $errors->has($getStatePath())) && config('forms.dark_mode'),
             'border-danger-600 ring-danger-600' => $errors->has($getStatePath()),
         ]) }} 
         {{ $getExtraAlpineAttributeBag() }}
     >
         <div x-on:click.away="closeListbox()" x-on:blur="closeListbox()" x-on:keydown.escape.stop="closeListbox()" class="relative">
             <div x-on:click="openListbox()" aria-haspopup="listbox" tabindex="1" class="relative overflow-hidden rounded-lg">
-                <input x-model="search" x-bind:placeholder="optionsVisible ? 'Start typing to search...' : placeholder" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-gray-700 dark:placeholder-gray-400'=> config('forms.dark_mode'),])/>
+                <input x-model="search" x-bind:placeholder="optionsVisible ? 'Start typing to search...' : placeholder" type="text" autocomplete="off" @class([ 'block w-full border-0' , 'dark:bg-secondary-700 dark:placeholder-secondary-400'=> config('forms.dark_mode'),])/>
 
                 <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none rtl:right-auto rtl:left-0 rtl:pr-0 rtl:pl-2">
                     <svg class="w-5 h-5" x-bind:class="optionsVisible && 'rotate-180'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -32,11 +32,11 @@
                 </span>
             </div>
 
-            <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" x-cloak @class([ 'absolute z-30 w-full my-1 bg-white border border-gray-300 rounded-lg shadow-md focus:outline-none transition' , 'dark:bg-gray-700 dark:border-gray-600'=> config('forms.dark_mode')])>
+            <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" x-cloak @class([ 'absolute z-30 w-full my-1 bg-white border border-secondary-300 rounded-lg shadow-md focus:outline-none transition' , 'dark:bg-secondary-700 dark:border-secondary-600'=> config('forms.dark_mode')])>
                 <ul class="py-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
 
                     <template x-for="(option, index) in filteredOptions()" x-bind:key="option.id">
-                        <li x-bind:id="'{{ $getName() }}' + 'Option' + option.id" x-on:click.prevent="toggleSelection(option)" x-on:keydown.enter="toggleSelection(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-gray-900 ': !isSelected(option)}" class="relative flex items-center px-1 text-gray-900 border-y border-transparent cursor-default select-none hover:bg-gray-200 focus:border-gray-400 focus:bg-gray-100 focus:outline-none py-2 pl-3 pr-9  @if (config('forms.dark_mode')) dark:text-gray-200 @endif" tabindex="0" role="option">
+                        <li x-bind:id="'{{ $getName() }}' + 'Option' + option.id" x-on:click.prevent="toggleSelection(option)" x-on:keydown.enter="toggleSelection(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-secondary-900 ': !isSelected(option)}" class="relative flex items-center px-1 text-secondary-900 border-y border-transparent cursor-default select-none hover:bg-secondary-200 focus:border-secondary-400 focus:bg-secondary-100 focus:outline-none py-2 pl-3 pr-9  @if (config('forms.dark_mode')) dark:text-secondary-200 @endif" tabindex="0" role="option">
                             <span x-text="capitalize(option.name)" x-bind:class="{
                                         'font-medium': isSelected(option),
                                         'font-normal': !isSelected(option),
@@ -50,7 +50,7 @@
                         </li>
                     </template>
 
-                    <div x-show="filteredOptions().length == 0" x-cloak @class([ 'px-3 py-2 text-sm text-gray-700 cursor-default select-none' , 'dark:text-gray-200'=> config('forms.dark_mode'),])>
+                    <div x-show="filteredOptions().length == 0" x-cloak @class([ 'px-3 py-2 text-sm text-secondary-700 cursor-default select-none' , 'dark:text-secondary-200'=> config('forms.dark_mode'),])>
                         <span>
                             No options match your search.
                         </span>
