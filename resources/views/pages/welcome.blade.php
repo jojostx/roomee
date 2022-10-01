@@ -112,8 +112,8 @@
                     </x-steps>
                     <x-steps>
                         <x-slot name="icon">
-                            <div class="p-2 mr-6 bg-green-200 rounded-xl">
-                                <svg class="w-10 text-green-600" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" fill-rule="evenodd" stroke="none">
+                            <div class="p-2 mr-6 bg-success-200 rounded-xl">
+                                <svg class="w-10 text-success-600" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="currentColor" fill-rule="evenodd" stroke="none">
                                     <g id="Group" transform="translate(0 4.166641)">
                                         <path d="M4.83332 0.91668C4.16664 0.25 1.33332 0.0833592 0.416641 0C0.33332 0 0.249961 0 0.166641 0.0833204C0.0833203 0.16668 0 0.333359 0 0.41668L0 7.91668C0 8.16668 0.16668 8.33336 0.41668 8.33336L2.91668 8.33336C3.08336 8.33336 3.25 8.25004 3.33336 8.08336C3.33336 7.83336 4.83336 3.41668 5.00004 1.25004C5 1.16668 5 1.00004 4.83332 0.91668L4.83332 0.91668Z" />
                                     </g>
@@ -130,7 +130,7 @@
                             </div>
                         </x-slot>
                         <div>
-                            <p class="mb-2 text-base font-bold text-green-800 sm:text-lg">MEET IN PERSON</p>
+                            <p class="mb-2 text-base font-bold text-success-800 sm:text-lg">MEET IN PERSON</p>
                             <p class="max-w-sm text-sm sm:text-base">Meet up, preferably at a public spot and during the
                                 day. Finalize the agreements by signing an agreement letter. And voila!!! you've gotten
                                 a roommate.</p>
