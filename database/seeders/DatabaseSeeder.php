@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TownSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(SchoolTownSeeder::class);
+        $this->call(FaqCategorySeeder::class);
+        $this->call(FaqSeeder::class);
     }
 }
