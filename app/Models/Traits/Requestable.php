@@ -14,123 +14,9 @@ use Illuminate\Support\Str;
 
 trait Requestable
 {
-    public function canSendRoommateRequest(Model $recipient): bool
-    {
-        if ($this->isBlockedBy($recipient) || $this->hasBlocked($recipient)) {
-            return false;
-        }
+    use Blockable;
 
-        if ($roommateRequest = $this->getRoommateRequest($recipient)) {
-            // if previous friendship was Denied then let the user send fr
-            if ($roommateRequest->status != Status::DENIED->value) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function sendRoommateRequest(Model $recipient): bool
-    {
-        if (!$this->canSendRoommateRequest($recipient)) {
-            return false;
-        }
-
-        $id = RoommateRequest::getCompositeKey($this, $recipient);
-
-        $inserted = DB::table('roommate_requests')->insert([
-            'id' => $id,
-            'uuid' => Str::uuid()->toString(),
-            'status' => Status::PENDING->value,
-            'requester_id' => $this->getKey(),
-            'requestee_id' => $recipient->getKey(),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::PENDING);
-
-        return $inserted;
-    }
-
-    public function deleteRoommateRequest(Model $recipient): bool
-    {
-        $id = RoommateRequest::getCompositeKey($this, $recipient);
-
-        $deleted = (bool) DB::table('roommate_requests')->delete($id);
-
-        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED);
-
-        return $deleted;
-    }
-
-    public function findRoommateRequest(Model $recipient): Builder
-    {
-        return RoommateRequest::betweenModels($this, $recipient);
-    }
-
-    public function hasRoommateRequestFrom(Model $recipient): bool
-    {
-        return $this->findRoommateRequest($recipient)->whereSender($recipient)->whereStatus(Status::PENDING->value)->exists();
-    }
-
-    public function hasSentRoommateRequestTo(Model $recipient): bool
-    {
-        return RoommateRequest::whereRecipient($recipient)->whereSender($this)->whereStatus(Status::PENDING->value)->exists();
-    }
-
-    public function acceptRoommateRequest(Model $recipient): bool
-    {
-        $updated = $this->findRoommateRequest($recipient)->whereRecipient($this)->update([
-            'status' => Status::ACCEPTED->value,
-        ]);
-
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::ACCEPTED);
-
-        return (bool) $updated;
-    }
-
-    public function denyRoommateRequest(Model $recipient): bool
-    {
-        $updated = $this->findRoommateRequest($recipient)->whereRecipient($this)->update([
-            'status' => Status::DENIED->value,
-        ]);
-
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::DENIED);
-
-        return (bool) $updated;
-    }
-
-    public function isRoommateWith(Model $recipient): bool
-    {
-        return $this->findRoommateRequest($recipient)->where('status', Status::ACCEPTED->value)->exists();
-    }
-
-    public function getRoommateRequest(Model $recipient)
-    {
-        return $this->findRoommateRequest($recipient)->first();
-    }
-
-    public function getRoommateRequests(): Collection
-    {
-        return RoommateRequest::whereRecipient($this)->get();
-    }
-
-    public function getPendingRoommateRequests(): Collection
-    {
-        return $this->findRoommateRequests(Status::PENDING->value)->get();
-    }
-
-    public function getAcceptedRoommateRequests(): Collection
-    {
-        return $this->findRoommateRequests(Status::ACCEPTED->value)->get();
-    }
-
-    public function getDeniedRoommateRequests(): Collection
-    {
-        return $this->findRoommateRequests(Status::DENIED->value)->get();
-    }
-
+    /** query builders and scopes */
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @param Model $sender
@@ -144,11 +30,172 @@ trait Requestable
         return $query->where('id', $id);
     }
 
+
+    /** checks */
+    public function canSendRoommateRequest(Model $recipient): bool
+    {
+        if ($this->isBlockedBy($recipient) || $this->hasBlocked($recipient)) {
+            return false;
+        }
+
+        return !RoommateRequest::query()
+            ->whereStatus(Status::DENIED)
+            ->betweenModels($this, $recipient)
+            ->exists();
+    }
+
+    public function hasRoommateRequestFrom(Model $sender): bool
+    {
+        return RoommateRequest::whereSender($sender)
+            ->whereRecipient($this)
+            ->whereStatus(Status::PENDING->value)
+            ->exists();
+    }
+
+    public function hasSentRoommateRequestTo(Model $recipient): bool
+    {
+        return RoommateRequest::whereSender($this)
+            ->whereRecipient($recipient)
+            ->whereStatus(Status::PENDING->value)
+            ->exists();
+    }
+
+    public function isRoommateWith(Model $recipient): bool
+    {
+        $id = RoommateRequest::getCompositeKey($this, $recipient);
+
+        return DB::table('roommate_requests')
+            ->where('id', $id)
+            ->where('status', Status::ACCEPTED->value)
+            ->exists();
+    }
+
+
+    /** getters */
+    public function getRoommateRequest(Model $recipient)
+    {
+        return RoommateRequest::query()->betweenModels($this, $recipient)->first();
+    }
+
+    public function getRoommateRequests(): Collection
+    {
+        return RoommateRequest::query()
+            ->whereRecipient($this)
+            ->orWhere(function ($query) {
+                $query->whereSender($this);
+            })->get();
+    }
+
+    public function getSentRoommateRequests(): Collection
+    {
+        return RoommateRequest::query()
+            ->whereSender($this)
+            ->get();
+    }
+
+    public function getRecievedRoommateRequests(): Collection
+    {
+        return RoommateRequest::query()
+            ->whereRecipient($this)
+            ->get();
+    }
+
+    public function getPendingSentRoommateRequests(): Collection
+    {
+        return RoommateRequest::query()
+            ->whereStatus(Status::PENDING->value)
+            ->whereSender($this)
+            ->get();
+    }
+
+    public function getAcceptedSentRoommateRequests(): Collection
+    {
+        return RoommateRequest::query()
+            ->whereStatus(Status::ACCEPTED->value)
+            ->whereSender($this)
+            ->get();
+    }
+
+    public function getDeniedSentRoommateRequests(): Collection
+    {
+        return RoommateRequest::query()
+            ->whereStatus(Status::DENIED->value)
+            ->whereSender($this)
+            ->get();
+    }
+
+
+    /** actions */
+    public function sendRoommateRequest(Model $recipient): bool
+    {
+        if (!$this->canSendRoommateRequest($recipient)) {
+            return false;
+        }
+
+        $id = RoommateRequest::getCompositeKey($this, $recipient);
+
+        $inserted = DB::table('roommate_requests')
+            ->insert([
+                'id' => $id,
+                'uuid' => Str::uuid()->toString(),
+                'status' => Status::PENDING->value,
+                'sender_id' => $this->getKey(),
+                'recipient_id' => $recipient->getKey(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::PENDING);
+
+        return $inserted;
+    }
+
+    public function acceptRoommateRequest(Model $sender): bool
+    {
+        $updated = (bool) RoommateRequest::query()
+            ->whereSender($sender)
+            ->whereRecipient($this)
+            ->update([
+                'status' => Status::ACCEPTED->value,
+            ]);
+
+        RoommateRequestUpdated::dispatch($sender->getKey(), $this->getKey(), Status::ACCEPTED);
+
+        return $updated;
+    }
+
+    public function denyRoommateRequest(Model $sender): bool
+    {
+        $updated = (bool) RoommateRequest::query()
+            ->whereSender($sender)
+            ->whereRecipient($this)
+            ->update([
+                'status' => Status::DENIED->value,
+            ]);
+
+        RoommateRequestUpdated::dispatch($sender->getKey(), $this->getKey(), Status::DENIED);
+
+        return $updated;
+    }
+
+    public function deleteRoommateRequest(Model $recipient): bool
+    {
+        $deleted = (bool) RoommateRequest::query()
+            ->whereSender($this)
+            ->whereRecipient($recipient)
+            ->delete();
+
+        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED);
+
+        return $deleted;
+    }
+
+    /** helpers */
     static function getCompositeKey(User $sender, User $recipient): string
     {
         $min = min([$sender->getKey(), $recipient->getKey()]);
         $max = max([$sender->getKey(), $recipient->getKey()]);
 
-        return "$min"."_"."$max";
-    } 
+        return "$min" . "_" . "$max";
+    }
 }
