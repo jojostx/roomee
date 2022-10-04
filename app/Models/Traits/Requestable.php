@@ -48,7 +48,7 @@ trait Requestable
     {
         return RoommateRequest::whereSender($sender)
             ->whereRecipient($this)
-            ->whereStatus(Status::PENDING->value)
+            ->whereStatus(Status::PENDING)
             ->exists();
     }
 
@@ -56,7 +56,7 @@ trait Requestable
     {
         return RoommateRequest::whereSender($this)
             ->whereRecipient($recipient)
-            ->whereStatus(Status::PENDING->value)
+            ->whereStatus(Status::PENDING)
             ->exists();
     }
 
@@ -66,7 +66,7 @@ trait Requestable
 
         return DB::table('roommate_requests')
             ->where('id', $id)
-            ->where('status', Status::ACCEPTED->value)
+            ->where('status', Status::ACCEPTED)
             ->exists();
     }
 
@@ -103,7 +103,7 @@ trait Requestable
     public function getPendingSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::PENDING->value)
+            ->whereStatus(Status::PENDING)
             ->whereSender($this)
             ->get();
     }
@@ -111,7 +111,7 @@ trait Requestable
     public function getAcceptedSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::ACCEPTED->value)
+            ->whereStatus(Status::ACCEPTED)
             ->whereSender($this)
             ->get();
     }
@@ -119,7 +119,7 @@ trait Requestable
     public function getDeniedSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::DENIED->value)
+            ->whereStatus(Status::DENIED)
             ->whereSender($this)
             ->get();
     }

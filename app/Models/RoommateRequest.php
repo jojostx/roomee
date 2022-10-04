@@ -73,7 +73,7 @@ class RoommateRequest extends Model
      */
     public function scopeWhereStatus($query, RoommateRequestStatus $status)
     {
-        return $query->where('status', $status);
+        return $query->where('status', $status->value);
     }
 
     /**
@@ -94,6 +94,6 @@ class RoommateRequest extends Model
         $min = min([$sender->getKey(), $recipient->getKey()]);
         $max = max([$sender->getKey(), $recipient->getKey()]);
 
-        return "$min"."_"."$max";
-    }               
+        return "$min" . "_" . "$max";
+    }
 }
