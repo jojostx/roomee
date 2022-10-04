@@ -22,7 +22,6 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
 
     public string | User $user;
     public ?OnUserAction $action = null;
-    public Collection $reports;
     public array $selectedReports = [];
 
     protected array $messages = [
@@ -33,7 +32,6 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
     public function mount(User $user)
     {
         $this->user = $user;
-        $this->reports = Report::pluck('desc', 'id');
     }
 
     protected function getAuthModel(): ?User
@@ -49,6 +47,11 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
     public function reportUser()
     {
         $this->action = OnUserAction::REPORT;
+    }
+
+    public function getReportsProperty()
+    {
+        return Report::query()->pluck('desc', 'id');
     }
 
     public function getReportIdsProperty()
