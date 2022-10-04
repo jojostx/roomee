@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
+use Dyrynda\Database\Support\BindsOnUuid;
+use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -16,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, Requestable, Blockable, canCalculateUserSimilarity;
+    use HasFactory, HasApiTokens, Notifiable, BindsOnUuid, GeneratesUuid, Requestable, Blockable, canCalculateUserSimilarity;
 
     /**
      * The default values of attributes.
@@ -33,6 +35,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'uuid',
         'firstname',
         'lastname',
         'email',

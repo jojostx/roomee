@@ -15,6 +15,7 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
             $table->string('name')->index();
             $table->string('short_name');
             $table->string('max_level')->index();

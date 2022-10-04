@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Dyrynda\Database\Support\BindsOnUuid;
+use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Report extends Model
 {
-    use HasFactory;
+    use HasFactory, BindsOnUuid, GeneratesUuid;
 
     /**
      * The users that made a given type of report.

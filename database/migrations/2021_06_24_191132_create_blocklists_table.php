@@ -15,6 +15,7 @@ class CreateBlocklistsTable extends Migration
     {
         Schema::create('blocklists', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
             $table->foreignId('blocker_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('blockee_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();

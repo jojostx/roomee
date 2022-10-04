@@ -5,10 +5,12 @@ namespace App\Models\Traits;
 use App\Enums\RoommateRequestStatus as Status;
 use App\Events\RoommateRequestUpdated;
 use App\Models\RoommateRequest;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 trait Requestable
 {
@@ -35,9 +37,10 @@ trait Requestable
         }
 
         $id = RoommateRequest::getCompositeKey($this, $recipient);
-        
+
         $inserted = DB::table('roommate_requests')->insert([
             'id' => $id,
+            'uuid' => Str::uuid()->toString(),
             'status' => Status::PENDING->value,
             'requester_id' => $this->getKey(),
             'requestee_id' => $recipient->getKey(),
@@ -45,22 +48,22 @@ trait Requestable
             'updated_at' => now(),
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::PENDING); 
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::PENDING);
 
         return $inserted;
     }
-    
+
     public function deleteRoommateRequest(Model $recipient): bool
     {
         $id = RoommateRequest::getCompositeKey($this, $recipient);
 
         $deleted = (bool) DB::table('roommate_requests')->delete($id);
 
-        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED); 
+        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED);
 
         return $deleted;
     }
-    
+
     public function findRoommateRequest(Model $recipient): Builder
     {
         return RoommateRequest::betweenModels($this, $recipient);
@@ -82,8 +85,8 @@ trait Requestable
             'status' => Status::ACCEPTED->value,
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::ACCEPTED); 
-      
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::ACCEPTED);
+
         return (bool) $updated;
     }
 
@@ -93,8 +96,8 @@ trait Requestable
             'status' => Status::DENIED->value,
         ]);
 
-        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::DENIED); 
-      
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::DENIED);
+
         return (bool) $updated;
     }
 
@@ -102,7 +105,7 @@ trait Requestable
     {
         return $this->findRoommateRequest($recipient)->where('status', Status::ACCEPTED->value)->exists();
     }
-       
+
     public function getRoommateRequest(Model $recipient)
     {
         return $this->findRoommateRequest($recipient)->first();
@@ -127,4 +130,25 @@ trait Requestable
     {
         return $this->findRoommateRequests(Status::DENIED->value)->get();
     }
+
+    /**
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param Model $sender
+     * @param Model $recipient
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeBetweenModels(Builder $query, User $sender, User $recipient)
+    {
+        $id = static::getCompositeKey($sender, $recipient);
+
+        return $query->where('id', $id);
+    }
+
+    static function getCompositeKey(User $sender, User $recipient): string
+    {
+        $min = min([$sender->getKey(), $recipient->getKey()]);
+        $max = max([$sender->getKey(), $recipient->getKey()]);
+
+        return "$min"."_"."$max";
+    } 
 }

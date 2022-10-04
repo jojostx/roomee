@@ -15,6 +15,7 @@ class CreateDislikesTable extends Migration
     {
         Schema::create('dislikes', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
             $table->string('name')->index();
             $table->timestamps();
         });

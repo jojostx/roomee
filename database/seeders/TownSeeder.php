@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\School;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class TownSeeder extends Seeder
 {
@@ -33,6 +33,7 @@ class TownSeeder extends Seeder
         DB::table('towns')->insert(
             collect($this->towns)->map(function ($town) {
                 return [
+                    'uuid' => Str::uuid()->toString(),
                     'name' => $town,
                     'created_at' => now(),
                     'updated_at' => now(),

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SchoolSeeder extends Seeder
 {
@@ -50,6 +51,7 @@ class SchoolSeeder extends Seeder
         DB::table('schools')->insert(
             collect($this->schools)->map(function ($school) {
                 return array_merge($school, [
+                    'uuid' => Str::uuid()->toString(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

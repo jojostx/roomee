@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class HobbySeeder extends Seeder
 {
@@ -35,6 +36,7 @@ class HobbySeeder extends Seeder
         DB::table('hobbies')->insert(
             collect($this->hobbies)->map(function ($hobby) {
                 return array_merge($hobby, [
+                    'uuid' => Str::uuid()->toString(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

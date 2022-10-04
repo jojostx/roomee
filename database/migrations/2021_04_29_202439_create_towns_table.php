@@ -15,6 +15,7 @@ class CreateTownsTable extends Migration
     {
         Schema::create('towns', function (Blueprint $table) {
             $table->id();
+            $table->uuid();
             $table->string('name')->index();
             $table->timestamps();
         });

@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
+                'uuid' => Str::uuid()->toString(),
                 'firstname' => 'Tucker',
                 'lastname' => 'Lawrence',
                 'gender' => 'male',
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
                 'cover_photo' => '1628751944-vzT2iZ8J.png',
             ],
             [
+                'uuid' => Str::uuid()->toString(),
                 'firstname' => 'Mark',
                 'lastname' => 'Ivan',
                 'gender' => 'male',

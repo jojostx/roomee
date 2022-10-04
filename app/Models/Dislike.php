@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Dyrynda\Database\Support\BindsOnUuid;
+use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Dislike extends Model
 {
-    use HasFactory;
+    use HasFactory, BindsOnUuid, GeneratesUuid;
 
     public bool $checked = false;
     /**
@@ -20,8 +22,9 @@ class Dislike extends Model
     /**
      * The users that belong to the dislike.
      */
-    public function users(){
-      return  $this->belongsToMany(User::class, 'dislike_user')->withTimestamps();
+    public function users()
+    {
+        return  $this->belongsToMany(User::class, 'dislike_user')->withTimestamps();
     }
 
     public function isChecked(): bool
