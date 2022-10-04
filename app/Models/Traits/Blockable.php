@@ -49,20 +49,19 @@ trait Blockable
         return $unblocked;
     }
 
-    public function hasBlocked(Model $recipient): bool
+    public function hasBlocked(Model $blockee): bool
     {
-        $blocking = DB::table('blocklists')->where(
-            [
+        return DB::table('blocklists')
+            ->where([
                 'blocker_id' => $this->getKey(),
-                'blockee_id' => $recipient->getKey(),
-            ]
-        )->get('id');
-
-        return $blocking->isNotEmpty();
+                'blockee_id' => $blockee->getKey(),
+            ])
+            ->get('id')
+            ->isNotEmpty();
     }
 
-    public function isBlockedBy(Model $recipient): bool
+    public function isBlockedBy(Model $blocker): bool
     {
-        return $recipient->hasBlocked($this);
+        return $blocker->hasBlocked($this);
     }
 }

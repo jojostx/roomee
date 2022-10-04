@@ -15,12 +15,9 @@ trait WithFavoriting
 
     public function favorite()
     {
-        if ($this->getAuthModel()->isBlockedBy($this->user)) {
-            return;
-        }
-
-        $this->getAuthModel()->favorites()->attach($this->user->id);
-
+        $this->getAuthModel()
+            ->addToFavorites($this->user);
+        
         Notification::make()
             ->title("You have succesfully added **{$this->user->fullname}** to your Favorites.")
             ->success()
@@ -29,7 +26,8 @@ trait WithFavoriting
 
     public function unfavorite()
     {
-        $this->getAuthModel()->favorites()->detach($this->user->id);
+        $this->getAuthModel()
+            ->removeFromFavorites($this->user);
 
         Notification::make()
             ->title("You have unfavorited **{$this->user->fullname}**.")

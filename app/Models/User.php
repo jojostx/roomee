@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
+use App\Models\Traits\Favoritable;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,15 @@ use Illuminate\Support\Facades\Storage;
  */
 class User extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, BindsOnUuid, GeneratesUuid, Requestable, Blockable, canCalculateUserSimilarity;
+    use HasFactory,
+        HasApiTokens,
+        Notifiable,
+        BindsOnUuid,
+        GeneratesUuid,
+        Blockable,
+        Favoritable,
+        Requestable,
+        canCalculateUserSimilarity;
 
     /**
      * The default values of attributes.
