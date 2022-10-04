@@ -1,7 +1,7 @@
 <div class="w-11/12 m-auto mt-6 mb-6" wire:poll.15s>
     <div class="flex justify-center w-full md:mt-12">
         <div class="w-full max-w-3xl pb-6">
-            <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 border rounded-lg sm:flex-row">
+            <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 border rounded-lg border-secondary-300 sm:flex-row">
                 <div class="relative flex flex-col items-center justify-start w-full md:w-1/2 md:mr-2">
                     <div class="absolute z-0 sm:static -top-14 md:top-0 sm:w-2/5 sm:mb-0">
                         <div class="flex flex-col items-center justify-center mt-1">
@@ -32,16 +32,17 @@
                                 </svg>
                             </span>
                         </div>
+                        <!-- user interactions -->
                         <div class="flex justify-center w-full">
                             @can('update', $user)
-                            <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
-                                <span class="pr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                                    </svg>
-                                </span>
-                                Edit Profile
-                            </a>
+                                <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                    <span class="pr-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                        </svg>
+                                    </span>
+                                    Edit Profile
+                                </a>
                             @elsecannot('update', $user)
                                 @can('block', $user)
                                     @can('interactWith', $user)
@@ -52,7 +53,7 @@
                                             wire:click='showReportOrBlockModal' 
                                             wire:loading.attr="disabled" 
                                             style="border-radius: 0.5rem;" 
-                                            class="border border-secondary-300 rounded-lg disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
+                                            class="border rounded-lg border-secondary-300 disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
                                             color="secondary" 
                                             size="sm" 
                                             icon="heroicon-s-dots-horizontal" 
@@ -84,6 +85,7 @@
                                 @endcan
                             @endcan
                         </div>
+                        <!-- end of user interactions -->
                     </div>
                 </div>
                 <div class="relative flex items-center justify-center w-full mt-1 overflow-hidden -z-10 md:w-1/2">
@@ -96,8 +98,9 @@
                     </div>
                 </div>
             </div>
+
             @can('interactWith', $user)
-                <div id="profile__box" class="w-full border border-secondary-300 rounded-md tab-container justify-evenly">
+                <div id="profile__box" class="w-full border rounded-md border-secondary-300 tab-container justify-evenly">
                     <input type="radio" name="tab" id="tab1" checked="checked">
                     <x-livewire.tab-label for="tab1">
                         <x-slot name="svg_path">
@@ -117,7 +120,7 @@
                                     </x-slot>
                                     Bio
                                 </x-livewire.label>
-                                <div class="px-2 py-4 border border-secondary-300 rounded-md">
+                                <div class="px-2 py-4 border rounded-md border-secondary-300">
                                     <p class="px-1 text-primary-800" style="overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;">{{ $user->bio}}</p>
                                 </div>
                             </div>
@@ -128,7 +131,7 @@
                                     </x-slot>
                                     Hobbies and Interests
                                 </x-livewire.label>
-                                <div class="px-2 pt-2 border border-secondary-300 rounded-md">
+                                <div class="px-2 pt-2 border rounded-md border-secondary-300">
                                     @foreach ($user->hobbies as $hobby)
                                     <span class="inline-flex items-center justify-center px-3 py-1 mb-2 mr-1 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($hobby['name']) }}</span>
                                     @endforeach
@@ -141,9 +144,9 @@
                                     </x-slot>
                                     Dislikes
                                 </x-livewire.label>
-                                <div class="px-2 pt-2 border border-secondary-300 rounded-md">
+                                <div class="px-2 pt-2 border rounded-md border-secondary-300">
                                     @foreach ($user->dislikes as $dislike)
-                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 text-danger-800 bg-danger-100 rounded-md">{{ ucfirst($dislike['name']) }}</span>
+                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-md text-danger-800 bg-danger-100">{{ ucfirst($dislike['name']) }}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -219,7 +222,7 @@
                                     </x-slot>
                                     Preferred property locations
                                 </x-livewire.label>
-                                <div class="px-2 pt-2 border border-secondary-300 rounded-md">
+                                <div class="px-2 pt-2 border rounded-md border-secondary-300">
                                     @foreach ($user->towns as $town)
                                     <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($town['name']) }}</span>
                                     @endforeach
@@ -264,9 +267,10 @@
             @elsecannot('interactWith', $user)
                 <div class="px-4 py-4 mb-4 text-center bg-white border shadow">
                     You are blocked from viewing <span class="font-semibold">{{ $user->firstname }}'s</span> profile and sending them roommate requests.
-                    <a href="{{ route('faqs') }}#q_4" class="text-primary-700">Learn more</a>
+                    <a href="{{ route('faqs') }}#group-4" class="text-primary-700">Learn more</a>
                 </div>
             @endcan
+
         </div>
     </div>
     <p class="text-xs text-center text-secondary-500">
