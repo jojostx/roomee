@@ -41,11 +41,6 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
         return Auth::user();
     }
 
-    public static function modalMaxWidth(): string
-    {
-        return 'sm';
-    }
-
     public function blockUser()
     {
         $this->action = OnUserAction::BLOCK;
@@ -68,7 +63,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
                 'action' => ['required'],
                 'user' => ['required', new IsBlockable()],
             ];
-        } else if ($this->action == OnUserAction::BLOCK) {
+        } else if ($this->action == OnUserAction::REPORT) {
             return [
                 'action' => ['required'],
                 'selectedReports' => ['required', 'array'],
@@ -157,6 +152,11 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
         }
 
         $this->emit('actionTakenOnUser', $this->user->fullname, $action);
+    }
+
+    public static function modalMaxWidth(): string
+    {
+        return 'sm';
     }
 
     public function render()
