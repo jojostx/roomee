@@ -6,7 +6,7 @@ use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 
-trait Favoriting
+trait WithFavoriting
 {
     protected function getAuthModel(): ?User
     {

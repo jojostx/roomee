@@ -152,7 +152,7 @@ class User extends Authenticatable
      */
     public function recievedRequests()
     {
-        return $this->belongsToMany(User::class, 'roommate_requests', 'requestee_id', 'requester_id')
+        return $this->belongsToMany(User::class, 'roommate_requests', 'recipient_id', 'sender_id')
             ->as('roommateRequests')
             ->withTimestamps()->orderByPivot('created_at', 'desc');
     }
@@ -162,7 +162,7 @@ class User extends Authenticatable
      */
     public function sentRequests()
     {
-        return $this->belongsToMany(User::class, 'roommate_requests', 'requester_id', 'requestee_id')
+        return $this->belongsToMany(User::class, 'roommate_requests', 'sender_id', 'recipient_id')
             ->as('roommateRequests')
             ->withTimestamps()->orderByPivot('created_at', 'desc');
     }

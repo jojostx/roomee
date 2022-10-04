@@ -12,11 +12,11 @@
             </div> 
         @else
             @foreach ($requestAcceptedNotifications as $notification)
-                <livewire:components.cards.notifications.request-accepted-card :notification="$notification" :user="$notification->data['requestee_id']" :wire:key="$notification->id">
+                <livewire:components.cards.notifications.request-accepted-card :notification="$notification" :user="$notification->data['recipient_id']" :wire:key="$notification->id">
             @endforeach
             
             @foreach ($requestRecievedNotifications as $notification)
-                <livewire:components.cards.notifications.request-recieved-card :notification="$notification" :user="$notification->data['requester_id']" :wire:key="$notification->id">
+                <livewire:components.cards.notifications.request-recieved-card :notification="$notification" :user="$notification->data['sender_id']" :wire:key="$notification->id">
             @endforeach
         @endif       
     </div>

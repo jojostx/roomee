@@ -243,8 +243,8 @@ namespace App\Models{
  * App\Models\RoommateRequest
  *
  * @property string $id
- * @property int $requester_id
- * @property int $requestee_id
+ * @property int $sender_id
+ * @property int $recipient_id
  * @property int $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -257,8 +257,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipient(\App\Models\User $model)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRequesteeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRequesterId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSender(\App\Models\User $model)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereUpdatedAt($value)

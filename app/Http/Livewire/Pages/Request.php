@@ -3,12 +3,8 @@
 namespace App\Http\Livewire\Pages;
 
 use App\Enums\RequestType;
-use App\Enums\RoommateRequestStatus;
 use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\RoommateRequest;
-use App\Models\User;
-use Filament\Notifications\Actions\Action;
-use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
@@ -68,11 +64,11 @@ class Request extends Component
     protected function fetchRequestsByType(RequestType $requestType): Collection
     {
         if ($requestType == RequestType::SENT) {
-            return RoommateRequest::where('requester_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
+            return RoommateRequest::where('sender_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
         }
 
         if ($requestType == RequestType::RECIEVED) {
-            return RoommateRequest::Where('requestee_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
+            return RoommateRequest::Where('recipient_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
         }
 
         return collect([]);

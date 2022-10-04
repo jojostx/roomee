@@ -16,12 +16,12 @@ class RoommateRequestUpdated implements ShouldBroadcast
     /**
      * @var string|int
      */
-    public $requester_id;
+    public $sender_id;
        
     /**
      * @var string|int
      */
-    public $requestedUser_id;
+    public $recipient_id;
        
     /**
      * @var App\Enums\RoommateRequestStatus
@@ -33,10 +33,10 @@ class RoommateRequestUpdated implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($requester_id, $requestedUser_id, RoommateRequestStatus $status)
+    public function __construct($sender_id, $recipient_id, RoommateRequestStatus $status)
     {
-        $this->requester_id = $requester_id;
-        $this->requestedUser_id = $requestedUser_id;
+        $this->sender_id = $sender_id;
+        $this->recipient_id = $recipient_id;
         $this->status = $status;
     }
 
@@ -47,6 +47,6 @@ class RoommateRequestUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("request.{$this->requestedUser_id}");
+        return new PrivateChannel("request.{$this->recipient_id}");
     }
 }

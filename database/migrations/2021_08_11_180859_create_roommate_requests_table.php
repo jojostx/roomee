@@ -16,8 +16,8 @@ class CreateRoommateRequestsTable extends Migration
         Schema::create('roommate_requests', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->uuid();
-            $table->foreignId('requester_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('requestee_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('recipient_id')->constrained('users')->onDelete('cascade');
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });

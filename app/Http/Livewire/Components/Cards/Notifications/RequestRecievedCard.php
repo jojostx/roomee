@@ -9,7 +9,7 @@ class RequestRecievedCard extends Component
 {
     public $notification;
     
-    //requester (the user who sent the request)
+    //sender (the user who sent the request)
     public $user;
 
     public function mount($notification, User $user)

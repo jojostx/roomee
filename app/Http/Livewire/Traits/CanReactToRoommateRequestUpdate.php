@@ -11,28 +11,28 @@ trait CanReactToRoommateRequestUpdate
 {
     public function handleRoommateRequestUpdatedEvent($data)
     {
-        $requestee = User::query()->find($data['requestedUser_id']);
-        $requester = User::query()->find($data['requester_id']);
+        $recipient = User::query()->find($data['recipient_id']);
+        $sender = User::query()->find($data['sender_id']);
         $status = RoommateRequestStatus::tryFrom($data['status']);
 
-        if (filled($status) && filled($requestee) && filled($requester)) {
-            $this->emit('refreshChildren:' . $requestee->id);
-            $this->emit('refreshChildren:' . $requester->id);
-            $this->showRequestUpdatedNotification($requestee, $requester, $status);
+        if (filled($status) && filled($recipient) && filled($sender)) {
+            $this->emit('refreshChildren:' . $recipient->id);
+            $this->emit('refreshChildren:' . $sender->id);
+            $this->showRequestUpdatedNotification($recipient, $sender, $status);
         }
     }
 
-    public function showRequestUpdatedNotification(User $requestee, User $requester, RoommateRequestStatus $status)
+    public function showRequestUpdatedNotification(User $recipient, User $sender, RoommateRequestStatus $status)
     {
         switch ($status) {
             case RoommateRequestStatus::PENDING:
                 Notification::make()
                     ->success()
                     ->title('Roommate Request recieved!')
-                    ->body("**{$requester->fullname}** sent you a roommate request. Kindly attend to it.")->actions([
+                    ->body("**{$sender->fullname}** sent you a roommate request. Kindly attend to it.")->actions([
                         Action::make('view')
                             ->button()
-                            ->url(route('profile.view', ['user' => $requester]), shouldOpenInNewTab: true)
+                            ->url(route('profile.view', ['user' => $sender]), shouldOpenInNewTab: true)
                     ])
                     ->send();
 
@@ -41,10 +41,10 @@ trait CanReactToRoommateRequestUpdate
                 Notification::make()
                     ->success()
                     ->title('Roommate Request accepted!')
-                    ->body("**{$requestee->fullname}** accepted your roommate request. Kindly contact them ASAP.")->actions([
+                    ->body("**{$recipient->fullname}** accepted your roommate request. Kindly contact them ASAP.")->actions([
                         Action::make('view')
                             ->button()
-                            ->url(route('profile.view', ['user' => $requestee]), shouldOpenInNewTab: true)
+                            ->url(route('profile.view', ['user' => $recipient]), shouldOpenInNewTab: true)
                     ])
                     ->send();
 

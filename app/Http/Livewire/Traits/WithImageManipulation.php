@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
-use Livewire\TemporaryUploadedFile;
 
 trait WithImageManipulation
 {

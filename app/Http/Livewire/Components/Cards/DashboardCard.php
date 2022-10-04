@@ -3,7 +3,7 @@
 namespace App\Http\Livewire\Components\Cards;
 
 use Livewire\Component;
-use App\Http\Livewire\Traits\Favoriting;
+use App\Http\Livewire\Traits\WithFavoriting;
 use App\Models\User;
 use App\Notifications\RoommateRequestRecieved;
 use Filament\Notifications\Notification;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardCard extends Component
 {
-    use Favoriting;
+    use WithFavoriting;
 
     public $user;
     public $course;

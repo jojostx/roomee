@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Profile;
 
-use App\Http\Livewire\Traits\Favoriting;
+use App\Http\Livewire\Traits\WithFavoriting;
 use App\Models\User;
 use App\Notifications\RoommateRequestRecieved;
 use Filament\Notifications\Notification;
@@ -12,7 +12,7 @@ use Livewire\Component;
 
 class ViewProfile extends Component
 {
-    use Favoriting, AuthorizesRequests;
+    use WithFavoriting, AuthorizesRequests;
 
     public $user;
 
@@ -25,6 +25,13 @@ class ViewProfile extends Component
     protected function getAuthModel(): ?User
     {
         return Auth::user();
+    }
+
+    protected function getListeners()
+    {
+        return [
+            'actionTakenOnUser' => '$refresh',
+        ];
     }
 
     public function block()
@@ -66,12 +73,12 @@ class ViewProfile extends Component
 
     public function showDeleteRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->id]);
+        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function showReportOrBlockModal()
     {
-        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->id]);
+        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
     }
 
     public function render()

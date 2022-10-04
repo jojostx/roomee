@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\RoommateRequestStatus;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,7 +35,7 @@ class RoommateRequest extends Model
      */
     public function sender()
     {
-        return $this->belongsTo(User::class, 'requester_id');
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
     /**
@@ -42,7 +43,7 @@ class RoommateRequest extends Model
      */
     public function recipient()
     {
-        return $this->belongsTo(User::class, 'requestee_id');
+        return $this->belongsTo(User::class, 'recipient_id');
     }
 
     /**
@@ -52,7 +53,7 @@ class RoommateRequest extends Model
      */
     public function scopeWhereRecipient($query, User $model)
     {
-        return $query->where('requestee_id', $model->getKey());
+        return $query->where('recipient_id', $model->getKey());
     }
 
     /**
@@ -62,15 +63,15 @@ class RoommateRequest extends Model
      */
     public function scopeWhereSender($query, User $model)
     {
-        return $query->where('requester_id', $model->getKey());
+        return $query->where('sender_id', $model->getKey());
     }
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param User $model
+     * @param RoommateRequestStatus $status
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWhereStatus($query, $status)
+    public function scopeWhereStatus($query, RoommateRequestStatus $status)
     {
         return $query->where('status', $status);
     }

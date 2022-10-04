@@ -14,16 +14,16 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $requestee;
+    public $recipient;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $requestee)
+    public function __construct(User $recipient)
     {
-        $this->requestee = $requestee;
+        $this->recipient = $recipient;
     }
 
     /**
@@ -47,8 +47,8 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->line('Roommate Request Accepted.')
-            ->line("{$this->requestee->fullname} accepted your Roommate Request.")
-            ->action('View profile', route('profile.view', ['user' => $this->requestee], true))
+            ->line("{$this->recipient->fullname} accepted your Roommate Request.")
+            ->action('View profile', route('profile.view', ['user' => $this->recipient], true))
             ->line('Thank you for using our application!');
     }
 
@@ -57,15 +57,15 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
         return array_merge(
             FilamentNotification::make()
                 ->title('Roommate Request Accepted')
-                ->body("{$this->requestee->fullname} accepted your Roommate Request.")
+                ->body("{$this->recipient->fullname} accepted your Roommate Request.")
                 ->actions([
                     Action::make('view')
                         ->button()
-                        ->url(route('profile.view', ['user' => $this->requestee]), shouldOpenInNewTab: true)
+                        ->url(route('profile.view', ['user' => $this->recipient]), shouldOpenInNewTab: true)
                 ])
                 ->getDatabaseMessage(),
             [
-                'requestee_id' => $this->requestee->id,
+                'recipient_id' => $this->recipient->id,
             ]
         );
     }
@@ -79,7 +79,7 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'requestee_id' => $this->requestee->id,
+            'recipient_id' => $this->recipient->id,
         ];
     }
 }

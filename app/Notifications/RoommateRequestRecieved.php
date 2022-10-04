@@ -14,16 +14,16 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $requester;
+    public $sender;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(User $requester)
+    public function __construct(User $sender)
     {
-        $this->requester = $requester;
+        $this->sender = $sender;
     }
 
     /**
@@ -48,8 +48,8 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->line('Roommate Request Recieved.')
-            ->line("{$this->requester->fullname} sent you a Roommate Request.")
-            ->action('View profile', route('profile.view', ['user' => $this->requester], true))
+            ->line("{$this->sender->fullname} sent you a Roommate Request.")
+            ->action('View profile', route('profile.view', ['user' => $this->sender], true))
             ->line('Thank you for using our application!');
     }
 
@@ -58,15 +58,15 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
         return array_merge(
             FilamentNotification::make()
                 ->title('Roommate Request Recieved')
-                ->body("{$this->requester->fullname} sent you a Roommate Request.")
+                ->body("{$this->sender->fullname} sent you a Roommate Request.")
                 ->actions([
                     Action::make('view')
                         ->button()
-                        ->url(route('profile.view', ['user' => $this->requester]), shouldOpenInNewTab: true) 
+                        ->url(route('profile.view', ['user' => $this->sender]), shouldOpenInNewTab: true) 
                 ])
                 ->getDatabaseMessage(),
             [
-                'requester_id' => $this->requester->id,
+                'sender_id' => $this->sender->id,
             ]
         );
     }
@@ -80,7 +80,7 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'requester_id' => $this->requester->id,
+            'sender_id' => $this->sender->id,
         ];
     }
 
