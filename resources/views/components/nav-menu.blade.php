@@ -11,7 +11,7 @@
     </div>
 
     <div class="w-5 h-5">
-      <x-heroicon-o-chevron-down />
+      <x-heroicon-o-menu />
     </div>
   </button>
 
@@ -21,7 +21,7 @@
     <div x-show="isOpen" x-on:keydown.window.escape="$dispatch('close-modal', { id: 'nav-menu-panel' })" x-transition:enter="ease duration-300" x-transition:leave="ease duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="relative w-full cursor-pointer pointer-events-none" slideover="slideover">
       <div class="relative w-full h-screen max-w-sm ml-auto -mr-4 overflow-y-auto bg-white cursor-default pointer-events-auto filament-modal-window rtl:mr-auto rtl:-ml-4">
         <button tabindex="-1" type="button" class="absolute top-4 right-4 rtl:right-0 rtl:left-4">
-          <svg title="__('filament-support::components/modal.actions.close.label')" x-on:click="isOpen = false" tabindex="-1" class="w-6 h-6 text-secondary-800 cursor-pointer filament-modal-close-button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <svg title="__('filament-support::components/modal.actions.close.label')" x-on:click="isOpen = false" tabindex="-1" class="w-6 h-6 cursor-pointer text-secondary-800 filament-modal-close-button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
           </svg>
           <span class="sr-only">
