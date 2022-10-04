@@ -50,12 +50,12 @@ class DashboardCard extends Component
 
     public function showDeleteRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->id]);
+        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function showReportOrBlockModal()
     {
-        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->id]);
+        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
     }
 
     public function getIsBlockerProperty()

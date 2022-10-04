@@ -8,7 +8,7 @@ use LivewireUI\Modal\ModalComponent;
 
 class DeleteRequestModal extends ModalComponent
 { 
-    public int | User $user;
+    public string | User $user;
 
     public function mount(User $user)
     {

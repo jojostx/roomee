@@ -23,7 +23,7 @@ class SentRequestCard extends Component
 
     public function showDeleteRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->id]);
+        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function render()

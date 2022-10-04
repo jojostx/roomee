@@ -22,7 +22,7 @@ class SendRoommateRequestUpdatedNotifications implements ShouldQueue
     {
         Log::info(
             "roommate request updated schema:"
-            .route('profile.view', ['user'=> User::firstWhere('id', $event->requestedUser_id)]),
+            .route('profile.view', ['user'=> User::find($event->requestedUser_id)]),
             ['requester_id' => $event->requester_id]
         );
 
@@ -36,7 +36,7 @@ class SendRoommateRequestUpdatedNotifications implements ShouldQueue
             // send email & SMS when a person accepts a roommate request
             //  send a mail to the requester's email and sms to their tel.no with link to the profile page
             //  for the requestee 
-            // "{{ route('profile.view', ['user'=> User::firstWhere('id', $event->requestee_id) ]) }}"
+            // "{{ route('profile.view', ['user'=> User::find($event->requestee_id) ]) }}"
             //  for a new roommate request
         // }
     }

@@ -20,7 +20,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
 {
     use InteractsWithForms;
 
-    public int | User $user;
+    public string | User $user;
     public ?OnUserAction $action = null;
     public Collection $reports;
     public array $selectedReports = [];
