@@ -86,12 +86,13 @@
                         <div class="flex items-center border divide-x divide-secondary-400 border-secondary-400">
                             @auth
                                 @if (Auth::user()->profile_updated)
-                                <a href="{{ route('dashboard') }}" class="flex-1 p-4 font-semibold text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">Dashboard</a>
+                                <a href="{{ route('dashboard') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">DASHBOARD</a>
                                 @else
-                                <a href="{{ route('profile.update') }}" class="flex-1 p-4 font-semibold text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">Profile</a>
+                                <a href="{{ route('profile.update') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">PROFILE</a>
                                 @endif
-                                <form method="POST" action="{{ route('logout') }}">
-                                    <a onclick="event.preventDefault(); this.closest('form').submit();" class="flex-1 p-4 font-semibold text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">Logout</a>
+                                <form method="POST" action="{{ route('logout') }}" class="flex-1">
+                                    @csrf
+                                    <a onclick="event.preventDefault(); this.closest('form').submit();" class="block w-full p-4 font-semibold text-center cursor-pointer text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600">LOGOUT</a>
                                 </form>
                             @endauth
         
