@@ -1,9 +1,8 @@
 <nav class="flex flex-row items-center justify-between w-11/12 h-full">
-
     <!-- Application Logo -->
     <div class="flex items-center flex-shrink-0">
         <a href="{{ route('home') }}">
-            <x-application-logo class="block text-secondary-200 fill-current h-14" />
+            <x-application-logo class="block h-12 fill-current text-secondary-200" />
         </a>
     </div>
 
@@ -28,15 +27,15 @@
             <div class="py-2 sm:block">
                 @auth
                 @if (Auth::user()->profile_updated)
-                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Dashboard</a>
+                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-sm font-semibold border border-white rounded-full text-secondary-200 hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Dashboard</a>
                 @else
-                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Profile</a>
+                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-sm font-semibold border border-white rounded-full text-secondary-200 hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Profile</a>
                 @endif
                 @endauth
 
                 @guest
-                <a href="{{ route('register') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">SIGN UP</a>
-                <a href="{{ route('login') }}" class="px-3 py-1 ml-2 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900">SIGN IN</a>
+                <a href="{{ route('register') }}" class="px-3 py-1 text-sm font-semibold border border-white rounded-full text-secondary-200 hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">SIGN UP</a>
+                <a href="{{ route('login') }}" class="px-3 py-1 ml-2 text-sm font-semibold border border-white rounded-full text-secondary-200 hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900">SIGN IN</a>
                 @endguest
             </div>
             @endif
@@ -44,63 +43,65 @@
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div x-data="{ open: false }" class="relative z-40 block sm:hidden">
+    <div class="relative z-40 block sm:hidden" x-data="{ isOpen: false }" x-trap.noscroll="isOpen" x-on:close-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = false" x-on:open-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = true" role="dialog" aria-modal="true">
         <div class="flex items-center sm:hidden">
-            <button x-on:click="open = !open" class="inline-flex items-center justify-center p-2 text-secondary-200 transition duration-150 ease-in-out rounded-md hover:text-secondary-900 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-900">
-                <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                    <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+            <button @click="$dispatch('open-modal', { id: 'nav-menu-panel' });" title="open menu" class="inline-flex items-center justify-center w-10 h-10 p-1 transition duration-150 ease-in-out rounded-md text-secondary-200 hover:text-secondary-900 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-900">
+                <x-heroicon-o-menu />
             </button>
         </div>
-        <div x-show="open" x-trap.noscroll="open" x-on:click.outside="open = false" x-cloak class="absolute right-0 flex flex-col items-center justify-between pb-4 overflow-hidden w-[320px] bg-secondary-900 border border-secondary-700 rounded-md shadow-lg top-14">
-            <div class="flex flex-col justify-between flex-shrink-0 w-full">
-                <x-dark-dropdown-link :href="route('home')" :active="request()->routeIs('home')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                    {{ __('Home') }}
-                </x-dark-dropdown-link>
-                <x-dark-dropdown-link :href="route('features')" :active="request()->routeIs('features')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                    </svg>
-                    {{ __('Features') }}
-                </x-dark-dropdown-link>
-                <x-dark-dropdown-link :href="route('faqs')" :active="request()->routeIs('faqs')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {{ __('FAQs') }}
-                </x-dark-dropdown-link>
-                <x-dark-dropdown-link :href="route('about')" :active="request()->routeIs('about')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {{ __('About Us') }}
-                </x-dark-dropdown-link>
-                <x-dark-dropdown-link :href="route('contact')" :active="request()->routeIs('contact')">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-4 h-4 mr-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    {{ __('Contact Us') }}
-                </x-dark-dropdown-link>
-            </div>
-            <div class="relative flex items-center justify-center w-full px-4 pt-4 border-t border-secondary-700 sm:items-center sm:pt-0 ">
-                @if (Route::has('login'))
-                @auth
-                @if (Auth::user()->profile_updated)
-                <a href="{{ route('dashboard') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Dashboard</a>
-                @else
-                <a href="{{ route('profile.update') }}" class="px-3 py-1 text-xs font-semibold text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900 focus:bg-white focus:text-secondary-900 ">Profile</a>
-                @endif
-                @endauth
 
-                @guest
-                <a href="{{ route('login') }}" class="flex-1 px-2 py-1 text-xs font-semibold text-center text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900">SIGN IN</a>
-                <a href="{{ route('register') }}" class="flex-1 px-2 py-1 ml-2 text-xs font-semibold text-center text-secondary-200 border-2 border-white rounded-full hover:bg-white hover:text-secondary-900">SIGN UP</a>
-                @endguest
-                @endif
+        <div x-show="isOpen" x-cloak x-transition:enter="ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-40 flex items-center min-h-screen px-4 overflow-x-hidden overflow-y-auto transition">
+            <div x-on:click="$dispatch('close-modal', { id: 'nav-menu-panel' })" aria-hidden="true" class="fixed inset-0 w-full h-full cursor-pointer filament-modal-close-overlay bg-black/50"></div>
+
+            <div x-show="isOpen" x-on:keydown.window.escape="$dispatch('close-modal', { id: 'nav-menu-panel' })" x-transition:enter="ease duration-300" x-transition:leave="ease duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="relative w-full cursor-pointer pointer-events-none" slideover="slideover">
+                <div class="relative w-full h-screen max-w-sm ml-auto -mr-4 overflow-y-auto bg-white cursor-default pointer-events-auto filament-modal-window rtl:mr-auto rtl:-ml-4">
+                    <button x-on:click="isOpen = false" tabindex="-1" type="button" class="absolute cursor-pointer top-4 right-4 rtl:right-0 rtl:left-4 text-secondary-800">
+                        <x-heroicon-o-x title="close menu" tabindex="-1" class="w-9 h-9"/>
+                        <span class="sr-only">
+                            Close
+                        </span>
+                    </button>
+
+                    <div class="flex flex-col justify-center h-full space-y-2">
+                        <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" icon_before="heroicon-o-home" >
+                            {{ __('Home') }}
+                        </x-responsive-nav-link>
+
+                        <x-responsive-nav-link :href="route('features')" :active="request()->routeIs('features')" icon_before="heroicon-o-lightning-bolt">
+                            {{ __('Features') }}
+                        </x-responsive-nav-link>
+
+                        <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')" icon_before="heroicon-o-question-mark-circle">
+                            {{ __('FAQs') }}
+                        </x-responsive-nav-link>
+
+                        <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')" icon_before="heroicon-o-user-group">
+                            {{ __('About Us') }}
+                        </x-responsive-nav-link>
+
+                        <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')" icon_before="heroicon-o-phone">
+                            {{ __('Contact Us') }}
+                        </x-responsive-nav-link>
+
+                        <div class="flex items-center border divide-x divide-secondary-400 border-secondary-400">
+                            @auth
+                                @if (Auth::user()->profile_updated)
+                                <a href="{{ route('dashboard') }}" class="flex-1 p-4 font-semibold text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">Dashboard</a>
+                                @else
+                                <a href="{{ route('profile.update') }}" class="flex-1 p-4 font-semibold text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">Profile</a>
+                                @endif
+                                <form method="POST" action="{{ route('logout') }}">
+                                    <a onclick="event.preventDefault(); this.closest('form').submit();" class="flex-1 p-4 font-semibold text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">Logout</a>
+                                </form>
+                            @endauth
+        
+                            @guest
+                                <a href="{{ route('login') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">SIGN IN</a>
+                                <a href="{{ route('register') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">SIGN UP</a>
+                            @endguest
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -23,12 +23,12 @@
                             Roomee helps you find the best roommate for you.
                         </h2>
                     </div>
-                    <x-ctaButton href="#howItWorks" class="font-bold text-secondary-100 bg-primary-500 hover:text-secondary-100 hover:bg-primary-600">
+                    <x-cta-button href="#howItWorks" class="px-4 font-semibold text-secondary-100 bg-primary-500 hover:text-secondary-100 hover:bg-primary-600">
                         LEARN MORE
-                    </x-ctaButton>
-                    <x-ctaButton href="{{ route('register') }}" class="font-bold text-secondary-200 bg-transparent border-secondary-200 sm:ml-6 xs:ml-2 sm:mt-0 hover:text-secondary-900 hover:bg-white hover:border-white">
+                    </x-cta-button>
+                    <x-cta-button href="{{ route('register') }}" class="px-4 font-semibold bg-transparent text-secondary-200 border-secondary-200 sm:ml-6 xs:ml-2 sm:mt-0 hover:text-secondary-900 hover:bg-white hover:border-white">
                         GET STARTED
-                    </x-ctaButton>
+                    </x-cta-button>
                 </div>
                 <!-- Roomee helps you find the perfect roommate based on your preferences. -->
 
@@ -44,7 +44,7 @@
     </x-slot>
 
     <!-- How it works section -->
-    <div id="howItWorks" x-data="{ shown: false }" x-intersect.once.margin.-10px="shown = true" class="relative z-20 flex flex-col items-center justify-center w-full pb-8 md:pt-16">
+    <div id="howItWorks" x-data="{ shown: false }" x-intersect.once.margin.-10px="shown = true" class="relative z-20 flex flex-col items-center justify-center w-full pt-12 pb-8 md:pt-16">
         <div x-show="shown" x-transition:enter.duration.1000ms class="pb-12 text-xl font-bold text-center sm:pb-16 xs:text-2xl sm:text-3xl">
             <div>
                 <h1 class="text-3xl font-extrabold md:text-5xl">How It Works</h1>
@@ -140,43 +140,43 @@
                 <div class="relative items-center justify-center hidden w-full h-full md:flex">
                     <figure class="HeroGraphic__phone PhoneGraphic" aria-hidden="true">
                         <div class="PhoneGraphic__screen">
-                            <div class="w-full h-full px-4 flex flex-col justify-center space-y-4 overflow-hidden bg-white max-w-sm rounded-lg">
+                            <div class="flex flex-col justify-center w-full h-full max-w-sm px-4 space-y-4 overflow-hidden bg-white rounded-lg">
                                 <div class="flex flex-col items-center">
-                                    <p class="font-semibold text-sm">CREATE ACCOUNT</p>
-                                    <p class="text-xs">Already have an account? <a href="http://roomee.test/login" class="text-primary-600 underline hover:text-primary-900">Log In</a></p>
+                                    <p class="text-sm font-semibold">CREATE ACCOUNT</p>
+                                    <p class="text-xs">Already have an account? <a href="http://roomee.test/login" class="underline text-primary-600 hover:text-primary-900">Log In</a></p>
                                 </div>
 
                                 <!-- name -->
                                 <div class="grid grid-cols-2 col-span-1 gap-2 mt-6">
                                     <div class="flex flex-col col-span-1 form_input">
-                                        <label class="block font-medium text-sm text-secondary-600">
+                                        <label class="block text-sm font-medium text-secondary-600">
                                             First Name
                                         </label>
-                                        <div class="rounded-md border shadow-sm border-secondary-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                        <div class="block w-full mt-1 text-sm font-medium border rounded-md shadow-sm border-secondary-300 h-9"></div>
                                     </div>
                                     <div class="flex flex-col col-span-1 form_input">
-                                        <label class="block font-medium text-sm text-secondary-600">
+                                        <label class="block text-sm font-medium text-secondary-600">
                                             Last Name
                                         </label>
-                                        <div class="rounded-md border shadow-sm border-secondary-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                        <div class="block w-full mt-1 text-sm font-medium border rounded-md shadow-sm border-secondary-300 h-9"></div>
                                     </div>
                                 </div>
 
                                 <!-- Email Address -->
                                 <div class="">
-                                    <label class="block font-medium text-sm text-secondary-600">
+                                    <label class="block text-sm font-medium text-secondary-600">
                                         Email
                                     </label>
-                                    <div class="rounded-md border shadow-sm border-secondary-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                    <div class="block w-full mt-1 text-sm font-medium border rounded-md shadow-sm border-secondary-300 h-9"></div>
                                 </div>
 
                                 <!-- Password -->
                                 <div class="relative" >
-                                    <label class="block font-medium text-sm text-secondary-600">
+                                    <label class="block text-sm font-medium text-secondary-600">
                                         Password
                                     </label>
-                                    <div class="rounded-md border shadow-sm border-secondary-300 h-9 block w-full mt-1 text-sm font-medium"></div>
-                                    <div class="absolute w-4 text-secondary-600 transform md:w-5 -translate-y-7 right-4">
+                                    <div class="block w-full mt-1 text-sm font-medium border rounded-md shadow-sm border-secondary-300 h-9"></div>
+                                    <div class="absolute w-4 transform text-secondary-600 md:w-5 -translate-y-7 right-4">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <g class="inline-flex">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -188,14 +188,14 @@
 
                                 <!-- Confirm Password -->
                                 <div class="">
-                                    <label class="block font-medium text-sm text-secondary-600">
+                                    <label class="block text-sm font-medium text-secondary-600">
                                         Confirm Your Password
                                     </label>
-                                    <div class="rounded-md border shadow-sm border-secondary-300 h-9 block w-full mt-1 text-sm font-medium"></div>
+                                    <div class="block w-full mt-1 text-sm font-medium border rounded-md shadow-sm border-secondary-300 h-9"></div>
                                 </div>
 
                                 <!-- select gender -->
-                                <fieldset class="flex flex-col order rounded-md">
+                                <fieldset class="flex flex-col rounded-md order">
                                     <label class="mb-1 text-sm text-secondary-600">Choose your Gender:</label>
                                     <div class="flex">
                                         <div>
@@ -211,7 +211,7 @@
 
                                 <!-- submit button -->
                                 <div class="">
-                                    <div class="px-4 py-2 bg-secondary-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest flex items-center justify-center w-full">
+                                    <div class="flex items-center justify-center w-full px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase border border-transparent rounded-md bg-secondary-800">
                                         Register
                                     </div>
                                 </div>
@@ -237,10 +237,14 @@
     <div class="flex flex-col items-center justify-center w-full px-16 pt-6 pb-16 text-center bg-primary-100 md:py-16 md:pb-24 md:pt-10">
         <p class="mb-6 text-3xl font-bold text-secondary-800">Ready to find the perfect roommate?</p>
         @auth
-        <x-ctaButton href=" {{ route('dashboard') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-secondary-800 rounded-full md:text-xl hover:bg-primary-800">Sign Up</x-ctaButton>
+        <x-cta-button href="{{ route('dashboard') }}" class="px-4 font-semibold text-white bg-secondary-800 hover:text-secondary-100 hover:bg-primary-800">
+            Sign Up For Free
+        </x-cta-button>
         @endauth
         @guest
-        <x-ctaButton href=" {{ route('register') }}" class="px-12 py-4 text-lg font-bold leading-3 text-white bg-secondary-800 rounded-full md:text-xl hover:bg-primary-800">Sign Up</x-ctaButton>
+        <x-cta-button href="{{ route('register') }}" class="px-4 font-semibold text-white bg-secondary-800 hover:text-secondary-100 hover:bg-primary-800">
+            Sign Up For Free
+        </x-cta-button>
         @endguest
     </div>
     <!-- End of CTA section -->
@@ -556,19 +560,26 @@
                 </div>
                 <div class="flex flex-col items-start justify-center w-full mb-6 sm:pl-8 sm:mb-0">
                     <h2 class="mb-2 text-3xl font-medium text-secondary-700"><span class="font-extrabold text-secondary-900 ">Install</span> to homescreen</h2>
-                    <p class="text-base text-secondary-700 lg:leading-tight lg:text-lg">Roomee is a <span><a class="font-semibold text-primary-600 no-underline hover:text-primary-700 focus:text-danger-500" href="#">PWA
+                    <p class="text-base text-secondary-700 lg:leading-tight lg:text-lg">Roomee is a <span><a class="font-semibold no-underline text-primary-600 hover:text-primary-700 focus:text-danger-500" href="#">PWA
                                 (progressive web app)</a></span> that can be installed to your homescreen through your
                         browser. This way you get instant access, notifications, faster browsing with an app-like
                         performance and lots more. it also takes considerably less storage space. </p>
                 </div>
             </div>
             <div class="flex flex-col items-center justify-center w-full pb-6 mt-10 text-center md:py-6">
-                <div class="mb-8 text-3xl font-bold md:mb-10">
+                <div class="mb-6 text-3xl font-bold">
                     <h1>Find the perfect roommate today!!!</h1>
                 </div>
-                <a href="{{ route('register') }}" class="px-6 py-3 text-2xl font-semibold text-white transition-transform bg-secondary-800 rounded-full md:px-8 md:py-4 hover:shadow-md hover:bg-primary-900">Sign
-                    up for free
-                </a>
+                @auth
+                <x-cta-button href="{{ route('dashboard') }}" class="px-4 font-semibold text-white bg-secondary-800 hover:text-secondary-100 hover:bg-primary-800">
+                    Sign Up For Free
+                </x-cta-button>
+                @endauth
+                @guest
+                <x-cta-button href="{{ route('register') }}" class="px-4 font-semibold text-white bg-secondary-800 hover:text-secondary-100 hover:bg-primary-800">
+                    Sign Up For Free
+                </x-cta-button>
+                @endguest
             </div>
         </div>
     </section>

@@ -15,7 +15,7 @@
     </div>
   </button>
 
-  <div x-show="isOpen" x-cloak x-transition:enter="ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-40 flex items-center min-h-screen p-4 overflow-x-hidden overflow-y-auto transition">
+  <div x-show="isOpen" x-cloak x-transition:enter="ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-40 flex items-center min-h-screen px-4 overflow-x-hidden overflow-y-auto transition">
     <div x-on:click="$dispatch('close-modal', { id: 'nav-menu-panel' })" aria-hidden="true" class="fixed inset-0 w-full h-full cursor-pointer filament-modal-close-overlay bg-black/50"></div>
 
     <div x-show="isOpen" x-on:keydown.window.escape="$dispatch('close-modal', { id: 'nav-menu-panel' })" x-transition:enter="ease duration-300" x-transition:leave="ease duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="relative w-full cursor-pointer pointer-events-none" slideover="slideover">
