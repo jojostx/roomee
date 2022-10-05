@@ -5,7 +5,7 @@
             <div class="relative flex flex-col items-center justify-between w-11/12 py-10 mb-20 md:mt-20 md:flex-row md:h-80">
                 <div class="mb-16 text-center md:mb-0 md:mr-16 sm:text-left">
                     <p class="mt-10 mb-6 text-3xl font-extrabold text-secondary-700 md:text-4xl lg:text-5xl">Who are we?</p>
-                    <p class="max-w-md px-8 sm:px-0"><span class="font-bold">Roomee</span> is a roommate finder platform that provides a simple yet effective way for you to find the best roommate based on your preferences. Founded in 2020, by <span class="font-bold">Ikuru John</span>, we are based in Abuja, Nigeria.</p>
+                    <p class="max-w-md px-8 text-xl font-medium leading-tight sm:px-0 text-secondary-600 md:text-2xl"><span class="font-bold">Roomee</span> is a roommate finder platform that provides a simple yet effective way for you to find the best roommate based on your preferences. Founded in 2020, by <span class="font-bold">Ikuru John</span>, we are based in Abuja, Nigeria.</p>
                 </div>
                 <div class="relative w-full max-w-xs badge">
                     <img src="{{ asset('images/badge.png') }}" alt="badge of excellence" class="relative z-20">
@@ -38,7 +38,7 @@
 
                 <div class="max-w-md p-8 border-2 border-secondary-800 sm:p-8 md:mb-0">
                     <h2 class="mb-4 text-xl font-bold">OUR MISSION</h2>
-                    <p class="font-normal">The insatiable urge to be of help to people and the drive to create solutions to common problems as a way to build a better world for the next generation. Making the lives of Nigerians easier by providing solutions to commons problems through the use of technology. We are focused on creating an encouraging environment for young innovative minds.</p>
+                    <p class="font-normal">Making the lives of Nigerians easier by providing solutions to commons problems through the use of technology. We are focused on creating an encouraging environment for young innovative minds.</p>
                 </div>
             </div>
         </div>

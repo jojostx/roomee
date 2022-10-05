@@ -8,7 +8,7 @@
                         have any questions or compliants, Feel free to reach us by phone, mail, sending a message below
                         or through our social media handles.</p>
                 </div>
-                <div class="z-0 hidden pt-2 ml-16 bg-danger-300 border rounded-full rounded-b-none mt-14 right-10 md:block w-72 top-28">
+                <div class="z-0 hidden pt-2 ml-16 bg-white border rounded-full rounded-b-none mt-14 right-10 md:block w-72 top-28">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 461.14 507.78">
                         <defs>
                             <style>
@@ -17,7 +17,7 @@
                                 }
 
                                 .cls-2 {
-                                    fill: #d8d8d8;
+                                    fill: #c8c8c8;
                                 }
 
                                 .cls-3 {
@@ -148,7 +148,7 @@
             <div class="flex-1 w-full max-w-md pb-12 md:pb-0 md:pr-14 sm:text-left">
 
                 <!-- Validation Errors -->
-                <x-auth-validation-errors class="px-2 py-2 mt-2 mb-4 border border-danger-600 rounded-lg" :errors="$errors" />
+                <x-auth-validation-errors class="px-2 py-2 mt-2 mb-4 border rounded-lg border-danger-600" :errors="$errors" />
 
                 <form method="POST" id="contact_form" x-on:submit.prevent="submitForm('http://127.0.0.1:8000/contact-us')" x-data="form('contact_form')" class="mb-4">
                     @csrf
@@ -193,61 +193,53 @@
                         </x-button>
                     </div>
                 </form>
-                <div id="flash" class="hidden px-4 py-2 font-bold text-primary-600 bg-white border rounded-md shadow-md">
+                <div id="flash" class="hidden px-4 py-2 font-bold bg-white border rounded-md shadow-md text-primary-600">
                 </div>
             </div>
 
             <div class="relative flex flex-col flex-1 w-full h-full pt-12 pl-2 border-t border-primary-200 xs:pl-2 md:pt-0 md:pl-14 md:border-t-0 lg:border-l sm:text-left">
                 <h2 class="text-2xl font-bold text-secondary-800">Reach us via:</h2>
                 <div class="grid w-full max-w-3xl grid-cols-1 mx-auto mt-6 auto-rows-min gap-x-2 lg:gap-x-6 gap-y-6 lg:grid-cols-2">
-                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border border-secondary-300 rounded-lg hover:shadow-md hover:text-primary-500">
+                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border rounded-lg border-secondary-300 hover:shadow-md hover:text-primary-500">
                         <x-social-link-alt class="my-6 mr-4">
                             <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M10 0C4.48565 0 0 4.48565 0 10C0 15.5143 4.48565 20 10 20C15.5143 20 20 15.5143 20 10C20 4.48565 15.5143 0 10 0L10 0ZM14.8865 8.05383C14.8908 8.15644 14.8934 8.26078 14.8934 8.36557C14.8934 11.5473 12.4704 15.2173 8.04037 15.2173C6.68037 15.2173 5.41385 14.8186 4.34863 14.1351C4.53689 14.1577 4.72776 14.1686 4.92298 14.1686C6.05168 14.1686 7.09037 13.7843 7.91385 13.1382C6.85994 13.119 5.97124 12.4212 5.66385 11.4656C5.81124 11.4938 5.96211 11.509 6.11776 11.509C6.33733 11.509 6.55037 11.4799 6.75168 11.4243C5.65081 11.2021 4.82081 10.2299 4.82081 9.06252C4.82081 9.05209 4.82081 9.04209 4.82081 9.03209C5.14559 9.21252 5.51646 9.32122 5.91168 9.33383C5.26472 8.90122 4.84037 8.1647 4.84037 7.32905C4.84037 6.88774 4.95863 6.47426 5.16602 6.11774C6.35428 7.5747 8.12907 8.53339 10.1304 8.63426C10.0891 8.45774 10.0673 8.27426 10.0673 8.08557C10.0673 6.75557 11.1456 5.67731 12.476 5.67731C13.1686 5.67731 13.7943 5.96948 14.2334 6.43774C14.7817 6.32992 15.2978 6.12948 15.763 5.85383C15.5834 6.41557 15.2012 6.88774 14.7034 7.186C15.1912 7.12687 15.6547 6.99818 16.0873 6.80644C15.7647 7.28948 15.3565 7.71426 14.8865 8.05383L14.8865 8.05383Z" />
                         </x-social-link-alt>
                         <p>/roomee_com_ng</p>
                     </a>
-                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border border-secondary-300 rounded-lg hover:shadow-md hover:text-primary-500">
+                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border rounded-lg border-secondary-300 hover:shadow-md hover:text-primary-500">
                         <x-social-link-alt class="my-6">
                             <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M20 10.2354C20 14.8209 17.06 18.7001 13 20L13 17.4002C13 16.5251 12.64 15.7421 12.07 15.1791C14.69 14.6929 16 13.132 16 10.2354C16 8.98158 15.75 7.98874 15.26 7.21597C15.48 6.34084 15.61 5.09724 15 4.09417C13.82 4.09417 12.995 4.80553 12.51 5.38895C11.785 5.20983 10.95 5.11771 10 5.11771C9.1 5.11771 8.27 5.22006 7.53 5.42989C7.05 4.84135 6.21 4.09417 5 4.09417C4.29 5.261 4.58 6.51996 4.85 7.2262C4.31 7.99898 4 8.99181 4 10.2354C4 13.132 5.31 14.6929 7.93 15.1791C7.595 15.5118 7.335 15.9161 7.175 16.3767L6 16.3767C5.28 16.3767 5 16.0491 4.615 15.5169C4.23 14.9846 3.815 14.6264 3.32 14.478C3.055 14.4473 2.875 14.6673 3.11 14.8618C3.895 15.4401 3.95 16.3869 4.265 17.0061C4.55 17.564 5.14 17.912 5.805 17.912L7 17.912L7 20C2.94 18.7001 0 14.8209 0 10.2354C0 4.58035 4.475 0 10 0C15.525 0 20 4.58035 20 10.2354L20 10.2354Z" />
                         </x-social-link-alt>
                         <p>/roomee_com_ng</p>
                     </a>
-                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border border-secondary-300 rounded-lg hover:shadow-md hover:text-primary-500">
+                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border rounded-lg border-secondary-300 hover:shadow-md hover:text-primary-500">
                         <x-social-link-alt class="my-6">
                             <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M10 0C4.4775 0 0 4.50057 0 10.0515C0 15.0907 3.69333 19.252 8.505 19.9791L8.505 12.7152L6.03083 12.7152L6.03083 10.0733L8.505 10.0733L8.505 8.31512C8.505 5.40436 9.91583 4.12698 12.3225 4.12698C13.475 4.12698 14.085 4.21326 14.3733 4.25179L14.3733 6.55778L12.7317 6.55778C11.71 6.55778 11.3533 7.53194 11.3533 8.62923L11.3533 10.0733L14.3475 10.0733L13.9417 12.7152L11.3533 12.7152L11.3533 20C16.2342 19.3349 20 15.1401 20 10.0515C20 4.50057 15.5225 0 10 0L10 0Z" />
                         </x-social-link-alt>
                         <p>/roomee_com_ng</p>
                     </a>
-                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border border-secondary-300 rounded-lg hover:shadow-md hover:text-primary-500">
+                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border rounded-lg border-secondary-300 hover:shadow-md hover:text-primary-500">
                         <x-social-link-alt class="my-6">
                             <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M15.125 10.9997C14.424 10.9997 13.738 11.0612 13.0685 11.1737C13.9855 13.5376 14.6805 16.0096 15.132 18.566C17.5154 17.1325 19.2579 14.7421 19.8099 11.9231C18.3639 11.3297 16.7824 10.9997 15.125 10.9997L15.125 10.9997ZM11.0113 10.1223C10.7438 9.51531 10.4598 8.91682 10.1618 8.32683C8.08233 9.08532 5.83888 9.49981 3.49993 9.49981C2.31895 9.49981 1.16448 9.38831 0.040999 9.18631C0.0194996 9.45531 0 9.7253 0 9.9998C0 12.7022 1.08198 15.1537 2.83044 16.9551C4.5284 13.7162 7.46584 11.2253 11.0113 10.1223L11.0113 10.1223ZM11.5527 7.75237C11.8822 8.40986 12.1972 9.07585 12.4907 9.75383C13.3441 9.58884 14.2241 9.49984 15.1251 9.49984C16.8331 9.49984 18.4685 9.81183 19.981 10.3788C19.9855 10.2518 20 10.1278 20 9.99983C20 7.50988 19.079 5.23443 17.5681 3.48246C15.8621 5.26193 13.8241 6.7179 11.5527 7.75237L11.5527 7.75237ZM3.99246 17.9745C5.66743 19.2395 7.74389 19.9994 9.99984 19.9994C11.3203 19.9994 12.5793 19.736 13.7343 19.269C13.2918 16.58 12.5653 13.9871 11.5913 11.5166C8.25037 12.5136 5.49693 14.8856 3.99246 17.9745L3.99246 17.9745ZM16.5067 2.42245C14.7557 0.916981 12.4843 0 9.99933 0C8.90886 0 7.86138 0.181496 6.8779 0.505489C8.37287 2.34895 9.70884 4.32591 10.8593 6.41987C12.9948 5.45889 14.9092 4.09441 16.5067 2.42245L16.5067 2.42245ZM0.275514 7.70487C1.32249 7.89537 2.39847 7.99986 3.49945 7.99986C5.5859 7.99986 7.58886 7.63887 9.45382 6.98339C8.29585 4.89993 6.95337 2.93297 5.4409 1.11051C2.87396 2.43198 0.954999 4.82893 0.275514 7.70487L0.275514 7.70487Z" />
                         </x-social-link-alt>
                         <p>/roomee_com_ng</p>
                     </a>
-                    <a target="_blank" href="mailto:support@roomee.com.ng" class="flex items-center max-w-xs px-4 bg-white border border-secondary-300 rounded-lg hover:shadow-md hover:text-primary-500">
+                    <a target="_blank" href="mailto:support@roomee.com.ng" class="flex items-center max-w-xs px-4 bg-white border rounded-lg border-secondary-300 hover:shadow-md hover:text-primary-500">
                         <x-social-link-alt class="my-6">
                             <path fill="currentColor" fill-rule="evenodd" d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                             <path fill="currentColor" fill-rule="evenodd" d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                         </x-social-link-alt>
                         <p class="text-sm">support@Roomee.com.ng</p>
                     </a>
-                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border border-secondary-300 rounded-lg hover:shadow-md hover:text-primary-500">
+                    <a href="#" class="flex items-center max-w-xs px-4 bg-white border rounded-lg border-secondary-300 hover:shadow-md hover:text-primary-500">
                         <x-social-link-alt class="my-6">
                             <path fill="currentColor" fill-rule="evenodd" stroke="none" d="M10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0ZM5.625 5C5.27982 5 5 5.27982 5 5.625L5 6.875C5 11.3625 8.6375 15 13.125 15L14.375 15C14.7202 15 15 14.7202 15 14.375L15 13.0294C14.9999 12.7239 14.7789 12.4632 14.4775 12.4131L11.7056 11.9506C11.4348 11.9056 11.1663 12.0425 11.0437 12.2881L10.56 13.2556C8.82278 12.5546 7.44538 11.1772 6.74437 9.44L7.71187 8.95687C7.95778 8.83424 8.09474 8.56539 8.04937 8.29437L7.58687 5.5225C7.53677 5.22113 7.27614 5.00014 6.97062 5L5.625 5Z" />
                         </x-social-link-alt>
                         <p class="text-sm">+234-903-719-8917</p>
                     </a>
                 </div>
-                <p class="mt-4 font-semibold text-primary-500">Thanks for vibing with us we are happy to help!!!
-                    <i class="inline-block w-4 text-danger-600">
-                        <svg viewBox="0 0 32 56" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path id="Shape" d="m11 34c0 .5522847.4477153 1 1 1h1.28c-.217479-.6428465-.2958769-1.3245676-.23-2h-1.05c-.5522847 0-1 .4477153-1 1z" />
-                            <path id="Shape" d="m18.92.07c-.77843-.16598375-1.5909143-.01582593-2.258599.41741889-.6676846.43324483-1.1358368 1.11406176-1.301401 1.89258111l-2.88 18.36c-.1293819.6987293-.7284376 1.212699-1.4387142 1.2343685s-1.33954984-.4548258-1.5112858-1.1443685l-3.53-16.24c-.15744606-1.08577689-.89503943-1.99900707-1.92338293-2.38138169-1.0283435-.38237463-2.18339895-.17289847-3.01197655.54623981s-1.19850521 1.83322397-.96464052 2.90514188l3.35 18.34c.25841173 1.3964914.24142675 2.8300232-.05 4.22 1.02262075-1.0092632 2.11534735-1.9449312 3.27-2.8 1.2012848-.9163406 2.66912604-1.4149852 4.18-1.42h6.68l3.7-20.36c.1689571-.77989716.0202334-1.59497214-.413275-2.26493969s-1.1160754-1.1396145-1.896725-1.30506031z" />
-                            <path id="Shape" d="m20.29 37.12c-.5220004.3780639-1.1131982.649879-1.74.8.1356986.2180011.2559918.4452216.36.68.1344744.3081002.1051455.6631514-.0780623.9450095-.1832078.2818582-.4957765.4528034-.8319377.4549905-.3952551-.0025789-.751903-.2377313-.91-.6-.6382125-1.462355-2.0844542-2.4055561-3.68-2.4h-1.41c-1.6568542 0-3-1.3431458-3-3s1.3431458-3 3-3h3c2.209139 0 4-1.790861 4-4v-1h-8.15c-1.08185107 0-2.13451915.3508894-3 1-3.92 2.92-7.85 7.27-7.85 12.23-.00290994 2.2349793.69672488 4.4143418 2 6.23l5 6.9c.75955737 1.0539141 1.11451402 2.3459564 1 3.64h17c0-2.72-.27-2 4.13-9.49 1.1572004-2.3393412 1.795098-4.901165 1.87-7.51v-4.62l-2.33 3.71c-.918715 1.5836995-2.6891437 2.4717909-4.5078855 2.2612683-1.8187418-.2105227-3.3394775-1.4795722-3.8721145-3.2312683z" />
-                            <path id="Shape" d="m15.05 33c-.1833227.8386817.0729244 1.7129963.6799641 2.3200359.6070396.6070397 1.4813542.8632868 2.3200359.6799641 1.45-.32 2-1.45 2.75-2.73 4.08-6.52 3.93-6.26 4-6.46.9182919-1.2898758.6184864-3.0797595-.67-4-.6487772-.3627937-1.4158228-.4506582-2.1298337-.2439708-.7140108.2066873-1.3155102.6907096-1.6701663 1.3439708l-.27.43c.5740424.3586233.9277489.9832539.94 1.66v1c.0001144 3.2942801-2.6558343 5.9725477-5.95 6z" />
-                            <path id="Shape" d="m30.8 26c-1.2986137-.7397918-2.9508544-.2932402-3.7 1-.58.94.4-.72-4.59 7.34-.3935511.6209216-.5231286 1.373191-.36 2.09.2624057 1.0535664 1.1496519 1.8346407 2.227983 1.9613724s2.1224929-.4273524 2.622017-1.3913724l4.6-7.31c.7979578-1.2398962.4398011-2.8918943-.8-3.69z" />
-                        </svg>
-                    </i>
+                <p class="mt-4 font-semibold ">
+                    Thanks for vibing with us we are happy to help!!
                 </p>
             </div>
         </div>

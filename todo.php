@@ -248,3 +248,10 @@ return collect([]);
 
 // auth()->user()->${}
 return RoommateRequest::where($columnName, auth()->id())->orderBy('created_at', 'desc')->get();
+
+
+<div class="flex items-center gap-2 px-4 py-2">
+  <x-livewire.includes.favoriting-sxn :user="$user" />
+  <x-livewire.includes.requesting-sxn :user="$user" />
+  <x-filament-support::icon-button wire:click='showReportOrBlockModal' wire:loading.attr="disabled" style="border-radius: 0.5rem;" class="border rounded-lg border-secondary-300 disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " color="secondary" size="sm" icon="heroicon-s-dots-horizontal" aria-label="show user menu" title="show user menu" />
+</div>
