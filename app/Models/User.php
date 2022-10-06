@@ -221,11 +221,27 @@ class User extends Authenticatable
 
     public function getAvatarPathAttribute()
     {
-        return filled($this->avatar) ? Storage::disk('avatars')->url($this->avatar) : '';
+        $avatar = asset('images/avatar_placeholder.png');
+
+        if (filled($this->avatar) && Storage::disk('avatars')->exists($this->avatar)) {
+            try {
+                $avatar = Storage::disk('avatars')->url($this->avatar);
+            } catch (\RuntimeException $th) {}
+        }
+
+        return $avatar;
     }
 
     public function getCoverPhotoPathAttribute()
     {
-        return filled($this->cover_photo) ? Storage::disk('cover_photos')->url($this->cover_photo) : '';
+        $cover_photo = asset('images/cover_placeholder.png');
+
+        if (filled($this->cover_photo) && Storage::disk('cover_photos')->exists($this->cover_photo)) {
+            try {
+                $cover_photo = Storage::disk('cover_photos')->url($this->cover_photo);
+            } catch (\RuntimeException $th) {}
+        }
+
+        return $cover_photo;
     }
 }
