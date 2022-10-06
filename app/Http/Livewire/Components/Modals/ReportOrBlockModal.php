@@ -143,7 +143,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
             case OnUserAction::BLOCK: {
                     Notification::make()
                         ->title("User blocked succesfully")
-                        ->title("You have succesfully blocked **{$this->user->fullname}**. They will be unable to view your profile or send you roommate request.")
+                        ->title("You have succesfully blocked **{$this->user->full_name}**. They will be unable to view your profile or send you roommate request.")
                         ->success()
                         ->send();
 
@@ -154,7 +154,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
                 break;
         }
 
-        $this->emit('actionTakenOnUser', $this->user->fullname, $action);
+        $this->emit('actionTakenOnUser', $this->user->full_name, $action);
     }
 
     public static function modalMaxWidth(): string

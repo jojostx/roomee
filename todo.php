@@ -7,8 +7,8 @@
 // [
 // "avatar_image" => "2/avatar-photo-c81e728d9d4c2f636f067f89cc14862c-91bda30d-1b83-41a8-a63b-a197110266f3.png",
 // "cover_image" => "2/cover-photo-c81e728d9d4c2f636f067f89cc14862c-2062cd3b-7e31-44d2-8b06-fcc879c03f2c.png",
-// "firstname" => "Mark",
-// "lastname" => "Ivan",
+// "first_name" => "Mark",
+// "last_name" => "Ivan",
 // "bio" => "I am very devoted christian and therefore I want a roommate who is preferably a christian",
 // "hobbies" => [
 // 0 => "1",

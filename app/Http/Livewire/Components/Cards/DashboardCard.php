@@ -42,7 +42,7 @@ class DashboardCard extends Component
         Notification::make()
             ->title('Request sent successfully')
             ->success()
-            ->body("Your roommate request have been sent to **{$this->user->fullname}**. You will be notified when they accept.")
+            ->body("Your roommate request have been sent to **{$this->user->full_name}**. You will be notified when they accept.")
             ->send();
 
         $this->user->notify(new RoommateRequestRecieved($this->getAuthModel()));

@@ -35,11 +35,11 @@
       <div class="flex flex-col justify-center w-full pt-4 md:pt-2">
         <div class="flex justify-start gap-4 mb-6">
           <div class="w-1/2 mr-6">
-            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->firstname) }}</span>
+            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->first_name) }}</span>
             <label class="block text-sm text-secondary-700">First Name</label>
           </div>
           <div>
-            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->lastname) }}</span>
+            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->last_name) }}</span>
             <label class="block text-sm text-secondary-700">Last Name</label>
           </div>
         </div>

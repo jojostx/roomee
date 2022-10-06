@@ -49,8 +49,8 @@ class UpdatePage extends Component implements HasForms
         $this->form->fill([
             'avatar_image' => $user->avatar,
             'cover_image' => $user->cover_photo,
-            'firstname' => $user->firstname,
-            'lastname' => $user->lastname,
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
             'rooms' => $user->rooms ?? '',
             'bio' => $user->bio ?? '',
             'max_budget' => $user->max_budget ?? '',
@@ -115,7 +115,7 @@ class UpdatePage extends Component implements HasForms
                             'lg' => 6,
                         ]),
 
-                    CharcountedTextInput::make('firstname')
+                    CharcountedTextInput::make('first_name')
                         ->label('First Name')
                         ->minCharacters(2)
                         ->maxCharacters(160)
@@ -128,7 +128,7 @@ class UpdatePage extends Component implements HasForms
                             'lg' => 4,
                         ]),
 
-                    CharcountedTextInput::make('lastname')
+                    CharcountedTextInput::make('last_name')
                         ->label('Last Name')
                         ->minCharacters(2)
                         ->maxCharacters(160)

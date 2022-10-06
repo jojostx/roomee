@@ -37,8 +37,8 @@ namespace App\Models{
  * App\Models\Contact
  *
  * @property int $id
- * @property string $firstname
- * @property string $lastname
+ * @property string $first_name
+ * @property string $last_name
  * @property string $email
  * @property string $message
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -48,9 +48,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Contact query()
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contact wherefirst_name($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contact wherelast_name($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereUpdatedAt($value)
  */
@@ -324,8 +324,8 @@ namespace App\Models{
  * App\Models\User
  *
  * @property int $id
- * @property string $firstname
- * @property string $lastname
+ * @property string $first_name
+ * @property string $last_name
  * @property string $gender
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
@@ -354,7 +354,7 @@ namespace App\Models{
  * @property-read int|null $favorites_count
  * @property-read mixed $avatar_path
  * @property-read mixed $cover_photo_path
- * @property-read mixed $fullname
+ * @property-read mixed $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Hobby[] $hobbies
  * @property-read int|null $hobbies_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -385,10 +385,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherefirst_name($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLastname($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherelast_name($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereMaxBudget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereMinBudget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)

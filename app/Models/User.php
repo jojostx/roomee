@@ -45,8 +45,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'uuid',
-        'firstname',
-        'lastname',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'profile_updated',
@@ -214,9 +214,9 @@ class User extends Authenticatable
     }
 
     // -------- ACCESSORS -------- //
-    public function getFullnameAttribute()
+    public function getFullNameAttribute()
     {
-        return $this->firstname . ' ' . $this->lastname;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function getAvatarPathAttribute()

@@ -11,7 +11,7 @@
         <div class="w-12 mb-2 overflow-hidden bg-secondary-300 rounded-full">
             {{ $avatar }}
         </div>
-        <p class="text-secondary-500"> {{ $fullname }} </p>
+        <p class="text-secondary-500"> {{ $full_name }} </p>
         <p class="text-xs text-primary-500"> {{ $username }} </p>
     </div>
 </div>

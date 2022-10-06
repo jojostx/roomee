@@ -39,16 +39,16 @@ class RegisteredUserController extends Controller
     {
 
         $request->validate([
-            'firstname' => ['required', 'alpha', 'string', 'max:255'],
-            'lastname' => ['required', 'alpha','string','max:255'],
+            'first_name' => ['required', 'alpha', 'string', 'max:255'],
+            'last_name' => ['required', 'alpha','string','max:255'],
             'email' => ['required','string','email','max:255','unique:users'],
             'password' => ['required', 'string','confirmed','min:8'],
             'gender' => ['required', Rule::in(['male', 'female'])]
         ]);
 
         Auth::login($user = User::create([
-            'firstname' => Str::of($request->firstname)->ucfirst(),
-            'lastname' => Str::of($request->lastname)->ucfirst(),
+            'first_name' => Str::of($request->first_name)->ucfirst(),
+            'last_name' => Str::of($request->last_name)->ucfirst(),
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'gender' => $request->gender,

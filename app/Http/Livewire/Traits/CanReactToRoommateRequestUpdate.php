@@ -29,7 +29,7 @@ trait CanReactToRoommateRequestUpdate
                 Notification::make()
                     ->success()
                     ->title('Roommate Request recieved!')
-                    ->body("**{$sender->fullname}** sent you a roommate request. Kindly attend to it.")->actions([
+                    ->body("**{$sender->full_name}** sent you a roommate request. Kindly attend to it.")->actions([
                         Action::make('view')
                             ->button()
                             ->url(route('profile.view', ['user' => $sender]), shouldOpenInNewTab: true)
@@ -41,7 +41,7 @@ trait CanReactToRoommateRequestUpdate
                 Notification::make()
                     ->success()
                     ->title('Roommate Request accepted!')
-                    ->body("**{$recipient->fullname}** accepted your roommate request. Kindly contact them ASAP.")->actions([
+                    ->body("**{$recipient->full_name}** accepted your roommate request. Kindly contact them ASAP.")->actions([
                         Action::make('view')
                             ->button()
                             ->url(route('profile.view', ['user' => $recipient]), shouldOpenInNewTab: true)

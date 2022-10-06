@@ -153,17 +153,17 @@
                 <form method="POST" id="contact_form" x-on:submit.prevent="submitForm('http://127.0.0.1:8000/contact-us')" x-data="form('contact_form')" class="mb-4">
                     @csrf
 
-                    <!-- FirstName -->
+                    <!-- first_name -->
                     <div>
-                        <x-label for="firstname" class="font-bold">First Name <span class="text-danger-500">*</span>
+                        <x-label for="first_name" class="font-bold">First Name <span class="text-danger-500">*</span>
                         </x-label>
-                        <x-input id="firstname" class="block w-full mt-1 text-sm font-medium" type="text" name="firstname" :value="old('first name')" required />
+                        <x-input id="first_name" class="block w-full mt-1 text-sm font-medium" type="text" name="first_name" :value="old('first_name')" required />
                     </div>
 
-                    <!-- LastName -->
+                    <!-- last_name -->
                     <div class="mt-4">
-                        <x-label for="lastname" class="font-bold">{{__('Last Name')}}</x-label>
-                        <x-input id="lastname" class="block w-full mt-1 text-sm font-medium" type="text" name="lastname" :value="old('last name')" required />
+                        <x-label for="last_name" class="font-bold">{{__('Last Name')}}</x-label>
+                        <x-input id="last_name" class="block w-full mt-1 text-sm font-medium" type="text" name="last_name" :value="old('last_name')" required />
                     </div>
 
                     <!-- Email Address -->

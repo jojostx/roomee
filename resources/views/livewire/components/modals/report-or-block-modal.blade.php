@@ -3,12 +3,12 @@
     <div>
         <div class="flex items-center justify-center py-3 border-b border-secondary-300">
             <p class="font-semibold text-secondary-700">
-                Block <span class="user-name">{{ $user->fullname }}</span>?
+                Block <span class="user-name">{{ $user->full_name }}</span>?
             </p>
         </div>
         <div class="px-4 py-2">
             <p class="text-secondary-600">
-                <span class="font-medium text-secondary-900">{{ $user->fullname }}</span> will no longer be able to view your profile or send you a roommate request.
+                <span class="font-medium text-secondary-900">{{ $user->full_name }}</span> will no longer be able to view your profile or send you a roommate request.
             </p>
             <div class="flex justify-end pt-2">
                 <button wire:click="$emit('closeModal')" class="px-1 py-2 mr-4 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Cancel</button>
@@ -20,7 +20,7 @@
     <div>
         <div class="flex items-center justify-center py-3 border-b border-secondary-300">
             <p class="font-semibold text-secondary-700">
-                Report <span class="user-name">{{ $user->fullname }}</span>?
+                Report <span class="user-name">{{ $user->full_name }}</span>?
             </p>
         </div>
         <div class="py-1 pt-2 text-base">
@@ -55,12 +55,12 @@
     <ul class="py-2">
         <x-responsive-nav-link wire:click="reportUser()" icon_before="heroicon-o-flag">
             <p>
-                {{ __('Report') }}&nbsp;<span class="font-semibold user-name">{{ $user->fullname }}</span>
+                {{ __('Report') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>
         </x-responsive-nav-link>
         <x-responsive-nav-link wire:click="blockUser()" icon_before="heroicon-o-ban">
             <p>
-                {{ __('Block') }}&nbsp;<span class="font-semibold user-name">{{ $user->fullname }}</span>
+                {{ __('Block') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>
         </x-responsive-nav-link>
     </ul>

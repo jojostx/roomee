@@ -14,7 +14,7 @@ class AddGenderColumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('gender')->after('lastname');
+            $table->string('gender')->after('last_name');
         });
     }
 

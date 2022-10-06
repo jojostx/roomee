@@ -18,10 +18,10 @@ class BlocklistCard extends Component
             Notification::make()
                 ->title('User unblocked successfully')
                 ->success()
-                ->body("You have succesfully unblocked **{$this->user->fullname}**")
+                ->body("You have succesfully unblocked **{$this->user->full_name}**")
                 ->send();
 
-            $this->emit('actionTakenOnUser', $this->user->fullname);
+            $this->emit('actionTakenOnUser', $this->user->full_name);
         }
 
         $this->user = null;

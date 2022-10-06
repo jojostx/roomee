@@ -10,7 +10,7 @@
       @endif
     </div>
 
-    <div class="w-5 h-5">
+    <div class="w-6 h-6">
       <x-heroicon-o-menu />
     </div>
   </button>

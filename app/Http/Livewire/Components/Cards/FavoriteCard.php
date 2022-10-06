@@ -29,7 +29,7 @@ class FavoriteCard extends Component
         $this->getAuthModel()->favorites()->detach($this->user->id);
 
         Notification::make()
-            ->title("You have unfavorited **{$this->user->fullname}**.")
+            ->title("You have unfavorited **{$this->user->full_name}**.")
             ->success()
             ->send();
 

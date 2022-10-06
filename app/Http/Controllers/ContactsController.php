@@ -17,8 +17,8 @@ class ContactsController extends Controller
         $request->validated();
 
         Contact::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'message' => $request->message,
         ]);

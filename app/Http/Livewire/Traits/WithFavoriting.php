@@ -19,7 +19,7 @@ trait WithFavoriting
             ->addToFavorites($this->user);
         
         Notification::make()
-            ->title("You have succesfully added **{$this->user->fullname}** to your Favorites.")
+            ->title("You have succesfully added **{$this->user->full_name}** to your Favorites.")
             ->success()
             ->send();
     }
@@ -30,7 +30,7 @@ trait WithFavoriting
             ->removeFromFavorites($this->user);
 
         Notification::make()
-            ->title("You have unfavorited **{$this->user->fullname}**.")
+            ->title("You have unfavorited **{$this->user->full_name}**.")
             ->success()
             ->send();
     }

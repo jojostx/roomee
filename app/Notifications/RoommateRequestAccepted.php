@@ -47,7 +47,7 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
     {
         return (new MailMessage)
             ->line('Roommate Request Accepted.')
-            ->line("{$this->recipient->fullname} accepted your Roommate Request.")
+            ->line("{$this->recipient->full_name} accepted your Roommate Request.")
             ->action('View profile', route('profile.view', ['user' => $this->recipient], true))
             ->line('Thank you for using our application!');
     }
@@ -57,7 +57,7 @@ class RoommateRequestAccepted extends Notification implements ShouldQueue
         return array_merge(
             FilamentNotification::make()
                 ->title('Roommate Request Accepted')
-                ->body("{$this->recipient->fullname} accepted your Roommate Request.")
+                ->body("{$this->recipient->full_name} accepted your Roommate Request.")
                 ->actions([
                     Action::make('view')
                         ->button()

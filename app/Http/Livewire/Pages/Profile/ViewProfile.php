@@ -40,7 +40,7 @@ class ViewProfile extends Component
 
         Notification::make()
             ->title("User blocked succesfully")
-            ->title("You have succesfully blocked **{$this->user->fullname}**. They will be unable to view your profile or send you roommate request.")
+            ->title("You have succesfully blocked **{$this->user->full_name}**. They will be unable to view your profile or send you roommate request.")
             ->success()
             ->send();
     }
@@ -53,7 +53,7 @@ class ViewProfile extends Component
             Notification::make()
                 ->title('User unblocked successfully')
                 ->success()
-                ->body("You have succesfully unblocked **{$this->user->fullname}**")
+                ->body("You have succesfully unblocked **{$this->user->full_name}**")
                 ->send();
         }
     }
@@ -65,7 +65,7 @@ class ViewProfile extends Component
         Notification::make()
             ->title('Request sent successfully')
             ->success()
-            ->body("Your roommate request have been sent to **{$this->user->fullname}**. You will be notified when they accept.")
+            ->body("Your roommate request have been sent to **{$this->user->full_name}**. You will be notified when they accept.")
             ->send();
 
         $this->user->notify(new RoommateRequestRecieved($this->getAuthModel()));

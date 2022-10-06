@@ -17,9 +17,9 @@
             <div class="mt-6">
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div class="flex flex-col col-span-1 form_input">
-                        <x-label for="firstname" :value="__('First Name')" />
-                        <x-input id="firstname" class="block w-full mt-1 text-sm font-medium" type="text" name="firstname" :value="old('firstname')" required autofocus />
-                        @error('firstname')
+                        <x-label for="first_name" :value="__('First Name')" />
+                        <x-input id="first_name" class="block w-full mt-1 text-sm font-medium" type="text" name="first_name" :value="old('first_name')" required autofocus />
+                        @error('first_name')
                         <div class="flex items-center mt-1 text-xs text-danger-500">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-3 mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -29,9 +29,9 @@
                         @enderror
                     </div>
                     <div class="flex flex-col col-span-1 form_input">
-                        <x-label for="lastname" :value="__('Last Name')" />
-                        <x-input id="lastname" class="block w-full mt-1 text-sm font-medium" type="text" name="lastname" :value="old('lastname')" required autofocus />
-                        @error('lastname')
+                        <x-label for="last_name" :value="__('Last Name')" />
+                        <x-input id="last_name" class="block w-full mt-1 text-sm font-medium" type="text" name="last_name" :value="old('last_name')" required autofocus />
+                        @error('last_name')
                         <div class="flex items-center mt-1 text-xs text-danger-500">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-3 mr-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />

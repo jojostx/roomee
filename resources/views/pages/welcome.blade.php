@@ -668,7 +668,7 @@
                     </svg>
                 </x-slot>
 
-                <x-slot name="fullname">
+                <x-slot name="full_name">
                     Ana Castello
                 </x-slot>
                 <x-slot name="username">
@@ -724,7 +724,7 @@
                     </svg>
                 </x-slot>
 
-                <x-slot name="fullname">
+                <x-slot name="full_name">
                     Ana Castello
                 </x-slot>
                 <x-slot name="username">
@@ -780,7 +780,7 @@
                     </svg>
                 </x-slot>
 
-                <x-slot name="fullname">
+                <x-slot name="full_name">
                     Ana Castello
                 </x-slot>
                 <x-slot name="username">
@@ -836,7 +836,7 @@
                     </svg>
                 </x-slot>
 
-                <x-slot name="fullname">
+                <x-slot name="full_name">
                     Ana Castello
                 </x-slot>
                 <x-slot name="username">

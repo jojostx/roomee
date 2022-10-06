@@ -24,8 +24,8 @@ class StoreCompliantFromContactPageRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'message' => 'required|max:255'
         ];
@@ -34,8 +34,8 @@ class StoreCompliantFromContactPageRequest extends FormRequest
     public function messages()
     {
         return [
-            'firstname.required' => 'Your first name is required',
-            'lastname.required' => 'Your last name is required',
+            'first_name.required' => 'Your first name is required',
+            'last_name.required' => 'Your last name is required',
             'email.required' => 'Your email address is required',
             'message.required' => 'the message field is required',
         ];
@@ -44,8 +44,8 @@ class StoreCompliantFromContactPageRequest extends FormRequest
     public function attributes()
     {
         return [
-            'firstname' => 'First name',
-            'lastname' => 'Last name',
+            'first_name' => 'First name',
+            'last_name' => 'Last name',
             'email' => 'Email address',
         ];
     }

@@ -3,7 +3,7 @@
 <div class="flex items-center w-full gap-2">
     <!-- requesting and contacting section -->
     @if (auth()->user()->isRoommateWith($user))
-    <x-filament-support::button labelSrOnly="true" tag="a" size="sm" icon="heroicon-s-phone-outgoing" aria-label="contact {{ $user->fullname }}" title="contact {{ $user->fullname }}">
+    <x-filament-support::button labelSrOnly="true" tag="a" size="sm" icon="heroicon-s-phone-outgoing" aria-label="contact {{ $user->full_name }}" title="contact {{ $user->full_name }}">
         Contact
     </x-filament-support::button>
     @elseif (auth()->user()->hasSentRoommateRequestTo($user))
