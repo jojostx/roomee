@@ -220,7 +220,7 @@ namespace App\Models{
  * App\Models\Report
  *
  * @property int $id
- * @property string $desc
+ * @property string $description
  * @property int $severity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

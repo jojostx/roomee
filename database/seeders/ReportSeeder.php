@@ -10,23 +10,23 @@ class ReportSeeder extends Seeder
 {
     private $reports = [
         [
-            'desc' => 'profile contains sexual content',
+            'description' => 'profile contains sexual content',
             'severity' => 10
         ],
         [
-            'desc' => 'profile contains advertisement',
+            'description' => 'profile contains advertisement',
             'severity' => 9
         ],
         [
-            'desc' => 'profile contains explicit content',
+            'description' => 'profile contains explicit content',
             'severity' => 8
         ],
         [
-            'desc' => 'profile is an impersonation',
+            'description' => 'profile is an impersonation',
             'severity' => 9
         ],
         [
-            'desc' => 'profile is fraudulent',
+            'description' => 'profile is fraudulent',
             'severity' => 9
         ],
     ];
