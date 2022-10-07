@@ -47,8 +47,8 @@ trait canCalculateUserSimilarity
         });
     }
 
-    public function calculateUserSimilarityScore(?User $user): float
+    public function calculateUserSimilarityScore(?User $user): int
     {
-        return filled($user)? round($this->calculateSimilarityScore($this, $user), 2) * 100 : 0.0;
+        return filled($user)? intval($this->calculateSimilarityScore($user) * 100) : 0;
     }
 }
