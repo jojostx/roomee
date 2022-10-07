@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 trait Requestable
 {
@@ -70,6 +69,16 @@ trait Requestable
             ->exists();
     }
 
+    public function hasEitherSentOrRecievedRoommateRequest(Model $recipient): bool
+    {
+        return RoommateRequest::query()->betweenModels($this, $recipient)->exists();
+    }
+
+    public function hasNeitherSentNorRecievedRoommateRequest(Model $recipient): bool
+    {
+        return !$this->hasEitherSentOrRecievedRoommateRequest($recipient);
+    }
+
 
     /** getters */
     public function getRoommateRequest(Model $recipient)
@@ -83,7 +92,8 @@ trait Requestable
             ->whereRecipient($this)
             ->orWhere(function ($query) {
                 $query->whereSender($this);
-            })->get();
+            })
+            ->get();
     }
 
     public function getSentRoommateRequests(): Collection
@@ -137,7 +147,7 @@ trait Requestable
         $inserted = DB::table('roommate_requests')
             ->insert([
                 'id' => $id,
-                'uuid' => Str::uuid()->toString(),
+                'uuid' => str()->uuid()->toString(),
                 'status' => Status::PENDING->value,
                 'sender_id' => $this->getKey(),
                 'recipient_id' => $recipient->getKey(),
@@ -148,6 +158,18 @@ trait Requestable
         RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::PENDING);
 
         return $inserted;
+    }
+
+    public function deleteRoommateRequest(Model $recipient): bool
+    {
+        $deleted = (bool) RoommateRequest::query()
+            ->whereSender($this)
+            ->whereRecipient($recipient)
+            ->delete();
+
+        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED);
+
+        return $deleted;
     }
 
     public function acceptRoommateRequest(Model $sender): bool
@@ -178,17 +200,6 @@ trait Requestable
         return $updated;
     }
 
-    public function deleteRoommateRequest(Model $recipient): bool
-    {
-        $deleted = (bool) RoommateRequest::query()
-            ->whereSender($this)
-            ->whereRecipient($recipient)
-            ->delete();
-
-        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED);
-
-        return $deleted;
-    }
 
     /** helpers */
     static function getCompositeKey(User $sender, User $recipient): string
