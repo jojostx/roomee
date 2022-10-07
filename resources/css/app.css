@@ -19,9 +19,11 @@
         --thumbBG: rgba(75, 85, 99, 1);
         scroll-behavior: smooth;
     }
+
     [x-cloak] {
         display: none !important;
     }
+
     body {
         scrollbar-width: thin;
         scrollbar-color: var(--thumbBG) var(--scrollbarBG);
@@ -40,15 +42,31 @@
         border: 3px solid var(--scrollbarBG);
         border-radius: 6px;
     }
+
+    .filament-user-card div.filament-tables-actions-container {
+        flex-wrap: nowrap;
+    }
+
+    button[disabled]{
+        cursor: default;
+        --tw-bg-opacity: 0.5;
+        background-color: rgb(160 160 160 / var(--tw-bg-opacity));
+    }
+
+    button[disabled]:hover{
+        --tw-bg-opacity: 0.5;
+        background-color: rgb(160 160 160 / var(--tw-bg-opacity));
+    }
 }
 
 @layer components {
+
     .dropdown_ul {
         @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-secondary-50;
     }
 
     .select_dropdown {
-        @apply w-full text-secondary-500 border-secondary-300 rounded-md shadow-sm;
+        @apply w-full rounded-md shadow-sm text-secondary-500 border-secondary-300;
     }
 
     .select_dropdown:focus {
@@ -60,7 +78,7 @@
     }
 
     button[disabled] {
-        @apply bg-secondary-500 cursor-default;
+        @apply cursor-default bg-secondary-500;
     }
 
     button[disabled]:hover {
@@ -96,7 +114,7 @@
     }
 
     .close-button__success {
-        @apply text-success-500 bg-success-100 rounded-lg focus:ring-2 focus:ring-success-400 hover:bg-success-200 dark:bg-success-200 dark:text-success-600 dark:hover:bg-success-300;
+        @apply rounded-lg text-success-500 bg-success-100 focus:ring-2 focus:ring-success-400 hover:bg-success-200 dark:bg-success-200 dark:text-success-600 dark:hover:bg-success-300;
     }
 
     .close-button__warning {
@@ -104,23 +122,23 @@
     }
 
     .close-button__danger {
-        @apply text-danger-500 bg-danger-100 rounded-lg focus:ring-2 focus:ring-danger-400 hover:bg-danger-200 dark:bg-danger-200 dark:text-danger-600 dark:hover:bg-danger-300;
+        @apply rounded-lg text-danger-500 bg-danger-100 focus:ring-2 focus:ring-danger-400 hover:bg-danger-200 dark:bg-danger-200 dark:text-danger-600 dark:hover:bg-danger-300;
     }
 
     .close-button__info {
-        @apply text-primary-500 bg-primary-100 rounded-lg focus:ring-2 focus:ring-primary-400 hover:bg-primary-200 dark:bg-primary-200 dark:text-primary-600 dark:hover:bg-primary-300;
+        @apply rounded-lg text-primary-500 bg-primary-100 focus:ring-2 focus:ring-primary-400 hover:bg-primary-200 dark:bg-primary-200 dark:text-primary-600 dark:hover:bg-primary-300;
     }
     
     .close-button__default {
-        @apply text-secondary-500 bg-secondary-100 rounded-lg focus:ring-2 focus:ring-secondary-400 hover:bg-secondary-200 dark:bg-secondary-200 dark:text-secondary-600 dark:hover:bg-secondary-300;
+        @apply rounded-lg text-secondary-500 bg-secondary-100 focus:ring-2 focus:ring-secondary-400 hover:bg-secondary-200 dark:bg-secondary-200 dark:text-secondary-600 dark:hover:bg-secondary-300;
     }
 
     .toast {
-        @apply fixed z-50 flex items-center w-full max-w-sm p-4 mb-4 text-secondary-500 bg-white rounded-lg shadow bottom-5 right-5 sm:max-w-md dark:text-secondary-400 dark:bg-secondary-800;
+        @apply fixed z-50 flex items-center w-full max-w-sm p-4 mb-4 bg-white rounded-lg shadow text-secondary-500 bottom-5 right-5 sm:max-w-md dark:text-secondary-400 dark:bg-secondary-800;
     }
 
     .toast-icon {
-        @apply inline-flex flex-shrink-0 rounded-lg justify-center items-center w-8 h-8;
+        @apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
     }
 }
 

@@ -30,16 +30,14 @@
     @stack('scripts')
 </head>
 
-<body class="relative min-h-screen font-sans antialiased text-secondary-900">
-    <x-alert :type="'info'" :hasCloseButton="true" :showAlert="false"></x-alert>
-
+<body class="relative font-sans antialiased text-secondary-900">
     @auth
-    <header class="relative z-10 flex flex-row items-center justify-center w-full bg-white border-b ">
+    <header class="relative z-20 flex flex-row items-center justify-center w-full bg-white border-b ">
         @include('sections.navbar-alt')
     </header>
     @endauth
 
-    <main>
+    <main class="min-h-[720px] h-full bg-secondary-100">
         {{ $slot }}
     </main>
 
@@ -59,6 +57,8 @@
 
         window.addEventListener('resize', () => setCustomCSSViewportHeightVariable());
     </script>
+
+    <x-livewire.includes.user-interaction-menu />
 </body>
 
 </html>

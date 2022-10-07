@@ -4,6 +4,7 @@ use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Livewire\Pages\Blocklist;
 use App\Http\Livewire\Pages\Dashboard;
+use App\Http\Livewire\Pages\DashboardFilament;
 use App\Http\Livewire\Pages\Favorite;
 use App\Http\Livewire\Pages\Profile\UpdatePage;
 use App\Http\Livewire\Pages\Profile\ViewProfile;
@@ -41,6 +42,7 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    Route::get('/dashboard-filament', DashboardFilament::class)->name('dashboard.filament');
     Route::get('/profile/update', UpdatePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
     Route::get('/profile/view/{user}', ViewProfile::class)->name('profile.view');
     Route::get('/blocklist', Blocklist::class)->name('blocklist');

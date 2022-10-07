@@ -21431,12 +21431,12 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cropperjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! cropperjs */ "./node_modules/cropperjs/dist/cropper.js");
 /* harmony import */ var cropperjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(cropperjs__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
-/* harmony import */ var _alpinejs_focus__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @alpinejs/focus */ "./node_modules/@alpinejs/focus/dist/module.esm.js");
-/* harmony import */ var _awcodes_alpine_floating_ui__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @awcodes/alpine-floating-ui */ "./node_modules/@awcodes/alpine-floating-ui/dist/module.esm.js");
-/* harmony import */ var _alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./alpinejs/filamentphp/photo-upload */ "./resources/js/alpinejs/filamentphp/photo-upload.js");
-/* harmony import */ var _vendor_filament_notifications_dist_module_esm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../vendor/filament/notifications/dist/module.esm */ "./vendor/filament/notifications/dist/module.esm.js");
-/* harmony import */ var _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./alpinejs/filamentphp/multi-select */ "./resources/js/alpinejs/filamentphp/multi-select.js");
+/* harmony import */ var _alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./alpinejs/filamentphp/photo-upload */ "./resources/js/alpinejs/filamentphp/photo-upload.js");
+/* harmony import */ var _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./alpinejs/filamentphp/multi-select */ "./resources/js/alpinejs/filamentphp/multi-select.js");
+/* harmony import */ var alpinejs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/module.esm.js");
+/* harmony import */ var _alpinejs_focus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @alpinejs/focus */ "./node_modules/@alpinejs/focus/dist/module.esm.js");
+/* harmony import */ var _awcodes_alpine_floating_ui__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @awcodes/alpine-floating-ui */ "./node_modules/@awcodes/alpine-floating-ui/dist/module.esm.js");
+/* harmony import */ var _vendor_filament_notifications_dist_module_esm__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../vendor/filament/notifications/dist/module.esm */ "./vendor/filament/notifications/dist/module.esm.js");
 /* harmony import */ var _vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../vendor/filament/forms/dist/module.esm */ "./vendor/filament/forms/dist/module.esm.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
@@ -21449,14 +21449,14 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.Cropper = (cropperjs__WEBPACK_IMPORTED_MODULE_0___default());
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_7__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_focus__WEBPACK_IMPORTED_MODULE_2__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_awcodes_alpine_floating_ui__WEBPACK_IMPORTED_MODULE_3__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_vendor_filament_notifications_dist_module_esm__WEBPACK_IMPORTED_MODULE_5__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_4__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].data('multiselect', _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_6__["default"]);
-window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"];
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].start();
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].plugin(_vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_7__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].plugin(_alpinejs_focus__WEBPACK_IMPORTED_MODULE_4__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].plugin(_awcodes_alpine_floating_ui__WEBPACK_IMPORTED_MODULE_5__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].plugin(_vendor_filament_notifications_dist_module_esm__WEBPACK_IMPORTED_MODULE_6__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].plugin(_alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_1__["default"]);
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].data('multiselect', _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_2__["default"]);
+window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"];
+alpinejs__WEBPACK_IMPORTED_MODULE_3__["default"].start();
 })();
 
 /******/ })()

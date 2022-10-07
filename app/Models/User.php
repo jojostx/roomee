@@ -6,6 +6,7 @@ use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
 use App\Models\Traits\Favoritable;
+use App\Models\Traits\Reportable;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,6 +28,7 @@ class User extends Authenticatable
         Blockable,
         Favoritable,
         Requestable,
+        Reportable,
         canCalculateUserSimilarity;
 
     /**
@@ -131,7 +133,7 @@ class User extends Authenticatable
     }
 
     /**
-     * The reports that was made made by user.
+     * The reports that was made by user.
      */
     public function reports()
     {
