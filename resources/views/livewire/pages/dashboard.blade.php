@@ -1,4 +1,4 @@
-<div class="w-full h-screen mx-auto bg-secondary-100 max-w-7xl">
+<div class="w-full h-full mx-auto max-w-7xl">
     <x-page-header>Dashboard</x-page-header>
 
     <div class="flex flex-wrap px-3 py-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
