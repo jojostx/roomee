@@ -34,8 +34,8 @@ class Dashboard extends Component
         $user = $this->getAuthModel();
 
         $users = User::excludeUser($user->id)
-            ->whereIntegerNotInRaw('id', $this->blockedUsers)
-            ->whereIntegerNotInRaw('id', $this->blockers)
+            ->whereIntegerNotInRaw('id', $this->blockedUsers->pluck('blockee_id'))
+            ->whereIntegerNotInRaw('id', $this->blockers->pluck('blocker_id'))
             ->gender($user->gender)
             ->school($user->school_id)
             ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name'])
