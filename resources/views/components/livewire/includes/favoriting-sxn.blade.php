@@ -2,7 +2,7 @@
 
 <div class="flex items-center w-full gap-2">
     <!-- favoriting section -->
-    @if (auth()->user()->favorites->contains($user))
+    @if (auth()->user()->hasBeenAddedToFavorites($user))
     <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="unfavorite()" size="sm" color="primary" icon="heroicon-s-heart" aria-label="unfavorite user" title="unfavorite user">
         Unfavorite
     </x-filament-support::button>
