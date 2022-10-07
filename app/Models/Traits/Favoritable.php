@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 trait Favoritable
 {
@@ -24,5 +25,13 @@ trait Favoritable
         }
 
         $this->favorites()->detach($user->id);
+    }
+
+    public function hasBeenAddedToFavorites(Model $user)
+    {
+        return DB::table('favorites')
+            ->where('favoriter_id', $this->id)
+            ->where('favoritee_id', $user->id)
+            ->exists();
     }
 }
