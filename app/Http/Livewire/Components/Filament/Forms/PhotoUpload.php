@@ -66,7 +66,7 @@ class PhotoUpload extends BaseFileUpload
 
             $files = collect(Arr::wrap($state))
                 ->filter(static fn (string $file) => blank($file) || $component->getDisk()->exists($file))
-                ->mapWithKeys(static fn (string $file): array => [str()->uuid() => $file])
+                ->mapWithKeys(static fn (string $file): array => [(string) str()->uuid() => $file])
                 ->all();
 
             $component->state($files);
