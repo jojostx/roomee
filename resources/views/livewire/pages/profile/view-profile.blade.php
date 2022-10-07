@@ -1,8 +1,8 @@
-<div class="w-11/12 m-auto mt-6 mb-6" wire:poll.15s>
-    <div class="flex justify-center w-full md:mt-12">
+<div class="w-11/12 pt-6 pb-6 m-auto md:pt-12" wire:poll.15s>
+    <div class="flex justify-center w-full">
         <div class="w-full max-w-3xl pb-6">
-            <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 border rounded-lg border-secondary-300 sm:flex-row">
-                <div class="relative flex flex-col items-center justify-start w-full md:w-1/2 md:mr-2">
+            <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 bg-white border rounded-lg border-secondary-300 sm:flex-row">
+                <div class="relative z-10 flex flex-col items-center justify-start w-full md:w-1/2 md:mr-2">
                     <div class="absolute z-0 sm:static -top-14 md:top-0 sm:w-2/5 sm:mb-0">
                         <div class="flex flex-col items-center justify-center mt-1">
                             <div class="block w-24 h-24 mb-2 overflow-hidden border-4 rounded-full border-primary-700/50 bg-primary-200">
@@ -18,7 +18,7 @@
                     </div>
                     <div class="flex flex-col justify-center w-full mt-14 sm:mt-0 md:pt-2">
                         <div class="flex items-center justify-center mb-4 overflow-hidden">
-                            <span class="font-semibold xs:text-lg">{{ ucfirst($user->firstname) }} {{ ucfirst($user->lastname) }}</span>
+                            <span class="font-semibold xs:text-lg">{{ ucfirst($user->first_name) }} {{ ucfirst($user->last_name) }}</span>
                             &nbsp;
                             <span class="text-secondary-500">
                                 <svg class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -46,21 +46,7 @@
                             @elsecannot('update', $user)
                                 @can('block', $user)
                                     @can('interactWith', $user)
-                                    <div class="flex items-center gap-2 px-4 py-2">
-                                        <x-livewire.includes.favoriting-sxn :user="$user" />
-                                        <x-livewire.includes.requesting-sxn :user="$user" />
-                                        <x-filament-support::icon-button 
-                                            wire:click='showReportOrBlockModal' 
-                                            wire:loading.attr="disabled" 
-                                            style="border-radius: 0.5rem;" 
-                                            class="border rounded-lg border-secondary-300 disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
-                                            color="secondary" 
-                                            size="sm" 
-                                            icon="heroicon-s-dots-horizontal" 
-                                            aria-label="show user menu" 
-                                            title="show user menu"
-                                        />
-                                    </div>
+                                    <x-livewire.includes.user-interactions :user="$user"/>
                                     @endcan
 
                                     @cannot('interactWith', $user)
@@ -88,12 +74,10 @@
                         <!-- end of user interactions -->
                     </div>
                 </div>
-                <div class="relative flex items-center justify-center w-full mt-1 overflow-hidden -z-10 md:w-1/2">
+                <div class="relative flex items-center justify-center w-full mt-1 overflow-hidden md:w-1/2">
                     <div class="overflow-hidden border-4 rounded-lg border-primary-700/50">
                         @if ($user->cover_photo)
-                        <img src="{{ $user->cover_photo_path }}" id="cover_out" class="w-full" width="100%" height="100%" alt="{{ $user->firstname }}'s cover photo">
-                        @else
-                        <img src="{{ asset('images/cover_placeholder.png') }}" class="w-full" id="cover_placeholder" width="100%" height="100%" alt="cover photo placeholder">
+                        <img src="{{ $user->cover_photo_path }}" id="cover_out" class="w-full" width="100%" height="100%" alt="{{ $user->first_name }}'s cover photo">
                         @endif
                     </div>
                 </div>
@@ -106,7 +90,9 @@
                         <x-slot name="svg_path">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </x-slot>
-                        Personal
+                        <span>
+                            Personal
+                        </span>
                     </x-livewire.tab-label>
                     <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
                         <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
@@ -158,7 +144,9 @@
                         <x-slot name="svg_path">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                         </x-slot>
-                        Educational
+                        <span>
+                            Educational
+                        </span>
                     </x-livewire.tab-label>
                     <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
                         <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
@@ -208,7 +196,9 @@
                         <x-slot name="svg_path">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </x-slot>
-                        Apartment
+                        <span>
+                            Apartment
+                        </span>
                     </x-livewire.tab-label>
                     <div class="p-1 border-t sm:p-2 lg:px-3 lg:py-3 content-container">
                         <div class="grid flex-shrink-0 w-full px-3 py-4 content gap-x-6 gap-y-2 lg:gap-y-4 sm:grid-cols-2">
@@ -266,7 +256,7 @@
                 </div>
             @elsecannot('interactWith', $user)
                 <div class="px-4 py-4 mb-4 text-center bg-white border shadow">
-                    You are blocked from viewing <span class="font-semibold">{{ $user->firstname }}'s</span> profile and sending them roommate requests.
+                    You are blocked from viewing <span class="font-semibold">{{ $user->first_name }}'s</span> profile and sending them roommate requests.
                     <a href="{{ route('faqs') }}#group-4" class="text-primary-700">Learn more</a>
                 </div>
             @endcan
