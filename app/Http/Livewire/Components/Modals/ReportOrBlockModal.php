@@ -51,7 +51,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
 
     public function getReportsProperty()
     {
-        return Report::query()->pluck('desc', 'id');
+        return Report::query()->pluck('description', 'id');
     }
 
     public function getReportIdsProperty()
@@ -92,7 +92,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
 
                         return [
                             'reporter_id' => $this->getAuthModel()->id,
-                            'reportee_id' => intval($this->user),
+                            'reportee_id' => intval($this->user->id),
                             'report_id' => intval($item),
                             'created_at' => $timestamp,
                             'updated_at' => $timestamp,
@@ -133,7 +133,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
             case OnUserAction::REPORT: {
                     Notification::make()
                         ->title("Report submitted succesfully")
-                        ->title("Your report has been submitted. Our team will review your report ASAP. Thanks!")
+                        ->body("Your report has been submitted. Our team will review your report ASAP. Thanks!")
                         ->success()
                         ->send();
 
@@ -143,7 +143,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
             case OnUserAction::BLOCK: {
                     Notification::make()
                         ->title("User blocked succesfully")
-                        ->title("You have succesfully blocked **{$this->user->full_name}**. They will be unable to view your profile or send you roommate request.")
+                        ->body("You have succesfully blocked **{$this->user->full_name}**. They will be unable to view your profile or send you roommate request.")
                         ->success()
                         ->send();
 
