@@ -8,7 +8,6 @@ use Filament\Forms\Components\Concerns\HasExtraInputAttributes;
 use Filament\Forms\Components\Concerns\HasPlaceholder;
 use Filament\Support\Concerns\HasExtraAlpineAttributes;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Intervention\Image\Image;
 use Livewire\TemporaryUploadedFile;
 use Throwable;
@@ -67,7 +66,7 @@ class PhotoUpload extends BaseFileUpload
 
             $files = collect(Arr::wrap($state))
                 ->filter(static fn (string $file) => blank($file) || $component->getDisk()->exists($file))
-                ->mapWithKeys(static fn (string $file): array => [((string) Str::uuid()) => $file])
+                ->mapWithKeys(static fn (string $file): array => [str()->uuid() => $file])
                 ->all();
 
             $component->state($files);
@@ -170,7 +169,7 @@ class PhotoUpload extends BaseFileUpload
                 return;
             }
 
-            $component->state([(string) Str::uuid() => $state]);
+            $component->state([str()->uuid() => $state]);
         });
     }
 
@@ -373,7 +372,7 @@ class PhotoUpload extends BaseFileUpload
     public function normalizeFilename(?string $name = null): string
     {
         if (blank($name)) {
-            $name = Str::random(40);
+            $name = str()->random(40);
         }
 
         $name = trim($name, '/ \t\n\r\0\x0B');

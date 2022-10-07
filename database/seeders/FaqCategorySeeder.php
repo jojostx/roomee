@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class FaqCategorySeeder extends Seeder
 {
@@ -19,7 +18,7 @@ class FaqCategorySeeder extends Seeder
         $data = collect($this->getFaqCategories())
             ->transform(function ($category) {
                 return array_merge($category, [
-                    'uuid' => Str::uuid()->toString(),
+                    'uuid' => str()->uuid()->toString(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

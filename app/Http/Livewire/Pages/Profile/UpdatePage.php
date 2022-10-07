@@ -9,7 +9,6 @@ use App\Models\Course;
 use App\Models\Dislike;
 use Livewire\Component;
 use App\Enums\BudgetLimit;
-use Illuminate\Support\Str;
 use App\Enums\ApartmentRooms;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -83,7 +82,7 @@ class UpdatePage extends Component implements HasForms
                         ->getPreviewImageUrlUsing($this->getFormModel()->avatar_path)
                         ->directory(fn () => (string) auth()->id())
                         ->getUploadedFileNameForStorageUsing(function (): string {
-                            return (string) str(Str::uuid())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), '-');
+                            return (string) str()->uuid()->prepend('avatar-photo-', md5(strval(auth()->user()->id)), '-');
                         })
                         ->required()
                         ->rules(['between:10,5098', 'dimensions:max_height=322'])
@@ -103,8 +102,7 @@ class UpdatePage extends Component implements HasForms
                         ->imageResizeTargetWidth(640)
                         ->getPreviewImageUrlUsing($this->getFormModel()->cover_photo_path)
                         ->getUploadedFileNameForStorageUsing(function (): string {
-                            return (string) str(Str::uuid())
-                                ->prepend('cover-photo-', md5(strval(auth()->user()->id)), '-');
+                            return (string) str()->uuid()->prepend('cover-photo-', md5(strval(auth()->user()->id)), '-');
                         })
                         ->required()
                         ->rules(['between:10,6098'])

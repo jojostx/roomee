@@ -45,7 +45,7 @@ class Similarity
         list($min_1, $max_1) = $arr_1;
         list($min_2, $max_2) = $arr_2;
 
-        // if the arrays donot oerlap return 0
+        // if the arrays do not overlap return 0
         if (!(($max_2 >= $min_1) && ($min_2 <= $max_1))) {
             return 0;
         }

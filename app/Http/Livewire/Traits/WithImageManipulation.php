@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Traits;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 
 trait WithImageManipulation
 {
@@ -37,7 +36,7 @@ trait WithImageManipulation
 
         $written = fwrite(
             $file,
-            base64_decode(Str::after($data, 'base64,'))
+            base64_decode(str()->after($data, 'base64,'))
         );
 
         if (!$written) {
@@ -46,11 +45,11 @@ trait WithImageManipulation
             return false;    
         }
 
-        return new UploadedFile(stream_get_meta_data($file)['uri'], Str::random(6), null, null, true);
+        return new UploadedFile(stream_get_meta_data($file)['uri'], str()->random(6), null, null, true);
     }
 
     public function randName(UploadedFile $file): string
     {        
-        return time() . '-' . Str::random(8) . '.' . $file->guessExtension();
+        return time() . '-' . str()->random(8) . '.' . $file->guessExtension();
     }
 }

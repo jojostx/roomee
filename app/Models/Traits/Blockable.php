@@ -6,7 +6,6 @@ use App\Enums\BlockStatus;
 use App\Events\UserBlocked;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 trait Blockable
 {
@@ -17,7 +16,7 @@ trait Blockable
         }
 
         $blocked = DB::table('blocklists')->insert([
-            'uuid' => Str::uuid()->toString(),
+            'uuid' => str()->uuid()->toString(),
             'blocker_id' => $this->getKey(),
             'blockee_id' => $recipient->getKey(),
             'created_at' => now(),

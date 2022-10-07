@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class DislikeSeeder extends Seeder
 {
@@ -36,7 +35,7 @@ class DislikeSeeder extends Seeder
         DB::table('dislikes')->insert(
             collect($this->dislikes)->map(function ($dislike) {
                 return array_merge($dislike, [
-                    'uuid' => Str::uuid()->__toString(),
+                    'uuid' => str()->uuid()->__toString(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

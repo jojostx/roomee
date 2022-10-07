@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class FaqSeeder extends Seeder
 {
@@ -20,7 +19,7 @@ class FaqSeeder extends Seeder
             ->transform(function ($group, $key) {
                 return collect($group)->transform(function ($answer, $question) use ($key) {
                     return [
-                        'uuid' => Str::uuid()->toString(),
+                        'uuid' => str()->uuid()->toString(),
                         'faq_category_id' => $key,
                         'question' => $question,
                         'answer' => $answer,

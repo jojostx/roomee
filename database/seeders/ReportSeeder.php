@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ReportSeeder extends Seeder
 {
@@ -40,7 +39,7 @@ class ReportSeeder extends Seeder
         DB::table('reports')->insert(
             collect($this->reports)->map(function ($report) {
                 return array_merge($report, [
-                    'uuid' => Str::uuid()->toString(),
+                    'uuid' => str()->uuid()->toString(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
