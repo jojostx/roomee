@@ -6,7 +6,7 @@
                 <p class="text-sm text-secondary-700">Please fill all the basic details to get started.</p>
                 <p class="inline-flex px-4 py-1 text-sm text-orange-700 bg-orange-200 rounded-full">All fields are required</p>
             </div>
-            <ul wire:ignore class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold text-secondary-800 list-none bg-secondary-100 border rounded-md shadow-sm lg:flex">
+            <ul wire:ignore class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none border rounded-md shadow-sm text-secondary-800 bg-secondary-100 lg:flex">
                 <li class="w-full my-1">
                     <a href="#pers_info" id="li-pers" class="flex items-center px-2 py-2 rounded-md profile_links hover:bg-secondary-300">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
@@ -64,11 +64,11 @@
                 <div class="flex flex-col justify-center w-full pt-4 md:pt-2">
                     <div class="flex justify-start gap-4 mb-6">
                         <div class="w-1/2 mr-6">
-                            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->firstname) }}</span>
+                            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->first_name) }}</span>
                             <label class="block text-sm text-secondary-700">First Name</label>
                         </div>
                         <div>
-                            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->lastname) }}</span>
+                            <span class="text-lg font-semibold">{{ ucfirst(auth()->user()->last_name) }}</span>
                             <label class="block text-sm text-secondary-700">Last Name</label>
                         </div>
                     </div>
@@ -224,7 +224,7 @@
                         @for ($rooms_ = 1; $rooms_<=5; $rooms_++) <option value="{{ $rooms_ }}" @if (auth()->user()->rooms == $rooms_) selected @endif >
                             @if($rooms_ === 1) Self-contain
                             @elseif ($rooms_ === 5) {{ $rooms_ }} rooms and above
-                            @else {{ $rooms_ }}&nbsp;{{ Str::plural('room', $rooms_) }}
+                            @else {{ $rooms_ }}&nbsp;{{ str()->plural('room', $rooms_) }}
                             @endif
                             </option>
                             @endfor
@@ -297,7 +297,7 @@
 
             @if ($errors->any())
             <div class="section">
-                <div class="px-4 py-4 mb-2 text-danger-600 bg-danger-100 rounded-md">
+                <div class="px-4 py-4 mb-2 rounded-md text-danger-600 bg-danger-100">
                     <ul>
                         @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -313,7 +313,7 @@
                 </button>
             </div>
 
-            <div class="px-4 py-4 text-secondary-600 bg-secondary-100 rounded-md">
+            <div class="px-4 py-4 rounded-md text-secondary-600 bg-secondary-100">
                 <p class="text-xs lg:text-sm">
                     * Please make sure all the details you have provided are accurate and the photos you have provided are recent photos of you. Uploading offensive or sensitive photos or
                     Bio would lead to your account being blocked and deactivated. For more info read Roomee's <a href="{{ route('terms') }}" class="text-primary-600 hover:underline"> Terms of Use</a>
@@ -321,6 +321,7 @@
             </div>
         </form>
     </div>
+    <x-alert :type="'info'" :hasCloseButton="true" :showAlert="false"></x-alert>
 </div>
 
 @prepend('scripts')
