@@ -87,23 +87,6 @@ class PhotoUpload extends BaseFileUpload
                 };
             }
 
-            // \dd(
-            //     // Arr::where($component->getState(), fn (string $file): bool => $file == $state),
-            //     // collect($get($component->getStatePath()))->last(),
-            //     // collect(Arr::wrap($component->getOldState()))->each(static fn ($state) => $component->deleteUploadedFile($state)),
-            //     // collect($component->getState())
-            //     //     ->filter(function (string $file) use ($state) {
-            //     //         return $file != $state;
-            //     //     })
-            //     //     ->all(),
-            //     // $component->reorderUploadedFiles(),
-            //     // array_search($state, $component->getState(), true),
-            //     $state,
-            //     $component->getOldState(),
-            //     $component->getState(),
-            //     $component->getStateToDehydrate(),
-            // );
-
             // transform newState using Intervention image (gd driver)
             if ($state instanceof TemporaryUploadedFile) {
                 try {
