@@ -31,8 +31,12 @@ trait Requestable
 
 
     /** checks */
-    public function canSendRoommateRequest(Model $recipient): bool
+    public function canSendRoommateRequestTo(Model $recipient): bool
     {
+        if (!$this->isValidUser($recipient)) {
+           return false;
+        }
+
         if ($this->isBlockedBy($recipient) || $this->hasBlocked($recipient)) {
             return false;
         }
@@ -138,7 +142,7 @@ trait Requestable
     /** actions */
     public function sendRoommateRequest(Model $recipient): bool
     {
-        if (!$this->canSendRoommateRequest($recipient)) {
+        if (!$this->canSendRoommateRequestTo($recipient)) {
             return false;
         }
 
@@ -199,7 +203,6 @@ trait Requestable
 
         return $updated;
     }
-
 
     /** helpers */
     static function getCompositeKey(User $sender, User $recipient): string

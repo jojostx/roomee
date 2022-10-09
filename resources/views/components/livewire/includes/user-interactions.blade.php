@@ -1,6 +1,9 @@
 @props(['user'])
+@php
+    $classes = "flex items-center gap-2 ";
+@endphp
 
-<div class="flex items-center gap-2 px-4 py-4">
+<div {{ $attributes->merge(['class' => $classes]) }}>
   <x-livewire.includes.favoriting-sxn :user="$user" />
   <x-livewire.includes.requesting-sxn :user="$user" />
   <x-filament-support::icon-button 

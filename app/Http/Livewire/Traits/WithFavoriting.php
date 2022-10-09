@@ -2,36 +2,86 @@
 
 namespace App\Http\Livewire\Traits;
 
+use App\Models\Favorite;
 use App\Models\User;
 use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
 
 trait WithFavoriting
 {
-    protected function getAuthModel(): ?User
-    {
-        return Auth::user();
-    }
+    use CanRetrieveUser;
 
-    public function favorite()
+    abstract protected function getAuthModel(): ?User;
+
+    public function favorite($user_id = null)
     {
+        $user = $this->getUser($user_id);
+
+        if (blank($user) || !($user instanceof User)) {
+            return;
+        }
+
+        if (!$this->isFavoritable($user)) {
+            return;
+        }
+
         $this->getAuthModel()
-            ->addToFavorites($this->user);
-        
+            ->addToFavorites($user);
+
         Notification::make()
-            ->title("You have succesfully added **{$this->user->full_name}** to your Favorites.")
+            ->title("You have succesfully added **{$user->full_name}** to your Favorites.")
             ->success()
             ->send();
     }
 
-    public function unfavorite()
+    public function unfavorite($user_id = null)
     {
+        $user = $this->getUser($user_id);
+
+        if (blank($user) || !($user instanceof User)) {
+            return;
+        }
+
+        if (!$this->canBeRemovedFromFavorites($user)) {
+            return;
+        }
+
         $this->getAuthModel()
-            ->removeFromFavorites($this->user);
+            ->removeFromFavorites($user);
 
         Notification::make()
-            ->title("You have unfavorited **{$this->user->full_name}**.")
+            ->title("**{$user->full_name}** has been removed from your Favorites.")
             ->success()
             ->send();
+    }
+
+    protected function isFavoritable(User $user): bool
+    {
+        $auth_user = \auth()->user();
+
+        return User::query()
+            ->whereKey($user)
+            ->gender($auth_user->gender)
+            ->school($auth_user->school_id)
+            ->excludeUser($auth_user->id)
+            ->exists()
+            &&
+            !Favorite::query()
+                ->where([
+                    ['favoriter_id', '=', $auth_user->id],
+                    ['favoritee_id', '=', $user->id]
+                ])
+                ->exists();
+    }
+
+    protected function canBeRemovedFromFavorites(User $user): bool
+    {
+        $auth_user = \auth()->user();
+
+        return Favorite::query()
+                ->where([
+                    ['favoriter_id', '=', $auth_user->id],
+                    ['favoritee_id', '=', $user->id]
+                ])
+                ->exists();
     }
 }

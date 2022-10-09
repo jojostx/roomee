@@ -7,7 +7,7 @@
         Contact
     </x-filament-support::button>
     @elseif (auth()->user()->hasSentRoommateRequestTo($user))
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal()" size="sm" icon="heroicon-s-user-remove" aria-label="delete request" title="delete request">
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal({{ $user->id }})" size="sm" icon="heroicon-s-user-remove" aria-label="delete request" title="delete request">
         Requested
     </x-filament-support::button>
     @elseif (auth()->user()->hasRoommateRequestFrom($user))
@@ -15,7 +15,7 @@
         View request
     </x-filament-support::button>
     @else
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRequest()" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send request" title="send request">
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send request" title="send request">
         Request
     </x-filament-support::button>
     @endif

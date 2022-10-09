@@ -14,7 +14,7 @@
             x-on:keydown.tab.prevent="$event.shiftKey || nextFocusable().focus()"
             x-on:keydown.shift.tab.prevent="prevFocusable().focus()"
             x-show="show"
-            class="fixed inset-0 z-10 overflow-y-auto"
+            class="fixed inset-0 z-20 overflow-y-auto"
             style="display: none;"
     >
         <div class="flex items-end justify-center px-4 pt-4 pb-10 text-center min-h-calc-screen sm:block sm:p-0">
@@ -29,7 +29,7 @@
                     x-transition:leave-end="opacity-0"
                     class="fixed inset-0 transition-all transform"
             >
-                <div class="absolute inset-0 bg-secondary-500 opacity-75"></div>
+                <div class="absolute inset-0 opacity-75 bg-secondary-500"></div>
             </div>
 
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>

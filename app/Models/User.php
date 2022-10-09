@@ -215,6 +215,16 @@ class User extends Authenticatable
         return $query->where('id', '<>', $user_id);
     }
 
+    public function isValidUser($user_id): bool
+    {
+        return static::query()
+            ->whereKey($user_id)
+            ->gender($this->gender)
+            ->school($this->school_id)
+            ->excludeUser($this->id)
+            ->exists();
+    }
+
     // -------- ACCESSORS -------- //
     public function getFullNameAttribute()
     {
@@ -228,7 +238,8 @@ class User extends Authenticatable
         if (filled($this->avatar) && Storage::disk('avatars')->exists($this->avatar)) {
             try {
                 $avatar = Storage::disk('avatars')->url($this->avatar);
-            } catch (\RuntimeException $th) {}
+            } catch (\RuntimeException $th) {
+            }
         }
 
         return $avatar;
@@ -241,7 +252,8 @@ class User extends Authenticatable
         if (filled($this->cover_photo) && Storage::disk('cover_photos')->exists($this->cover_photo)) {
             try {
                 $cover_photo = Storage::disk('cover_photos')->url($this->cover_photo);
-            } catch (\RuntimeException $th) {}
+            } catch (\RuntimeException $th) {
+            }
         }
 
         return $cover_photo;
