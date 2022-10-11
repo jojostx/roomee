@@ -4,14 +4,34 @@ namespace App\Models\Traits;
 
 use App\Enums\BlockStatus;
 use App\Events\UserBlocked;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 trait Blockable
 {
-    public function block(Model $recipient): bool
+    public function isValidRecipient($recipient): bool
+    {
+        return User::query()
+            ->whereKey($recipient)
+            ->gender($this->gender)
+            ->school($this->school_id)
+            ->excludeUser($this->id)
+            ->exists();
+    }
+
+    /**
+     * block - adds a user to the model's blocklist
+     * @param Model $recipient - the user to be blocked
+     * @param bool $withScopedQuery - applies scope check for valid user
+     */
+    public function block(Model $recipient, bool $withScopedQuery = false): bool
     {
         if ($this->hasBlocked($recipient)) {
+            return false;
+        }
+
+        if ($withScopedQuery && !$this->isValidRecipient($recipient)) {
             return false;
         }
 
@@ -24,7 +44,7 @@ trait Blockable
         ]);
 
         if ($blocked) {
-            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), BlockStatus::BLOCKED);     
+            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), BlockStatus::BLOCKED);
         }
 
         return $blocked;
@@ -40,9 +60,9 @@ trait Blockable
             'blocker_id' => $this->getKey(),
             'blockee_id' => $recipient->getKey(),
         ])->delete();
-            
+
         if ($unblocked) {
-            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), BlockStatus::UNBLOCKED);            
+            UserBlocked::dispatch($this->getKey(), $recipient->getKey(), BlockStatus::UNBLOCKED);
         }
 
         return $unblocked;
