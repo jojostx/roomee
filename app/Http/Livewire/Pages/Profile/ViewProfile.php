@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Profile;
 
+use App\Http\Livewire\Traits\CanRetrieveUser;
 use App\Http\Livewire\Traits\WithFavoriting;
 use App\Models\User;
 use App\Notifications\RoommateRequestRecieved;
@@ -12,7 +13,7 @@ use Livewire\Component;
 
 class ViewProfile extends Component
 {
-    use WithFavoriting, AuthorizesRequests;
+    use WithFavoriting, CanRetrieveUser, AuthorizesRequests;
 
     public $user;
 

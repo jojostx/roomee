@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Components\Cards;
 
+use App\Http\Livewire\Traits\CanRetrieveUser;
 use Livewire\Component;
 use App\Http\Livewire\Traits\WithFavoriting;
 use App\Models\User;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardCard extends Component
 {
-    use WithFavoriting;
+    use WithFavoriting, CanRetrieveUser;
 
     public $user;
     public $course;
