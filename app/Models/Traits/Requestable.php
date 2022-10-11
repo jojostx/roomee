@@ -69,7 +69,7 @@ trait Requestable
 
         return DB::table('roommate_requests')
             ->where('id', $id)
-            ->where('status', Status::ACCEPTED)
+            ->where('status', Status::ACCEPTED->value)
             ->exists();
     }
 
