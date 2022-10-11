@@ -37,7 +37,7 @@
     </header>
     @endauth
 
-    <main class="min-h-[720px] h-full bg-secondary-100">
+    <main class="min-h-[720px] h-full bg-secondary-50">
         {{ $slot }}
     </main>
 

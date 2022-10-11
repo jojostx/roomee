@@ -1,4 +1,4 @@
-<div class="w-full pt-6 pb-6 bg-white">
+<div class="w-full pt-6 pb-6">
     <div class="w-11/12 m-auto">
         <div class="md:grid md:grid-cols-7">
             <div class="flex items-center justify-between mb-5 sm:w-64 md:72 col-span-full lg:fixed sm:block">
@@ -8,7 +8,7 @@
                     <p class="inline-flex px-4 py-1 text-sm rounded-full text-danger-700 bg-danger-200">All fields are required</p>
                 </div>
     
-                <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none border rounded-md shadow-sm text-secondary-800 bg-secondary-100 lg:flex">
+                <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none bg-white border rounded-md shadow-sm text-secondary-800 lg:flex">
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="general" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('general-information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">

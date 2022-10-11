@@ -84,7 +84,7 @@
             </div>
 
             @can('interactWith', $user)
-                <div id="profile__box" class="w-full border rounded-md border-secondary-300 tab-container justify-evenly">
+                <div id="profile__box" class="w-full overflow-hidden border rounded-md border-secondary-300 tab-container justify-evenly">
                     <input type="radio" name="tab" id="tab1" checked="checked">
                     <x-livewire.tab-label for="tab1">
                         <x-slot name="svg_path">
@@ -119,7 +119,7 @@
                                 </x-livewire.label>
                                 <div class="px-2 pt-2 border rounded-md border-secondary-300">
                                     @foreach ($user->hobbies as $hobby)
-                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 mr-1 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($hobby['name']) }}</span>
+                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 mr-1 rounded-full text-primary-800 bg-primary-100">{{ ucfirst($hobby['name']) }}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -132,7 +132,7 @@
                                 </x-livewire.label>
                                 <div class="px-2 pt-2 border rounded-md border-secondary-300">
                                     @foreach ($user->dislikes as $dislike)
-                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-md text-danger-800 bg-danger-100">{{ ucfirst($dislike['name']) }}</span>
+                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-full text-danger-800 bg-danger-100">{{ ucfirst($dislike['name']) }}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -214,7 +214,7 @@
                                 </x-livewire.label>
                                 <div class="px-2 pt-2 border rounded-md border-secondary-300">
                                     @foreach ($user->towns as $town)
-                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-md text-primary-800 bg-primary-100">{{ ucfirst($town['name']) }}</span>
+                                    <span class="inline-flex items-center justify-center px-3 py-1 mb-2 rounded-full text-primary-800 bg-primary-100">{{ ucfirst($town['name']) }}</span>
                                     @endforeach
                                 </div>
                             </div>
