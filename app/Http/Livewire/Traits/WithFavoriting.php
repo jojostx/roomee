@@ -8,9 +8,8 @@ use Filament\Notifications\Notification;
 
 trait WithFavoriting
 {
-    use CanRetrieveUser;
-
     abstract protected function getAuthModel(): ?User;
+    abstract protected function retrieveUser(): ?User;
 
     public function favorite($user_id = null)
     {

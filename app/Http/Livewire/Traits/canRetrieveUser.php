@@ -6,7 +6,7 @@ use App\Models\User;
 
 trait CanRetrieveUser
 {
-  protected function getUser($user_id = null): ?User
+  protected function retrieveUser($user_id = null): ?User
   {
       if (is_string($user_id) || is_int($user_id)) {
           $user = User::query()->firstWhere('id', $user_id);
