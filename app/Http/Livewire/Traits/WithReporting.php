@@ -29,13 +29,6 @@ trait WithReporting
 
   protected function canBeReported(User $user): bool
   {
-    $auth = $this->getAuthModel();
-
-    return User::query()
-      ->where('id', $user->id)
-      ->gender($auth->gender)
-      ->school($auth->school_id)
-      ->excludeUser($auth->id)
-      ->exists();
+    return $this->getAuthModel()->isValidUser($user);
   }
 }

@@ -55,26 +55,14 @@ trait WithFavoriting
 
     protected function isFavoritable(User $user): bool
     {
-        $auth_user = \auth()->user();
+        $auth_user = $this->getAuthModel();
 
-        return User::query()
-            ->whereKey($user)
-            ->gender($auth_user->gender)
-            ->school($auth_user->school_id)
-            ->excludeUser($auth_user->id)
-            ->exists()
-            &&
-            !Favorite::query()
-                ->where([
-                    ['favoriter_id', '=', $auth_user->id],
-                    ['favoritee_id', '=', $user->id]
-                ])
-                ->exists();
+        return $auth_user->isValidUser($user) && !$this->canBeRemovedFromFavorites($user);
     }
 
     protected function canBeRemovedFromFavorites(User $user): bool
     {
-        $auth_user = \auth()->user();
+        $auth_user = $this->getAuthModel();
 
         return Favorite::query()
                 ->where([
