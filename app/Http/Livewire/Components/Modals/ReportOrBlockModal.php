@@ -2,36 +2,31 @@
 
 namespace App\Http\Livewire\Components\Modals;
 
-use App\Enums\OnUserAction;
-use App\Models\Report;
 use App\Models\User;
-use App\Rules\IsBlockable;
-use App\Rules\IsReportable;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Report;
+use App\Enums\OnUserAction;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Contracts\HasForms;
+use App\Http\Livewire\Traits\WithBlocking;
+use App\Http\Livewire\Traits\WithReporting;
+use App\Http\Livewire\Traits\CanRetrieveUser;
+use Filament\Forms\Concerns\InteractsWithForms;
 use LivewireUI\Modal\ModalComponent;
 
 class ReportOrBlockModal extends ModalComponent implements HasForms
 {
-    use InteractsWithForms;
+    use WithBlocking, WithReporting, CanRetrieveUser, InteractsWithForms;
 
-    public string | User $user;
     public ?OnUserAction $action = null;
+    public string | User $user;
     public array $selectedReports = [];
-
-    protected array $messages = [
-        'selectedReports' => 'choose at least one report',
-        'selectedReports.*' => 'choose at least one report',
-    ];
+    public array $report_ids;
 
     public function mount(User $user)
     {
         $this->user = $user;
+        $this->report_ids = Report::query()->pluck('id')->map(fn ($value) => strval($value))->toArray();
     }
 
     protected function getAuthModel(): ?User
@@ -39,47 +34,31 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
         return Auth::user();
     }
 
-    public function blockUser()
-    {
-        $this->action = OnUserAction::BLOCK;
-    }
-
-    public function reportUser()
-    {
-        $this->action = OnUserAction::REPORT;
-    }
-
-    public function getReportsProperty()
-    {
-        return Report::query()->pluck('description', 'id');
-    }
-
-    public function getReportIdsProperty()
-    {
-        return Report::query()->pluck('id')->map(fn ($value) => strval($value))->toArray();
-    }
-
+    /** validation concerns and submit action */
     protected function rules(): array
     {
         if ($this->action == OnUserAction::BLOCK) {
             return [
+                'user' => ['required'],
                 'action' => ['required'],
-                'user' => ['required', new IsBlockable()],
             ];
         } else if ($this->action == OnUserAction::REPORT) {
             return [
+                'user' => ['required'],
                 'action' => ['required'],
                 'selectedReports' => ['required', 'array'],
                 'selectedReports.*' => ['required', 'numeric', Rule::in($this->report_ids)],
-                'user' => ['required', new IsReportable()],
             ];
         } else {
             return [];
         }
     }
 
-    //performs the submission of reports and blocking of user actions by saving to the database
-    // it additionally emits an event after successfully saving to database; for each possible action taken
+    protected array $messages = [
+        'selectedReports' => 'choose at least one report',
+        'selectedReports.*' => 'choose at least one report',
+    ];
+
     public function submit()
     {
         $this->validate();
@@ -87,36 +66,12 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
         //saving data/reports/blocking into the database
         switch ($this->action) {
             case OnUserAction::REPORT: {
-                    DB::table('report_user')->insert(array_map(function ($item) {
-                        $timestamp = now();
-
-                        return [
-                            'reporter_id' => $this->getAuthModel()->id,
-                            'reportee_id' => intval($this->user->id),
-                            'report_id' => intval($item),
-                            'created_at' => $timestamp,
-                            'updated_at' => $timestamp,
-                        ];
-                    }, $this->selectedReports));
-
-                    $this->sendNotification($this->action);
-
+                    $this->reportUser($this->user, $this->selectedReports);
                     break;
                 }
 
             case OnUserAction::BLOCK: {
-                    //block user 
-                    $this->getAuthModel()->block($this->user);
-
-                    // delete any existing roommate request
-                    $this->getAuthModel()->deleteRoommateRequest($this->user);
-
-                    // remove user from favorites, delete sent and recieved requests
-                    $this->getAuthModel()->favorites()->detach($this->user->getKey());
-
-                    //emit the event to show toast notification //js notif.
-                    $this->sendNotification($this->action);
-
+                    $this->blockUser($this->user);
                     break;
                 }
 
@@ -124,37 +79,19 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
                 break;
         }
 
+        $this->emit('actionTakenOnUser');
         $this->closeModal();
     }
 
-    protected function sendNotification(OnUserAction $action)
+    /** UI definitions and triggers */
+    public function triggerblockUserAction()
     {
-        switch ($action) {
-            case OnUserAction::REPORT: {
-                    Notification::make()
-                        ->title("Report submitted succesfully")
-                        ->body("Your report has been submitted. Our team will review your report ASAP. Thanks!")
-                        ->success()
-                        ->send();
+        $this->action = OnUserAction::BLOCK;
+    }
 
-                    break;
-                }
-
-            case OnUserAction::BLOCK: {
-                    Notification::make()
-                        ->title("User blocked succesfully")
-                        ->body("You have succesfully blocked **{$this->user->full_name}**. They will be unable to view your profile or send you roommate request.")
-                        ->success()
-                        ->send();
-
-                    break;
-                }
-
-            default:
-                break;
-        }
-
-        $this->emit('actionTakenOnUser', $this->user->full_name, $action);
+    public function triggerReportUserAction()
+    {
+        $this->action = OnUserAction::REPORT;
     }
 
     public static function modalMaxWidth(): string
@@ -164,6 +101,8 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
 
     public function render()
     {
-        return view('livewire.components.modals.report-or-block-modal');
+        return view('livewire.components.modals.report-or-block-modal', [
+            'reports' => Report::query()->pluck('description', 'id'),
+        ]);
     }
 }

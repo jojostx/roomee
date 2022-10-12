@@ -25,7 +25,7 @@
         </div>
         <div class="py-1 pt-2 text-base">
             <ul class="px-2">
-                @foreach ($this->reports as $key => $value)
+                @foreach ($reports as $key => $value)
                 <li>
                     <label for="report_{{ $key }}" class="flex items-center justify-between px-2 py-2 border-b cursor-pointer">
                         <p>{{ $value }}</p>
@@ -53,12 +53,12 @@
     </div>
     @else
     <ul class="py-2">
-        <x-responsive-nav-link wire:click="reportUser()" icon_before="heroicon-o-flag">
+        <x-responsive-nav-link wire:click="triggerReportUserAction()" icon_before="heroicon-o-flag">
             <p>
                 {{ __('Report') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>
         </x-responsive-nav-link>
-        <x-responsive-nav-link wire:click="blockUser()" icon_before="heroicon-o-ban">
+        <x-responsive-nav-link wire:click="triggerBlockUserAction()" icon_before="heroicon-o-ban">
             <p>
                 {{ __('Block') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>
