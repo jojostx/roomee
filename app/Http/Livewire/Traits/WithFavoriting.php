@@ -13,7 +13,7 @@ trait WithFavoriting
 
     public function favorite($user_id = null)
     {
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;
@@ -34,7 +34,7 @@ trait WithFavoriting
 
     public function unfavorite($user_id = null)
     {
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;

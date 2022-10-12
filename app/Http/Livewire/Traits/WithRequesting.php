@@ -16,7 +16,7 @@ trait WithRequesting
     {
         $sent = false;
 
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;
@@ -39,7 +39,7 @@ trait WithRequesting
     {
         $deleted = false;
 
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;
@@ -62,7 +62,7 @@ trait WithRequesting
     {
         $accepted = false;
 
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;
@@ -85,7 +85,7 @@ trait WithRequesting
 
     public function showDeleteRequestModal($user_id = null)
     {
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;
@@ -96,7 +96,7 @@ trait WithRequesting
 
     public function showReportOrBlockModal($user_id = null)
     {
-        $user = $this->getUser($user_id);
+        $user = $this->retrieveUser($user_id);
 
         if (blank($user) || !($user instanceof User)) {
             return;

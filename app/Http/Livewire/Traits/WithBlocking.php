@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Traits;
 use App\Models\Blocklist;
 use App\Models\User;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\DB;
 
 trait WithBlocking
 {
@@ -19,12 +20,27 @@ trait WithBlocking
       return;
     }
 
-    $this->getAuthModel()
-      ->block($user, true) &&
+    try {      
+      $blocked = DB::transaction(function ()  use ($user) {
+        // delete any existing roommate request
+        $this->getAuthModel()->deleteRoommateRequest($user);
+  
+        // remove user from favorites, delete sent and recieved requests
+        $this->getAuthModel()->favorites()->detach($user->getKey());
+  
+        return $this->getAuthModel()->block($user, true);
+      });
+
+      $blocked && Notification::make()
+        ->title("You have succesfully blocked **{$user->full_name}**.")
+        ->success()
+        ->send();
+    } catch (\Throwable $th) {
       Notification::make()
-      ->title("You have succesfully blocked **{$user->full_name}**.")
-      ->success()
-      ->send();
+        ->title("An error occurred while blocking **{$user->full_name}** please try again later.")
+        ->success()
+        ->send();
+    }
   }
 
   public function unblockUser($user_id = null)
