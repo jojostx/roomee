@@ -2,16 +2,19 @@
 
 namespace App\Http\Livewire\Components\Modals;
 
-use App\Http\Livewire\Pages\Blocklist;
-use App\Http\Livewire\Pages\Dashboard;
-use App\Http\Livewire\Pages\Favorite;
-use App\Http\Livewire\Pages\Profile\ViewProfile;
 use App\Models\User;
+use App\Http\Livewire\Traits\CanRetrieveUser;
+use App\Http\Livewire\Traits\WithRequesting;
 use Illuminate\Support\Facades\Auth;
 use LivewireUI\Modal\ModalComponent;
 
 class UserRequestingModal extends ModalComponent
 {
+    use CanRetrieveUser, WithRequesting {
+        acceptRequest as traitAcceptRequest;
+        deleteRequest as traitDeleteRequest;
+    }
+
     public string | User $user;
 
     public function mount(User $user)
@@ -26,30 +29,15 @@ class UserRequestingModal extends ModalComponent
 
     public function acceptRequest()
     {
-        if ($this->getAuthModel()->hasRoommateRequestFrom($this->user)) {
-            $this->getAuthModel()->acceptRoommateRequest($this->user);
-        }
-
-        $this->closeModal();
+        $this->traitAcceptRequest($this->user);
+        $this->closeModalWithEvents($this->getListenerComponents());
     }
 
     public function deleteRequest()
     {
-        if ($this->getAuthModel()->hasSentRoommateRequestTo($this->user)) {
-            $this->getAuthModel()->deleteRoommateRequest($this->user);
-        }
-
-        $this->closeModalWithEvents($this->getListenerComponents());
-    }
-
-    public static function getListenerComponents()
-    {
-        return [
-            ViewProfile::getName() => 'actionTakenOnUser',
-            Dashboard::getName() => 'actionTakenOnUser',
-            Blocklist::getName() => 'actionTakenOnUser',
-            Favorite::getName() => 'actionTakenOnUser',
-        ];
+        $this->traitDeleteRequest($this->user);
+        $this->emit('actionTakenOnUser');
+        $this->closeModal();
     }
 
     public static function modalMaxWidth(): string
