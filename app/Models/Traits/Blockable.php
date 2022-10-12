@@ -10,15 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 trait Blockable
 {
-    public function isValidRecipient($recipient): bool
-    {
-        return User::query()
-            ->whereKey($recipient)
-            ->gender($this->gender)
-            ->school($this->school_id)
-            ->excludeUser($this->id)
-            ->exists();
-    }
+    abstract public function isValidUser(User $recipient): bool;
 
     /**
      * block - adds a user to the model's blocklist
@@ -31,7 +23,7 @@ trait Blockable
             return false;
         }
 
-        if ($withScopedQuery && !$this->isValidRecipient($recipient)) {
+        if ($withScopedQuery && !$this->isValidUser($recipient)) {
             return false;
         }
 
