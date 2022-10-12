@@ -2,27 +2,33 @@
 
 namespace App\Http\Livewire\Components\Modals;
 
-use App\Http\Livewire\Pages\Blocklist;
-use App\Http\Livewire\Pages\Dashboard;
-use App\Http\Livewire\Pages\Favorite;
-use App\Http\Livewire\Pages\Profile\ViewProfile;
-use App\Models\Report;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Report;
 use Illuminate\Validation\Rule;
 use LivewireUI\Modal\ModalComponent;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\Traits\CanRetrieveUser;
+use App\Http\Livewire\Traits\WithReporting;
 
 class UserReportingModal extends ModalComponent
 {
+    use WithReporting, CanRetrieveUser;
+
     public string | User $user;
     public array $selectedReports = [];
 
     public function mount(User $user)
     {
         $this->user = $user;
+        $this->report_ids = Report::query()->pluck('id')->map(fn ($value) => strval($value))->toArray();
     }
 
+    protected function getAuthModel(): User
+    {
+        return Auth::user();
+    }
+
+    /** validation concerns and submit action */
     protected function rules(): array
     {
         return [
@@ -32,74 +38,19 @@ class UserReportingModal extends ModalComponent
         ];
     }
 
-    protected function getAuthModel(): User
-    {
-        return Auth::user();
-    }
-
-    public function getReportsProperty()
-    {
-        return Report::query()->pluck('description', 'id');
-    }
-
-    public function getReportIdsProperty()
-    {
-        return Report::query()->pluck('id')->map(fn ($value) => strval($value))->toArray();
-    }
-
-    public function getIsReportableProperty()
-    {
-        $authUser = $this->getAuthModel();
-
-        return User::query()
-            ->where('id', $this->user->id)
-            ->gender($authUser->gender)
-            ->school($authUser->school_id)
-            ->excludeUser($authUser->id)
-            ->exists();
-    }
-
-    protected function reportUser()
-    {
-        return DB::table('report_user')
-            ->insert(array_map(function ($item) {
-                $timestamp = now();
-
-                return [
-                    'reporter_id' => $this->getAuthModel()->id,
-                    'reportee_id' => intval($this->user->id),
-                    'report_id' => intval($item),
-                    'created_at' => $timestamp,
-                    'updated_at' => $timestamp,
-                ];
-            }, $this->selectedReports));
-    }
-
     public function submit()
     {
-        if (!$this->is_reportable) {
-            $this->addError('user', 'You cannot report this user');
-            return;
-        }
-
         $this->validate();
 
         //saving data/reports/blocking into the database
-        $this->reportUser();
+        $this->reportUser($this->user, $this->selectedReports);;
 
-        $this->closeModalWithEvents($this->getListenerComponents());
+        $this->emit('actionTakenOnUser');
+        $this->closeModal();
     }
 
-    public static function getListenerComponents()
-    {
-        return [
-            ViewProfile::getName() => 'actionTakenOnUser',
-            Dashboard::getName() => 'actionTakenOnUser',
-            Blocklist::getName() => 'actionTakenOnUser',
-            Favorite::getName() => 'actionTakenOnUser',
-        ];
-    }
-
+    
+    /** UI definitions and triggers */
     public static function modalMaxWidth(): string
     {
         return 'sm';
@@ -107,6 +58,8 @@ class UserReportingModal extends ModalComponent
 
     public function render()
     {
-        return view('livewire.components.modals.user-reporting-modal');
+        return view('livewire.components.modals.user-reporting-modal', [
+            'reports' => Report::query()->pluck('description', 'id'),
+        ]);
     }
 }

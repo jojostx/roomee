@@ -6,7 +6,7 @@
     </div>
     <div class="py-1 pt-2 text-base">
         <ul class="px-2">
-            @foreach ($this->reports as $key => $value)
+            @foreach ($reports as $key => $value)
             <li>
                 <label for="report_{{ $key }}" class="flex items-center justify-between px-2 py-2 border-b cursor-pointer">
                     <p>{{ $value }}</p>
