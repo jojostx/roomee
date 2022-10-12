@@ -31,27 +31,12 @@ class Dashboard extends Component
 
     public function getUsersProperty(): Collection
     {
-        $user = $this->getAuthModel();
-
-        $users = User::excludeUser($user->id)
-            ->whereIntegerNotInRaw('id', $this->blockedUsers->pluck('blockee_id'))
-            ->whereIntegerNotInRaw('id', $this->blockers->pluck('blocker_id'))
-            ->gender($user->gender)
-            ->school($user->school_id)
+        $users = $this->getAuthModel()
+            ->validNonBlockingUsers()
             ->with(['course:id,name', 'towns:id,name', 'hobbies:id,name', 'dislikes:id,name'])
             ->get();
 
-        return $user->calculateUsersSimilarityScore($users);
-    }
-
-    public function getBlockedUsersProperty()
-    {
-        return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
-    }
-
-    public function getBlockersProperty()
-    {
-        return DB::table('blocklists')->where(['blockee_id' => $this->getAuthModel()->id])->get('blocker_id');
+        return $this->getAuthModel()->calculateUsersSimilarityScore($users);
     }
 
     // fires a card component refresh when another user blocks the currently authenticated user

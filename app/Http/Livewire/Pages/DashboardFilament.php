@@ -43,14 +43,8 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        $user = $this->getAuthModel();
-
-        return User::query()
-            ->excludeUser($user->id)
-            ->whereIntegerNotInRaw('id', $this->blockedUsers->pluck('blockee_id'))
-            ->whereIntegerNotInRaw('id', $this->blockers->pluck('blocker_id'))
-            ->gender($user->gender)
-            ->school($user->school_id);
+        return $this->getAuthModel()
+            ->validNonBlockingUsers();
     }
 
     protected function paginateTableQuery(Builder $query): Paginator
@@ -64,7 +58,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
         $res = $this
             ->getAuthModel()
             ->calculateUsersSimilarityScore(
-                $query->with([
+                $query->withOnly([
                     'course:id,name',
                     'towns:id,name',
                     'hobbies:id,name',
@@ -158,16 +152,6 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     }
 
     /** dynamic properties */
-    public function getBlockedUsersProperty(): Collection
-    {
-        return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
-    }
-
-    public function getBlockersProperty(): Collection
-    {
-        return DB::table('blocklists')->where(['blockee_id' => $this->getAuthModel()->id])->get('blocker_id');
-    }
-
     public function getRoommateRequestsProperty(): Collection
     {
         return $this->getAuthModel()->getRoommateRequests();
@@ -176,6 +160,11 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     public function getFavoritesProperty(): Collection
     {
         return $this->getAuthModel()->favorites()->get(['favoritee_id']);
+    }
+
+    public function getBlockedUsersProperty(): Collection
+    {
+        return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
     }
 
     /** checks */
@@ -227,32 +216,32 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Actions\Action::make('report')
-            ->label('Report User')
-            ->icon('heroicon-o-flag')
-            ->color('warning')
-            ->requiresConfirmation()
-            ->modalHeading(fn (User $record) => 'Report ' . $record->full_name)
-            ->modalSubheading('Select the relevant Issues to submit a Report.')
-            ->modalButton('Submit')
-            ->modalWidth('sm')
-            ->form([
-                Forms\Components\CheckboxList::make('report_ids')
-                    ->label('Reports')
-                    ->options(Report::pluck('description', 'id')->transform(fn ($val) => ucfirst($val)))
-                    ->required()
-                    ->exists('reports', 'id')
-                    ->extraAttributes(['class' => 'space-y-2']),
-            ])
-            ->action(function (User $record, array $data) {
-                if ($this->getAuthModel()->reportUser($record, $data['report_ids'])) {
-                    Notification::make()
-                        ->title("Report submitted succesfully")
-                        ->body("Your report has been submitted. Our team will review your report ASAP. Thanks!")
-                        ->success()
-                        ->seconds(15)
-                        ->send();
-                }
-            }),
+                ->label('Report User')
+                ->icon('heroicon-o-flag')
+                ->color('warning')
+                ->requiresConfirmation()
+                ->modalHeading(fn (User $record) => 'Report ' . $record->full_name)
+                ->modalSubheading('Select the relevant Issues to submit a Report.')
+                ->modalButton('Submit')
+                ->modalWidth('sm')
+                ->form([
+                    Forms\Components\CheckboxList::make('report_ids')
+                        ->label('Reports')
+                        ->options(Report::pluck('description', 'id')->transform(fn ($val) => ucfirst($val)))
+                        ->required()
+                        ->exists('reports', 'id')
+                        ->extraAttributes(['class' => 'space-y-2']),
+                ])
+                ->action(function (User $record, array $data) {
+                    if ($this->getAuthModel()->reportUser($record, $data['report_ids'])) {
+                        Notification::make()
+                            ->title("Report submitted succesfully")
+                            ->body("Your report has been submitted. Our team will review your report ASAP. Thanks!")
+                            ->success()
+                            ->seconds(15)
+                            ->send();
+                    }
+                }),
         ];
     }
 
