@@ -2,12 +2,19 @@
 
 namespace App\Http\Livewire\Components\Modals;
 
+use App\Http\Livewire\Traits\CanRetrieveUser;
+use App\Http\Livewire\Traits\WithRequesting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use LivewireUI\Modal\ModalComponent;
 
 class DeleteRequestModal extends ModalComponent
-{ 
+{
+    use CanRetrieveUser;
+    use WithRequesting{
+        deleteRequest as traitDeleteRequest;
+    }
+
     public string | User $user;
 
     public function mount(User $user)
@@ -27,8 +34,9 @@ class DeleteRequestModal extends ModalComponent
 
     public function deleteRequest()
     {
-        $this->getAuthModel()->deleteRoommateRequest($this->user);
+        $this->traitDeleteRequest($this->user);
             
+        $this->emit("actionTakenOnUser");
         $this->emit("refreshChildren:{$this->user->id}");
         $this->emit("resetUsers", $this->user->id);
 
