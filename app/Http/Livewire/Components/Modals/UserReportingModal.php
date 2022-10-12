@@ -16,6 +16,7 @@ class UserReportingModal extends ModalComponent
 
     public string | User $user;
     public array $selectedReports = [];
+    public array $report_ids;
 
     public function mount(User $user)
     {
@@ -38,6 +39,11 @@ class UserReportingModal extends ModalComponent
         ];
     }
 
+    protected array $messages = [
+        'selectedReports' => 'choose at least one report',
+        'selectedReports.*' => 'choose at least one report',
+    ];
+
     public function submit()
     {
         $this->validate();
@@ -49,7 +55,6 @@ class UserReportingModal extends ModalComponent
         $this->closeModal();
     }
 
-    
     /** UI definitions and triggers */
     public static function modalMaxWidth(): string
     {
