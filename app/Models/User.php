@@ -7,9 +7,11 @@ use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
 use App\Models\Traits\Favoritable;
 use App\Models\Traits\Reportable;
+use App\Models\Traits\WithValidUsersQueryScopes;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -23,6 +25,7 @@ class User extends Authenticatable
     use HasFactory,
         HasApiTokens,
         Notifiable,
+        WithValidUsersQueryScopes,
         BindsOnUuid,
         GeneratesUuid,
         Blockable,
@@ -143,7 +146,7 @@ class User extends Authenticatable
     /**
      * The blocklist for the user.
      */
-    public function blocklists()
+    public function blocklists(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'blocklists', 'blocker_id', 'blockee_id')
             ->withTimestamps()->orderByPivot('created_at', 'desc');
@@ -152,7 +155,7 @@ class User extends Authenticatable
     /**
      * The users who are currently blocking this user.
      */
-    public function blockers()
+    public function blockers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'blocklists', 'blockee_id', 'blocker_id')
             ->withTimestamps();
@@ -213,16 +216,6 @@ class User extends Authenticatable
     public function scopeExcludeUser($query, $user_id)
     {
         return $query->where('id', '<>', $user_id);
-    }
-
-    public function isValidUser($user_id): bool
-    {
-        return static::query()
-            ->whereKey($user_id)
-            ->gender($this->gender)
-            ->school($this->school_id)
-            ->excludeUser($this->id)
-            ->exists();
     }
 
     // -------- ACCESSORS -------- //

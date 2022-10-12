@@ -2,14 +2,13 @@
 
 namespace App\Models\Traits;
 
-use App\Enums\RoommateRequestStatus as Status;
-use App\Events\RoommateRequestUpdated;
-use App\Models\RoommateRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use App\Models\RoommateRequest;
+use App\Events\RoommateRequestUpdated;
+use App\Enums\RoommateRequestStatus as Status;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
 trait Requestable
 {
@@ -18,8 +17,8 @@ trait Requestable
     /** query builders and scopes */
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param Model $sender
-     * @param Model $recipient
+     * @param User $sender
+     * @param User $recipient
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeBetweenModels(Builder $query, User $sender, User $recipient)
@@ -31,9 +30,9 @@ trait Requestable
 
 
     /** checks */
-    public function canSendRoommateRequestTo(Model $recipient): bool
+    public function canSendRoommateRequestTo(User $recipient): bool
     {
-        if (!$this->isValidUser($recipient)) {
+        if (!$this->isValidNonBlockingUser($recipient)) {
            return false;
         }
 
@@ -47,7 +46,7 @@ trait Requestable
             ->exists();
     }
 
-    public function hasRoommateRequestFrom(Model $sender): bool
+    public function hasRoommateRequestFrom(User $sender): bool
     {
         return RoommateRequest::whereSender($sender)
             ->whereRecipient($this)
@@ -55,7 +54,7 @@ trait Requestable
             ->exists();
     }
 
-    public function hasSentRoommateRequestTo(Model $recipient): bool
+    public function hasSentRoommateRequestTo(User $recipient): bool
     {
         return RoommateRequest::whereSender($this)
             ->whereRecipient($recipient)
@@ -63,7 +62,7 @@ trait Requestable
             ->exists();
     }
 
-    public function isRoommateWith(Model $recipient): bool
+    public function isRoommateWith(User $recipient): bool
     {
         $id = RoommateRequest::getCompositeKey($this, $recipient);
 
@@ -73,19 +72,19 @@ trait Requestable
             ->exists();
     }
 
-    public function hasEitherSentOrRecievedRoommateRequest(Model $recipient): bool
+    public function hasEitherSentOrRecievedRoommateRequest(User $recipient): bool
     {
         return RoommateRequest::query()->betweenModels($this, $recipient)->exists();
     }
 
-    public function hasNeitherSentNorRecievedRoommateRequest(Model $recipient): bool
+    public function hasNeitherSentNorRecievedRoommateRequest(User $recipient): bool
     {
         return !$this->hasEitherSentOrRecievedRoommateRequest($recipient);
     }
 
 
     /** getters */
-    public function getRoommateRequest(Model $recipient)
+    public function getRoommateRequest(User $recipient)
     {
         return RoommateRequest::query()->betweenModels($this, $recipient)->first();
     }
@@ -140,7 +139,7 @@ trait Requestable
 
 
     /** actions */
-    public function sendRoommateRequest(Model $recipient): bool
+    public function sendRoommateRequest(User $recipient): bool
     {
         if (!$this->canSendRoommateRequestTo($recipient)) {
             return false;
@@ -164,7 +163,7 @@ trait Requestable
         return $inserted;
     }
 
-    public function deleteRoommateRequest(Model $recipient): bool
+    public function deleteRoommateRequest(User $recipient): bool
     {
         $deleted = (bool) RoommateRequest::query()
             ->whereSender($this)
@@ -176,7 +175,7 @@ trait Requestable
         return $deleted;
     }
 
-    public function acceptRoommateRequest(Model $sender): bool
+    public function acceptRoommateRequest(User $sender): bool
     {
         $updated = (bool) RoommateRequest::query()
             ->whereSender($sender)
@@ -190,7 +189,7 @@ trait Requestable
         return $updated;
     }
 
-    public function denyRoommateRequest(Model $sender): bool
+    public function denyRoommateRequest(User $sender): bool
     {
         $updated = (bool) RoommateRequest::query()
             ->whereSender($sender)
