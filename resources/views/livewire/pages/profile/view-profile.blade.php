@@ -44,23 +44,8 @@
                                     Edit Profile
                                 </a>
                             @elsecannot('update', $user)
-                                @can('block', $user)
-                                    @can('interactWith', $user)
-                                    <x-livewire.includes.user-interactions :user="$user"/>
-                                    @endcan
-
-                                    @cannot('interactWith', $user)
-                                        <button wire:click="block()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
-                                            <span class="pr-1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-4 h-4" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
-                                                </svg>
-                                            </span>
-                                            Block
-                                        </button>
-                                    @endcannot
-                                @elsecannot('block', $user)
-                                    <button wire:click="unblock()" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                @if(auth()->user()->hasBlocked($user))
+                                    <button wire:click="showUserBlockingModal" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
                                         <span class="pr-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -68,7 +53,11 @@
                                         </span>
                                         Unblock
                                     </button>
-                                @endcan
+                                @else
+                                    @can('interactWith', $user)
+                                    <x-livewire.includes.user-interactions :user="$user"/>
+                                    @endcan
+                                @endif
                             @endcan
                         </div>
                         <!-- end of user interactions -->
@@ -260,7 +249,6 @@
                     <a href="{{ route('faqs') }}#group-4" class="text-primary-700">Learn more</a>
                 </div>
             @endcan
-
         </div>
     </div>
     <p class="text-xs text-center text-secondary-500">
