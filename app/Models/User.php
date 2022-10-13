@@ -162,9 +162,9 @@ class User extends Authenticatable
     }
 
     /**
-     * The requests for the user.
+     * The roommate requests for the user.
      */
-    public function recievedRequests()
+    public function recievedRoommateRequests()
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'recipient_id', 'sender_id')
             ->as('roommateRequests')
@@ -174,7 +174,7 @@ class User extends Authenticatable
     /**
      * The requests sent by the user.
      */
-    public function sentRequests()
+    public function sentRoommateRequests()
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'sender_id', 'recipient_id')
             ->as('roommateRequests')
