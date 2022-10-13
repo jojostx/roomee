@@ -2,19 +2,19 @@
 
 namespace App\Http\Livewire\Pages;
 
-use App\Enums\RequestType;
+use App\Enums\RoommateRequestType;
 use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\RoommateRequest;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
-class Request extends Component
+class RoommateRequests extends Component
 {
     use CanReactToRoommateRequestUpdate;
 
-    public Collection $recievedRequests;
-    public Collection $sentRequests;
-    public RequestType $currentPage = RequestType::RECIEVED;
+    public Collection $recievedRoommateRequests;
+    public Collection $sentRoommateRequests;
+    public RoommateRequestType $currentPage = RoommateRequestType::RECIEVED;
 
     protected function getListeners()
     {
@@ -22,7 +22,7 @@ class Request extends Component
 
         return [
             'resetUsers' => 'resetUsersWhenSentRequestIsDeleted',
-            "echo-private:request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
+            "echo-private:roommate-request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
             "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
         ];
     }
@@ -30,30 +30,30 @@ class Request extends Component
     public function mount()
     {
         //remember to paginate
-        if ($this->currentPage === RequestType::SENT) {
-            $this->sentRequests = $this->fetchRequestsByType(RequestType::SENT);
+        if ($this->currentPage === RoommateRequestType::SENT) {
+            $this->sentRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::SENT);
 
-            $this->recievedRequests = collect([]);
+            $this->recievedRoommateRequests = collect([]);
         } else {
-            $this->recievedRequests = $this->fetchRequestsByType(RequestType::RECIEVED);
+            $this->recievedRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::RECIEVED);
 
-            $this->sentRequests = collect([]);
+            $this->sentRoommateRequests = collect([]);
         }
     }
 
     public function switchPage(string $requestType)
     {
-        $requestType = RequestType::tryFrom($requestType);
+        $requestType = RoommateRequestType::tryFrom($requestType);
 
         switch ($requestType) {
-            case RequestType::SENT:
-                $this->sentRequests = $this->fetchRequestsByType(RequestType::SENT);
-                $this->currentPage = RequestType::SENT;
+            case RoommateRequestType::SENT:
+                $this->sentRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::SENT);
+                $this->currentPage = RoommateRequestType::SENT;
 
                 break;
-            case RequestType::RECIEVED:
-                $this->recievedRequests = $this->fetchRequestsByType(RequestType::RECIEVED);
-                $this->currentPage = RequestType::RECIEVED;
+            case RoommateRequestType::RECIEVED:
+                $this->recievedRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::RECIEVED);
+                $this->currentPage = RoommateRequestType::RECIEVED;
 
                 break;
             default:
@@ -61,13 +61,13 @@ class Request extends Component
         }
     }
 
-    protected function fetchRequestsByType(RequestType $requestType): Collection
+    protected function fetchRequestsByType(RoommateRequestType $requestType): Collection
     {
-        if ($requestType == RequestType::SENT) {
+        if ($requestType == RoommateRequestType::SENT) {
             return RoommateRequest::where('sender_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
         }
 
-        if ($requestType == RequestType::RECIEVED) {
+        if ($requestType == RoommateRequestType::RECIEVED) {
             return RoommateRequest::Where('recipient_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
         }
 
@@ -76,7 +76,7 @@ class Request extends Component
 
     protected function resetUsersWhenSentRequestIsDeleted($id)
     {
-        $this->recievedRequests = $this->recievedRequests->except([$id]);
+        $this->recievedRoommateRequests = $this->recievedRoommateRequests->except([$id]);
     }
 
     // fires a card component refresh when another user blocks the currently authenticated user
@@ -89,7 +89,7 @@ class Request extends Component
     public function render()
     {
         /** @var \Illuminate\View\View */
-        $view = view('livewire.pages.request');
+        $view = view('livewire.pages.roommate-requests');
 
         return $view->layout('layouts.guest');
     }

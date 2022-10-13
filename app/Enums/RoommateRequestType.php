@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum RequestType: string
+enum RoommateRequestType: string
 {
   case SENT = 'sent';
   case RECIEVED = 'recieved';

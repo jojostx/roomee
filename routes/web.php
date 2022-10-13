@@ -6,9 +6,10 @@ use App\Http\Livewire\Pages\Blocklist;
 use App\Http\Livewire\Pages\Dashboard;
 use App\Http\Livewire\Pages\DashboardFilament;
 use App\Http\Livewire\Pages\Favorite;
+use App\Http\Livewire\Pages\FavoritesFilament;
 use App\Http\Livewire\Pages\Profile\UpdatePage;
 use App\Http\Livewire\Pages\Profile\ViewProfile;
-use App\Http\Livewire\Pages\Request;
+use App\Http\Livewire\Pages\RoommateRequests;
 use Illuminate\Support\Facades\Route;
 
 
@@ -41,13 +42,15 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 
 
 Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
-    Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/dashboard-filament', DashboardFilament::class)->name('dashboard.filament');
     Route::get('/profile/update', UpdatePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
     Route::get('/profile/view/{user}', ViewProfile::class)->name('profile.view');
+
+    Route::get('/dashboard-filament', DashboardFilament::class)->name('dashboard');
+    Route::get('/favorites-filament', FavoritesFilament::class)->name('favorites');
+    // Route::get('/dashboard', Dashboard::class)->name('dashboard');
+    // Route::get('/favorites', Favorite::class)->name('favorites');
     Route::get('/blocklist', Blocklist::class)->name('blocklist');
-    Route::get('/favorites', Favorite::class)->name('favorites');
-    Route::get('/requests', Request::class)->name('requests');
+    Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');
 });
 
 require __DIR__ . '/auth.php';
