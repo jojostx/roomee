@@ -55,7 +55,7 @@ class UserPolicy
      */
     public function interactWith(User $user, User $model)
     {
-        return !$model->blocklists->contains($user);
+        return !$user->isBlockedBy($model);
     }
 
     /**
@@ -67,7 +67,7 @@ class UserPolicy
      */
     public function block(User $user, User $model)
     {
-        return !$user->blocklists->contains($model) && $user->isNot($model);
+        return !$user->hasBlocked($model) && $user->isNot($model);
     }
     
     /**
@@ -79,7 +79,6 @@ class UserPolicy
      */
     public function unblock(User $user, User $model)
     {
-        return $user->blocklists->contains($model) && $user->isNot($model);
+        return $user->hasBlocked($model) && $user->isNot($model);
     }
-
 }
