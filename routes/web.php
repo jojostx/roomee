@@ -1,16 +1,18 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
-use App\Http\Livewire\Pages\Blocklist;
-use App\Http\Livewire\Pages\Dashboard;
-use App\Http\Livewire\Pages\DashboardFilament;
-use App\Http\Livewire\Pages\Favorite;
-use App\Http\Livewire\Pages\FavoritesFilament;
 use App\Http\Livewire\Pages\Profile\UpdatePage;
 use App\Http\Livewire\Pages\Profile\ViewProfile;
+use App\Http\Livewire\Pages\Blocklist;
+use App\Http\Livewire\Pages\Dashboard;
+use App\Http\Livewire\Pages\Favorite;
 use App\Http\Livewire\Pages\RoommateRequests;
-use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Pages\BlocklistFilament;
+use App\Http\Livewire\Pages\DashboardFilament;
+use App\Http\Livewire\Pages\FavoritesFilament;
+use App\Http\Livewire\Pages\RoommateRequestsFilament;
 
 
 /*
@@ -47,10 +49,12 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(functi
 
     Route::get('/dashboard-filament', DashboardFilament::class)->name('dashboard');
     Route::get('/favorites-filament', FavoritesFilament::class)->name('favorites');
+    Route::get('/roommate-requests-filament', RoommateRequestsFilament::class)->name('roommate-requests');
+    Route::get('/blocklist-filament', BlocklistFilament::class)->name('blocklist');
     // Route::get('/dashboard', Dashboard::class)->name('dashboard');
     // Route::get('/favorites', Favorite::class)->name('favorites');
-    Route::get('/blocklist', Blocklist::class)->name('blocklist');
-    Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');
+    // Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');
+    // Route::get('/blocklist', Blocklist::class)->name('blocklist');
 });
 
 require __DIR__ . '/auth.php';
