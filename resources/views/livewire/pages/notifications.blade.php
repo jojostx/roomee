@@ -11,12 +11,12 @@
                 Your have no new notifications.
             </div> 
         @else
-            @foreach ($requestAcceptedNotifications as $notification)
-                <livewire:components.cards.notifications.request-accepted-card :notification="$notification" :user="$notification->data['recipient_id']" :wire:key="$notification->id">
+            @foreach ($roommateRequestAcceptedNotifications as $notification)
+                <livewire:components.cards.notifications.roommate-request-accepted-card :notification="$notification" :user="$notification->data['recipient_id']" :wire:key="$notification->id">
             @endforeach
             
-            @foreach ($requestRecievedNotifications as $notification)
-                <livewire:components.cards.notifications.request-recieved-card :notification="$notification" :user="$notification->data['sender_id']" :wire:key="$notification->id">
+            @foreach ($roommateRequestRecievedNotifications as $notification)
+                <livewire:components.cards.notifications.roommate-request-recieved-card :notification="$notification" :user="$notification->data['sender_id']" :wire:key="$notification->id">
             @endforeach
         @endif       
     </div>

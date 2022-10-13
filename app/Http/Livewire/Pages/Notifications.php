@@ -7,11 +7,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth ;
 use Livewire\Component;
 
-class Notification extends Component
+class Notifications extends Component
 {
     public Collection $notifications;
-    public $requestAcceptedNotifications;
-    public $requestRecievedNotifications;
+    public $roommateRequestAcceptedNotifications;
+    public $roommateRequestRecievedNotifications;
 
     public function mount()
     {
@@ -19,13 +19,13 @@ class Notification extends Component
             ->notifications()
             ->select('id', 'type', 'data', 'read_at', 'created_at')->get();
 
-        $this->requestAcceptedNotifications = $this->notifications
-            ->where('type', 'App\Notifications\RoommateRequestAccepted')
+        $this->roommateRequestAcceptedNotifications = $this->notifications
+            ->where('type', 'App\Notifications\RoommateRequestAcceptedNotification')
             ->unique('data')
             ->values()
             ->all();
 
-        $this->requestRecievedNotifications = $this->notifications
+        $this->roommateRequestRecievedNotifications = $this->notifications
             ->where('type', 'App\Notifications\RoommateRequestRecieved')
             ->unique('data')
             ->values()
