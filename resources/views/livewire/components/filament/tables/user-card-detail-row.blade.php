@@ -6,13 +6,29 @@
   $min_budget = Illuminate\Support\Arr::get($getColumns(), 'min_budget', null)?->getState() ?? 'N/A';
   $max_budget = Illuminate\Support\Arr::get($getColumns(), 'max_budget', null)?->getState() ?? 'N/A';
   $similarity_score = Illuminate\Support\Arr::get($getColumns(), 'similarity_score', null)?->getState() ?? 'N/A';
-
+  
   $towns = Illuminate\Support\Arr::get($getColumns(), 'towns.name', null)?->getState() ?? '';
   $towns = str()->of($towns)->explode(', ');
-
+  
+  $pivot_created_at = Illuminate\Support\Arr::get($getColumns(), 'pivot_created_at', null)?->getFormattedState() ?? null;
 @endphp
 
 <div>
+  @if (filled($pivot_created_at))
+  <div class="pb-2 mb-3 border-b">
+    <p class="text-xs text-success-600">
+      <span class="inline-flex items-center h-4">
+        @if ($user->recipient_id == auth()->id())
+          <x-heroicon-o-arrow-down class="w-3"/> &nbsp;Recieved
+        @else
+          <x-heroicon-o-arrow-up class="w-3"/> &nbsp;Sent
+        @endif
+        {{ $pivot_created_at->diffForHumans() }}
+      </span>
+    </p>
+  </div>
+  @endif
+
   <div class="flex justify-between">
     <div class="flex">
       {{ $avatarComponent->render() }}
