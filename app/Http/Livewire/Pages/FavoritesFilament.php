@@ -47,7 +47,6 @@ class FavoritesFilament extends Component implements Tables\Contracts\HasTable
     return $this->getAuthModel()->favorites()->getQuery();
   }
 
-
   protected function paginateTableQuery(Builder $query): Paginator
   {
     return $query->simplePaginate($this->getTableRecordsPerPage() == -1 ? $query->count() : $this->getTableRecordsPerPage());
@@ -141,15 +140,25 @@ class FavoritesFilament extends Component implements Tables\Contracts\HasTable
 
   protected function getTableContentGrid(): ?array
   {
-    return [
-      'md' => 2,
-      'xl' => 3,
-    ];
+      return [
+          'md' => 2,
+          'lg' => 3,
+      ];
   }
 
   protected function getTableRecordClassesUsing(): ?Closure
   {
     return fn () => 'filament-user-card';
+  }
+
+  public function getTableEmptyStateHeading(): ?string
+  {
+    return 'No Users Found';
+  }
+
+  public function getTableEmptyStateDescription(): ?string
+  {
+    return 'You have not added any favorites';
   }
 
   /** dynamic properties */
@@ -172,7 +181,7 @@ class FavoritesFilament extends Component implements Tables\Contracts\HasTable
   protected function hasBeenBlocked(User $user): bool
   {
     return $this->blockedUsers
-      ->pluck('blockee_id_id')
+      ->pluck('blockee_id')
       ->contains($user->id);
   }
 

@@ -143,13 +143,23 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     {
         return [
             'md' => 2,
-            'xl' => 3,
+            'lg' => 3,
         ];
     }
 
     protected function getTableRecordClassesUsing(): ?Closure
     {
         return fn () => 'filament-user-card';
+    }
+
+    public function getTableEmptyStateHeading(): ?string
+    {
+      return 'No Users Found';
+    }
+  
+    public function getTableEmptyStateDescription(): ?string
+    {
+      return 'No User currently match your preferences, Please Check back later.';
     }
 
     /** dynamic properties */
@@ -172,7 +182,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     protected function hasBeenBlocked(User $user): bool
     {
         return $this->blockedUsers
-            ->pluck('blockee_id_id')
+            ->pluck('blockee_id')
             ->contains($user->id);
     }
 
