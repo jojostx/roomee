@@ -1,4 +1,4 @@
-<div id="toast_notif" wire:ignore style="display: none;" class="fixed left-0 z-50 flex items-center justify-between w-full max-w-2xl px-4 py-4 overflow-hidden text-white bg-primary-500 shadow-lg md:px-6 md:ml-8 md:w-1/2 md:rounded-md bottom-8">
+<div id="toast_notif" wire:ignore style="display: none;" class="fixed left-0 z-50 flex items-center justify-between w-full max-w-2xl px-4 py-4 overflow-hidden text-white shadow-lg bg-primary-500 md:px-6 md:ml-8 md:w-1/2 md:rounded-md bottom-8">
 </div>
 @prepend('scripts')
 <script>
@@ -40,25 +40,25 @@
                  </p>`;
         }
         
-        if (actionTaken == 'request') {
+        if (actionTaken == 'roommate-request.sent') {
             p = `<p>Your roommate ${actionTaken} has been sent to 
                     <span class="font-semibold">${username}</span>
                  </p>
-                 <a href="{{ route('requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
+                 <a href="{{ route('roommate-requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   View all requests
                  </a>`;
         }
         
-        if (actionTaken == 'request.Recieved') {
+        if (actionTaken == 'roommate-request.recieved') {
             p = `<p><span class="font-semibold">${username}</span>
                     Sent you a roommate request.
                  </p>
-                 <a href="{{ route('requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
+                 <a href="{{ route('roommate-requests') }}" class="flex-shrink-0 ml-2 text-sm underline hover:text-primary-100 md:text-base">
                   View requests
                  </a>`;
         }
       
-        if (actionTaken == 'request.Accepted') {
+        if (actionTaken == 'roommate-request.accepted') {
             p = `<p><span class="font-semibold">${username}</span>
                     Accepted your roommate request.
                  </p>

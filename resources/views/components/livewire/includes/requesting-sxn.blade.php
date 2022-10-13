@@ -11,11 +11,11 @@
         Requested
     </x-filament-support::button>
     @elseif (auth()->user()->hasRoommateRequestFrom($user))
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" href="{{ route('requests') }}#requests-recieved__{{ $user->id }}" tag="a" :outlined="true" size="sm" icon="heroicon-s-external-link" aria-label="view request" title="view request">
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" href="{{ route('roommate-requests') }}#requests-recieved__{{ $user->id }}" tag="a" :outlined="true" size="sm" icon="heroicon-s-external-link" aria-label="view request" title="view request">
         View request
     </x-filament-support::button>
     @else
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send request" title="send request">
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send request" title="send request">
         Request
     </x-filament-support::button>
     @endif

@@ -18,8 +18,8 @@ class ViewProfile extends Component
         CanRetrieveUser,
         AuthorizesRequests,
         WithRequesting {
-        sendRequest as traitSendRequest;
-        acceptRequest as traitAcceptRequest;
+        sendRoommateRequest as traitSendRoommateRequest;
+        acceptRoommateRequest as traitAcceptRoommateRequest;
     }
 
     public $user;
@@ -42,15 +42,15 @@ class ViewProfile extends Component
         ];
     }
 
-    public function sendRequest()
+    public function sendRoommateRequest()
     {
-        $this->traitSendRequest($this->user);
+        $this->traitSendRoommateRequest($this->user);
         $this->emitSelf('actionTakenOnUser');
     }
 
     public function showDeleteRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->uuid]);
+        $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function showReportOrBlockModal()
