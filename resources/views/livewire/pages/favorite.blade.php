@@ -7,7 +7,7 @@
     @empty
     <div class="flex items-center justify-center w-full my-2">
         <div class="p-3 my-4 bg-white border rounded-md shadow">
-            Your have not added any favorites.
+            You have not added any favorites.
         </div>
     </div>
     @endforelse
