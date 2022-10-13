@@ -10,6 +10,7 @@ use App\Models\Report;
 use Livewire\Component;
 use App\Http\Livewire\Traits;
 use App\Models\RoommateRequest;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -322,18 +323,18 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     protected function getRequestingActions()
     {
         return [
-            Tables\Actions\Action::make('send-request')
+            Tables\Actions\Action::make('send-roommate-request')
                 ->button()
                 ->outlined()
                 ->label('Send Request')
                 ->icon('heroicon-s-user-add')
                 ->color('secondary')
                 ->extraAttributes([
-                    'title' => 'send request',
-                    'class' => 'w-full filament-tables-action-send-request',
+                    'title' => 'send roommate request',
+                    'class' => 'w-full filament-tables-action-send-roommate-request',
                 ])
                 ->action(function (User $record) {
-                    $this->sendRequest($record);
+                    $this->sendRoommateRequest($record);
                     $this->emitSelf('refresh:component');
                 })
                 ->requiresConfirmation()
@@ -341,17 +342,17 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will send a Roommate request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasNotSentOrRecievedRoommateRequest($record)),
 
-            Tables\Actions\Action::make('accept-request')
+            Tables\Actions\Action::make('accept-roommate-request')
                 ->button()
                 ->label('Accept Request')
                 ->icon('heroicon-s-check-circle')
                 ->color('primary')
                 ->extraAttributes([
-                    'title' => 'send request',
-                    'class' => 'w-full filament-tables-action-accept-request',
+                    'title' => 'accept roommate request',
+                    'class' => 'w-full filament-tables-action-accept-roommate-request',
                 ])
                 ->action(function (User $record) {
-                    $this->acceptRequest($record);
+                    $this->acceptRoommateRequest($record);
                     $this->emitSelf('refresh:component');
                 })
                 ->requiresConfirmation()
@@ -359,17 +360,17 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasRoommateRequestFrom($record)),
 
-            Tables\Actions\Action::make('delete-request')
+            Tables\Actions\Action::make('delete-roommate-request')
                 ->button()
                 ->label('Delete Request')
                 ->icon('heroicon-s-user-remove')
                 ->color('danger')
                 ->extraAttributes([
-                    'title' => 'send request',
-                    'class' => 'w-full filament-tables-action-delete-request',
+                    'title' => 'delete roommate request',
+                    'class' => 'w-full filament-tables-action-delete-roommate-request',
                 ])
                 ->action(function (User $record) {
-                    $this->deleteRequest($record);
+                    $this->deleteRoommateRequest($record);
                     $this->emitSelf('refresh:component');
                 })
                 ->requiresConfirmation()
@@ -383,7 +384,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->icon('heroicon-s-phone-outgoing')
                 ->color('success')
                 ->extraAttributes([
-                    'title' => 'send request',
+                    'title' => 'contact user',
                     'class' => 'w-full filament-tables-action-contact-user',
                 ])
                 ->requiresConfirmation()
