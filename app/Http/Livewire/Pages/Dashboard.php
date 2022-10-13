@@ -6,7 +6,6 @@ use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Dashboard extends Component

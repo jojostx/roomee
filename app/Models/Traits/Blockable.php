@@ -28,7 +28,6 @@ trait Blockable
         }
 
         $blocked = DB::table('blocklists')->insert([
-            'uuid' => str()->uuid()->toString(),
             'blocker_id' => $this->getKey(),
             'blockee_id' => $recipient->getKey(),
             'created_at' => now(),
@@ -60,6 +59,9 @@ trait Blockable
         return $unblocked;
     }
 
+    /**
+     * determines whether the blockee has been blocked by this user
+     */
     public function hasBlocked(Model $blockee): bool
     {
         return DB::table('blocklists')
@@ -67,10 +69,12 @@ trait Blockable
                 'blocker_id' => $this->getKey(),
                 'blockee_id' => $blockee->getKey(),
             ])
-            ->get('id')
-            ->isNotEmpty();
+            ->exists();
     }
 
+    /**
+     * determines whether the blocker has blocked this user
+     */
     public function isBlockedBy(Model $blocker): bool
     {
         return $blocker->hasBlocked($this);
