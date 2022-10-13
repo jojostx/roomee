@@ -24,7 +24,7 @@
     @endif
 
     <!-- delete roommate request modal -->
-    @if (auth()->user()->hasSentRoommateRequestTo($user))
+    @if (auth()->user()->hasPendingSentRoommateRequestTo($user))
     <div class="flex items-center justify-center py-3 border-b border-secondary-300">
         <p class="font-semibold text-secondary-700">
             Delete Roommate Request?
@@ -42,7 +42,7 @@
     @endif
 
     <!-- accept roommate request modal -->
-    @if (auth()->user()->hasRoommateRequestFrom($user))
+    @if (auth()->user()->hasPendingRoommateRequestFrom($user))
     <div class="flex items-center justify-center py-3 border-b border-secondary-300">
         <p class="font-semibold text-secondary-700">
             Accept Roommate Request?

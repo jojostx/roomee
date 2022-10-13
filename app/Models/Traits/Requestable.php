@@ -41,24 +41,24 @@ trait Requestable
         }
 
         return !RoommateRequest::query()
-            ->whereStatus(Status::DENIED)
+            ->where('status', Status::DENIED->value)
             ->betweenModels($this, $recipient)
             ->exists();
     }
 
-    public function hasRoommateRequestFrom(User $sender): bool
+    public function hasPendingRoommateRequestFrom(User $sender): bool
     {
         return RoommateRequest::whereSender($sender)
             ->whereRecipient($this)
-            ->whereStatus(Status::PENDING)
+            ->where('status', Status::PENDING->value)
             ->exists();
     }
 
-    public function hasSentRoommateRequestTo(User $recipient): bool
+    public function hasPendingSentRoommateRequestTo(User $recipient): bool
     {
         return RoommateRequest::whereSender($this)
             ->whereRecipient($recipient)
-            ->whereStatus(Status::PENDING)
+            ->where('status', Status::PENDING->value)
             ->exists();
     }
 
@@ -116,7 +116,7 @@ trait Requestable
     public function getPendingSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::PENDING)
+            ->whereStatus(Status::PENDING->value)
             ->whereSender($this)
             ->get();
     }
@@ -124,7 +124,7 @@ trait Requestable
     public function getAcceptedSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::ACCEPTED)
+            ->whereStatus(Status::ACCEPTED->value)
             ->whereSender($this)
             ->get();
     }
@@ -132,7 +132,7 @@ trait Requestable
     public function getDeniedSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::DENIED)
+            ->whereStatus(Status::DENIED->value)
             ->whereSender($this)
             ->get();
     }

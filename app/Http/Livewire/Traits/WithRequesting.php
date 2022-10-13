@@ -45,7 +45,7 @@ trait WithRequesting
             return;
         }
 
-        if ($this->getAuthModel()->hasSentRoommateRequestTo($user)) {
+        if ($this->getAuthModel()->hasPendingSentRoommateRequestTo($user)) {
             $deleted = $this->getAuthModel()->deleteRoommateRequest($user);
         }
 
@@ -68,7 +68,7 @@ trait WithRequesting
             return;
         }
 
-        if ($this->getAuthModel()->hasRoommateRequestFrom($user)) {
+        if ($this->getAuthModel()->hasPendingRoommateRequestFrom($user)) {
             $accepted = $this->getAuthModel()->acceptRoommateRequest($user);
         }
 
