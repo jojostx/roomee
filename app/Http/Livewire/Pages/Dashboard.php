@@ -24,7 +24,7 @@ class Dashboard extends Component
 
         return [
             'actionTakenOnUser' => '$refresh',
-            "echo-private:request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
+            "echo-private:roommate-request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
             "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
         ];
     }

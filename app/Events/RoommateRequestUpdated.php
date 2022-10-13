@@ -47,6 +47,6 @@ class RoommateRequestUpdated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel("request.{$this->recipient_id}");
+        return new PrivateChannel("roommate-request.{$this->recipient_id}");
     }
 }
