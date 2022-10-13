@@ -8,11 +8,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use LivewireUI\Modal\ModalComponent;
 
-class DeleteRequestModal extends ModalComponent
+class DeleteRoommateRequestModal extends ModalComponent
 {
     use CanRetrieveUser;
     use WithRequesting{
-        deleteRequest as traitDeleteRequest;
+        deleteRoommateRequest as traitDeleteRoommateRequest;
     }
 
     public string | User $user;
@@ -32,9 +32,9 @@ class DeleteRequestModal extends ModalComponent
         return 'sm';
     }
 
-    public function deleteRequest()
+    public function deleteRoommateRequest()
     {
-        $this->traitDeleteRequest($this->user);
+        $this->traitDeleteRoommateRequest($this->user);
             
         $this->emit("actionTakenOnUser");
         $this->emit("refreshChildren:{$this->user->id}");
@@ -45,6 +45,6 @@ class DeleteRequestModal extends ModalComponent
 
     public function render()
     {
-        return view('livewire.components.modals.delete-request-modal');
+        return view('livewire.components.modals.delete-roommate-request-modal');
     }
 }

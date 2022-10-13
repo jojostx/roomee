@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Components\Cards\Notifications;
 use App\Models\User;
 use Livewire\Component;
 
-class RequestAcceptedCard extends Component
+class RoommateRequestAcceptedCard extends Component
 {
     public $notification;
     public $user;
@@ -18,6 +18,6 @@ class RequestAcceptedCard extends Component
 
     public function render()
     {
-        return view('livewire.components.cards.notifications.request-accepted-card');
+        return view('livewire.components.cards.notifications.roommate-request-accepted-card');
     }
 }
