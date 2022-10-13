@@ -54,9 +54,7 @@
                                         Unblock
                                     </button>
                                 @else
-                                    @can('interactWith', $user)
                                     <x-livewire.includes.user-interactions :user="$user"/>
-                                    @endcan
                                 @endif
                             @endcan
                         </div>
