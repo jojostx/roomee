@@ -5,15 +5,17 @@ namespace App\Notifications;
 use App\Models\User;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RoommateRequestRecieved extends Notification implements ShouldQueue
+class RoommateRequestRecievedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public $recipient;
     public $sender;
 
     /**
@@ -21,9 +23,10 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $sender)
+    public function __construct(User $sender, User $recipient)
     {
         $this->sender = $sender;
+        $this->recipient = $recipient;
     }
 
     /**
@@ -62,7 +65,7 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
                 ->actions([
                     Action::make('view')
                         ->button()
-                        ->url(route('profile.view', ['user' => $this->sender]), shouldOpenInNewTab: true) 
+                        ->url(route('profile.view', ['user' => $this->sender]), shouldOpenInNewTab: true)
                 ])
                 ->getDatabaseMessage(),
             [
@@ -82,10 +85,5 @@ class RoommateRequestRecieved extends Notification implements ShouldQueue
         return [
             'sender_id' => $this->sender->id,
         ];
-    }
-
-    public function broadcastType()
-    {
-        return 'roommate.request.recieved';
     }
 }

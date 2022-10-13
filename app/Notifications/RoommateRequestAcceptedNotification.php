@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 
-class RoommateRequestAccepted extends Notification implements ShouldQueue
+class RoommateRequestAcceptedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 

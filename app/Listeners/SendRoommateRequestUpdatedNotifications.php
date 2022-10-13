@@ -28,7 +28,7 @@ class SendRoommateRequestUpdatedNotifications implements ShouldQueue
 
         // if ($event->status == "sent") {
             //  send a mail to the recipient's email and sms to their tel.no with link to the request card
-            //  for the sender [route('requests')#(request_card_{{sender_id}})]
+            //  for the sender [route('roommate-requests')#(request_card_{{sender_id}})]
             //  for a new roommate request
         // }
 

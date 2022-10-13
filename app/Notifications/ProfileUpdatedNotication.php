@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ProfileUpdated extends Notification
+class ProfileUpdatedNotification extends Notification
 {
     use Queueable;
 
