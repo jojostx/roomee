@@ -195,16 +195,6 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
   protected function getTableRecordClassesUsing(): ?Closure
   {
     return fn () => 'filament-user-card bg-danger-50';
-
-    // return fn (User $record) => match ($record->status) {
-    //   'draft' => 'opacity-30',
-    //   'reviewing' => [
-    //     'border-l-2 border-orange-600',
-    //     'dark:border-orange-300' => config('tables.dark_mode'),
-    //   ],
-    //   'published' => 'border-l-2 border-green-600',
-    //   default => null,
-    // };
   }
 
   public function getTableEmptyStateHeading(): ?string
@@ -390,7 +380,7 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
         ->requiresConfirmation()
         ->modalHeading('Accept Roommate Request')
         ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
-        ->visible(fn (User $record) => $this->hasRoommateRequestFrom($record)),
+        ->visible(fn (User $record) => $this->hasRoommateRequestFrom($record) && !$this->getAuthModel()->isRoommateWith($record)),
 
       Tables\Actions\Action::make('delete-roommate-request')
         ->button()
@@ -408,11 +398,11 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
         ->requiresConfirmation()
         ->modalHeading('Delete Roommate Request')
         ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-        ->visible(fn (User $record) => $this->hasSentRoommateRequestTo($record)),
+        ->visible(fn (User $record) => $this->hasSentRoommateRequestTo($record) && !$this->getAuthModel()->isRoommateWith($record)),
 
       Tables\Actions\Action::make('contact-user')
         ->button()
-        ->label(fn (User $record): string => 'Contact ' . ucfirst($record->full_name))
+        ->label('Contact User')
         ->icon('heroicon-s-phone-outgoing')
         ->color('success')
         ->extraAttributes([

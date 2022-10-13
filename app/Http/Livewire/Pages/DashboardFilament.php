@@ -368,7 +368,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasRoommateRequestFrom($record)),
+                ->visible(fn (User $record) => $this->hasRoommateRequestFrom($record) && !$this->getAuthModel()->isRoommateWith($record)),
 
             Tables\Actions\Action::make('delete-roommate-request')
                 ->button()
@@ -386,11 +386,11 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasSentRoommateRequestTo($record)),
+                ->visible(fn (User $record) => $this->hasSentRoommateRequestTo($record) && !$this->getAuthModel()->isRoommateWith($record)),
 
             Tables\Actions\Action::make('contact-user')
                 ->button()
-                ->label(fn (User $record): string => 'Contact ' . ucfirst($record->full_name))
+                ->label('Contact User')
                 ->icon('heroicon-s-phone-outgoing')
                 ->color('success')
                 ->extraAttributes([
