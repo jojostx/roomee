@@ -2,17 +2,16 @@
 
 namespace App\Http\Livewire\Components\Modals;
 
-use App\Http\Livewire\Pages\Blocklist;
-use App\Http\Livewire\Pages\Dashboard;
-use App\Http\Livewire\Pages\Favorite;
-use App\Http\Livewire\Pages\Profile\ViewProfile;
 use App\Models\User;
+use App\Http\Livewire\Traits\CanRetrieveUser;
+use App\Http\Livewire\Traits\WithBlocking;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use LivewireUI\Modal\ModalComponent;
 
 class UserBlockingModal extends ModalComponent
 {
+    use CanRetrieveUser, WithBlocking;
+
     public string | User $user;
 
     public function mount(User $user)
@@ -25,50 +24,18 @@ class UserBlockingModal extends ModalComponent
         return Auth::user();
     }
 
-    protected function blockUser():bool
-    {
-        try {
-            /** @var bool */
-            $result = DB::transaction(function (): bool {
-                return $this->getAuthModel()->block($this->user) &&
-                    // delete any existing roommate request
-                    $this->getAuthModel()->deleteRoommateRequest($this->user) &&
-                    // remove user from favorites, delete sent and recieved roommate requests
-                    (bool) $this->getAuthModel()->favorites()->detach($this->user->getKey());
-            });
-
-            return $result;
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
-
-    protected function unblockUser()
-    {
-        return $this->getAuthModel()->unblock($this->user);
-    }
-
     public function submit()
     {
-        if ($this->getAuthModel()->can('block', $this->user)) {
-            $this->blockUser();
-        };
+        $hasBeenBlocked = $this->getAuthModel()->hasBlocked($this->user);
 
-        if ($this->getAuthModel()->can('unblock', $this->user)) {
+        if (!$hasBeenBlocked) {
+            $this->blockUser();
+        } else {
             $this->unblockUser();
         };
 
-        $this->closeModalWithEvents($this->getListenerComponents());
-    }
-
-    public static function getListenerComponents()
-    {
-        return [
-            ViewProfile::getName() => 'actionTakenOnUser',
-            Dashboard::getName() => 'actionTakenOnUser',
-            Blocklist::getName() => 'actionTakenOnUser',
-            Favorite::getName() => 'actionTakenOnUser',
-        ];
+        $this->emit('actionTakenOnUser');
+        $this->closeModal();
     }
 
     public static function modalMaxWidth(): string
