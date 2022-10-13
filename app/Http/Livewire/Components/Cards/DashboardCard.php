@@ -64,9 +64,9 @@ class DashboardCard extends Component
         $blocking = DB::table('blocklists')->where([
             'blocker_id' => $this->user->id,
             'blockee_id' => auth()->id()
-        ])->get();
+        ])->exists();
 
-        return $blocking->count();
+        return $blocking;
     }
 
     public function render()
