@@ -7,16 +7,16 @@
         Contact
     </x-filament-support::button>
     @elseif (auth()->user()->hasSentRoommateRequestTo($user))
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal({{ $user->id }})" size="sm" icon="heroicon-s-user-remove" aria-label="delete request" title="delete request">
-        Requested
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal({{ $user->id }})" color="danger" size="sm" icon="heroicon-s-user-remove" aria-label="delete roommate request" title="delete roommate request">
+        Delete Request
     </x-filament-support::button>
     @elseif (auth()->user()->hasRoommateRequestFrom($user))
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" href="{{ route('roommate-requests') }}#requests-recieved__{{ $user->id }}" tag="a" :outlined="true" size="sm" icon="heroicon-s-external-link" aria-label="view request" title="view request">
-        View request
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="acceptRoommateRequest({{ $user->id }})" size="sm" icon="heroicon-s-check-circle" aria-label="accept roommate request" title="accept roommate request">
+        Accept Request
     </x-filament-support::button>
     @else
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send roommate request" title="send request">
-        Request
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send roommate request" title="send roommate request">
+        Send Request
     </x-filament-support::button>
     @endif
     <!-- end of requesting and contacting section -->

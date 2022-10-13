@@ -42,6 +42,12 @@ class ViewProfile extends Component
         ];
     }
 
+    public function acceptRoommateRequest()
+    {
+        $this->traitAcceptRoommateRequest($this->user);
+        $this->emit('actionTakenOnUser');
+    }
+
     public function sendRoommateRequest()
     {
         $this->traitSendRoommateRequest($this->user);

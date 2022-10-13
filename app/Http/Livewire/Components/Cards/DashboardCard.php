@@ -4,16 +4,21 @@ namespace App\Http\Livewire\Components\Cards;
 
 use Livewire\Component;
 use App\Models\User;
-use App\Notifications\RoommateRequestRecievedNotification;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Livewire\Traits\CanRetrieveUser;
 use App\Http\Livewire\Traits\WithFavoriting;
-use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Http\Livewire\Traits\WithRequesting;
 
 class DashboardCard extends Component
 {
-    use WithFavoriting, CanRetrieveUser;
+    use
+        WithFavoriting,
+        CanRetrieveUser,
+        WithRequesting {
+        sendRoommateRequest as traitSendRoommateRequest;
+        acceptRoommateRequest as traitAcceptRoommateRequest;
+    }
 
     public $user;
     public $course;
@@ -23,6 +28,7 @@ class DashboardCard extends Component
     {
         return [
             'refreshChildren:' . $this->user->id => '$refresh',
+            'actionTakenOnUser' => '$refresh',
         ];
     }
 
@@ -36,17 +42,16 @@ class DashboardCard extends Component
         return Auth::user();
     }
 
+    public function acceptRoommateRequest()
+    {
+        $this->traitAcceptRoommateRequest($this->user);
+        $this->emit('actionTakenOnUser');
+    }
+
     public function sendRoommateRequest()
     {
-        $this->getAuthModel()->sendRoommateRequest($this->user);
-
-        Notification::make()
-            ->title('Request sent successfully')
-            ->success()
-            ->body("Your roommate request have been sent to **{$this->user->full_name}**. You will be notified when they accept.")
-            ->send();
-
-        $this->user->notify(new RoommateRequestRecievedNotification($this->getAuthModel(), $this->user));
+        $this->traitSendRoommateRequest($this->user);
+        $this->emitSelf('actionTakenOnUser');
     }
 
     public function showDeleteRequestModal()

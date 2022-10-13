@@ -30,7 +30,8 @@ class UserRequestingModal extends ModalComponent
     public function acceptRoommateRequest()
     {
         $this->traitAcceptRoommateRequest($this->user);
-        $this->closeModalWithEvents($this->getListenerComponents());
+        $this->emit('actionTakenOnUser');
+        $this->closeModal();
     }
 
     public function deleteRoommateRequest()
