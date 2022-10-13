@@ -359,12 +359,12 @@ namespace App\Models{
  * @property-read int|null $hobbies_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection|User[] $recievedRequests
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $recievedRoommateRequests
  * @property-read int|null $recieved_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Report[] $reports
  * @property-read int|null $reports_count
  * @property-read \App\Models\School|null $school
- * @property-read \Illuminate\Database\Eloquent\Collection|User[] $sentRequests
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $sentRoommateRequests
  * @property-read int|null $sent_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
