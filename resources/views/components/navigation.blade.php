@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="flex items-center flex-shrink-0">
                     <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
-                        <x-application-logo class="block w-auto h-10 text-secondary-600 fill-current" />
+                        <x-application-logo class="block w-auto h-10 fill-current text-secondary-600" />
                     </a>
                 </div>
 
@@ -25,7 +25,7 @@
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button aria-label="settings dropdown button" title="settings dropdown button" class="flex items-center text-sm font-medium text-secondary-500 transition duration-150 ease-in-out hover:text-secondary-700 hover:border-secondary-300 focus:outline-none focus:text-primary-700 focus:border-secondary-300">
+                        <button aria-label="settings dropdown button" title="settings dropdown button" class="flex items-center text-sm font-medium transition duration-150 ease-in-out text-secondary-500 hover:text-secondary-700 hover:border-secondary-300 focus:outline-none focus:text-primary-700 focus:border-secondary-300">
                             <div class="w-12 h-12 mr-4 overflow-hidden rounded-full">
                                 @if (auth()->user()->avatar)
                                 <img id="avatar_img" src="{{ auth()->user()->avatarPath }}" alt="avatar image" width="100%" height="100%">
@@ -52,8 +52,8 @@
                             <x-dropdown-link :href="route('profile.view', ['user' => auth()->user() ])">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
-                            <x-dropdown-link :href="route('requests')">
-                                {{ __('Requests') }}
+                            <x-dropdown-link :href="route('roommate-requests')">
+                                {{ __('Roommate Requests') }}
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('favorites')">
                                 {{ __('Favorites') }}
@@ -72,7 +72,7 @@
 
             <!-- Hamburger -->
             <div class="flex items-center -mr-2 sm:hidden">
-                <button @click="open = ! open" aria-label="settings hamburger menu button" title="settings hamburger menu button" class="inline-flex items-center justify-center p-2 text-secondary-400 transition duration-150 ease-in-out rounded-md hover:text-secondary-500 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-500">
+                <button @click="open = ! open" aria-label="settings hamburger menu button" title="settings hamburger menu button" class="inline-flex items-center justify-center p-2 transition duration-150 ease-in-out rounded-md text-secondary-400 hover:text-secondary-500 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-500">
                     <svg class="w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -98,7 +98,7 @@
                         @if (auth()->user()->avatar)
                         <img id="avatar_img" src="{{ auth()->user()->avatarPath }}" alt="avatar image" width="100%" height="100%">
                         @else
-                        <svg class="w-12 h-12 text-secondary-400 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg class="w-12 h-12 fill-current text-secondary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                         @endif
@@ -121,11 +121,11 @@
                         </svg>
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('requests')">
+                    <x-responsive-nav-link :href="route('roommate-requests')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="inline w-5 h-5 mr-1" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                         </svg>
-                        {{ __('Requests') }}
+                        {{ __('Roommate Requests') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('favorites')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="inline w-5 h-5 mr-1" viewBox="0 0 24 24" stroke="currentColor">

@@ -41,8 +41,8 @@
             </x-responsive-nav-link>
             @endunless
 
-            <x-responsive-nav-link :href="route('requests')" :active="request()->routeIs('requests')" icon_before="heroicon-o-user-add">
-                {{ __('Requests') }}
+            <x-responsive-nav-link :href="route('roommate-requests')" :active="request()->routeIs('roommate-requests')" icon_before="heroicon-o-user-add">
+                {{ __('Roommate Requests') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('favorites')" :active="request()->routeIs('favorites')" icon_before="heroicon-o-star">
