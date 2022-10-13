@@ -10,12 +10,15 @@ use App\Models\Traits\Reportable;
 use App\Models\Traits\WithValidUsersQueryScopes;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
+use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
+use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 
 /**
  * @mixin IdeHelperUser
@@ -25,14 +28,16 @@ class User extends Authenticatable
     use HasFactory,
         HasApiTokens,
         Notifiable,
-        WithValidUsersQueryScopes,
         BindsOnUuid,
         GeneratesUuid,
+        HasMergedRelationships,
         Blockable,
         Favoritable,
         Requestable,
         Reportable,
+        WithValidUsersQueryScopes,
         canCalculateUserSimilarity;
+
 
     /**
      * The default values of attributes.
@@ -162,23 +167,40 @@ class User extends Authenticatable
     }
 
     /**
-     * The roommate requests for the user.
+     * The recieved roommate requests users for the user.
      */
-    public function recievedRoommateRequests()
+    public function recievedRoommateRequests(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'recipient_id', 'sender_id')
-            ->as('roommateRequests')
-            ->withTimestamps()->orderByPivot('created_at', 'desc');
+            ->withPivot('status')
+            ->withTimestamps()
+            ->orderByPivot('created_at', 'desc');
     }
 
     /**
      * The requests sent by the user.
      */
-    public function sentRoommateRequests()
+    public function sentRoommateRequests(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'sender_id', 'recipient_id')
-            ->as('roommateRequests')
-            ->withTimestamps()->orderByPivot('created_at', 'desc');
+            ->withPivot('status')
+            ->withTimestamps()
+            ->orderByPivot('created_at', 'desc');
+    }
+
+    public function allPotentialRoommates(): MergedRelation
+    {
+        return $this->mergedRelationWithModel(User::class, 'merged_roommate_requests_view');
+    }
+
+    /**
+     * The roommate requests for the user.
+     */
+    public function allRoommateRequests(): Builder
+    {
+        return RoommateRequest::query()
+            ->where('sender_id', $this->getKey())
+            ->orWhere('recipient_id', $this->getKey());
     }
 
     // -------- SCOPES -------- //
