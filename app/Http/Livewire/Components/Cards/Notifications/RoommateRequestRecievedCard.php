@@ -9,7 +9,7 @@ class RoommateRequestRecievedCard extends Component
 {
     public $notification;
     
-    //sender (the user who sent the request)
+    //sender (the user who sent the roommate request)
     public $user;
 
     public function mount($notification, User $user)

@@ -21,7 +21,7 @@ class RoommateRequests extends Component
         $id = auth()->id();
 
         return [
-            'resetUsers' => 'resetUsersWhenSentRequestIsDeleted',
+            'resetUsers' => 'resetUsersWhenSentRoommateRequestIsDeleted',
             "echo-private:roommate-request.{$id},RoommateRequestUpdated" => "handleRoommateRequestUpdatedEvent",
             "echo-private:blocking.{$id},UserBlocked" => "handleUserblockedEvent"
         ];
@@ -74,7 +74,7 @@ class RoommateRequests extends Component
         return collect([]);
     }
 
-    protected function resetUsersWhenSentRequestIsDeleted($id)
+    protected function resetUsersWhenSentRoommateRequestIsDeleted($id)
     {
         $this->recievedRoommateRequests = $this->recievedRoommateRequests->except([$id]);
     }

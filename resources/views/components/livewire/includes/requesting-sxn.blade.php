@@ -15,7 +15,7 @@
         View request
     </x-filament-support::button>
     @else
-    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send request" title="send request">
+    <x-filament-support::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest({{ $user->id }})" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send roommate request" title="send request">
         Request
     </x-filament-support::button>
     @endif

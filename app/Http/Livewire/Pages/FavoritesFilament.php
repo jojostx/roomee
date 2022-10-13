@@ -122,7 +122,7 @@ class FavoritesFilament extends Component implements Tables\Contracts\HasTable
   protected function getTableActions(): array
   {
     return [
-      ...$this->getRequestingActions(),
+      ...$this->getRoommateRequestingActions(),
       ...$this->getFavoritingActions(),
 
       Tables\Actions\ActionGroup::make([
@@ -290,7 +290,7 @@ class FavoritesFilament extends Component implements Tables\Contracts\HasTable
     ];
   }
 
-  protected function getRequestingActions()
+  protected function getRoommateRequestingActions()
   {
     return [
       Tables\Actions\Action::make('send-roommate-request')

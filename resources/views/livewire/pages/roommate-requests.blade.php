@@ -11,9 +11,9 @@
 
     <div class="flex flex-wrap px-3 mx-auto max-w-7xl sm:px-6 lg:px-8">
     @if ($currentPage == App\Enums\RoommateRequestType::SENT)
-        @forelse ($sentRoommateRequests as $request)
+        @forelse ($sentRoommateRequests as $roommateRequest)
         <div class="grid gap-4 lg:gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-3">
-            @livewire('components.cards.requests.sent-request-card', ['request' => $request], key($request->id))
+            @livewire('components.cards.roommate-requests.sent-roommate-request-card', ['roommateRequest' => $roommateRequest], key($roommateRequest->id))
         </div>
         @empty
         <div class="flex items-center justify-center w-full my-2">
@@ -23,14 +23,14 @@
         </div>
         @endforelse
     @else
-        @forelse ($recievedRoommateRequests as $request)
+        @forelse ($recievedRoommateRequests as $roommateRequest)
         <div class="grid gap-4 lg:gap-6 grid-col-1 sm:grid-cols-2 lg:grid-cols-3">
-            @livewire('components.cards.requests.recieved-request-card', ['request' => $request], key($request->id))
+            @livewire('components.cards.roommate-requests.recieved-roommate-request-card', ['roommateRequest' => $roommateRequest], key($roommateRequest->id))
         </div>
         @empty
         <div class="flex items-center justify-center w-full my-2">
             <div class="p-3 my-4 bg-white border rounded-md shadow">
-                You have not recieved any roommate Requests.
+                You have not recieved any Roommate Requests.
             </div>
         </div>
         @endforelse

@@ -33,7 +33,7 @@ class UserBlockingModal extends ModalComponent
                 return $this->getAuthModel()->block($this->user) &&
                     // delete any existing roommate request
                     $this->getAuthModel()->deleteRoommateRequest($this->user) &&
-                    // remove user from favorites, delete sent and recieved requests
+                    // remove user from favorites, delete sent and recieved roommate requests
                     (bool) $this->getAuthModel()->favorites()->detach($this->user->getKey());
             });
 

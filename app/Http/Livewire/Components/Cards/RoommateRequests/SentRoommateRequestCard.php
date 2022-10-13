@@ -7,7 +7,7 @@ use Livewire\Component;
 class SentRoommateRequestCard extends Component
 {
     public $user;
-    public $request;
+    public $roommateRequest;
 
     public function mount()
     {
