@@ -31,28 +31,28 @@ class RoommateRequests extends Component
     {
         //remember to paginate
         if ($this->currentPage === RoommateRequestType::SENT) {
-            $this->sentRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::SENT);
+            $this->sentRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::SENT);
 
             $this->recievedRoommateRequests = collect([]);
         } else {
-            $this->recievedRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::RECIEVED);
+            $this->recievedRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::RECIEVED);
 
             $this->sentRoommateRequests = collect([]);
         }
     }
 
-    public function switchPage(string $requestType)
+    public function switchPage(string $roommateRequestType)
     {
-        $requestType = RoommateRequestType::tryFrom($requestType);
+        $roommateRequestType = RoommateRequestType::tryFrom($roommateRequestType);
 
-        switch ($requestType) {
+        switch ($roommateRequestType) {
             case RoommateRequestType::SENT:
-                $this->sentRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::SENT);
+                $this->sentRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::SENT);
                 $this->currentPage = RoommateRequestType::SENT;
 
                 break;
             case RoommateRequestType::RECIEVED:
-                $this->recievedRoommateRequests = $this->fetchRequestsByType(RoommateRequestType::RECIEVED);
+                $this->recievedRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::RECIEVED);
                 $this->currentPage = RoommateRequestType::RECIEVED;
 
                 break;
@@ -61,13 +61,13 @@ class RoommateRequests extends Component
         }
     }
 
-    protected function fetchRequestsByType(RoommateRequestType $requestType): Collection
+    protected function fetchRoommateRequestsByType(RoommateRequestType $roommateRequestType): Collection
     {
-        if ($requestType == RoommateRequestType::SENT) {
+        if ($roommateRequestType == RoommateRequestType::SENT) {
             return RoommateRequest::where('sender_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
         }
 
-        if ($requestType == RoommateRequestType::RECIEVED) {
+        if ($roommateRequestType == RoommateRequestType::RECIEVED) {
             return RoommateRequest::Where('recipient_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
         }
 

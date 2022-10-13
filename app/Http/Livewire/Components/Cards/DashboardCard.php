@@ -17,7 +17,7 @@ class DashboardCard extends Component
 
     public $user;
     public $course;
-    public $requestId = NULL;
+    public $roommateRequestId = NULL;
 
     protected function getListeners()
     {
