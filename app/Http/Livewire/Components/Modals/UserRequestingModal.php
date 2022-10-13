@@ -11,8 +11,8 @@ use LivewireUI\Modal\ModalComponent;
 class UserRequestingModal extends ModalComponent
 {
     use CanRetrieveUser, WithRequesting {
-        acceptRequest as traitAcceptRequest;
-        deleteRequest as traitDeleteRequest;
+        acceptRoommateRequest as traitAcceptRoommateRequest;
+        deleteRoommateRequest as traitDeleteRoommateRequest;
     }
 
     public string | User $user;
@@ -27,15 +27,15 @@ class UserRequestingModal extends ModalComponent
         return Auth::user();
     }
 
-    public function acceptRequest()
+    public function acceptRoommateRequest()
     {
-        $this->traitAcceptRequest($this->user);
+        $this->traitAcceptRoommateRequest($this->user);
         $this->closeModalWithEvents($this->getListenerComponents());
     }
 
-    public function deleteRequest()
+    public function deleteRoommateRequest()
     {
-        $this->traitDeleteRequest($this->user);
+        $this->traitDeleteRoommateRequest($this->user);
         $this->emit('actionTakenOnUser');
         $this->closeModal();
     }
