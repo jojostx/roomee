@@ -15,6 +15,7 @@ namespace App\Models{
  * App\Models\Blocklist
  *
  * @property int $id
+ * @property string $uuid
  * @property int $blocker_id
  * @property int $blockee_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -28,6 +29,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUuid($value)
  */
 	class IdeHelperBlocklist {}
 }
@@ -37,6 +39,7 @@ namespace App\Models{
  * App\Models\Contact
  *
  * @property int $id
+ * @property string $uuid
  * @property string $first_name
  * @property string $last_name
  * @property string $email
@@ -48,11 +51,12 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Contact query()
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact wherefirst_name($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contact whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact wherelast_name($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contact whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contact whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contact whereUuid($value)
  */
 	class IdeHelperContact {}
 }
@@ -62,6 +66,7 @@ namespace App\Models{
  * App\Models\Course
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $short_name
  * @property string $max_level
@@ -80,6 +85,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Course whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Course whereShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Course whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Course whereUuid($value)
  */
 	class IdeHelperCourse {}
 }
@@ -89,6 +95,7 @@ namespace App\Models{
  * App\Models\Dislike
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -101,6 +108,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereUuid($value)
  */
 	class IdeHelperDislike {}
 }
@@ -116,7 +124,7 @@ namespace App\Models{
  * @property string $answer
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\FaqCategory|null $category
+ * @property-read \App\Models\FaqCategory $category
  * @method static \Illuminate\Database\Eloquent\Builder|Faq newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Faq newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Faq query()
@@ -158,7 +166,6 @@ namespace App\Models{
 /**
  * App\Models\Favorite
  *
- * @property int $id
  * @property int $favoriter_id
  * @property int $favoritee_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -169,7 +176,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereFavoriteeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereFavoriterId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereUpdatedAt($value)
  */
 	class IdeHelperFavorite {}
@@ -180,6 +186,7 @@ namespace App\Models{
  * App\Models\Feedback
  *
  * @property int $id
+ * @property string $uuid
  * @property int $feedback
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -190,6 +197,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereFeedback($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUuid($value)
  */
 	class IdeHelperFeedback {}
 }
@@ -199,6 +207,7 @@ namespace App\Models{
  * App\Models\Hobby
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -211,6 +220,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereUuid($value)
  */
 	class IdeHelperHobby {}
 }
@@ -220,6 +230,7 @@ namespace App\Models{
  * App\Models\Report
  *
  * @property int $id
+ * @property string $uuid
  * @property string $description
  * @property int $severity
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -230,10 +241,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Report newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Report query()
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereDesc($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Report whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereSeverity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Report whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Report whereUuid($value)
  */
 	class IdeHelperReport {}
 }
@@ -243,6 +255,7 @@ namespace App\Models{
  * App\Models\RoommateRequest
  *
  * @property string $id
+ * @property string $uuid
  * @property int $sender_id
  * @property int $recipient_id
  * @property int $status
@@ -258,10 +271,11 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipient(\App\Models\User $model)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipientId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSender(\App\Models\User $model)
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSenderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereUuid($value)
  */
 	class IdeHelperRoommateRequest {}
 }
@@ -271,6 +285,7 @@ namespace App\Models{
  * App\Models\School
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property string $short_name
  * @property string $state
@@ -292,6 +307,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|School whereShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|School whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|School whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|School whereUuid($value)
  */
 	class IdeHelperSchool {}
 }
@@ -301,6 +317,7 @@ namespace App\Models{
  * App\Models\Town
  *
  * @property int $id
+ * @property string $uuid
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -315,6 +332,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Town whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Town whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Town whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Town whereUuid($value)
  */
 	class IdeHelperTown {}
 }
@@ -324,6 +342,7 @@ namespace App\Models{
  * App\Models\User
  *
  * @property int $id
+ * @property string $uuid
  * @property string $first_name
  * @property string $last_name
  * @property string $gender
@@ -360,16 +379,17 @@ namespace App\Models{
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $recievedRoommateRequests
- * @property-read int|null $recieved_requests_count
+ * @property-read int|null $recieved_roommate_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Report[] $reports
  * @property-read int|null $reports_count
  * @property-read \App\Models\School|null $school
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $sentRoommateRequests
- * @property-read int|null $sent_requests_count
+ * @property-read int|null $sent_roommate_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Town[] $towns
  * @property-read int|null $towns_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User betweenModels(\App\Models\User $sender, \App\Models\User $recipient)
  * @method static \Illuminate\Database\Eloquent\Builder|User excludeUser($user_id)
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User gender($gender)
@@ -377,6 +397,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User school($school_id)
+ * @method static \Illuminate\Database\Eloquent\Builder|User validNonBlockedByUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder|User validNonBlockedUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder|User validNonBlockingUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder|User validUsers()
  * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereBio($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCourseId($value)
@@ -385,10 +409,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherefirst_name($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGender($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherelast_name($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereMaxBudget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereMinBudget($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
@@ -397,6 +421,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRooms($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSchoolId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
  */
 	class IdeHelperUser {}
 }

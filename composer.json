@@ -24,6 +24,7 @@
         "livewire/livewire": "^2.4",
         "martin-ro/filament-charcount-field": "^0.1.4",
         "pusher/pusher-php-server": "^7.0",
+        "staudenmeir/laravel-merged-relations": "^1.0",
         "wire-elements/modal": "^1.0"
     },
     "require-dev": {
