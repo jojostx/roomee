@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Traits;
 
 use App\Models\User;
-use App\Notifications\RoommateRequestAccepted;
-use App\Notifications\RoommateRequestRecieved;
+use App\Notifications\RoommateRequestAcceptedNotification;
+use App\Notifications\RoommateRequestRecievedNotification;
 use Filament\Notifications\Notification;
 
 trait WithRequesting
@@ -12,7 +12,7 @@ trait WithRequesting
     abstract protected function getAuthModel(): ?User;
     abstract protected function retrieveUser(): ?User;
 
-    protected function sendRequest($user_id = null)
+    protected function sendRoommateRequest($user_id = null)
     {
         $sent = false;
 
@@ -31,11 +31,11 @@ trait WithRequesting
                 ->body("Your roommate request have been sent to **{$user->full_name}**. You will be notified when they accept.")
                 ->send();
 
-            $user->notify(new RoommateRequestRecieved($this->getAuthModel()));
+            $user->notify(new RoommateRequestRecievedNotification($this->getAuthModel(), $user));
         }
     }
 
-    protected function deleteRequest($user_id = null)
+    protected function deleteRoommateRequest($user_id = null)
     {
         $deleted = false;
 
@@ -58,7 +58,7 @@ trait WithRequesting
         }
     }
 
-    protected function acceptRequest($user_id = null)
+    protected function acceptRoommateRequest($user_id = null)
     {
         $accepted = false;
 
@@ -79,7 +79,7 @@ trait WithRequesting
                 ->body("You can now contact **{$user->full_name}**.")
                 ->send();
 
-            $user->notify(new RoommateRequestAccepted($this->getAuthModel()));
+            $user->notify(new RoommateRequestAcceptedNotification($this->getAuthModel()));
         }
     }
 
@@ -91,7 +91,7 @@ trait WithRequesting
             return;
         }
 
-        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $user->uuid]);
+        $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $user->uuid]);
     }
 
     public function showReportOrBlockModal($user_id = null)

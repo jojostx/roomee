@@ -2,11 +2,11 @@
 
 namespace App\Http\Livewire\Components\Cards;
 
-use App\Http\Livewire\Traits\CanRetrieveUser;
 use Livewire\Component;
-use App\Http\Livewire\Traits\WithFavoriting;
 use App\Models\User;
-use App\Notifications\RoommateRequestRecieved;
+use App\Notifications\RoommateRequestRecievedNotification;
+use App\Http\Livewire\Traits\CanRetrieveUser;
+use App\Http\Livewire\Traits\WithFavoriting;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +36,7 @@ class DashboardCard extends Component
         return Auth::user();
     }
 
-    public function sendRequest()
+    public function sendRoommateRequest()
     {
         $this->getAuthModel()->sendRoommateRequest($this->user);
 
@@ -46,12 +46,12 @@ class DashboardCard extends Component
             ->body("Your roommate request have been sent to **{$this->user->full_name}**. You will be notified when they accept.")
             ->send();
 
-        $this->user->notify(new RoommateRequestRecieved($this->getAuthModel()));
+        $this->user->notify(new RoommateRequestRecievedNotification($this->getAuthModel(), $this->user));
     }
 
     public function showDeleteRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-request-modal', ["user" => $this->user->uuid]);
+        $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function showReportOrBlockModal()
