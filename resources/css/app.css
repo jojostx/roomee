@@ -1,6 +1,7 @@
 @import '../../vendor/filament/forms/dist/module.esm.css';
 @import '../../node_modules/cropperjs/dist/cropper.min.css';
 @import '../../node_modules/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css';
+@import 'tippy.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

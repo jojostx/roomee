@@ -14,8 +14,6 @@ namespace App\Models{
 /**
  * App\Models\Blocklist
  *
- * @property int $id
- * @property string $uuid
  * @property int $blocker_id
  * @property int $blockee_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -27,9 +25,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereBlockeeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereBlockerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUuid($uuid, $uuidColumn = null)
  */
 	class IdeHelperBlocklist {}
 }
