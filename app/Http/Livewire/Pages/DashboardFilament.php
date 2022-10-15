@@ -149,25 +149,27 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
 
     protected function getTableRecordClassesUsing(): ?Closure
     {
-        return fn () => 'filament-user-card';
+        return fn (User $record) => match (true) {
+            $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
+            $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-recieved',
+            $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
+            $this->hasBeenBlocked($record) => 'filament-user-card user-blocked',
+            $this->hasBeenFavorited($record) => 'filament-user-card user-favorited',
+            default => 'filament-user-card',
+        };
     }
 
     public function getTableEmptyStateHeading(): ?string
     {
-      return 'No Users Found';
+        return 'No Users Found';
     }
-  
+
     public function getTableEmptyStateDescription(): ?string
     {
-      return 'No User currently match your preferences, Please Check back later.';
+        return 'No User currently match your preferences, Please Check back later.';
     }
 
     /** dynamic properties */
-    public function getRoommateRequestsProperty(): Collection
-    {
-        return $this->getAuthModel()->getRoommateRequests();
-    }
-
     public function getFavoritesProperty(): Collection
     {
         return $this->getAuthModel()->favorites()->get(['favoritee_id']);
@@ -176,6 +178,11 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     public function getBlockedUsersProperty(): Collection
     {
         return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
+    }
+
+    public function getRoommateRequestsProperty(): Collection
+    {
+        return $this->getAuthModel()->getRoommateRequests();
     }
 
     /** checks */
@@ -193,19 +200,19 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
             ->contains($user->id);
     }
 
-    protected function hasRoommateRequestFrom(User $user): bool
+    protected function hasPendingRoommateRequestFrom(User $user): bool
     {
         return $this->roommateRequests
             ->contains(function (RoommateRequest $roommateRequest) use ($user) {
-                return $roommateRequest->sender->is($user);
+                return $roommateRequest->sender->is($user) && $roommateRequest->isPending();
             });
     }
 
-    protected function hasSentRoommateRequestTo(User $user): bool
+    protected function hasPendingRoommateRequestTo(User $user): bool
     {
         return $this->roommateRequests
             ->contains(function (RoommateRequest $roommateRequest) use ($user) {
-                return $roommateRequest->recipient->is($user);
+                return $roommateRequest->recipient->is($user) && $roommateRequest->isPending();
             });
     }
 
@@ -217,9 +224,18 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
             });
     }
 
-    protected function hasNotSentOrRecievedRoommateRequest(User $user): bool
+    protected function hasNoSentOrRecievedRoommateRequest(User $user): bool
     {
         return !$this->hasSentOrRecievedRoommateRequest($user);
+    }
+
+    protected function hasAcceptedRoommateRequest(User $user): bool
+    {
+        return $this->roommateRequests
+            ->contains(function (RoommateRequest $roommateRequest) use ($user) {
+                return $roommateRequest->id === RoommateRequest::getCompositeKey($this->getAuthModel(), $user)
+                    && $roommateRequest->isAccepted();
+            });
     }
 
     // actions
@@ -350,7 +366,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->requiresConfirmation()
                 ->modalHeading('Send Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will send a Roommate request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasNotSentOrRecievedRoommateRequest($record)),
+                ->visible(fn (User $record) => $this->hasNoSentOrRecievedRoommateRequest($record)),
 
             Tables\Actions\Action::make('accept-roommate-request')
                 ->button()
@@ -368,7 +384,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasRoommateRequestFrom($record) && !$this->getAuthModel()->isRoommateWith($record)),
+                ->visible(fn (User $record) => $this->hasPendingRoommateRequestFrom($record)),
 
             Tables\Actions\Action::make('delete-roommate-request')
                 ->button()
@@ -386,7 +402,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasSentRoommateRequestTo($record) && !$this->getAuthModel()->isRoommateWith($record)),
+                ->visible(fn (User $record) => $this->hasPendingRoommateRequestTo($record)),
 
             Tables\Actions\Action::make('contact-user')
                 ->button()
@@ -398,7 +414,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
                     'class' => 'w-full filament-tables-action-contact-user',
                 ])
                 ->requiresConfirmation()
-                ->visible(fn (User $record) => $this->getAuthModel()->isRoommateWith($record)),
+                ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];
     }
 
