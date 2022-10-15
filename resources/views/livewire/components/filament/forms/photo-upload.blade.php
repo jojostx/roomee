@@ -36,8 +36,8 @@
                 imagePreviewHeight: {{ ($height = $getImagePreviewHeight()) ? $height : 'null' }},
                 maxSize: {{ ($size = $getMaxSize()) ? $size : 'null' }},
                 minSize: {{ ($size = $getMinSize()) ? $size : 'null' }},
-                minCroppedWidth: {{ ($width = $getMinCroppedWidth) ? $width : 'null' }},
-                maxCroppedWidth: {{ ($width = $getMaxCroppedWidth) ? $width : 'null' }},
+                minCroppedWidth: {{ ($width = $getMinCroppedWidth()) ? $width : 'null' }},
+                maxCroppedWidth: {{ ($width = $getMaxCroppedWidth()) ? $width : 'null' }},
                 minCroppedHeight: {{ ($height = $getMinCroppedHeight()) ? $height : 'null' }},
                 defaultImageUrl: {{ ($imageSrc = $getPreviewImageUrl()) ? "'{$imageSrc}'" : 'null' }},
                 getUploadedFileUrlsUsing: async () => {
