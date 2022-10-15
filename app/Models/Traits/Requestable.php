@@ -33,7 +33,7 @@ trait Requestable
     public function canSendRoommateRequestTo(User $recipient): bool
     {
         if (!$this->isValidNonBlockingUser($recipient)) {
-           return false;
+            return false;
         }
 
         if ($this->isBlockedBy($recipient) || $this->hasBlocked($recipient)) {
@@ -41,7 +41,7 @@ trait Requestable
         }
 
         return !RoommateRequest::query()
-            ->where('status', Status::DENIED->value)
+            ->denied()
             ->betweenModels($this, $recipient)
             ->exists();
     }
@@ -50,7 +50,7 @@ trait Requestable
     {
         return RoommateRequest::whereSender($sender)
             ->whereRecipient($this)
-            ->where('status', Status::PENDING->value)
+            ->pending()
             ->exists();
     }
 
@@ -58,7 +58,7 @@ trait Requestable
     {
         return RoommateRequest::whereSender($this)
             ->whereRecipient($recipient)
-            ->where('status', Status::PENDING->value)
+            ->pending()
             ->exists();
     }
 
@@ -68,7 +68,7 @@ trait Requestable
 
         return DB::table('roommate_requests')
             ->where('id', $id)
-            ->where('status', Status::ACCEPTED->value)
+            ->whereStatus(Status::ACCEPTED->value)
             ->exists();
     }
 
@@ -116,24 +116,24 @@ trait Requestable
     public function getPendingSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::PENDING->value)
             ->whereSender($this)
+            ->pending()
             ->get();
     }
 
     public function getAcceptedSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::ACCEPTED->value)
             ->whereSender($this)
+            ->accepted()
             ->get();
     }
 
     public function getDeniedSentRoommateRequests(): Collection
     {
         return RoommateRequest::query()
-            ->whereStatus(Status::DENIED->value)
             ->whereSender($this)
+            ->denied()
             ->get();
     }
 

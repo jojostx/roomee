@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\RoommateRequestStatus;
+use App\Models\Traits\ManagesRoommateRequestStatus;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RoommateRequest extends Model
 {
-    use HasFactory, BindsOnUuid, GeneratesUuid;
+    use ManagesRoommateRequestStatus, HasFactory, BindsOnUuid, GeneratesUuid;
 
     protected $keyType = 'string';
 
@@ -29,6 +30,15 @@ class RoommateRequest extends Model
      * @var array
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'status' => RoommateRequestStatus::class,
+    ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -64,16 +74,6 @@ class RoommateRequest extends Model
     public function scopeWhereSender($query, User $model)
     {
         return $query->where('sender_id', $model->getKey());
-    }
-
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param RoommateRequestStatus $status
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeWhereStatus($query, RoommateRequestStatus $status)
-    {
-        return $query->where('status', $status->value);
     }
 
     /**
