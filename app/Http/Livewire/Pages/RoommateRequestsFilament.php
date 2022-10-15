@@ -181,7 +181,12 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
 
   protected function getTableRecordsPerPage(): int
   {
-    return 10;
+    return 9;
+  }
+
+  protected function getTableRecordsPerPageSelectOptions(): array
+  {
+    return [9, 18, 36];
   }
 
   protected function getTableContentGrid(): ?array
@@ -194,14 +199,14 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
 
   protected function getTableRecordClassesUsing(): ?Closure
   {
-      return fn (User $record) => match (true) {
-          $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
-          $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-recieved',
-          $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
-          $this->hasBeenBlocked($record) => 'filament-user-card user-blocked',
-          $this->hasBeenFavorited($record) => 'filament-user-card user-favorited',
-          default => 'filament-user-card',
-      };
+    return fn (User $record) => match (true) {
+      $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
+      $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-recieved',
+      $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
+      $this->hasBeenBlocked($record) => 'filament-user-card user-blocked',
+      $this->hasBeenFavorited($record) => 'filament-user-card user-favorited',
+      default => 'filament-user-card',
+    };
   }
 
   public function getTableEmptyStateHeading(): ?string

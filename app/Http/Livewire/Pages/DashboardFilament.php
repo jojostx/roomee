@@ -136,7 +136,12 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
 
     protected function getTableRecordsPerPage(): int
     {
-        return 10;
+        return 9;
+    }
+
+    protected function getTableRecordsPerPageSelectOptions(): array
+    {
+        return [9, 18, 36];
     }
 
     protected function getTableContentGrid(): ?array

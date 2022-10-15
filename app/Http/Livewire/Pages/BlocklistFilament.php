@@ -132,8 +132,13 @@ class BlocklistFilament extends Component implements Tables\Contracts\HasTable
 
   protected function getTableRecordsPerPage(): int
   {
-    return 10;
+    return 9;
   }
+
+  protected function getTableRecordsPerPageSelectOptions(): array 
+  {
+      return [9, 18, 36];
+  } 
 
   protected function getTableContentGrid(): ?array
   {
@@ -145,7 +150,7 @@ class BlocklistFilament extends Component implements Tables\Contracts\HasTable
 
   protected function getTableRecordClassesUsing(): ?Closure
   {
-    return fn () => 'filament-user-card';
+    return fn () => 'filament-user-card user-blocked';
   }
 
   public function getTableEmptyStateHeading(): ?string
@@ -210,7 +215,7 @@ class BlocklistFilament extends Component implements Tables\Contracts\HasTable
         ->button()
         ->label('Unblock User')
         ->icon('heroicon-o-lock-open')
-        ->color('primary')
+        ->color('danger')
         ->extraAttributes([
           'title' => 'unblock user',
           'class' => 'w-full filament-tables-action-unblock-user',
