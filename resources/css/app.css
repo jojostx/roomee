@@ -14,6 +14,8 @@
 }
 
 @layer base {
+    html, body { height: 100%;}
+
     html {
         font-family: "DM Sans", system-ui, sans-serif;
         --scrollbarBG: rgba(229, 231, 235, 1);
@@ -28,6 +30,11 @@
     body {
         scrollbar-width: thin;
         scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    }
+
+    body > footer {
+    position: sticky;
+    top: 100vh;
     }
     
     body::-webkit-scrollbar {
@@ -61,7 +68,6 @@
 }
 
 @layer components {
-
     .dropdown_ul {
         @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-secondary-50;
     }
@@ -140,6 +146,22 @@
 
     .toast-icon {
         @apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
+    }
+
+    .filament-user-card.user-favorited {
+        @apply border-primary-300
+    }
+    .filament-user-card.user-blocked {
+        @apply border-danger-400
+    }
+    .filament-user-card.rooomate-request-sent {
+        @apply border-danger-300
+    }
+    .filament-user-card.roommate-request-recieved {
+        @apply border-primary-500
+    }
+    .filament-user-card.roommate-request-accepted {
+        @apply border-success-300
     }
 }
 
