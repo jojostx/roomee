@@ -24,7 +24,7 @@ use MartinRo\FilamentCharcountField\Components\CharcountedTextInput;
 use App\Http\Livewire\Components\Filament\Forms\PhotoUpload as PhotoUpload;
 use Illuminate\Support\Facades\Storage;
 
-class UpdatePage extends Component implements HasForms
+class UpdateProfilePage extends Component implements HasForms
 {
     use InteractsWithForms;
 
@@ -352,7 +352,7 @@ class UpdatePage extends Component implements HasForms
     public function render()
     {
         /** @var \Illuminate\View\View */
-        $view = view('livewire.pages.profile.update-page');
+        $view = view('livewire.pages.profile.update-profile-page');
 
         return $view->layout('layouts.guest');
     }

@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class BlocklistFilament extends Component implements Tables\Contracts\HasTable
+class BlocklistPage extends Component implements Tables\Contracts\HasTable
 {
   use
     Traits\WithFavoriting,
@@ -233,7 +233,7 @@ class BlocklistFilament extends Component implements Tables\Contracts\HasTable
   public function render()
   {
     /** @var \Illuminate\View\View */
-    $view = view('livewire.pages.blocklist-filament');
+    $view = view('livewire.pages.blocklist-page');
 
     return $view->layout('layouts.guest');
   }

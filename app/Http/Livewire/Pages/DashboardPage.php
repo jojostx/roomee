@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
 
-class DashboardFilament extends Component implements Tables\Contracts\HasTable
+class DashboardPage extends Component implements Tables\Contracts\HasTable
 {
     use
         Traits\WithFavoriting,
@@ -426,7 +426,7 @@ class DashboardFilament extends Component implements Tables\Contracts\HasTable
     public function render()
     {
         /** @var \Illuminate\View\View */
-        $view = view('livewire.pages.dashboard-filament');
+        $view = view('livewire.pages.dashboard-page');
 
         return $view->layout('layouts.guest');
     }

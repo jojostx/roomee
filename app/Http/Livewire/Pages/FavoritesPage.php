@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class FavoritesFilament extends Component implements Tables\Contracts\HasTable
+class FavoritesPage extends Component implements Tables\Contracts\HasTable
 {
   use
     Traits\WithFavoriting,
@@ -396,7 +396,7 @@ class FavoritesFilament extends Component implements Tables\Contracts\HasTable
   public function render()
   {
     /** @var \Illuminate\View\View */
-    $view = view('livewire.pages.favorites-filament');
+    $view = view('livewire.pages.favorites-page');
 
     return $view->layout('layouts.guest');
   }

@@ -11,7 +11,7 @@ use App\Http\Livewire\Traits\WithRequesting;
 use App\Http\Livewire\Traits\CanRetrieveUser;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ViewProfile extends Component
+class ViewProfilePage extends Component
 {
     use WithFavoriting,
         WithBlocking,
@@ -72,7 +72,7 @@ class ViewProfile extends Component
     public function render()
     {
         /** @var \Illuminate\View\View */
-        $view = view('livewire.pages.profile.view-profile');
+        $view = view('livewire.pages.profile.view-profile-page');
 
         return $view->layout('layouts.guest');
     }

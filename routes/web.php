@@ -3,16 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
-use App\Http\Livewire\Pages\Profile\UpdatePage;
-use App\Http\Livewire\Pages\Profile\ViewProfile;
+use App\Http\Livewire\Pages\Profile\UpdateProfilePage;
+use App\Http\Livewire\Pages\Profile\ViewProfilePage;
 use App\Http\Livewire\Pages\Blocklist;
 use App\Http\Livewire\Pages\Dashboard;
 use App\Http\Livewire\Pages\Favorite;
 use App\Http\Livewire\Pages\RoommateRequests;
-use App\Http\Livewire\Pages\BlocklistFilament;
-use App\Http\Livewire\Pages\DashboardFilament;
-use App\Http\Livewire\Pages\FavoritesFilament;
-use App\Http\Livewire\Pages\RoommateRequestsFilament;
+use App\Http\Livewire\Pages\BlocklistPage;
+use App\Http\Livewire\Pages\DashboardPage;
+use App\Http\Livewire\Pages\FavoritesPage;
+use App\Http\Livewire\Pages\RoommateRequestsPage;
 
 
 /*
@@ -44,13 +44,13 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 
 
 Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
-    Route::get('/profile/update', UpdatePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
-    Route::get('/profile/view/{user}', ViewProfile::class)->name('profile.view');
+    Route::get('/profile/update', UpdateProfilePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
+    Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
 
-    Route::get('/dashboard-filament', DashboardFilament::class)->name('dashboard');
-    Route::get('/favorites-filament', FavoritesFilament::class)->name('favorites');
-    Route::get('/roommate-requests-filament', RoommateRequestsFilament::class)->name('roommate-requests');
-    Route::get('/blocklist-filament', BlocklistFilament::class)->name('blocklist');
+    Route::get('/dashboard-filament', DashboardPage::class)->name('dashboard');
+    Route::get('/favorites-filament', FavoritesPage::class)->name('favorites');
+    Route::get('/roommate-requests-filament', RoommateRequestsPage::class)->name('roommate-requests');
+    Route::get('/blocklist-filament', BlocklistPage::class)->name('blocklist');
     // Route::get('/dashboard', Dashboard::class)->name('dashboard');
     // Route::get('/favorites', Favorite::class)->name('favorites');
     // Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');

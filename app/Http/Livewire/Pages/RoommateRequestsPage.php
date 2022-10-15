@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 
-class RoommateRequestsFilament extends Component implements Tables\Contracts\HasTable
+class RoommateRequestsPage extends Component implements Tables\Contracts\HasTable
 {
   use CanReactToRoommateRequestUpdate;
   use
@@ -61,10 +61,6 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
 
   protected function getTableQuery(): Builder | Relation
   {
-    // \dd($this->getAuthModel()->allPotentialRoommates()->withCasts(['sent_at' => 'datetime'])->first()->sent_at);
-    // \dd(auth()->id(), $this->getAuthModel()->allPotentialRoommates()->get());
-    // \dd($this->getAuthModel()->allRoommateRequests()->getRelation('sender', 'recipient')->get());
-    // return $this->getAuthModel()->allRoommateRequests();
     return $this->getAuthModel()->allPotentialRoommates()->getQuery();
   }
 
@@ -447,7 +443,7 @@ class RoommateRequestsFilament extends Component implements Tables\Contracts\Has
   public function render()
   {
     /** @var \Illuminate\View\View */
-    $view = view('livewire.pages.roommate-requests-filament');
+    $view = view('livewire.pages.roommate-requests-page');
 
     return $view->layout('layouts.guest');
   }
