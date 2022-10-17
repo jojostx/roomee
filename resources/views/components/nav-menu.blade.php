@@ -29,37 +29,85 @@
           </span>
         </button>
 
-        <div class="flex flex-col justify-center h-full space-y-2">
-          <div>
-            <x-responsive-nav-link :href="route('profile.view', ['user' => auth()->user() ])" :active="request()->fullUrl() == route('profile.view', [ 'user'=> auth()->user() ])" icon_before="heroicon-o-user" >
-                {{ __('Profile') }}
+        <div class="flex flex-col h-full pb-6 pt-14">
+          <div class="flex flex-col space-y-2">
+            <x-responsive-nav-link :href="route('profile.view', ['user' => auth()->user() ])" :active="request()->fullUrl() == route('profile.view', [ 'user'=> auth()->user() ])" icon_before="heroicon-o-user">
+              {{ __('Profile') }}
             </x-responsive-nav-link>
 
             @unless (request()->routeIs('dashboard'))
             <x-responsive-nav-link :href="route('dashboard')" icon_before="heroicon-o-home">
-                {{ __('Dashboard') }}
+              {{ __('Dashboard') }}
             </x-responsive-nav-link>
             @endunless
 
             <x-responsive-nav-link :href="route('roommate-requests')" :active="request()->routeIs('roommate-requests')" icon_before="heroicon-o-user-add">
-                {{ __('Roommate Requests') }}
+              {{ __('Roommate Requests') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('favorites')" :active="request()->routeIs('favorites')" icon_before="heroicon-o-star">
-                {{ __('Favorites') }}
+              {{ __('Favorites') }}
             </x-responsive-nav-link>
 
             <x-responsive-nav-link :href="route('blocklist')" :active="request()->routeIs('blocklist')" icon_before="heroicon-o-ban">
-                {{ __('Blocklist') }}
+              {{ __('Blocklist') }}
             </x-responsive-nav-link>
 
-            <form method="POST" action="{{ route('logout') }}">
-              @csrf
-              <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" icon_before="heroicon-o-logout">
-                  {{ __('Logout') }}
-              </x-responsive-nav-link>
-            </form>
+            <div x-data="{ open: false }" x-on:click.away="open = false" x-bind:class="{'bg-secondary-50 border-secondary-300 text-secondary-600':open }" class="flex-col gap-4 cursor-default responsive-nav-link ">
+              <button x-on:click="open = !open" class="flex items-center w-full text-base font-medium text-secondary-600 hover:text-secondary-800 focus:text-secondary-800">
+                <span class='inline p-2 mr-4 rounded-full w-9 h-9 bg-secondary-100'>
+                  <x-heroicon-o-cog />
+                </span>
+
+                {{ __('Settings') }}
+
+                <span x-bind:class="open && 'rotate-90' " class='inline w-5 h-5 ml-auto duration-100 ease-in'>
+                  <x-heroicon-o-chevron-right />
+                </span>
+              </button>
+              <div x-show="open" class="w-full px-2 bg-white border divide-y rounded-lg shadow">
+                <a href="{{ route('settings.account') }}" class="flex items-center w-full py-2 text-sm font-medium text-secondary-600 hover:text-secondary-800 focus:text-secondary-800">
+                  <span class='inline w-6 h-6 p-1 mr-4 transform rounded-full bg-secondary-100'>
+                    <x-heroicon-o-user />
+                  </span>
+
+                  {{ __('Account') }}
+
+                  <span class='inline w-4 h-4 ml-auto'>
+                    <x-heroicon-o-chevron-right />
+                  </span>
+                </a>
+                <a href="{{ route('settings.notifications') }}" class="flex items-center w-full py-2 text-sm font-medium text-secondary-600 hover:text-secondary-800 focus:text-secondary-800">
+                  <span class='inline w-6 h-6 p-1 mr-4 rounded-full bg-secondary-100'>
+                    <x-heroicon-o-bell />
+                  </span>
+
+                  {{ __('Notifications') }}
+
+                  <span class='inline w-4 h-4 ml-auto'>
+                    <x-heroicon-o-chevron-right />
+                  </span>
+                </a>
+                <a href="{{ route('settings.contact-channels') }}" class="flex items-center w-full py-2 text-sm font-medium text-secondary-600 hover:text-secondary-800 focus:text-secondary-800">
+                  <span class='inline w-6 h-6 p-1 mr-4 rounded-full bg-secondary-100'>
+                    <x-heroicon-o-inbox />
+                  </span>
+
+                  {{ __('Contact Channels') }}
+
+                  <span class='inline w-4 h-4 ml-auto'>
+                    <x-heroicon-o-chevron-right />
+                  </span>
+                </a>
+              </div>
+            </div>
           </div>
+          <form method="POST" action="{{ route('logout') }}" class="mt-auto">
+            @csrf
+            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" icon_before="heroicon-o-logout">
+              {{ __('Logout') }}
+            </x-responsive-nav-link>
+          </form>
         </div>
       </div>
     </div>

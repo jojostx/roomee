@@ -13,7 +13,9 @@ use App\Http\Livewire\Pages\BlocklistPage;
 use App\Http\Livewire\Pages\DashboardPage;
 use App\Http\Livewire\Pages\FavoritesPage;
 use App\Http\Livewire\Pages\RoommateRequestsPage;
-
+use App\Http\Livewire\Pages\Settings\AccountSettingsPage;
+use App\Http\Livewire\Pages\Settings\ContactChannelsSettingsPage;
+use App\Http\Livewire\Pages\Settings\NotificationsSettingsPage;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,18 +45,25 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])->group(function () {
-    Route::get('/profile/update', UpdateProfilePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
-    Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
+Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])
+    ->group(function () {
+        Route::get('/profile/update', UpdateProfilePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
+        Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
 
-    Route::get('/dashboard-filament', DashboardPage::class)->name('dashboard');
-    Route::get('/favorites-filament', FavoritesPage::class)->name('favorites');
-    Route::get('/roommate-requests-filament', RoommateRequestsPage::class)->name('roommate-requests');
-    Route::get('/blocklist-filament', BlocklistPage::class)->name('blocklist');
-    // Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    // Route::get('/favorites', Favorite::class)->name('favorites');
-    // Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');
-    // Route::get('/blocklist', Blocklist::class)->name('blocklist');
-});
+        Route::get('/dashboard-filament', DashboardPage::class)->name('dashboard');
+        Route::get('/favorites-filament', FavoritesPage::class)->name('favorites');
+        Route::get('/roommate-requests-filament', RoommateRequestsPage::class)->name('roommate-requests');
+        Route::get('/blocklist-filament', BlocklistPage::class)->name('blocklist');
+
+        Route::as('settings.')->prefix('settings')->group(function () {
+            Route::get('/account', AccountSettingsPage::class)->name('account');
+            Route::get('/contact-channels', ContactChannelsSettingsPage::class)->name('contact-channels');
+            Route::get('/notifications', NotificationsSettingsPage::class)->name('notifications');
+        });
+        // Route::get('/dashboard', Dashboard::class)->name('dashboard');
+        // Route::get('/favorites', Favorite::class)->name('favorites');
+        // Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');
+        // Route::get('/blocklist', Blocklist::class)->name('blocklist');
+    });
 
 require __DIR__ . '/auth.php';
