@@ -68,6 +68,13 @@
 }
 
 @layer components {
+    .responsive-nav-link {
+        @apply cursor-pointer flex items-center pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-secondary-600 hover:text-secondary-800 hover:bg-secondary-50 hover:border-secondary-300 focus:outline-none focus:text-secondary-800 focus:bg-secondary-50 focus:border-secondary-300 transition duration-150 ease-in-out;
+    }
+    .responsive-nav-link.active {
+        @apply border-primary-400 text-primary-700 bg-primary-50 focus:text-primary-800 focus:bg-primary-100 focus:border-primary-700 transition duration-150 ease-in-out;
+    }
+
     .dropdown_ul {
         @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-secondary-50;
     }

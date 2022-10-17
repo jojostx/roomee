@@ -11,7 +11,7 @@
                 <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none bg-white border rounded-md shadow-sm text-secondary-800 lg:flex">
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="general" class="absolute opacity-0 left-20" autocomplete="off">
-                        <label @click="document.getElementById('general-information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                        <label @click="document.getElementById('general').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
@@ -56,7 +56,7 @@
                 </div>
     
                 <div class="my-8 text-secondary-500 lg:mt-6">
-                    <button id="save" type="submit" class="block w-full px-4 py-3 font-semibold leading-4 text-white bg-indigo-600 rounded-md shadow-sm lg:text-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <button id="save" type="submit" class="block w-full px-4 py-3 font-semibold leading-4 text-white bg-primary-600 rounded-md shadow-sm lg:text-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                         Save Changes
                     </button>
                 </div>

@@ -34,7 +34,7 @@
             <!-- Remember Me -->
             <div class="mt-4">
                 <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="text-indigo-600 rounded shadow-sm border-secondary-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
+                    <input id="remember_me" type="checkbox" class="text-primary-600 rounded shadow-sm border-secondary-300 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50" name="remember">
                     <span class="ml-2 text-sm text-secondary-600">{{ __('Remember me') }}</span>
                 </label>
             </div>

@@ -21,7 +21,7 @@
               <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
             </svg>
           </div>
-          <label wire:ignore tabindex="0" for="avatar_photo" class="flex items-center justify-between px-3 py-2 text-sm font-semibold leading-4 text-white bg-indigo-600 rounded-md shadow-sm cursor-pointer hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <label wire:ignore tabindex="0" for="avatar_photo" class="flex items-center justify-between px-3 py-2 text-sm font-semibold leading-4 text-white bg-primary-600 rounded-md shadow-sm cursor-pointer hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
             <div class="mr-1.5 loader" id="loader_avatar" style="display: none;">
             </div>
             <span>Change</span>
