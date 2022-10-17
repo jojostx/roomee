@@ -16,7 +16,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Validation\Rules\Exists;
-use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Concerns\InteractsWithForms;
 use MartinRo\FilamentCharcountField\Components\CharcountedTextarea;
@@ -177,7 +176,8 @@ class UpdateProfilePage extends Component implements HasForms
                         ->columnSpan(2)
                         ->rows(4),
 
-                    Multiselect::make('hobbies')
+                    Select::make('hobbies')
+                        ->multiple()
                         ->label('Hobbies')
                         ->placeholder('Please select your hobbies')
                         ->options(Hobby::all('id', 'name')->pluck('name', 'id')->toArray())
@@ -189,7 +189,8 @@ class UpdateProfilePage extends Component implements HasForms
                             'md' => 1,
                         ]),
 
-                    Multiselect::make('dislikes')
+                    Select::make('dislikes')
+                        ->multiple()
                         ->label('Dislikes')
                         ->placeholder('Please select your dislikes')
                         ->options(Dislike::all('id', 'name')->pluck('name', 'id')->toArray())
@@ -256,7 +257,8 @@ class UpdateProfilePage extends Component implements HasForms
                 ->description('These are Information that describe your preferred apartment type and location.')
                 ->columns(2)
                 ->schema([
-                    MultiSelect::make('towns')
+                    Select::make('towns')
+                        ->multiple()
                         ->label('Preferred property locations')
                         ->options(fn (callable $get) => School::find($get('school'))?->towns->pluck('name', 'id')->toArray() ?? [])
                         ->exists('school_town', 'town_id', fn (Exists $rule, callable $get) => $rule->where('school_id', $get('school')))
