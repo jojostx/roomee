@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
@@ -40,9 +41,9 @@ class RegisteredUserController extends Controller
 
         $request->validate([
             'first_name' => ['required', 'alpha', 'string', 'max:255'],
-            'last_name' => ['required', 'alpha','string','max:255'],
-            'email' => ['required','string','email','max:255','unique:users'],
-            'password' => ['required', 'string','confirmed','min:8'],
+            'last_name' => ['required', 'alpha','string', 'max:255'],
+            'email' => ['required','string','email', 'max:255','unique:users'],
+            'password' => ['required', 'confirmed', 'max:100', Password::defaults()],
             'gender' => ['required', Rule::in(['male', 'female'])]
         ]);
 
