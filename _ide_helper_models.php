@@ -224,6 +224,32 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\PendingUserEmail
+ *
+ * @property int $id
+ * @property string $user_type
+ * @property int $user_id
+ * @property string $email
+ * @property string $token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $user
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail forUser(\Illuminate\Database\Eloquent\Model $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereUserType($value)
+ * @mixin \Eloquent
+ */
+	class IdeHelperPendingUserEmail {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Report
  *
  * @property int $id
@@ -255,15 +281,19 @@ namespace App\Models{
  * @property string $uuid
  * @property int $sender_id
  * @property int $recipient_id
- * @property int $status
+ * @property \App\Enums\RoommateRequestStatus $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $recipient
  * @property-read \App\Models\User $sender
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest accepted()
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest betweenModels(\App\Models\User $sender, \App\Models\User $recipient)
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest denied()
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest pending()
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest status(\App\Enums\RoommateRequestStatus|string $status = '')
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipient(\App\Models\User $model)

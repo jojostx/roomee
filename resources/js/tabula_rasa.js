@@ -8,6 +8,7 @@ import multiselect from './alpinejs/filamentphp/multi-select'
 import NotificationsAlpinePlugin from '../../vendor/filament/notifications/dist/module.esm'
 import FormsAlpinePlugin from '../../vendor/filament/forms/dist/module.esm'
 import focus from '@alpinejs/focus'
+import collapse from '@alpinejs/collapse'
 import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
 import Tooltip from "@ryangjchandler/alpine-tooltip";
 
@@ -16,6 +17,7 @@ window.Cropper = Cropper;
 Alpine.plugin(focus);
 Alpine.plugin(Tooltip);
 Alpine.plugin(AlpineFloatingUI);
+Alpine.plugin(collapse);
 Alpine.plugin(FormsAlpinePlugin);
 Alpine.plugin(NotificationsAlpinePlugin);
 
