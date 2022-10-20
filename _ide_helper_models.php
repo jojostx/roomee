@@ -243,7 +243,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereUserType($value)
- * @mixin \Eloquent
  */
 	class IdeHelperPendingUserEmail {}
 }
