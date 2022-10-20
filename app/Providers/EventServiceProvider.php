@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\RoommateRequestUpdated;
+use App\Listeners\SendPasswordHasBeenResetNotification;
 use App\Listeners\SendRoommateRequestUpdatedNotifications;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -24,6 +26,9 @@ class EventServiceProvider extends ServiceProvider
             SendRoommateRequestUpdatedNotifications::class,
         ],
         
+        PasswordReset::class => [
+            SendPasswordHasBeenResetNotification::class,
+        ]
     ];
 
     /**
