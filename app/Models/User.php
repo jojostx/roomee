@@ -6,6 +6,7 @@ use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
 use App\Models\Traits\Favoritable;
+use App\Models\Traits\MustVerifyNewEmail;
 use App\Models\Traits\Reportable;
 use App\Models\Traits\WithValidUsersQueryScopes;
 use Dyrynda\Database\Support\BindsOnUuid;
@@ -30,6 +31,7 @@ class User extends Authenticatable
         Notifiable,
         BindsOnUuid,
         GeneratesUuid,
+        MustVerifyNewEmail,
         HasMergedRelationships,
         Blockable,
         Favoritable,

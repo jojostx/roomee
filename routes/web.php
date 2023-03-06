@@ -66,4 +66,12 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])
         // Route::get('/blocklist', Blocklist::class)->name('blocklist');
     });
 
+Route::prefix('webhook')->name('webhook.')->group(function () {
+        Route::post('/whatsapp/events', function ()
+        {
+            logger(request()->headers);
+            return response('Hello World', 200);
+        })->name('whatsapp');
+    });
+
 require __DIR__ . '/auth.php';

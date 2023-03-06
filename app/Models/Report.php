@@ -21,5 +21,4 @@ class Report extends Model
     {
         return  $this->belongsToMany(User::class, 'report_user', 'report_id', 'reporter_id')->withPivot('reportee_id')->withTimestamps();
     }
-
 }

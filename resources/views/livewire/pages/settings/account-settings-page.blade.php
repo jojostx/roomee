@@ -9,52 +9,118 @@
 
                 <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 font-semibold list-none bg-white border rounded-md shadow-sm text-secondary-800 lg:flex">
                     <li class="relative w-full my-1 cursor-pointer">
-                        <input type="radio" name="section-link" id="general" class="absolute opacity-0 left-20" autocomplete="off">
-                        <label @click="document.getElementById('general-information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            General Information
+                        <input type="radio" name="section-link" id="personal-info" class="absolute opacity-0 left-20" autocomplete="off">
+                        <label @click="document.getElementById('personal_information').scrollIntoView()" for="personal" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                            <x-heroicon-o-user class="flex-shrink-0 w-5 mr-3" />
+                            Personal Information
                         </label>
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
-                        <input type="radio" name="section-link" id="personal" class="absolute opacity-0 left-20" autocomplete="off">
-                        <label @click="document.getElementById('personal-information').scrollIntoView()" for="personal" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            Personal Information
+                        <input type="radio" name="section-link" id="email-and-phone-number-link" class="absolute opacity-0 left-20" autocomplete="off">
+                        <label @click="document.getElementById('email_and_phone_number').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                            <x-heroicon-o-inbox class="flex-shrink-0 w-5 mr-3" />
+                            Email and Phone Number
+                        </label>
+                    </li>
+                    <li class="relative w-full my-1 cursor-pointer">
+                        <input type="radio" name="section-link" id="password-info-link" class="absolute opacity-0 left-20" autocomplete="off">
+                        <label @click="document.getElementById('passwprd_information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                            <x-heroicon-o-lock-closed class="flex-shrink-0 w-5 mr-3" />
+                            Password Information
                         </label>
                     </li>
                 </ul>
             </div>
+
             <div class="lg:h-4 md:mr-4 col-span-full lg:col-span-2">
             </div>
 
             <div class="max-w-3xl pb-6 sm:grid-cols-2 col-span-full lg:col-span-5 lg:mt-12">
-                <form wire:submit.prevent="save">
-                    <div class="my-8 text-secondary-500 lg:mt-6">
-                        {{ $this->form }}
-                    </div>
+                <div id="personal_information">
+                    <p class="mb-4 font-bold tracking-wide sm:text-lg">Personal Information</p>
 
-                    <div class="my-8 text-secondary-500 lg:mt-6">
-                        <button id="save" type="submit" class="block px-4 py-2 font-semibold leading-4 text-white rounded-md shadow-sm bg-primary-600 lg:text-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                            Save Changes
-                        </button>
-                    </div>
-                </form>
-                <div>
-                    <div class="my-8 text-secondary-500 lg:mt-6">
-                        <div class="p-6 bg-white border border-gray-300 filament-forms-section-component rounded-xl">
-                            <div>
-                                <button id="save" type="submit" class="block px-3 py-2 font-semibold leading-4 text-white rounded-md shadow-sm bg-warning-600 hover:bg-warning-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-warning-500">
-                                    Deactivate Account
-                                </button>
+                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                        <form wire:submit.prevent="savePersonalInfo">
+                            {{ $this->personalInfoForm }}
+
+                            <div class="flex items-center mt-6">
+                                <x-filament::button type="submit" id="save-personal-info" size='sm' style="font-weight: 600;">
+                                    {{ __('Update') }}
+                                </x-filament::button>
                             </div>
-                            <div class="pt-6">
-                                <button id="save" type="submit" class="block px-3 py-2 font-semibold leading-4 text-white rounded-md shadow-sm bg-danger-600 hover:bg-danger-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500">
-                                    Delete Account
-                                </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-10" id="email_and_phone_number">
+                    <p class="mb-4 font-bold tracking-wide sm:text-lg">Email and Phone number</p>
+
+                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                        <form wire:submit.prevent="saveContactInfo">
+                            {{ $this->contactInfoForm }}
+
+                            <div class="flex items-center mt-6">
+                                <x-filament::button type="submit" id="save-contact-info" size='sm' style="font-weight: 600;">
+                                    {{ __('Update') }}
+                                </x-filament::button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-10" id="password_information">
+                    <p class="mb-4 font-bold tracking-wide sm:text-lg">Password Information</p>
+
+                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                        <form wire:submit.prevent="savePasswordInfo">
+                            {{ $this->passwordInfoForm}}
+
+                            <div class="mt-4">
+                                <div class="font-medium">Password requirements:</div>
+                                <div class="text-sm text-gray-500">Ensure that these requirements are met:</div>
+                                <ul class="pl-4 text-xs leading-4 text-gray-500">
+                                    <li class="">1. At least 10 characters (and up to 100 characters)</li>
+                                    <li class="">2. At least one lowercase and one uppercase character</li>
+                                    <li class="">32. Inclusion of at least one special character, e.g., ! @ # ?</li>
+                                </ul>
+                            </div>
+
+                            <div class="flex items-center mt-6">
+                                <x-filament::button type="submit" id="save-password-info" size='sm' style="font-weight: 600;">
+                                    {{ __('Update') }}
+                                </x-filament::button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-10">
+                    <div class="my-8 space-y-4 text-secondary-600 lg:mt-6">
+                        <div>
+                            <h2 class="text-lg font-bold tracking-wide sm:text-xl text-danger-600">Danger Zone</h2>
+                        </div>
+                        <div class="bg-white border divide-y border-danger-400 filament-forms-section-component rounded-xl">
+                            <div class="p-4 space-y-2">
+                                <h1 class="font-semibold text-secondary-800">Deactivate Account</h1>
+                                <p class="text-sm">
+                                    Deactivating your account will prevent other users from viewing your profile, interacting with you by sending you a Roommate request, and other actions, your profile will also not be recommended to other users.
+                                    If you deactivate your {{ config("app.name") }} account, you may always reactivate it later.
+                                </p>
+
+                                <x-filament::button id="deactivate-account" outlined="true" type="button" size='md' color="danger">
+                                    {{ __('Deactivate your account') }}
+                                </x-filament::button>
+                            </div>
+                            <div class="p-4 space-y-2">
+                                <h1 class="font-semibold text-secondary-800">Delete Account</h1>
+                                <p class="text-sm">
+                                    If you delete your {{ config("app.name") }} account, your account will be permanently removed from {{ config("app.name") }} including your photos, profile etc.
+                                    Once you delete your account, there is no going back. Please be certain.
+                                </p>
+
+                                <x-filament::button id="delete-account" outlined="true" type="button" size='md' color="danger">
+                                    {{ __('Delete your account') }}
+                                </x-filament::button>
                             </div>
                         </div>
                     </div>

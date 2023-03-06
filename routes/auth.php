@@ -8,57 +8,63 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\VerifyNewEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
-                ->middleware('guest')
-                ->name('register');
+  ->middleware('guest')
+  ->name('register');
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('guest');
+  ->middleware('guest');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-                ->middleware('guest')
-                ->name('login');
+  ->middleware('guest')
+  ->name('login');
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
-                ->middleware('guest');
+  ->middleware('guest');
 
 Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
-                ->middleware('guest')
-                ->name('password.request');
+  ->middleware('guest')
+  ->name('password.request');
 
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-                ->middleware('guest')
-                ->name('password.email');
+  ->middleware('guest')
+  ->name('password.email');
 
 Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->middleware('guest')
-                ->name('password.reset');
+  ->middleware('guest')
+  ->name('password.reset');
 
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
-                ->middleware('guest')
-                ->name('password.update');
+  ->middleware('guest')
+  ->name('password.update');
 
 Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
-                ->middleware('auth:sanctum')
-                ->name('verification.notice');
+  ->middleware('auth:sanctum')
+  ->name('verification.notice');
 
 Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-                ->middleware(['auth:sanctum', 'signed', 'throttle:6,1'])
-                ->name('verification.verify');
+  ->middleware(['auth:sanctum', 'signed', 'throttle:6,1'])
+  ->name('verification.verify');
+
+// verify-new-email
+Route::get('pending-email/verify/{token}', [VerifyNewEmailController::class, 'verify'])
+  ->middleware(['web', 'signed'])
+  ->name('pending-email.verify');
 
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-                ->middleware(['auth:sanctum', 'throttle:6,1'])
-                ->name('verification.send');
+  ->middleware(['auth:sanctum', 'throttle:6,1'])
+  ->name('verification.send');
 
 Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
-                ->middleware('auth:sanctum')
-                ->name('password.confirm');
+  ->middleware('auth:sanctum')
+  ->name('password.confirm');
 
 Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
-                ->middleware('auth:sanctum');
+  ->middleware('auth:sanctum');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-                ->middleware('auth:sanctum')
-                ->name('logout');
+  ->middleware('auth:sanctum')
+  ->name('logout');
