@@ -24,7 +24,7 @@
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="password-info-link" class="absolute opacity-0 left-20" autocomplete="off">
-                        <label @click="document.getElementById('passwprd_information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                        <label @click="document.getElementById('password_information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
                             <x-heroicon-o-lock-closed class="flex-shrink-0 w-5 mr-3" />
                             Password Information
                         </label>
