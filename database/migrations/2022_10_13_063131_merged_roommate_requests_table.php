@@ -26,7 +26,7 @@ return new class extends Migration
                     ),
 
                 (new User())
-                    ->recievedRoommateRequests()
+                    ->receivedRoommateRequests()
                     ->select(
                         'roommate_requests.created_at as pivot_created_at',
                         'roommate_requests.sender_id as sender_id',

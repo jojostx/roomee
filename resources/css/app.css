@@ -164,7 +164,7 @@
     .filament-user-card.rooomate-request-sent {
         @apply border-danger-300
     }
-    .filament-user-card.roommate-request-recieved {
+    .filament-user-card.roommate-request-received {
         @apply border-primary-500
     }
     .filament-user-card.roommate-request-accepted {

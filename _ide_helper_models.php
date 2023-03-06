@@ -433,8 +433,8 @@ namespace App\Models{
  * @property-read int|null $hobbies_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $recievedRoommateRequests
- * @property-read int|null $recieved_roommate_requests_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $receivedRoommateRequests
+ * @property-read int|null $received_roommate_requests_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Report> $reports
  * @property-read int|null $reports_count
  * @property-read \App\Models\School|null $school

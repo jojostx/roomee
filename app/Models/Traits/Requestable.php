@@ -72,14 +72,14 @@ trait Requestable
             ->exists();
     }
 
-    public function hasEitherSentOrRecievedRoommateRequest(User $recipient): bool
+    public function hasEitherSentOrReceivedRoommateRequest(User $recipient): bool
     {
         return RoommateRequest::query()->betweenModels($this, $recipient)->exists();
     }
 
-    public function hasNeitherSentNorRecievedRoommateRequest(User $recipient): bool
+    public function hasNeitherSentNorReceivedRoommateRequest(User $recipient): bool
     {
-        return !$this->hasEitherSentOrRecievedRoommateRequest($recipient);
+        return !$this->hasEitherSentOrReceivedRoommateRequest($recipient);
     }
 
 
@@ -106,7 +106,7 @@ trait Requestable
             ->get();
     }
 
-    public function getRecievedRoommateRequests(): Collection
+    public function getReceivedRoommateRequests(): Collection
     {
         return RoommateRequest::query()
             ->whereRecipient($this)

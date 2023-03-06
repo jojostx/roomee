@@ -7,7 +7,7 @@ use App\Notifications\RoommateRequestAcceptedNotification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class RecievedRoommateRequestCard extends Component
+class ReceivedRoommateRequestCard extends Component
 {
     public $user;
     public $roommateRequest;
@@ -58,6 +58,6 @@ class RecievedRoommateRequestCard extends Component
 
     public function render()
     {
-        return view('livewire.components.cards.roommate-requests.recieved-roommate-request-card');
+        return view('livewire.components.cards.roommate-requests.received-roommate-request-card');
     }
 }

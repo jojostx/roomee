@@ -169,9 +169,9 @@ class User extends Authenticatable
     }
 
     /**
-     * The recieved roommate requests users for the user.
+     * The received roommate requests users for the user.
      */
-    public function recievedRoommateRequests(): BelongsToMany
+    public function receivedRoommateRequests(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'roommate_requests', 'recipient_id', 'sender_id')
             ->withPivot('status')

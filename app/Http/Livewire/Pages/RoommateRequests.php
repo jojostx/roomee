@@ -12,9 +12,9 @@ class RoommateRequests extends Component
 {
     use CanReactToRoommateRequestUpdate;
 
-    public Collection $recievedRoommateRequests;
+    public Collection $receivedRoommateRequests;
     public Collection $sentRoommateRequests;
-    public RoommateRequestType $currentPage = RoommateRequestType::RECIEVED;
+    public RoommateRequestType $currentPage = RoommateRequestType::RECEIVED;
 
     protected function getListeners()
     {
@@ -33,9 +33,9 @@ class RoommateRequests extends Component
         if ($this->currentPage === RoommateRequestType::SENT) {
             $this->sentRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::SENT);
 
-            $this->recievedRoommateRequests = collect([]);
+            $this->receivedRoommateRequests = collect([]);
         } else {
-            $this->recievedRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::RECIEVED);
+            $this->receivedRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::RECEIVED);
 
             $this->sentRoommateRequests = collect([]);
         }
@@ -51,9 +51,9 @@ class RoommateRequests extends Component
                 $this->currentPage = RoommateRequestType::SENT;
 
                 break;
-            case RoommateRequestType::RECIEVED:
-                $this->recievedRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::RECIEVED);
-                $this->currentPage = RoommateRequestType::RECIEVED;
+            case RoommateRequestType::RECEIVED:
+                $this->receivedRoommateRequests = $this->fetchRoommateRequestsByType(RoommateRequestType::RECEIVED);
+                $this->currentPage = RoommateRequestType::RECEIVED;
 
                 break;
             default:
@@ -67,7 +67,7 @@ class RoommateRequests extends Component
             return RoommateRequest::where('sender_id',  auth()->id())->with('recipient')->orderBy('created_at', 'desc')->get();
         }
 
-        if ($roommateRequestType == RoommateRequestType::RECIEVED) {
+        if ($roommateRequestType == RoommateRequestType::RECEIVED) {
             return RoommateRequest::Where('recipient_id',  auth()->id())->with('sender')->orderBy('created_at', 'desc')->get();
         }
 
@@ -76,7 +76,7 @@ class RoommateRequests extends Component
 
     protected function resetUsersWhenSentRoommateRequestIsDeleted($id)
     {
-        $this->recievedRoommateRequests = $this->recievedRoommateRequests->except([$id]);
+        $this->receivedRoommateRequests = $this->receivedRoommateRequests->except([$id]);
     }
 
     // fires a card component refresh when another user blocks the currently authenticated user

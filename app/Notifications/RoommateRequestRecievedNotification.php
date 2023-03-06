@@ -11,7 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RoommateRequestRecievedNotification extends Notification implements ShouldQueue
+class RoommateRequestReceivedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -50,7 +50,7 @@ class RoommateRequestRecievedNotification extends Notification implements Should
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('Roommate Request Recieved.')
+            ->line('Roommate Request Received.')
             ->line("{$this->sender->full_name} sent you a Roommate Request.")
             ->action('View profile', route('profile.view', ['user' => $this->sender], true))
             ->line('Thank you for using our application!');
@@ -60,7 +60,7 @@ class RoommateRequestRecievedNotification extends Notification implements Should
     {
         return array_merge(
             FilamentNotification::make()
-                ->title('Roommate Request Recieved')
+                ->title('Roommate Request Received')
                 ->body("{$this->sender->full_name} sent you a Roommate Request.")
                 ->actions([
                     Action::make('view')

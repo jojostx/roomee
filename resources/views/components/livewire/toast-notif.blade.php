@@ -2,11 +2,11 @@
 </div>
 @prepend('scripts')
 <script>
-    Livewire.on('actionTakenOnUser', (username, actionTaken)=>{
+    Livewire.on('actionTakenOnUser', (username, actionTaken) => {
         let notif = document.getElementById('toast_notif');
-  
+
         let p;
-  
+
         notif.style.display = 'flex';
 
         if (actionTaken == 'block') {
@@ -17,13 +17,13 @@
                   View blocklist
                  </a>`;
         }
-        
+
         if (actionTaken == 'unblock') {
             p = `<p>You have succesfully ${actionTaken}ed 
                     <span class="font-semibold">${username}</span>
                  </p>`;
         }
-        
+
         if (actionTaken == 'favorite') {
             p = `<p>You have succesfully added
                     <span class="font-semibold">${username}</span>
@@ -39,7 +39,7 @@
                     <span class="font-semibold">${username}</span>
                  </p>`;
         }
-        
+
         if (actionTaken == 'roommate-request.sent') {
             p = `<p>Your roommate ${actionTaken} has been sent to 
                     <span class="font-semibold">${username}</span>
@@ -48,8 +48,8 @@
                   View all requests
                  </a>`;
         }
-        
-        if (actionTaken == 'roommate-request.recieved') {
+
+        if (actionTaken == 'roommate-request.received') {
             p = `<p><span class="font-semibold">${username}</span>
                     Sent you a roommate request.
                  </p>
@@ -57,7 +57,7 @@
                   View requests
                  </a>`;
         }
-      
+
         if (actionTaken == 'roommate-request.accepted') {
             p = `<p><span class="font-semibold">${username}</span>
                     Accepted your roommate request.
@@ -72,13 +72,13 @@
                     Our team will review your report ASAP. Thanks!  
                  </p>`;
         }
-        
+
         notif.innerHTML = p;
-  
-        setTimeout(()=>{
+
+        setTimeout(() => {
             notif.style.display = "none"
         }, 7000)
     })
+
 </script>
 @endprepend
-

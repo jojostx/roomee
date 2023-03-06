@@ -28,7 +28,7 @@ trait CanReactToRoommateRequestUpdate
             case RoommateRequestStatus::PENDING:
                 Notification::make()
                     ->success()
-                    ->title('Roommate Request recieved!')
+                    ->title('Roommate Request received!')
                     ->body("**{$sender->full_name}** sent you a roommate request. Kindly attend to it.")->actions([
                         Action::make('view')
                             ->button()

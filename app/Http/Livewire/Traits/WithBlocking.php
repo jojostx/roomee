@@ -25,7 +25,7 @@ trait WithBlocking
         // delete any existing roommate request
         $this->getAuthModel()->deleteRoommateRequest($user);
   
-        // remove user from favorites, delete sent and recieved roommate requests
+        // remove user from favorites, delete sent and received roommate requests
         $this->getAuthModel()->favorites()->detach($user->getKey());
   
         return $this->getAuthModel()->block($user, true);

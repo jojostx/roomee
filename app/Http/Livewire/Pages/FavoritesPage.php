@@ -155,7 +155,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
   {
     return fn (User $record) => match (true) {
       $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
-      $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-recieved',
+      $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-received',
       $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
       $this->hasBeenBlocked($record) => 'filament-user-card user-blocked',
       default => 'filament-user-card user-favorited',
@@ -212,7 +212,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
       });
   }
 
-  protected function hasSentOrRecievedRoommateRequest(User $user): bool
+  protected function hasSentOrReceivedRoommateRequest(User $user): bool
   {
     return $this->roommateRequests
       ->contains(function (RoommateRequest $roommateRequest) use ($user) {
@@ -220,12 +220,12 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
       });
   }
 
-  protected function hasNoSentOrRecievedRoommateRequest(User $user): bool
+  protected function hasNoSentOrReceivedRoommateRequest(User $user): bool
   {
-    return !$this->hasSentOrRecievedRoommateRequest($user);
+    return !$this->hasSentOrReceivedRoommateRequest($user);
   }
 
-  protected function hasPendingSentOrRecievedRoommateRequest(User $user): bool
+  protected function hasPendingSentOrReceivedRoommateRequest(User $user): bool
   {
     return $this->roommateRequests
       ->contains(function (RoommateRequest $roommateRequest) use ($user) {
@@ -341,7 +341,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
         ->requiresConfirmation()
         ->modalHeading('Send Roommate Request')
         ->modalContent(fn (User $record) => str("<p class='text-center'>This will send a Roommate roommate-request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-        ->visible(fn (User $record) => $this->hasNoSentOrRecievedRoommateRequest($record)),
+        ->visible(fn (User $record) => $this->hasNoSentOrReceivedRoommateRequest($record)),
 
       Tables\Actions\Action::make('accept-roommate-request')
         ->button()

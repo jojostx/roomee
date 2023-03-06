@@ -3614,7 +3614,7 @@ button[disabled]:hover{
   --tw-border-opacity: 1;
   border-color: rgb(253 164 175 / var(--tw-border-opacity));
 }
-.filament-user-card.roommate-request-recieved{
+.filament-user-card.roommate-request-received{
   --tw-border-opacity: 1;
   border-color: rgb(59 130 246 / var(--tw-border-opacity));
 }

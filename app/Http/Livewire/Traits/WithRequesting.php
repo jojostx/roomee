@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Traits;
 
 use App\Models\User;
 use App\Notifications\RoommateRequestAcceptedNotification;
-use App\Notifications\RoommateRequestRecievedNotification;
+use App\Notifications\RoommateRequestReceivedNotification;
 use Filament\Notifications\Notification;
 
 trait WithRequesting
@@ -31,7 +31,7 @@ trait WithRequesting
                 ->body("Your roommate request have been sent to **{$user->full_name}**. You will be notified when they accept.")
                 ->send();
 
-            $user->notify(new RoommateRequestRecievedNotification($this->getAuthModel(), $user));
+            $user->notify(new RoommateRequestReceivedNotification($this->getAuthModel(), $user));
         }
     }
 

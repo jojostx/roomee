@@ -238,7 +238,7 @@ implement pagination for all other pages
 write tests for all the above functionalities
 
 
-$requestTypes = collect(['sent' => 'sender_id', 'recieved' => 'recipient_id']);
+$requestTypes = collect(['sent' => 'sender_id', 'received' => 'recipient_id']);
 
 $columnName = $requestTypes->get($requestType);
 

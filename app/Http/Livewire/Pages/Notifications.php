@@ -11,7 +11,7 @@ class Notifications extends Component
 {
     public Collection $notifications;
     public $roommateRequestAcceptedNotifications;
-    public $roommateRequestRecievedNotifications;
+    public $roommateRequestReceivedNotifications;
 
     public function mount()
     {
@@ -25,8 +25,8 @@ class Notifications extends Component
             ->values()
             ->all();
 
-        $this->roommateRequestRecievedNotifications = $this->notifications
-            ->where('type', 'App\Notifications\RoommateRequestRecieved')
+        $this->roommateRequestReceivedNotifications = $this->notifications
+            ->where('type', 'App\Notifications\RoommateRequestReceived')
             ->unique('data')
             ->values()
             ->all();

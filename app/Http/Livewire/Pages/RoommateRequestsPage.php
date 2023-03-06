@@ -69,7 +69,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     return [
       Tables\Filters\TernaryFilter::make('requests')
         ->placeholder('All')
-        ->trueLabel('Recieved')
+        ->trueLabel('Received')
         ->falseLabel('Sent')
         ->queries(
           true: fn (Builder $query) => $query->where('recipient_id', $this->getAuthModel()->getKey()),
@@ -197,7 +197,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
   {
     return fn (User $record) => match (true) {
       $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
-      $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-recieved',
+      $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-received',
       $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
       $this->hasBeenBlocked($record) => 'filament-user-card user-blocked',
       $this->hasBeenFavorited($record) => 'filament-user-card user-favorited',
@@ -212,7 +212,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
 
   public function getTableEmptyStateDescription(): ?string
   {
-    return 'You have not sent or recieved any Roommate Requests.';
+    return 'You have not sent or received any Roommate Requests.';
   }
 
   /** dynamic properties */
@@ -262,7 +262,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
       });
   }
 
-  protected function hasSentOrRecievedRoommateRequest(User $user): bool
+  protected function hasSentOrReceivedRoommateRequest(User $user): bool
   {
     return $this->roommateRequests
       ->contains(function (RoommateRequest $roommateRequest) use ($user) {
@@ -270,12 +270,12 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
       });
   }
 
-  protected function hasNoSentOrRecievedRoommateRequest(User $user): bool
+  protected function hasNoSentOrReceivedRoommateRequest(User $user): bool
   {
-    return !$this->hasSentOrRecievedRoommateRequest($user);
+    return !$this->hasSentOrReceivedRoommateRequest($user);
   }
 
-  protected function hasPendingSentOrRecievedRoommateRequest(User $user): bool
+  protected function hasPendingSentOrReceivedRoommateRequest(User $user): bool
   {
     return $this->roommateRequests
       ->contains(function (RoommateRequest $roommateRequest) use ($user) {
