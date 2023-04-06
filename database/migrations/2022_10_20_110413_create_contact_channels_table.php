@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('link');
             $table->boolean('is_enabled')->default(false);
-            $table->json('metadata');
+            $table->json('metadata')->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
