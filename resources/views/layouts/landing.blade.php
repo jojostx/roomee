@@ -13,9 +13,12 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
-    
+
     <style>
-        [x-cloak] { display: none !important; }
+        [x-cloak] {
+            display: none !important;
+        }
+
     </style>
 
     <!-- Scripts -->
@@ -25,7 +28,7 @@
 <body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-secondary-100 vh">
 
     <!-- Navigation Bar -->
-    <header class="z-40 flex flex-row items-center justify-center w-full h-16 bg-secondary-900 border-b border-secondary-800">
+    <header class="z-40 flex flex-row items-center justify-center w-full h-16 border-b bg-secondary-900 border-secondary-800">
         @include('sections.navbar')
     </header>
     <!-- End of Navigation Bar -->
@@ -34,7 +37,6 @@
 
     <!-- Page Content -->
     <main class="relative">
-
         {{ $banner }}
 
         {{ $slot }}
@@ -43,7 +45,7 @@
 
     @include('sections.footer')
 
-    <button onclick="backToTop()" id="topButton" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-secondary-700 rounded-full shadow-lg focus:outline-black focus:bg-secondary-600 hover:bg-primary-600 text-secondary-50 bottom-8 right-8">
+    <button onclick="backToTop()" id="topButton" class="fixed z-40 hidden px-4 py-2 text-sm leading-none rounded-full shadow-lg bg-secondary-700 focus:outline-black focus:bg-secondary-600 hover:bg-primary-600 text-secondary-50 bottom-8 right-8">
         <p class="mr-2 font-semibold">Back to top</p>
         <i class="block w-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,8 +57,8 @@
     <script>
         function backToTop() {
             document.documentElement.scrollTo({
-                top: 0,
-                behavior: "smooth"
+                top: 0
+                , behavior: "smooth"
             })
         };
 
@@ -69,6 +71,7 @@
                 flashNode.classList.add('hidden')
             }, 2000)
         }
+
         function form(formElem) {
 
             return {
@@ -79,16 +82,16 @@
                     const url = form_url;
                     const req = new Request(
                         url, {
-                            body: formDataElem,
-                            method: 'POST',
-                        }
+                            body: formDataElem
+                            , method: 'POST'
+                        , }
                     );
 
                     fetch(req)
                         .then(res => res.json()).then(
                             (data) => {
                                 (data.success) ?
-                                flashElement('#flash', data.success): (data.error) ? flashElement('#flash', 'Please choose a reation'):console.log('there was an error');
+                                flashElement('#flash', data.success): (data.error) ? flashElement('#flash', 'Please choose a reation') : console.log('there was an error');
                             }
                         )
                         .catch(err => {
@@ -101,6 +104,7 @@
         };
 
         const backToTopButton = document.querySelector('#topButton');
+
         function inViewport(elem, callback, options = {}) {
             return new IntersectionObserver(entries => {
                 entries.forEach(entry =>
@@ -117,6 +121,7 @@
                 backToTopButton.classList.remove('flex');
             }
         });
+
     </script>
 </body>
 

@@ -23,7 +23,7 @@
                             Roomee helps you find the best roommate for you.
                         </h2>
                     </div>
-                    <x-cta-button href="#howItWorks" class="px-4 font-semibold text-secondary-100 bg-primary-500 hover:text-secondary-100 hover:bg-primary-600">
+                    <x-cta-button href="#howItWorks" class="px-4 font-semibold border-primary-500 text-secondary-100 bg-primary-500 hover:text-secondary-100 hover:bg-primary-600 hover:border-primary-600">
                         LEARN MORE
                     </x-cta-button>
                     <x-cta-button href="{{ route('register') }}" class="px-4 font-semibold bg-transparent text-secondary-200 border-secondary-200 sm:ml-6 xs:ml-2 sm:mt-0 hover:text-secondary-900 hover:bg-white hover:border-white">
@@ -171,7 +171,7 @@
                                 </div>
 
                                 <!-- Password -->
-                                <div class="relative" >
+                                <div class="relative">
                                     <label class="block text-sm font-medium text-secondary-600">
                                         Password
                                     </label>
