@@ -269,6 +269,11 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         </x-filament::button>"));
     }
 
+    public function getChannelNamesProperty()
+    {
+        return ContactChannelType::getChannelNames(['email']);
+    }
+
     public function getChannel(ContactChannelType|string $channelType)
     {
         $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;

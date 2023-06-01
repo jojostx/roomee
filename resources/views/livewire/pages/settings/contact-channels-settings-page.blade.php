@@ -27,22 +27,25 @@
 
             <div class="max-w-3xl pb-6 space-y-4 sm:grid-cols-3 col-span-full md:col-span-4">
                 {{-- <div>
-                    @if($this->canUpdateChannel('whatsapp'))
+                    @if(blank($this->getChannel('whatsapp')))
+                        <form
+                            wire:submit.prevent="updateChannel('whatsapp')"
+                        >
+                            {{ $this->whatsappForm }}
+                        </form>
+                    @else
                         @php
                             $channel_name = 'whatsapp';
-                            $channel = $this->getChannel($channel_name);
-                            $show = $this->showUpdatedChannelComponent($channel ?? $channel_name);
+                            $channel = $this->getChannel($channel_name)
                         @endphp
 
-                        @if(filled($channel))
-                            <livewire:components.cards.updated-contact-channel-card 
-                                :contactChannel="$channel"
-                                :show="$show"
-                            />
-                        @endif
+                        <livewire:components.cards.updated-contact-channel-card 
+                            :contactChannel="$channel"
+                            :show="true"
+                        />
 
                         <form
-                            x-data="{ show : {{ $show ? 'false' : 'true' }} }"
+                            x-data="{ show : false }"
                             x-show="show"
                             x-on:close-update-form.window="if ($event.detail.id == 'whatsapp') { show = false; }"
                             x-on:show-update-form.window="if ($event.detail.id == 'whatsapp') { show = true; }"
@@ -50,47 +53,10 @@
                         >
                             {{ $this->whatsappForm }}
                         </form>
-                    @else
-                        <x-restricted-contact-channel-card 
-                            label="Whatsapp" 
-                            :active_at="$this->getChannel('whatsapp')->created_at->addDays(2)->format('M, j \a\t g:ia')"
-                        />
                     @endif
                 </div> --}}
 
                 {{-- <div>
-                    @if($this->canUpdateUnverifiedChannel('facebook'))
-                        @php
-                            $channel_name = 'facebook';
-                            $channel = $this->getChannel($channel_name);
-                            $show = $this->canUpdateVerifiedChannel($channel ?? $channel_name);
-                        @endphp
-
-                        @if(filled($channel))
-                            <livewire:components.cards.updated-contact-channel-card 
-                                :contactChannel="$channel"
-                                :show="$show"
-                            />
-                        @endif
-
-                        <form
-                            x-data="{ show : {{ $show ? 'false' : 'true' }} }"
-                            x-show="show"
-                            x-on:close-update-form.window="if ($event.detail.id == 'facebook') { show = false; }"
-                            x-on:show-update-form.window="if ($event.detail.id == 'facebook') { show = true; }"
-                            wire:submit.prevent="updateChannel('facebook')"
-                        >
-                            {{ $this->facebookForm }}
-                        </form>
-                    @else
-                        <x-restricted-contact-channel-card 
-                            label="Facebook" 
-                            :active_at="$this->getChannel('facebook')->created_at->addDays(2)->format('M, j \a\t g:ia')"
-                        />
-                    @endif
-                </div> --}}
-
-                <div>
                     @if(blank($this->getChannel('facebook')))
                         <form
                             wire:submit.prevent="updateChannel('facebook')"
@@ -118,9 +84,9 @@
                             {{ $this->facebookForm }}
                         </form>
                     @endif
-                </div>
+                </div> --}}
 
-                <div>
+                {{-- <div>
                     @if(blank($this->getChannel('instagram')))
                         <form
                             wire:submit.prevent="updateChannel('instagram')"
@@ -148,9 +114,9 @@
                             {{ $this->instagramForm }}
                         </form>
                     @endif
-                </div>
+                </div> --}}
 
-                <div>
+                {{-- <div>
                     @if(blank($this->getChannel('twitter')))
                         <form
                             wire:submit.prevent="updateChannel('twitter')"
@@ -179,38 +145,15 @@
                             {{ $this->twitterForm }}
                         </form>
                     @endif
-                </div>
-
-                {{-- <div>
-                    @if($this->canUpdateChannel('twitter'))
-                        @php
-                            $channel_name = 'twitter';
-                            $channel = $this->getChannel($channel_name);
-                            $show = $this->showUpdatedChannelComponent($channel ?? $channel_name);
-                        @endphp
-                        @if(filled($channel))
-                            <livewire:components.cards.updated-contact-channel-card 
-                                :contactChannel="$channel"
-                                :show="$show"
-                            />
-                        @endif
-
-                        <form
-                            x-data="{ show : {{ $show ? 'false' : 'true' }} }"
-                            x-show="show"
-                            x-on:close-update-form.window="if ($event.detail.id == 'twitter') { show = false; }"
-                            x-on:show-update-form.window="if ($event.detail.id == 'twitter') { show = true; }"
-                            wire:submit.prevent="updateChannel('twitter')"
-                        >
-                            {{ $this->twitterForm }}
-                        </form>
-                    @else
-                        <x-restricted-contact-channel-card 
-                            label="Twitter" 
-                            :active_at="$this->getChannel('twitter')->created_at->addDays(2)->format('M, j \a\t g:ia')"
-                        />
-                    @endif
                 </div> --}}
+
+                @foreach ($this->channelNames as $channel_name)
+                    <x-contact-channel-card
+                        :channel="$this->getChannel($channel_name)"
+                        :channel_name="$channel_name"
+                        form_action="updateChannel('{{ $channel_name }}')"
+                    />
+                @endforeach
             </div>
         </div>
     </div>
