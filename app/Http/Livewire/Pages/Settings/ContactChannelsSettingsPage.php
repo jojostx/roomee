@@ -72,57 +72,18 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
     {
         return [
             Section::make('Whatsapp')
-                ->schema([
-                    Forms\Components\TextInput::make('whatsapp')
-                        ->label('Phone number')
-                        ->placeholder('ex: 08034081480')
-                        ->required()
-                        ->reactive()
-                        ->suffixAction(
-                            fn (?string $state, Closure $set): Action =>
-                            Action::make('generate-wa')
-                                ->icon('heroicon-o-plus')
-                                ->action(function () use ($state, $set) {
-                                    if (blank($state)) {
-                                        $this->addError('whatsapp', 'Your Whatsapp phone number cannot be empty.');
-                                        return;
-                                    }
-                                    $this->validateOnly('whatsapp');
-                                    $set('whatsapp-code', 'TEST');
-                                    $set('show_whatsapp_code', true);
-                                }),
-                        ),
-
-                    Forms\Components\TextInput::make('whatsapp-code')
-                        ->label('Verification code')
-                        ->disabled()
-                        ->visible(fn (Closure $get) => $get('whatsapp') && $this->show_whatsapp_code),
-
-                    Forms\Components\Placeholder::make('whatsapp-account')
-                        ->label('Our whatsapp account')
-                        ->content('https://whatsapp.com/cotenanty'),
-
-                    Forms\Components\Grid::make()
-                        ->schema([
-                            Forms\Components\ViewField::make('cancel')
-                                ->view('livewire.components.filament.forms.cancel-update-button')
-                                ->id('whatsapp')
-                                ->visible(fn ()  => filled($this->getChannel('whatsapp')))
-                                ->columnSpan(1),
-
-                            Forms\Components\Placeholder::make('submit-whatsapp')
-                                ->columnSpan(2)
-                                ->extraAttributes(['class' => 'flex justify-end'])
-                                ->disableLabel()
-                                ->content(self::getSubmitButton())
-                                ->visible(fn (Closure $get) => $get('whatsapp') && $this->{'show_whatsapp_code'}),
-                        ])->columns([
-                            'default' => 3,
-                            'sm' => 3,
-                            'md' => 3,
-                            'lg' => 3
-                        ]),
-                ])
+                ->schema(fn () => $this->getFormSchema(
+                    'whatsapp',
+                    [
+                        'link_label' => 'Phone number',
+                        'link_placeholder' => 'ex: 08034081480',
+                        'link_error' => 'Your Whatsapp phone number cannot be empty.',
+                        'account_placeholder_content' => 'https://wa.me/cotenanty'
+                    ],
+                    [
+                        'required',
+                    ]
+                ))
                 ->compact()
                 ->collapsible()
         ];
@@ -136,13 +97,17 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                     'facebook',
                     [
                         'link_placeholder' => 'ex: https://facebook.com/John.doe',
-                        'startsWith' => [
+                        'account_placeholder_content' => 'https://facebook.com/cotenanty'
+                    ],
+                    [
+                        'required',
+                        'activeUrl',
+                        'startsWith:' . \implode(',', [
                             'https://www.facebook.com/',
                             'https://facebook.com/',
                             'https://web.facebook.com/',
                             'https://m.facebook.com/'
-                        ],
-                        'account_placeholder_content' => 'https://facebook.com/cotenanty'
+                        ])
                     ]
                 ))
                 ->compact()
@@ -158,11 +123,15 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                     'instagram',
                     [
                         'link_placeholder' => 'ex: https://instagram.com/john_doe',
-                        'startsWith' => [
+                        'account_placeholder_content' => 'https://instagram.com/cotenanty'
+                    ],
+                    [
+                        'required',
+                        'activeUrl',
+                        'startsWith:' . \implode(',', [
                             'https://instagram.com/',
                             'https://www.instagram.com/'
-                        ],
-                        'account_placeholder_content' => 'https://instagram.com/cotenanty'
+                        ])
                     ]
                 ))
                 ->compact()
@@ -170,7 +139,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         ];
     }
 
-    protected function getTwitterFormSchema(): array
+    public function getTwitterFormSchema(): array
     {
         return [
             Section::make('twitter')
@@ -178,11 +147,15 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                     'twitter',
                     [
                         'link_placeholder' => 'ex: https://twitter.com/john_doe',
-                        'startsWith' => [
+                        'account_placeholder_content' => 'https://twitter.com/cotenanty'
+                    ],
+                    [
+                        'required',
+                        'activeUrl',
+                        'startsWith:' . \implode(',', [
                             'https://twitter.com/',
                             'https://www.twitter.com/'
-                        ],
-                        'account_placeholder_content' => 'https://twitter.com/cotenanty'
+                        ])
                     ]
                 ))
                 ->compact()
@@ -190,29 +163,13 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         ];
     }
 
-    protected function getForms(): array
-    {
-        return [
-            'whatsappForm' => $this->makeForm()
-                ->schema($this->getWhatsappFormSchema()),
-            'facebookForm' => $this->makeForm()
-                ->schema($this->getFacebookFormSchema()),
-            'instagramForm' => $this->makeForm()
-                ->schema($this->getInstagramFormSchema()),
-            'twitterForm' => $this->makeForm()
-                ->schema($this->getTwitterFormSchema()),
-        ];
-    }
-
-    protected function getFormSchema(string $channel, array $data)
+    protected function getFormSchema(string $channel, array $data, array $rules)
     {
         return [
             Forms\Components\TextInput::make($channel)
-                ->label('Profile link')
+                ->label($data['link_label'] ?? 'Profile link')
                 ->placeholder($data['link_placeholder'])
-                ->required()
-                ->activeUrl()
-                ->startsWith($data['startsWith'])
+                ->rules($rules)
                 ->reactive()
                 ->suffixAction(
                     fn (?string $state, Closure $set): Action =>
@@ -220,7 +177,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                         ->icon('heroicon-o-plus')
                         ->action(function () use ($state, $set, $channel) {
                             if (blank($state)) {
-                                $this->addError($channel, 'Your profile link cannot be empty.');
+                                $this->addError($channel, $data['link_error'] ?? 'Your profile link cannot be empty.');
                                 return;
                             }
                             $this->validateOnly($channel);
@@ -248,7 +205,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
 
                     Forms\Components\Placeholder::make('submit-' . $channel)
                         ->columnSpan(2)
-                        ->extraAttributes(['class' => 'flex justify-end'])
+                        ->extraAttributes(fn () => blank($this->getChannel($channel)) ? [] : ['class' => 'flex justify-end'])
                         ->disableLabel()
                         ->content(self::getSubmitButton())
                         ->visible(fn (Closure $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
@@ -267,6 +224,20 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         <x-filament::button size='sm' type='submit' size='sm' style='font-weight: 600;'>
             {{ __('Submit For Verification') }}
         </x-filament::button>"));
+    }
+
+    protected function getForms(): array
+    {
+        return [
+            'whatsappForm' => $this->makeForm()
+                ->schema($this->getWhatsappFormSchema()),
+            'facebookForm' => $this->makeForm()
+                ->schema($this->getFacebookFormSchema()),
+            'instagramForm' => $this->makeForm()
+                ->schema($this->getInstagramFormSchema()),
+            'twitterForm' => $this->makeForm()
+                ->schema($this->getTwitterFormSchema()),
+        ];
     }
 
     public function getChannelNamesProperty()

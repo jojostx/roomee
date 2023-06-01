@@ -4,7 +4,7 @@
     'form_action',
 ])
 
-<div>
+<div wire:key="card-{{ $channel_name }}">
     @php
         $form =  $this->{$channel_name.'Form'};
     @endphp
@@ -18,6 +18,7 @@
         <livewire:components.cards.updated-contact-channel-card 
             :contactChannel="$channel"
             :show="true"
+            wire:key="card-{{ $channel_name }}-sub"
         />
 
         <form
