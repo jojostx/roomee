@@ -54,6 +54,11 @@ class ViewProfilePage extends Component
         $this->emitSelf('actionTakenOnUser');
     }
 
+    public function showContactUserModal()
+    {
+        $this->emit('openModal', 'components.modals.contact-user-modal', ["user" => $this->user->uuid]);
+    }
+
     public function showDeleteRequestModal()
     {
         $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);

@@ -33,7 +33,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
     protected function getListeners()
     {
         return [
-            'refresh:component' => '$refresh',
+            'refresh-component' => '$refresh',
         ];
     }
 
@@ -123,9 +123,9 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
     {
         return [
             ...$this->getRoommateRequestingActions(),
-            ...$this->getFavoritingActions(),
-
+            
             Tables\Actions\ActionGroup::make([
+                ...$this->getFavoritingActions(),
                 ...$this->getReportingAction(),
                 ...$this->getBlockingActions(),
             ])
@@ -213,6 +213,14 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
             });
     }
 
+    protected function hasDeniedRoommateRequestFrom(User $user): bool
+    {
+        return $this->roommateRequests
+            ->contains(function (RoommateRequest $roommateRequest) use ($user) {
+                return $roommateRequest->sender->is($user) && $roommateRequest->isDenied();
+            });
+    }
+
     protected function hasPendingRoommateRequestTo(User $user): bool
     {
         return $this->roommateRequests
@@ -286,7 +294,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->color('danger')
                 ->action(function (User $record) {
                     $this->blockUser($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Block ' . $record->full_name)
@@ -300,7 +308,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->color('danger')
                 ->action(function (User $record) {
                     $this->unblockUser($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Unblock ' . $record->full_name)
@@ -314,39 +322,27 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
     {
         return [
             Tables\Actions\Action::make('favorite')
-                ->iconButton()
                 ->label('Add to Favorites')
                 ->tooltip('Add to Favorites')
-                ->color('secondary')
+                ->color('primary')
                 ->icon('heroicon-o-star')
                 ->action(function (User $record) {
                     $this->favorite($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
-                ->extraAttributes([
-                    'title' => 'Favorite button',
-                    'class' => 'border border-secondary-300',
-                    'style' => 'width: 3rem; border-radius: .5rem',
-                    'id' => 'filament-tables-action-favorite'
-                ])
+                ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => !$this->hasBeenFavorited($record)),
 
             Tables\Actions\Action::make('unfavorite')
-                ->iconButton()
                 ->label('Remove from Favorites')
                 ->tooltip('Remove from Favorites')
                 ->color('primary')
                 ->icon('heroicon-s-star')
                 ->action(function (User $record) {
                     $this->unfavorite($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
-                ->extraAttributes([
-                    'title' => 'Favorite button',
-                    'class' => 'border border-secondary-300',
-                    'style' => 'width: 3rem; border-radius: .5rem',
-                    'id' => 'filament-tables-action-favorite'
-                ])
+                ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => $this->hasBeenFavorited($record))
         ];
     }
@@ -366,7 +362,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->sendRoommateRequest($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Send Roommate Request')
@@ -384,7 +380,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->acceptRoommateRequest($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
@@ -402,7 +398,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->deleteRoommateRequest($record);
-                    $this->emitSelf('refresh:component');
+                    $this->emitSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
@@ -418,7 +414,10 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                     'title' => 'contact user',
                     'class' => 'w-full filament-tables-action-contact-user',
                 ])
-                ->requiresConfirmation()
+                ->action(function (User $record) {
+                    $this->emit('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
+                    $this->emitSelf('refresh-component');
+                })
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];
     }

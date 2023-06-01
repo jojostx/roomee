@@ -11,10 +11,6 @@ class FavoriteCard extends Component
 {
     public $user;
 
-    public function mount()
-    {
-    }
-
     protected function getAuthModel(): ?User
     {
         return Auth::user();

@@ -11,6 +11,7 @@
   @endunless
 
   <x-livewire.includes.favoriting-sxn :user="$user" />
+
   <x-filament-support::icon-button 
     size="sm"
     color="secondary"

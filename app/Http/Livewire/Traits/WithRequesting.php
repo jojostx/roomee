@@ -83,6 +83,29 @@ trait WithRequesting
         }
     }
 
+    protected function denyRoommateRequest($user_id = null)
+    {
+        $denied = false;
+
+        $user = $this->retrieveUser($user_id);
+
+        if (blank($user) || !($user instanceof User)) {
+            return;
+        }
+
+        if ($this->getAuthModel()->hasPendingRoommateRequestFrom($user)) {
+            $denied = $this->getAuthModel()->acceptRoommateRequest($user);
+        }
+
+        if ($denied) {
+            Notification::make()
+                ->title('Request denied successfully')
+                ->success()
+                ->body("**{$user->full_name}** Cannot send you another roommate request until you accept this one.")
+                ->send();
+        }
+    }
+
     public function showDeleteRequestModal($user_id = null)
     {
         $user = $this->retrieveUser($user_id);
