@@ -17,9 +17,9 @@
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="email-and-phone-number-link" class="absolute opacity-0 left-20" autocomplete="off">
-                        <label @click="document.getElementById('email_and_phone_number').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                        <label @click="document.getElementById('email_information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
                             <x-heroicon-o-inbox class="flex-shrink-0 w-5 mr-3" />
-                            Email and Phone Number
+                            Email Information
                         </label>
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
@@ -52,8 +52,8 @@
                     </div>
                 </div>
 
-                <div class="mt-6 sm:mt-10" id="email_and_phone_number">
-                    <p class="mb-4 font-bold tracking-wide sm:text-lg">Email and Phone number</p>
+                <div class="mt-6 sm:mt-10" id="email_information">
+                    <p class="mb-4 font-bold tracking-wide sm:text-lg">Email Information</p>
 
                     <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
                         <form wire:submit.prevent="saveContactInfo">

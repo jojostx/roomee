@@ -11,10 +11,8 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
-use Ysfkaya\FilamentPhoneInput\PhoneInput;
 
 class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 {
@@ -25,25 +23,15 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
     public $savedPersonalInfo = false;
     public $savedContactInfo = false;
     public $savedPasswordInfo = false;
-    public $savedBankAccountInfo = false;
 
     public $first_name;
     public $middle_name;
 
     public $email;
-    public $phone_number;
-    public $state;
-    public $city;
-    public $address;
-    public $postcode;
 
     public $current_password;
     public $new_password;
     public $new_password_confirmation;
-
-    public $account_name;
-    public $account_number;
-    public $bank_name;
 
     protected function getFormModel(): ?User
     {
@@ -65,7 +53,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
         $this->contactInfoForm->fill([
             'email' => $authUser->email,
-            'phone_number' => $authUser->phone_number,
         ]);
 
         $this->passwordInfoForm->fill([

@@ -27,6 +27,8 @@ class ContactUserModal extends ModalComponent
     {
         $user = $this->retrieveUser();
 
+        \throw_unless($this->getAuthModel()->isRoommateWith($user));
+
         return $user?->getVerifiedContactChannels();
     }
 

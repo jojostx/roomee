@@ -311,6 +311,7 @@ class User extends Authenticatable
 
         $contactChannels = $this
             ->contactChannels()
+            ->where('is_enabled', true)
             ->whereNotNull('verified_at')
             ->get();
 

@@ -218,14 +218,6 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         ];
     }
 
-    protected static function getSubmitButton(): HtmlString
-    {
-        return new HtmlString(Blade::render("
-        <x-filament::button size='sm' type='submit' size='sm' style='font-weight: 600;'>
-            {{ __('Submit For Verification') }}
-        </x-filament::button>"));
-    }
-
     protected function getForms(): array
     {
         return [
@@ -238,6 +230,14 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
             'twitterForm' => $this->makeForm()
                 ->schema($this->getTwitterFormSchema()),
         ];
+    }
+
+    protected static function getSubmitButton(): HtmlString
+    {
+        return new HtmlString(Blade::render("
+        <x-filament::button size='sm' type='submit' size='sm' style='font-weight: 600;'>
+            {{ __('Submit For Verification') }}
+        </x-filament::button>"));
     }
 
     public function getChannelNamesProperty()
