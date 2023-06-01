@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "awcodes/drop-in-action": "^0.2.0",
         "crazybooot/base64-validation": "^1.0.10",
         "doctrine/dbal": "^3.3.0",
         "doctrine/migrations": "^3.4",

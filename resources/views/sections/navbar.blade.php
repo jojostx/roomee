@@ -62,7 +62,7 @@
                         </span>
                     </button>
 
-                    <div class="flex flex-col justify-center h-full space-y-2">
+                    <div class="flex flex-col justify-center h-full divide-y">
                         <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" icon_before="heroicon-o-home" >
                             {{ __('Home') }}
                         </x-responsive-nav-link>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Pages\Settings;
 
 use App\Enums\ContactChannelType;
+use App\Models\ContactChannel;
 use App\Models\User;
 use Closure;
 use Filament\Forms;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Notifications\Notification;
+use Illuminate\Database\Eloquent\Collection;
 
 class ContactChannelsSettingsPage extends Component implements Forms\Contracts\HasForms
 {
@@ -27,6 +29,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
      *  come back and click verify
      *  this puts the account on pending_admin_approval
      */
+    public Collection $channels;
 
     public $whatsapp;
     public $facebook;
@@ -40,7 +43,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
 
     public function mount()
     {
-        // $this->settings = new Settings($this->getAuthUser()->social_links);
+        $this->getChannels();
 
         $this->facebookForm->fill([
             'facebook' => '',
@@ -58,6 +61,11 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
     protected function getAuthUser(): User
     {
         return \auth()->user();
+    }
+
+    protected function getChannels()
+    {
+        $this->channels = $this->getAuthUser()->getLatestContactChannels();
     }
 
     protected function getWhatsappFormSchema(): array
@@ -94,10 +102,26 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                         ->label('Our whatsapp account')
                         ->content('https://whatsapp.com/cotenanty'),
 
-                    Forms\Components\Placeholder::make('submit-wa')
-                        ->disableLabel()
-                        ->content(self::getSubmitButton())
-                        ->visible(fn (Closure $get) => $get('whatsapp') && $this->show_whatsapp_code)
+                    Forms\Components\Grid::make()
+                        ->schema([
+                            Forms\Components\ViewField::make('cancel')
+                                ->view('livewire.components.filament.forms.cancel-update-button')
+                                ->id('whatsapp')
+                                ->visible(fn ()  => filled($this->getChannel('whatsapp')))
+                                ->columnSpan(1),
+
+                            Forms\Components\Placeholder::make('submit-whatsapp')
+                                ->columnSpan(2)
+                                ->extraAttributes(['class' => 'flex justify-end'])
+                                ->disableLabel()
+                                ->content(self::getSubmitButton())
+                                ->visible(fn (Closure $get) => $get('whatsapp') && $this->{'show_whatsapp_code'}),
+                        ])->columns([
+                            'default' => 3,
+                            'sm' => 3,
+                            'md' => 3,
+                            'lg' => 3
+                        ]),
                 ])
                 ->compact()
                 ->collapsible()
@@ -108,48 +132,19 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
     {
         return [
             Section::make('Facebook')
-                ->schema([
-                    Forms\Components\TextInput::make('facebook')
-                        ->label('Profile link')
-                        ->placeholder('ex: https://facebook.com/John.doe')
-                        ->required()
-                        ->activeUrl()
-                        ->startsWith([
+                ->schema(fn () => $this->getFormSchema(
+                    'facebook',
+                    [
+                        'link_placeholder' => 'ex: https://facebook.com/John.doe',
+                        'startsWith' => [
                             'https://www.facebook.com/',
                             'https://facebook.com/',
                             'https://web.facebook.com/',
                             'https://m.facebook.com/'
-                        ])
-                        ->reactive()
-                        ->suffixAction(
-                            fn (?string $state, Closure $set): Action =>
-                            Action::make('generate-fb')
-                                ->icon('heroicon-o-plus')
-                                ->action(function () use ($state, $set) {
-                                    if (blank($state)) {
-                                        $this->addError('facebook', 'Your profile link cannot be empty.');
-                                        return;
-                                    }
-                                    $this->validateOnly('facebook');
-                                    $set('facebook-code', 'TEST');
-                                    $set('show_facebook_code', true);
-                                }),
-                        ),
-
-                    Forms\Components\TextInput::make('facebook-code')
-                        ->label('Verification code')
-                        ->disabled()
-                        ->visible(fn (Closure $get) => $get('facebook') && $this->show_facebook_code),
-
-                    Forms\Components\Placeholder::make('facebook-account')
-                        ->label('Our facebook account')
-                        ->content('https://facebook.com/cotenanty'),
-
-                    Forms\Components\Placeholder::make('submit-fb')
-                        ->disableLabel()
-                        ->content(self::getSubmitButton())
-                        ->visible(fn (Closure $get) => $get('facebook') && $this->show_facebook_code)
-                ])
+                        ],
+                        'account_placeholder_content' => 'https://facebook.com/cotenanty'
+                    ]
+                ))
                 ->compact()
                 ->collapsible()
         ];
@@ -158,47 +153,18 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
     protected function getInstagramFormSchema(): array
     {
         return [
-            Section::make('Instagram')
-                ->schema([
-                    Forms\Components\TextInput::make('instagram')
-                        ->label('Profile link')
-                        ->placeholder('https://instagram.com/john_doe')
-                        ->required()
-                        ->activeUrl()
-                        ->startsWith([
+            Section::make('instagram')
+                ->schema(fn () => $this->getFormSchema(
+                    'instagram',
+                    [
+                        'link_placeholder' => 'ex: https://instagram.com/john_doe',
+                        'startsWith' => [
                             'https://instagram.com/',
                             'https://www.instagram.com/'
-                        ])
-                        ->reactive()
-                        ->suffixAction(
-                            fn (?string $state, Closure $set): Action =>
-                            Action::make('generate-ig')
-                                ->icon('heroicon-o-plus')
-                                ->action(function () use ($state, $set) {
-                                    if (blank($state)) {
-                                        $this->addError('instagram', 'Your profile link cannot be empty.');
-                                        return;
-                                    }
-                                    $this->validateOnly('instagram');
-                                    $set('instagram-code', 'TEST');
-                                    $set('show_instagram_code', true);
-                                }),
-                        ),
-
-                    Forms\Components\TextInput::make('instagram-code')
-                        ->label('Verification code')
-                        ->disabled()
-                        ->visible(fn (Closure $get) => $get('instagram') && $this->show_instagram_code),
-
-                    Forms\Components\Placeholder::make('instagram-account')
-                        ->label('Our Instagram account')
-                        ->content('https://instagram.com/cotenanty'),
-
-                    Forms\Components\Placeholder::make('submit-ig')
-                        ->disableLabel()
-                        ->content(self::getSubmitButton())
-                        ->visible(fn (Closure $get) => $get('instagram') && $this->show_instagram_code)
-                ])
+                        ],
+                        'account_placeholder_content' => 'https://instagram.com/cotenanty'
+                    ]
+                ))
                 ->compact()
                 ->collapsible()
         ];
@@ -207,204 +173,21 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
     protected function getTwitterFormSchema(): array
     {
         return [
-            Section::make('Twitter')
-                ->schema([
-                    Forms\Components\TextInput::make('twitter')
-                        ->label('Profile link')
-                        ->placeholder('https://twitter.com/john_doe')
-                        ->required()
-                        ->activeUrl()
-                        ->startsWith([
+            Section::make('twitter')
+                ->schema(fn () => $this->getFormSchema(
+                    'twitter',
+                    [
+                        'link_placeholder' => 'ex: https://twitter.com/john_doe',
+                        'startsWith' => [
                             'https://twitter.com/',
                             'https://www.twitter.com/'
-                        ])
-                        ->reactive()
-                        ->suffixAction(
-                            fn (?string $state, Closure $set): Action =>
-                            Action::make('generate-tw')
-                                ->icon('heroicon-o-plus')
-                                ->action(function () use ($state, $set) {
-                                    if (blank($state)) {
-                                        $this->addError('twitter', 'Your profile link cannot be empty.');
-                                        return;
-                                    }
-                                    $this->validateOnly('twitter');
-                                    $set('twitter-code', 'TEST');
-                                    $set('show_twitter_code', true);
-                                }),
-                        ),
-
-                    Forms\Components\TextInput::make('twitter-code')
-                        ->label('Verification code')
-                        ->disabled()
-                        ->visible(fn (Closure $get) => $get('twitter') && $this->show_twitter_code),
-
-                    Forms\Components\Placeholder::make('twitter-account')
-                        ->label('Our twitter account')
-                        ->content('https://twitter.com/cotenanty'),
-
-                    Forms\Components\Placeholder::make('submit-tw')
-                        ->disableLabel()
-                        ->content(self::getSubmitButton())
-                        ->visible(fn (Closure $get) => $get('twitter') && $this->show_twitter_code)
-                ])
+                        ],
+                        'account_placeholder_content' => 'https://twitter.com/cotenanty'
+                    ]
+                ))
                 ->compact()
                 ->collapsible()
         ];
-    }
-
-    public function updateChannel(ContactChannelType|string $channelType)
-    {
-        $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;
-
-        $data = $this->{$channelType->value . 'Form'}->getState();
-
-        $this->getAuthUser()
-            ->contactChannels()
-            ->updateOrCreate(
-                ['type' => $channelType->value],
-                [
-                    'link' => \trim($data[$channelType->value]),
-                    'created_at' => \now(),
-                    'updated_at' => \now()
-                ]
-            );
-
-        Notification::make()
-            ->title("Profile Link submitted succesfully")
-            ->body("Your Profile Link has been submitted. Our team will review your Profile Link ASAP. Thanks!")
-            ->success()
-            ->seconds(15)
-            ->send();
-    }
-
-    // public function updateWhatsapp()
-    // {
-    //     $data = $this->whatsappForm->getState();
-
-    //     $this->getAuthUser()
-    //         ->contactChannels()
-    //         ->updateOrCreate(
-    //             ['type' => ContactChannelType::WHATSAPP->value],
-    //             [
-    //                 'link' => \trim($data['whatsapp']),
-    //                 'created_at' => \now(),
-    //                 'updated_at' => \now()
-    //             ]
-    //         );
-
-    //     Notification::make()
-    //         ->title("Profile Link submitted succesfully")
-    //         ->body("Your Profile Link has been submitted. Our team will review your Profile Link ASAP. Thanks!")
-    //         ->success()
-    //         ->seconds(15)
-    //         ->send();
-    // }
-
-    // public function updateFacebook()
-    // {
-    //     $data = $this->facebookForm->getState();
-
-    //     $this->getAuthUser()
-    //         ->contactChannels()
-    //         ->updateOrCreate(
-    //             ['type' => ContactChannelType::FACEBOOK->value],
-    //             [
-    //                 'link' => \trim($data['facebook']),
-    //                 'created_at' => \now(),
-    //                 'updated_at' => \now()
-    //             ]
-    //         );
-
-    //     Notification::make()
-    //         ->title("Profile Link submitted succesfully")
-    //         ->body("Your Profile Link has been submitted. Our team will review your Profile Link ASAP. Thanks!")
-    //         ->success()
-    //         ->seconds(15)
-    //         ->send();
-    // }
-
-    // public function updateInstagram()
-    // {
-    //     $data = $this->instagramForm->getState();
-
-    //     $this->getAuthUser()
-    //         ->contactChannels()
-    //         ->updateOrCreate(
-    //             ['type' => ContactChannelType::INSTAGRAM->value],
-    //             [
-    //                 'link' => \trim($data['instagram']),
-    //                 'created_at' => \now(),
-    //                 'updated_at' => \now()
-    //             ]            );
-
-    //     Notification::make()
-    //         ->title("Profile Link submitted succesfully")
-    //         ->body("Your Profile Link has been submitted. Our team will review your Profile Link ASAP. Thanks!")
-    //         ->success()
-    //         ->seconds(15)
-    //         ->send();
-    // }
-
-    // public function updateTwitter()
-    // {
-    //     $data = $this->twitterForm->getState();
-
-    //     $this->getAuthUser()
-    //         ->contactChannels()
-    //         ->updateOrCreate(
-    //             ['type' => ContactChannelType::TWITTER->value],
-    //             [
-    //                 'link' => \trim($data['twitter']),
-    //                 'created_at' => \now(),
-    //                 'updated_at' => \now()
-    //             ]
-    //         );
-
-    //     Notification::make()
-    //         ->title("Profile Link submitted succesfully")
-    //         ->body("Your Profile Link has been submitted. Our team will review your Profile Link ASAP. Thanks!")
-    //         ->success()
-    //         ->seconds(15)
-    //         ->send();
-    // }
-
-    public function canUpdateChannel(ContactChannelType|string $channelType)
-    {
-        $channel = $this->getChannel($channelType);
-
-        if (blank($channel)) {
-            return true;
-        }
-
-        // if your contact channel is successfully verified, you can only change it after one week
-        if ($channel->isVerified() && $channel->created_at->lessThanOrEqualTo(now()->subWeek())) {
-            return true;
-        }
-
-        // you can resubmit a new verification request if you've previously submitted a verification request
-        // within the past 48 hours and it has not been verified
-        if ($channel->isUnverified() && $channel->created_at->lessThanOrEqualTo(now()->subDays(2))) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function getChannel(ContactChannelType|string $channelType)
-    {
-        $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;
-
-        return $this->getAuthUser()
-            ->getLatestContactChannelByType($channelType);
-    }
-
-    public static function getSubmitButton(): HtmlString
-    {
-        return new HtmlString(Blade::render("
-        <x-filament::button size='sm' type='submit' size='sm' style='font-weight: 600;'>
-            {{ __('Submit For Verification') }}
-        </x-filament::button>"));
     }
 
     protected function getForms(): array
@@ -421,6 +204,116 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         ];
     }
 
+    protected function getFormSchema(string $channel, array $data)
+    {
+        return [
+            Forms\Components\TextInput::make($channel)
+                ->label('Profile link')
+                ->placeholder($data['link_placeholder'])
+                ->required()
+                ->activeUrl()
+                ->startsWith($data['startsWith'])
+                ->reactive()
+                ->suffixAction(
+                    fn (?string $state, Closure $set): Action =>
+                    Action::make('generate-' . $channel)
+                        ->icon('heroicon-o-plus')
+                        ->action(function () use ($state, $set, $channel) {
+                            if (blank($state)) {
+                                $this->addError($channel, 'Your profile link cannot be empty.');
+                                return;
+                            }
+                            $this->validateOnly($channel);
+                            $set($channel . '-code', 'TEST');
+                            $set('show_' . $channel . '_code', true);
+                        }),
+                ),
+
+            Forms\Components\TextInput::make($channel . '-code')
+                ->label('Verification code')
+                ->disabled()
+                ->visible(fn (Closure $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
+
+            Forms\Components\Placeholder::make($channel . '-account')
+                ->label('Our ' . $channel . ' account')
+                ->content($data['account_placeholder_content']),
+
+            Forms\Components\Grid::make()
+                ->schema([
+                    Forms\Components\ViewField::make('cancel')
+                        ->view('livewire.components.filament.forms.cancel-update-button')
+                        ->id($channel)
+                        ->visible(fn ()  => filled($this->getChannel($channel)))
+                        ->columnSpan(1),
+
+                    Forms\Components\Placeholder::make('submit-' . $channel)
+                        ->columnSpan(2)
+                        ->extraAttributes(['class' => 'flex justify-end'])
+                        ->disableLabel()
+                        ->content(self::getSubmitButton())
+                        ->visible(fn (Closure $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
+                ])->columns([
+                    'default' => 3,
+                    'sm' => 3,
+                    'md' => 3,
+                    'lg' => 3
+                ])
+        ];
+    }
+
+    protected static function getSubmitButton(): HtmlString
+    {
+        return new HtmlString(Blade::render("
+        <x-filament::button size='sm' type='submit' size='sm' style='font-weight: 600;'>
+            {{ __('Submit For Verification') }}
+        </x-filament::button>"));
+    }
+
+    public function getChannel(ContactChannelType|string $channelType)
+    {
+        $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;
+
+        return $this->channels->firstWhere('type', $channelType->value);
+    }
+
+    public function showUpdatedChannelComponent(ContactChannel|string $channel)
+    {
+        $channel = \is_string($channel) ? $this->getChannel($channel) : $channel;
+
+        if (blank($channel)) {
+            return false;
+        }
+
+        // if your contact channel is successfully verified, you can only change it after one week
+        return $channel->isVerified() && $channel->verified_at->lessThanOrEqualTo(now()->subWeek());
+    }
+
+    public function updateChannel(ContactChannelType|string $channelType)
+    {
+        $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;
+
+        $data = $this->{$channelType->value . 'Form'}->getState();
+
+        $this->getAuthUser()
+            ->contactChannels()
+            ->updateOrCreate(
+                ['type' => $channelType->value],
+                [
+                    'link' => \trim($data[$channelType->value]),
+                    'created_at' => \now(),
+                    'updated_at' => \now(),
+                    'verified_at' => null
+                ]
+            );
+
+        Notification::make()
+            ->title("Profile Link submitted succesfully")
+            ->body("Your Profile Link has been submitted. Our team will review your Profile Link ASAP. Thanks!")
+            ->success()
+            ->seconds(15)
+            ->send();
+    }
+
     public function render()
     {
         /** @var \Illuminate\View\View */
@@ -429,3 +322,12 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         return $view->layout('layouts.guest');
     }
 }
+
+// 1. if the user has submitted a contact channel and it is unverified and it was submitted within the past week
+//     disable update and show restricted-card
+// 2. if the user has submitted a contact channel and it is verified and it was submitted within the past week
+//     disable update and show updated-card with the ability to update contact channel disabled
+// 3. if the user has submitted a contact channel and it is verified and it was not submitted within the past week
+//     enabled update and show updated-card
+// 4. if the user has not submitted a contact channel
+//     show the update form 

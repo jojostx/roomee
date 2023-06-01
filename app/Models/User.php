@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
+use App\Enums\ContactChannelType;
 use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
 use App\Models\Traits\Favoritable;
+use App\Models\Traits\HasSettings;
 use App\Models\Traits\MustVerifyNewEmail;
 use App\Models\Traits\Reportable;
 use App\Models\Traits\WithValidUsersQueryScopes;
 use Dyrynda\Database\Support\BindsOnUuid;
 use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -38,8 +42,8 @@ class User extends Authenticatable
         Requestable,
         Reportable,
         WithValidUsersQueryScopes,
-        canCalculateUserSimilarity;
-
+        canCalculateUserSimilarity,
+        HasSettings;
 
     /**
      * The default values of attributes.
@@ -70,6 +74,7 @@ class User extends Authenticatable
         'min_budget',
         'max_budget',
         'course_level',
+        'settings'
     ];
 
     /**
@@ -89,7 +94,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'profile_updated' => 'boolean'
+        'profile_updated' => 'boolean',
+        'settings' => 'array'
     ];
 
     // -------- RELATIONSHIPS -------- //
@@ -133,6 +139,17 @@ class User extends Authenticatable
         return $this->belongsToMany(Town::class)->withTimestamps();
     }
 
+
+    /**
+     * The reports that was made by user.
+     */
+    public function reports()
+    {
+        return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')
+            ->withPivot('reportee_id')
+            ->withTimestamps();
+    }
+
     /**
      * The favorited users for a user.
      */
@@ -140,14 +157,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'favorites', 'favoriter_id', 'favoritee_id')
             ->withTimestamps()->orderByPivot('created_at', 'desc');
-    }
-
-    /**
-     * The reports that was made by user.
-     */
-    public function reports()
-    {
-        return  $this->belongsToMany(Report::class, 'report_user', 'reporter_id', 'report_id')->withPivot('reportee_id')->withTimestamps();
     }
 
     /**
@@ -190,11 +199,20 @@ class User extends Authenticatable
             ->orderByPivot('created_at', 'desc');
     }
 
+    /**
+     * The contact channels of the user.
+     */
+    public function contactChannels(): HasMany
+    {
+        return $this->hasMany(ContactChannel::class, 'user_id');
+    }
+
     public function allPotentialRoommates(): MergedRelation
     {
         return $this->mergedRelationWithModel(User::class, 'merged_roommate_requests_view');
     }
 
+    // -------- SCOPES -------- //
     /**
      * The roommate requests for the user.
      */
@@ -205,7 +223,6 @@ class User extends Authenticatable
             ->orWhere('recipient_id', $this->getKey());
     }
 
-    // -------- SCOPES -------- //
     /**
      * Scope a query to only include users of the same gender.
      *
@@ -243,12 +260,12 @@ class User extends Authenticatable
     }
 
     // -------- ACCESSORS -------- //
-    public function getFullNameAttribute()
+    public function getFullNameAttribute(): string
     {
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function getAvatarPathAttribute()
+    public function getAvatarPathAttribute(): string
     {
         $avatar = asset('images/avatar_placeholder.png');
 
@@ -262,7 +279,7 @@ class User extends Authenticatable
         return $avatar;
     }
 
-    public function getCoverPhotoPathAttribute()
+    public function getCoverPhotoPathAttribute(): string
     {
         $cover_photo = asset('images/cover_placeholder.png');
 
@@ -274,5 +291,61 @@ class User extends Authenticatable
         }
 
         return $cover_photo;
+    }
+
+    public function getVerifiedContactChannels(): Collection|ContactChannel
+    {
+        $emailContactChannel = new ContactChannel;
+
+        $emailContactChannel->fill([
+            'id' => 0,
+            'uuid' => $this->getAttribute('uuid'),
+            'user_id' => $this->getKey(),
+            'type' => ContactChannelType::EMAIL->value,
+            'link' => 'mailto:'.$this->getAttribute('email'),
+            'is_enabled' => true,
+            'verified_at' => $this->getAttribute('email_verified_at'),
+            'created_at' => $this->getAttribute('created_at'),
+            'updated_at' => $this->getAttribute('updated_at'),
+        ]);
+
+        $contactChannels = $this
+            ->contactChannels()
+            ->whereNotNull('verified_at')
+            ->get();
+
+        return $contactChannels->prepend($emailContactChannel);
+    }
+
+    public function getContactChannelsByType(ContactChannelType|string $type)
+    {
+        $type = is_string($type) ? ContactChannelType::from($type) : $type;
+
+        return $this
+            ->contactChannels()
+            ->getQuery()
+            ->where('type', $type->value)
+            ->get();
+    }
+
+    public function getLatestContactChannelByType(ContactChannelType|string $type): ?ContactChannel
+    {
+        $type = is_string($type) ? ContactChannelType::from($type) : $type;
+
+        return $this
+            ->contactChannels()
+            ->getQuery()
+            ->where('type', $type->value)
+            ->latest()
+            ->first();
+    }
+
+    public function getLatestContactChannels(): Collection
+    {
+        return $this
+            ->contactChannels()
+            ->getQuery()
+            ->latest()
+            ->get();
     }
 }

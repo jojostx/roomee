@@ -4,7 +4,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.52.4.
+ * Generated for Laravel 9.52.7.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -18310,7 +18310,7 @@
                     /**
          * 
          *
-         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware> $middleware
+         * @param \Spatie\FlareClient\FlareMiddleware\FlareMiddleware|array<FlareMiddleware>|\Spatie\FlareClient\class-string<FlareMiddleware>|callable $middleware
          * @return \Spatie\FlareClient\Flare 
          * @static 
          */ 
@@ -18627,6 +18627,21 @@
                     /**
          * 
          *
+         * @see \Filament\Support\Testing\TestsActions::assertActionListInOrder()
+         * @param array $names
+         * @param array $actions
+         * @param string $actionType
+         * @param string $actionClass
+         * @return self 
+         * @static 
+         */ 
+        public static function assertActionListInOrder($names, $actions, $actionType, $actionClass)
+        {
+                        return \Livewire\Testing\TestableLivewire::assertActionListInOrder($names, $actions, $actionType, $actionClass);
+        }
+                    /**
+         * 
+         *
          * @see \Filament\Testing\TestsPageActions::mountPageAction()
          * @param string $name
          * @return static 
@@ -18709,6 +18724,18 @@
         public static function assertPageActionDoesNotExist($name)
         {
                         return \Livewire\Testing\TestableLivewire::assertPageActionDoesNotExist($name);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Testing\TestsPageActions::assertPageActionsExistInOrder()
+         * @param array $names
+         * @return static 
+         * @static 
+         */ 
+        public static function assertPageActionsExistInOrder($names)
+        {
+                        return \Livewire\Testing\TestableLivewire::assertPageActionsExistInOrder($names);
         }
                     /**
          * 
@@ -19013,13 +19040,14 @@
          *
          * @see \Filament\Forms\Testing\TestsForms::assertFormFieldExists()
          * @param string $fieldName
-         * @param string $formName
+         * @param \Closure|string $formName
+         * @param \Closure|null $callback
          * @return static 
          * @static 
          */ 
-        public static function assertFormFieldExists($fieldName, $formName = 'form')
+        public static function assertFormFieldExists($fieldName, $formName = 'form', $callback = null)
         {
-                        return \Livewire\Testing\TestableLivewire::assertFormFieldExists($fieldName, $formName);
+                        return \Livewire\Testing\TestableLivewire::assertFormFieldExists($fieldName, $formName, $callback);
         }
                     /**
          * 
@@ -19172,6 +19200,42 @@
         public static function assertTableActionDoesNotExist($name)
         {
                         return \Livewire\Testing\TestableLivewire::assertTableActionDoesNotExist($name);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Tables\Testing\TestsActions::assertTableActionsExistInOrder()
+         * @param array $names
+         * @return static 
+         * @static 
+         */ 
+        public static function assertTableActionsExistInOrder($names)
+        {
+                        return \Livewire\Testing\TestableLivewire::assertTableActionsExistInOrder($names);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Tables\Testing\TestsActions::assertTableHeaderActionsExistInOrder()
+         * @param array $names
+         * @return static 
+         * @static 
+         */ 
+        public static function assertTableHeaderActionsExistInOrder($names)
+        {
+                        return \Livewire\Testing\TestableLivewire::assertTableHeaderActionsExistInOrder($names);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Tables\Testing\TestsActions::assertTableEmptyStateActionsExistInOrder()
+         * @param array $names
+         * @return static 
+         * @static 
+         */ 
+        public static function assertTableEmptyStateActionsExistInOrder($names)
+        {
+                        return \Livewire\Testing\TestableLivewire::assertTableEmptyStateActionsExistInOrder($names);
         }
                     /**
          * 
@@ -19498,6 +19562,18 @@
         public static function assertTableBulkActionDoesNotExist($name)
         {
                         return \Livewire\Testing\TestableLivewire::assertTableBulkActionDoesNotExist($name);
+        }
+                    /**
+         * 
+         *
+         * @see \Filament\Tables\Testing\TestsBulkActions::assertTableBulkActionsExistInOrder()
+         * @param array $names
+         * @return static 
+         * @static 
+         */ 
+        public static function assertTableBulkActionsExistInOrder($names)
+        {
+                        return \Livewire\Testing\TestableLivewire::assertTableBulkActionsExistInOrder($names);
         }
                     /**
          * 
@@ -20138,6 +20214,31 @@
         public static function schemalessAttributes($columnName = 'schemaless_attributes')
         {
                         return \Illuminate\Database\Schema\Blueprint::schemalessAttributes($columnName);
+        }
+         
+    }
+     
+}
+
+    namespace Illuminate\Database\Eloquent\Factories { 
+            /**
+     * 
+     *
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     * @method $this trashed()
+     */ 
+        class Factory {
+                    /**
+         * 
+         *
+         * @see \Spatie\Translatable\TranslatableServiceProvider::packageRegistered()
+         * @param array|string $locales
+         * @param mixed|null $value
+         * @static 
+         */ 
+        public static function translations($locales, $value)
+        {
+                        return \Illuminate\Database\Eloquent\Factories\Factory::translations($locales, $value);
         }
          
     }

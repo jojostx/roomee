@@ -64,12 +64,31 @@ namespace App\Models{
 /**
  * App\Models\ContactChannel
  *
- * @property-read \App\Models\User|null $user
+ * @property int $id
+ * @property string $uuid
+ * @property int $user_id
+ * @property string $type
+ * @property string $link
+ * @property bool $is_enabled
+ * @property array|null $metadata
+ * @property string|null $verified_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
  * @method static \Database\Factories\ContactChannelFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel query()
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUuid($uuid, $uuidColumn = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereIsEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereVerifiedAt($value)
  * @mixin \Eloquent
  */
 	class IdeHelperContactChannel {}
@@ -417,18 +436,21 @@ namespace App\Models{
  * @property string|null $avatar
  * @property string|null $cover_photo
  * @property string|null $rooms
+ * @property array|null $settings
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $blockers
  * @property-read int|null $blockers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $blocklists
  * @property-read int|null $blocklists_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ContactChannel> $contactChannels
+ * @property-read int|null $contact_channels_count
  * @property-read \App\Models\Course|null $course
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Dislike> $dislikes
  * @property-read int|null $dislikes_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $favorites
  * @property-read int|null $favorites_count
- * @property-read mixed $avatar_path
- * @property-read mixed $cover_photo_path
- * @property-read mixed $full_name
+ * @property-read string $avatar_path
+ * @property-read string $cover_photo_path
+ * @property-read string $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Hobby> $hobbies
  * @property-read int|null $hobbies_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -475,6 +497,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRooms($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereSchoolId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSettings($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
  * @mixin \Eloquent
