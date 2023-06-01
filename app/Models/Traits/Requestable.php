@@ -175,6 +175,18 @@ trait Requestable
         return $deleted;
     }
 
+    public function deleteRoommateRequestTo(User $recipient): bool
+    {
+        $deleted = (bool) RoommateRequest::query()
+            ->whereSender($this)
+            ->whereRecipient($recipient)
+            ->delete();
+
+        RoommateRequestUpdated::dispatch(auth()->id(), $recipient->id, Status::DELETED);
+
+        return $deleted;
+    }
+
     public function acceptRoommateRequest(User $sender): bool
     {
         $updated = (bool) RoommateRequest::query()
