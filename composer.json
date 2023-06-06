@@ -27,6 +27,7 @@
         "propaganistas/laravel-phone": "^4.3",
         "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-cookie-consent": "^3.2",
+        "spatie/laravel-onboard": "^2.4",
         "spatie/laravel-webhook-client": "^3.1",
         "stancl/virtualcolumn": "^1.2",
         "staudenmeir/laravel-merged-relations": "^1.0",
