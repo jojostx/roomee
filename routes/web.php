@@ -50,28 +50,16 @@ Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])
         Route::get('/profile/update', UpdateProfilePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
         Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
 
-        Route::get('/dashboard-filament', DashboardPage::class)->name('dashboard');
-        Route::get('/favorites-filament', FavoritesPage::class)->name('favorites');
-        Route::get('/roommate-requests-filament', RoommateRequestsPage::class)->name('roommate-requests');
-        Route::get('/blocklist-filament', BlocklistPage::class)->name('blocklist');
+        Route::get('/dashboard', DashboardPage::class)->name('dashboard');
+        Route::get('/favorites', FavoritesPage::class)->name('favorites');
+        Route::get('/roommate-requests', RoommateRequestsPage::class)->name('roommate-requests');
+        Route::get('/blocklist', BlocklistPage::class)->name('blocklist');
 
         Route::as('settings.')->prefix('settings')->group(function () {
             Route::get('/account', AccountSettingsPage::class)->name('account');
             Route::get('/contact-channels', ContactChannelsSettingsPage::class)->name('contact-channels');
             Route::get('/notifications', NotificationsSettingsPage::class)->name('notifications');
         });
-        // Route::get('/dashboard', Dashboard::class)->name('dashboard');
-        // Route::get('/favorites', Favorite::class)->name('favorites');
-        // Route::get('/roommate-requests', RoommateRequests::class)->name('roommate-requests');
-        // Route::get('/blocklist', Blocklist::class)->name('blocklist');
-    });
-
-Route::prefix('webhook')->name('webhook.')->group(function () {
-        Route::post('/whatsapp/events', function ()
-        {
-            logger(request()->headers);
-            return response('Hello World', 200);
-        })->name('whatsapp');
     });
 
 require __DIR__ . '/auth.php';
