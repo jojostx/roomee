@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Support\Facades\Cookie;
 
 class DashboardPage extends Component implements Tables\Contracts\HasTable
 {
@@ -420,6 +421,26 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 })
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];
+    }
+
+    public function openOnboardingStepModal()
+    {
+        if ($this->getAuthModel()->onboarding()->finished()) {
+            return;
+        }
+
+        $step = $this->getAuthModel()->onboarding()->nextUnfinishedStep();
+
+        $this->emit(
+            'openModal',
+            'components.modals.onboarding-step-modal',
+            ['step_data' => [
+                'cta' => $step->cta,
+                'title' => $step->title,
+                'body' => $step->body,
+                'link' => $step->link,
+            ]]
+        );
     }
 
     public function render()

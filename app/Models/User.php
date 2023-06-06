@@ -22,15 +22,18 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Onboard\Concerns\GetsOnboarded;
+use Spatie\Onboard\Concerns\Onboardable;
 use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
 use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable
+class User extends Authenticatable implements Onboardable
 {
-    use HasFactory,
+    use GetsOnboarded,
+        HasFactory,
         HasApiTokens,
         Notifiable,
         BindsOnUuid,
@@ -302,7 +305,7 @@ class User extends Authenticatable
             'uuid' => $this->getAttribute('uuid'),
             'user_id' => $this->getKey(),
             'type' => ContactChannelType::EMAIL->value,
-            'link' => 'mailto:'.$this->getAttribute('email'),
+            'link' => 'mailto:' . $this->getAttribute('email'),
             'is_enabled' => true,
             'verified_at' => $this->getAttribute('email_verified_at'),
             'created_at' => $this->getAttribute('created_at'),
