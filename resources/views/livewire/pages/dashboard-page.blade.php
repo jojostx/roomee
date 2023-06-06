@@ -1,4 +1,8 @@
-<div x-init="$store.onboarding_steps.show && $wire.openOnboardingStepModal;" class="w-full h-full mx-auto bg-secondary-50 max-w-7xl">
+ <div 
+    @if (\method_exists($this, 'openOnboardingStepModal'))
+        x-init="$store.onboarding_steps.show && $wire.openOnboardingStepModal;"
+    @endif
+    class="w-full h-full mx-auto bg-secondary-50 max-w-7xl">
     <x-page-header>
         <h1 class="text-sm font-bold uppercase text-secondary-500">
             Dashboard
@@ -12,8 +16,3 @@
         {{ $this->table }}
     </div>
 </div>
-
-<!-- if the cookie jar contains a variable that indicates that
-you have already clicked on the OBSM within the last day -->
-
-<!-- const cookie_name = 'onboarding-step:interacted_with' -->

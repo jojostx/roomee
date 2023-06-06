@@ -1,7 +1,5 @@
 <?php
 
-use App\Providers\UploadedFileServiceProvider;
-
 return [
 
     /*
@@ -178,7 +176,7 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        UploadedFileServiceProvider::class,
+        App\Providers\UploadedFileServiceProvider::class,
     ],
 
     /*

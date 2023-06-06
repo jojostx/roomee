@@ -24,6 +24,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
         Traits\WithFavoriting,
         Traits\WithRequesting,
         Traits\WithBlocking,
+        Traits\WithOnboardingSteps,
         Traits\CanRetrieveUser,
         Tables\Concerns\InteractsWithTable {
         applySortingToTableQuery as parentApplySortingToTableQuery;

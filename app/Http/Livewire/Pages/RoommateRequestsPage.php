@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Pages;
 
-use App\Enums\RoommateRequestType;
 use App\Http\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\RoommateRequest;
 use Illuminate\Support\Collection;
@@ -29,6 +28,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
         Traits\WithFavoriting,
         Traits\WithRequesting,
         Traits\WithBlocking,
+        Traits\WithOnboardingSteps,
         Traits\CanRetrieveUser,
         Tables\Concerns\InteractsWithTable {
         applySortingToTableQuery as parentApplySortingToTableQuery;
