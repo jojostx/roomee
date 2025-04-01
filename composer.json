@@ -12,7 +12,7 @@
         "doctrine/migrations": "^3.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "inertiajs/inertia-laravel": "^0.5.4",
+        "inertiajs/inertia-laravel": "^0.6.0",
         "laravel/framework": "^9.0",
         "laravel/tinker": "^2.5"
     },
