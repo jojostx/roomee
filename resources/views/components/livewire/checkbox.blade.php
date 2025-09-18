@@ -1,0 +1,3 @@
+@props(['checked' => false])
+
+<input {{ $checked ? 'checked' : '' }}  {!! $attributes->merge(['class' => 'rounded-md shadow-sm border-secondary-300 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50']) !!}>

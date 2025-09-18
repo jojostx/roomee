@@ -13,9 +13,13 @@ const mix = require('laravel-mix');
 
 
 mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'public/css', [
-    require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
 ]).version();
 
-mix.js('resources/js/welcome.js', 'public/js').version();
+mix.js('resources/js/welcome.js', 'public/js').postCss('resources/css/welcome.css', 'public/css', [
+    require('tailwindcss'),
+    require('autoprefixer'),
+]).version();
+
+mix.js('resources/js/tabula_rasa.js', 'public/js').version();

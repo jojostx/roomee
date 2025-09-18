@@ -41,6 +41,20 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+        
+        'avatars' => [
+            'driver' => 'local',
+            'root' => storage_path('app/avatars'),
+            'url' => env('APP_URL').'/avatars',
+            'visibility' => 'public',
+        ],
+        
+        'cover_photos' => [
+            'driver' => 'local',
+            'root' => storage_path('app/cover_photos'),
+            'url' => env('APP_URL').'/cover_photos',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',
@@ -66,7 +80,9 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // public_path('storage') => storage_path('app/public'),
+        public_path('avatars') => storage_path('app/avatars'),
+        public_path('cover_photos') => storage_path('app/cover_photos'),
     ],
 
 ];

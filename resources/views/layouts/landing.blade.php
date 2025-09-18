@@ -6,31 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Roomee') }}</title>
+    <title>{{ $title ?? config('app.name', 'Roomee') }}</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+    </style>
 
     <!-- Scripts -->
     <script src="{{ asset('js/welcome.js') }}" defer></script>
 </head>
 
-<body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-gray-100 vh">
+<body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-secondary-100 vh">
 
     <!-- Navigation Bar -->
-    <div class="z-40 flex flex-row items-center justify-center w-full h-16 bg-gray-900 border-b border-gray-800">
+    <header class="z-40 flex flex-row items-center justify-center w-full h-16 border-b bg-secondary-900 border-secondary-800">
         @include('sections.navbar')
-    </div>
+    </header>
     <!-- End of Navigation Bar -->
 
 
 
     <!-- Page Content -->
     <main class="relative">
-
         {{ $banner }}
 
         {{ $slot }}
@@ -39,9 +45,7 @@
 
     @include('sections.footer')
 
-
-
-    <button onclick="backToTop()" class="fixed z-40 hidden px-4 py-2 text-sm leading-none bg-gray-700 rounded-full shadow-lg topButton focus:outline-black focus:bg-gray-600 hover:bg-blue-600 text-gray-50 bottom-8 right-8">
+    <button onclick="backToTop()" id="topButton" class="fixed z-40 hidden px-4 py-2 text-sm leading-none rounded-full shadow-lg bg-secondary-700 focus:outline-black focus:bg-secondary-600 hover:bg-primary-600 text-secondary-50 bottom-8 right-8">
         <p class="mr-2 font-semibold">Back to top</p>
         <i class="block w-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +55,55 @@
     </button>
 
     <script>
-        const backToTopButton = document.querySelector('.topButton');
+        function backToTop() {
+            document.documentElement.scrollTo({
+                top: 0
+                , behavior: "smooth"
+            })
+        };
+
+        function flashElement(node, flashMessage) {
+            const flashNode = document.querySelector(node);
+            flashNode.innerHTML = `<p>${flashMessage}</p>`;
+            flashNode.classList.remove('hidden')
+
+            setTimeout(() => {
+                flashNode.classList.add('hidden')
+            }, 2000)
+        }
+
+        function form(formElem) {
+
+            return {
+                submitForm(form_url) {
+                    const formElement = document.getElementById(formElem);
+                    const formDataElem = new FormData(formElement);
+
+                    const url = form_url;
+                    const req = new Request(
+                        url, {
+                            body: formDataElem
+                            , method: 'POST'
+                        , }
+                    );
+
+                    fetch(req)
+                        .then(res => res.json()).then(
+                            (data) => {
+                                (data.success) ?
+                                flashElement('#flash', data.success): (data.error) ? flashElement('#flash', 'Please choose a reation') : console.log('there was an error');
+                            }
+                        )
+                        .catch(err => {
+                            let responseText = 'Submission unsuccessful';
+                            flashElement('#flash', responseText);
+                        })
+                },
+
+            }
+        };
+
+        const backToTopButton = document.querySelector('#topButton');
 
         function inViewport(elem, callback, options = {}) {
             return new IntersectionObserver(entries => {
@@ -60,7 +112,6 @@
                 )
             }, options).observe(document.querySelector(elem));
         };
-
         inViewport('.hero', entry => {
             if (!entry.isIntersecting) {
                 backToTopButton.classList.add('flex');
@@ -71,53 +122,8 @@
             }
         });
 
-        function backToTop() {
-            document.documentElement.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            })
-        };
-
-        function form(formElem) {
-
-            return {
-                flashElement(node, flashMessage) {
-                    const flashNode = document.querySelector(node);
-                    flashNode.innerHTML = `<p>${flashMessage}</p>`;
-                    flashNode.classList.remove('hidden')
-
-                    setTimeout(() => {
-                        flashNode.classList.add('hidden')
-                    }, 2000)
-                },
-                submitForm() {
-                    const formElement = document.getElementById(formElem);
-                    const formDataElem = new FormData(formElement);
-
-                    const url = 'http://127.0.0.1:8000/faqs';
-                    const req = new Request(
-                        url, {
-                            body: formDataElem,
-                            method: 'POST',
-                        }
-                    );
-
-                    fetch(req)
-                        .then(res => res.json()).then(
-                            (data) => {
-                                (data.success) ?
-                                this.flashElement('#flash', data.success): (data.error) ? this.flashElement('#flash', 'Please choose a reation'):console.log('there was an error');
-                            }
-                        )
-                        .catch(err => {
-                            let responseText = 'Unable to submit feedback';
-                            this.flashElement('#flash', responseText);
-                        })
-                },
-
-            }
-        };
     </script>
 </body>
 
+@stack('scripts')
 </html>

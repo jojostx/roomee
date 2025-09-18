@@ -2,11 +2,11 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <x-application-logo class="text-secondary-500 fill-current h-14" />
             </a>
         </x-slot>
 
-        <div class="mb-4 text-sm text-gray-600">
+        <div class="mb-4 text-sm text-secondary-600">
             {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
         </div>
 
@@ -20,7 +20,7 @@
             <div>
                 <x-label for="password" :value="__('Password')" />
 
-                <x-input id="password" class="block mt-1 w-full"
+                <x-input id="password" class="block w-full mt-1"
                                 type="password"
                                 name="password"
                                 required autocomplete="current-password" />

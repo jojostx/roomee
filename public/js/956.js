@@ -1,0 +1,1 @@
+(self.webpackChunk=self.webpackChunk||[]).push([[956],{7956:(e,n,r)=>{"use strict";r.r(n),r.d(n,{default:()=>t});var u=r(5166);const l={render:function(e,n,r,l,t,a){return(0,u.wg)(),(0,u.j4)("p",null,"hello from chat page ")}},t=l}}]);

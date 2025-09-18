@@ -1,18 +1,5 @@
-require('./bootstrap');
+import Alpine from 'alpinejs'
 
-import { App, plugin } from '@inertiajs/inertia-vue'
-import Vue from 'vue'
+window.Alpine = Alpine
 
-Vue.use(plugin)
-
-const el = document.getElementById('app')
-
-new Vue({
-    render: h => h(App, {
-        props: {
-            initialPage: JSON.parse(el.dataset.page),
-            resolveComponent: name =>
-                import (`./Pages/${name}`).then(module => module.default),
-        },
-    }),
-}).$mount(el)
+Alpine.start()

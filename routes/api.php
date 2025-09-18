@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,14 +15,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Route::prefix('v1')->middleware('auth:api')->group( function ()
-// {
-//     Route::get('/user/{$id}', function (Request $request) {
-//         return $request->user();
-//     });
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
 // });
+
+Route::prefix('v1')->middleware(['auth:sanctum'])->group( function ()
+{
+    // Route::get('/user', function (Request $request) {
+    //     return $request->user();
+    // });
+    Route::get('/users', function (Request $request) {
+        return User::all();
+    });
+});
 
