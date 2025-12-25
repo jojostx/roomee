@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 trait WithBlocking
 {
   abstract protected function getAuthModel(): ?User;
-  abstract protected function retrieveUser(): ?User;
+  abstract protected function retrieveUser(string|int|User $user): ?User;
 
   public function blockUser($user_id = null)
   {
@@ -64,7 +64,7 @@ trait WithBlocking
     return Blocklist::query()
       ->where([
         ['blocker_id', '=', $this->getAuthModel()->getKey()],
-        ['blocker_id', '=', $user->getKey()]
+        ['blockee_id', '=', $user->getKey()]
       ])
       ->exists();
   }

@@ -8,7 +8,8 @@ use Filament\Notifications\Notification;
 trait WithReporting
 {
   abstract protected function getAuthModel(): ?User;
-  abstract protected function retrieveUser(): ?User;
+  abstract protected function retrieveUser(string|int|User $user): ?User;
+
 
   public function reportUser($user_id = null, array $report_ids = [])
   {
@@ -18,7 +19,7 @@ trait WithReporting
       return;
     }
 
-    if ($this->getAuthModel()->reportUser($this->user, $report_ids)) {
+    if ($this->getAuthModel()->reportUser($user, $report_ids)) {
       Notification::make()
         ->title("Report submitted succesfully")
         ->body("Your report has been submitted. Our team will review your report ASAP. Thanks!")

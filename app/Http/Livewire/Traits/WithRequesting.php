@@ -10,7 +10,7 @@ use Filament\Notifications\Notification;
 trait WithRequesting
 {
     abstract protected function getAuthModel(): ?User;
-    abstract protected function retrieveUser(): ?User;
+    abstract protected function retrieveUser(string|int|User $user): ?User;
 
     protected function sendRoommateRequest($user_id = null)
     {
@@ -94,7 +94,7 @@ trait WithRequesting
         }
 
         if ($this->getAuthModel()->hasPendingRoommateRequestFrom($user)) {
-            $denied = $this->getAuthModel()->acceptRoommateRequest($user);
+            $denied = $this->getAuthModel()->denyRoommateRequest($user);
         }
 
         if ($denied) {

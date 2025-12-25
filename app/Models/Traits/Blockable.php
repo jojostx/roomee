@@ -14,10 +14,10 @@ trait Blockable
 
     /**
      * block - adds a user to the model's blocklist
-     * @param Model $recipient - the user to be blocked
+     * @param Model|User $recipient - the user to be blocked
      * @param bool $withScopedQuery - applies scope check for valid user
      */
-    public function block(Model $recipient, bool $withScopedQuery = false): bool
+    public function block(Model|User $recipient, bool $withScopedQuery = false): bool
     {
         if ($this->hasBlocked($recipient)) {
             return false;

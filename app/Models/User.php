@@ -242,7 +242,7 @@ class User extends Authenticatable implements Onboardable
      * Scope a query to only include users that attend the same school.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  Int  $school_id
+     * @param  int  $school_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSchool($query, $school_id)
@@ -254,7 +254,7 @@ class User extends Authenticatable implements Onboardable
      * Scope a query to only exclude the currently authenticated user.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  Int  $user_id
+     * @param  int  $user_id
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeExcludeUser($query, $user_id)
