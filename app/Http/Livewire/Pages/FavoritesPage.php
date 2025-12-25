@@ -393,7 +393,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->emit('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
-                    $this->emitSelf('refresh-component');
+                    $this->emitSelf('refresh:component');
                 })
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];

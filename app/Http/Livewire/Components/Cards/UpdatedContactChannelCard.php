@@ -74,6 +74,7 @@ class UpdatedContactChannelCard extends Component implements HasForms
                 'is_enabled' => "Slow down! Please wait another {$exception->minutesUntilAvailable} minutes to toggle contact channel.",
             ]);
             $this->onValidationError($exception);
+            return;
         }
 
         $data = $this->form->getState();

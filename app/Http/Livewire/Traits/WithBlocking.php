@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Traits;
 
 use App\Models\Blocklist;
+use App\Models\RoommateRequest;
 use App\Models\User;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\DB;
@@ -22,8 +23,10 @@ trait WithBlocking
 
     try {      
       $blocked = DB::transaction(function ()  use ($user) {
-        // delete any existing roommate request
-        $this->getAuthModel()->deleteRoommateRequest($user);
+        // delete any existing roommate request between users
+        RoommateRequest::query()
+          ->betweenModels($this->getAuthModel(), $user)
+          ->delete();
   
         // remove user from favorites, delete sent and received roommate requests
         $this->getAuthModel()->favorites()->detach($user->getKey());

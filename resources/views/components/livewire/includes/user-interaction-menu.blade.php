@@ -16,10 +16,6 @@
       $data.isOpen = false;
     },
     showBlockUserModal: () => {
-      if($data.user_is_blocked)
-      {
-        $data.is_blocked = true;
-      }
       if($data.user_id)
       {
         Livewire.emit(
@@ -37,7 +33,8 @@
     {
         isOpen = true;
         user_id = $event.detail.user_id;
-        user_name = $event.detail.user_name 
+        user_name = $event.detail.user_name;
+        is_blocked = $event.detail.user_is_blocked ?? false;
     }"
   class="inline filament-modal"
   role="dialog" 
