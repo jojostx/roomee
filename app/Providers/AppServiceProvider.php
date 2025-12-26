@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Services\Sms\NullSmsSender;
+use App\Services\Sms\SmsSender;
+use App\Services\Sms\TwilioSmsSender;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Onboard\Facades\Onboard;
 
@@ -15,7 +18,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(SmsSender::class, function () {
+            $config = config('services.twilio', []);
+
+            if (! empty($config['sid']) && ! empty($config['token']) && ! empty($config['from'])) {
+                return new TwilioSmsSender($config['sid'], $config['token'], $config['from']);
+            }
+
+            return new NullSmsSender();
+        });
     }
 
     /**

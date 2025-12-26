@@ -13,6 +13,7 @@
         "doctrine/migrations": "^3.4",
         "dyrynda/laravel-model-uuid": "^8.1.1",
         "filament/actions": "^3.0",
+        "filament/filament": "^3.0",
         "filament/forms": "^3.0",
         "filament/support": "^3.0",
         "filament/tables": "^3.0",

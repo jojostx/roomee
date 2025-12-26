@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ContactChannelType;
+use App\Enums\UserRole;
 use App\Models\Traits\Blockable;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
@@ -22,6 +23,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Spatie\Onboard\Concerns\GetsOnboarded;
 use Spatie\Onboard\Concerns\Onboardable;
 use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
@@ -30,7 +33,7 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
 /**
  * @mixin IdeHelperUser
  */
-class User extends Authenticatable implements Onboardable
+class User extends Authenticatable implements Onboardable, FilamentUser
 {
     use GetsOnboarded,
         HasFactory,
@@ -68,6 +71,7 @@ class User extends Authenticatable implements Onboardable
         'last_name',
         'email',
         'password',
+        'role',
         'profile_updated',
         'gender',
         'avatar',
@@ -98,8 +102,25 @@ class User extends Authenticatable implements Onboardable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'profile_updated' => 'boolean',
-        'settings' => 'array'
+        'settings' => 'array',
+        'role' => UserRole::class,
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        $role = $this->role;
+
+        if ($role instanceof UserRole) {
+            return in_array($role, [UserRole::ADMIN, UserRole::STAFF], true);
+        }
+
+        return in_array($role, [UserRole::ADMIN->value, UserRole::STAFF->value], true);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === UserRole::ADMIN;
+    }
 
     // -------- RELATIONSHIPS -------- //
     /**
@@ -351,5 +372,15 @@ class User extends Authenticatable implements Onboardable
             ->getQuery()
             ->latest()
             ->get();
+    }
+
+    public function getSmsNumber(): ?string
+    {
+        return $this
+            ->contactChannels()
+            ->where('type', ContactChannelType::WHATSAPP->value)
+            ->whereNotNull('verified_at')
+            ->latest()
+            ->value('link');
     }
 }

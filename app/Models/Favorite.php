@@ -11,4 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public function favoriter()
+    {
+        return $this->belongsTo(User::class, 'favoriter_id');
+    }
+
+    public function favoritee()
+    {
+        return $this->belongsTo(User::class, 'favoritee_id');
+    }
 }
