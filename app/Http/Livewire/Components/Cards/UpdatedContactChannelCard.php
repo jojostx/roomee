@@ -56,7 +56,7 @@ class UpdatedContactChannelCard extends Component implements HasForms
                 ->disableLabel()
                 ->inline()
                 ->afterStateUpdated(fn () => $this->submit())
-                ->reactive(),
+                ->live(),
         ];
     }
 

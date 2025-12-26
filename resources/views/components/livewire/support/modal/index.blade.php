@@ -7,12 +7,12 @@
     'footer' => null,
     'header' => null,
     'heading' => null,
-    'headingComponent' => 'filament-support::modal.heading',
-    'hrComponent' => 'filament-support::hr',
+    'headingComponent' => 'filament::modal.heading',
+    'hrComponent' => 'livewire.support.hr',
     'id' => null,
     'openEventName' => 'open-modal',
     'subheading' => null,
-    'subheadingComponent' => 'filament-support::modal.subheading',
+    'subheadingComponent' => 'filament::modal.description',
     'trigger' => null,
     'visible' => true,
     'width' => 'sm',
@@ -147,3 +147,4 @@
         </div>
     </div>
 </div>
+

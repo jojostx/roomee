@@ -14,9 +14,9 @@
             </div>
         </div>
         <div class="flex items-center">
-            <x-filament-support::link href="{{ route('profile.view', ['user' => $user]) }}" size="sm" aria-label="View {{ $user->full_name }} profile" title="View {{ $user->full_name }} profile">
+            <x-filament::link href="{{ route('profile.view', ['user' => $user]) }}" size="sm" aria-label="View {{ $user->full_name }} profile" title="View {{ $user->full_name }} profile">
                 View profile
-            </x-filament-support::link>
+            </x-filament::link>
         </div>
     </div>
 

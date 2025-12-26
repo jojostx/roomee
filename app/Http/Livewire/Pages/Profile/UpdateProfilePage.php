@@ -209,7 +209,7 @@ class UpdateProfilePage extends Component implements HasForms
                 ->schema([
                     Select::make('school')
                         ->label('Institute of Study')
-                        ->reactive()
+                        ->live()
                         ->searchable()
                         ->getSearchResultsUsing(fn (string $searchQuery) => School::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id')->toArray())
                         ->getOptionLabelUsing(fn ($value): ?string => School::find($value)?->name)
@@ -226,7 +226,7 @@ class UpdateProfilePage extends Component implements HasForms
                     Select::make('course')
                         ->label('Course of Study')
                         ->placeholder('Please select your course of study')
-                        ->reactive()
+                        ->live()
                         ->searchable()
                         ->getSearchResultsUsing(fn (string $searchQuery, callable $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
                         ->getOptionLabelUsing(fn ($value): ?string => Course::find($value)?->name)
@@ -242,7 +242,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                     Select::make('course_level')
                         ->label('Course Level')
-                        ->reactive()
+                        ->live()
                         ->options(fn (callable $get) => Course::getCourseLevels(Course::find($get('course'))))
                         ->in(fn (callable $get) => Course::find($get('course'))?->levels ?? [])
                         ->required()

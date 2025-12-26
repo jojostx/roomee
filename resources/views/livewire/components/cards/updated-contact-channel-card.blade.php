@@ -28,7 +28,7 @@
                         @endunless
 
                         <div class="ml-auto">
-                            <x-filament-support::icon-button 
+                            <x-filament::icon-button 
                                 size="sm"
                                 color="danger"
                                 icon="heroicon-s-trash" 
@@ -65,4 +65,5 @@
         </div>
     @endif
 </div>
+
 

@@ -102,7 +102,7 @@
         @if ($icon && $iconPosition === 'before')
             <x-dynamic-component :component="$icon" :class="$iconClasses"/>
         @elseif ($hasLoadingIndicator)
-            <x-filament-support::loading-indicator
+            <x-filament::loading-indicator
                 wire:loading.delay
                 :wire:target="$loadingIndicatorTarget"
                 :class="$iconClasses"
@@ -111,13 +111,13 @@
 
         <span class="flex items-center gap-1">
             @if (($type === 'submit') && filled($form))
-                <x-filament-support::loading-indicator
+                <x-filament::loading-indicator
                     x-show="isUploadingFile"
                     :class="$iconClasses"
                 />
 
                 <span x-show="isUploadingFile">
-                    {{ __('filament-support::components/button.messages.uploading_file') }}
+                    {{ __('filament::components/button.messages.uploading_file') }}
                 </span>
 
                 <span x-show="! isUploadingFile">
@@ -160,3 +160,4 @@
         @endif
     </a>
 @endif
+

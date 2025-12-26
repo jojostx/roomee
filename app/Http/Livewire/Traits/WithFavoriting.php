@@ -9,9 +9,9 @@ use Filament\Notifications\Notification;
 trait WithFavoriting
 {
     abstract protected function getAuthModel(): ?User;
-    abstract protected function retrieveUser(): ?User;
+    abstract protected function retrieveUser(string|int|User|null $user): ?User;
 
-    public function favorite($user_id = null)
+    public function favorite(User|string|int|null $user_id = null)
     {
         $user = $this->retrieveUser($user_id);
 

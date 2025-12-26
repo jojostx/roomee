@@ -1,4 +1,4 @@
-<x-forms::field-wrapper 
+<x-dynamic-component :component="$getFieldWrapperView()" 
     :id="$getId()" 
     :label="$getLabel()" 
     :label-sr-only="$isLabelHidden()" 
@@ -141,4 +141,4 @@
                 <!----- 5.1. $aspectRatioWidthClass = 'aspect-w-'.$width  -->
                 <!----- 5.2. $aspectRatioHeightClass = 'aspect-h-'.$height  -->
     </div>
-</x-forms::field-wrapper>
+</x-dynamic-component>

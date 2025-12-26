@@ -170,7 +170,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ->label($data['link_label'] ?? 'Profile link')
                 ->placeholder($data['link_placeholder'])
                 ->rules($rules)
-                ->reactive()
+                ->live()
                 ->suffixAction(
                     fn (?string $state, Closure $set): Action =>
                     Action::make('generate-' . $channel)

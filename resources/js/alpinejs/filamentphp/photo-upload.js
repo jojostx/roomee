@@ -15,6 +15,7 @@ export default (Alpine) => {
             uploadUsing,
             state,
             statePath,
+            shouldAppendFiles = false,
         }) => {
             return {
                 state,
@@ -44,6 +45,8 @@ export default (Alpine) => {
                 shouldUpdateState: true,
 
                 isUploading: false,
+
+                shouldAppendFiles,
 
                 minCroppedHeight: minCroppedWidth / imageCropAspectRatio,
 
@@ -98,10 +101,16 @@ export default (Alpine) => {
                         cropBoxResizable: false,
                         toggleDragModeOnDblclick: false,
 
-                        zoom: function (event) {
+                        zoom: (event) => {
+                            const cropper = this.cropper;
+
+                            if (!cropper) {
+                                return;
+                            }
+
                             if (
                                 event.detail.ratio >= 1.25 ||
-                                this.cropper.getImageData().naturalWidth <
+                                cropper.getImageData().naturalWidth <
                                     minCroppedWidth
                             ) {
                                 event.preventDefault(); // Prevent zoom in
@@ -126,9 +135,7 @@ export default (Alpine) => {
                                 this.$dispatch("open-alert", {
                                     alert_type: "danger",
                                     message: `Invalid image type. Accepted types: (${acceptedFileTypes
-                                        .map((val) => {
-                                            val.split("/").pop();
-                                        })
+                                        .map((val) => val.split("/").pop())
                                         .join(", ")})`,
                                     closeAfterTimeout: true,
                                 });
@@ -185,7 +192,7 @@ export default (Alpine) => {
                 },
 
                 updatePreview(imageSrc) {
-                    if (typeof imageSrc !== String && !imageSrc.trim()) {
+                    if (typeof imageSrc !== "string" || !imageSrc.trim()) {
                         return;
                     }
 
@@ -290,7 +297,7 @@ export default (Alpine) => {
 
                     await deleteUploadedFileUsing(filekey);
 
-                    load();
+                    await this.getUploadedFileUrls();
                 },
 
                 getUploadedFileUrls: async function () {
@@ -329,7 +336,7 @@ export default (Alpine) => {
                         });
                     }
 
-                    return shouldAppendFiles ? files : files.reverse();
+                    return this.shouldAppendFiles ? files : files.reverse();
                 },
 
                 isValidHTMLImageElement(elem) {
@@ -345,13 +352,13 @@ export default (Alpine) => {
                 },
 
                 validFileSize(file_Size) {
+                    let fileSize = file_Size / 1024;
+
                     if (Number.isNaN(fileSize) || fileSize === 0) {
                         return false;
                     }
 
                     // fileSize in bytes, minSize & maxSize in kilobytes
-                    let fileSize = file_Size / 1024;
-
                     return fileSize < maxSize && fileSize > minSize;
                 },
 

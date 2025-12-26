@@ -12,7 +12,7 @@
 
   <x-livewire.includes.favoriting-sxn :user="$user" />
 
-  <x-filament-support::icon-button 
+  <x-filament::icon-button 
     size="sm"
     color="secondary"
     icon="heroicon-s-dots-vertical" 

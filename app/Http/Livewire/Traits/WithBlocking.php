@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 trait WithBlocking
 {
   abstract protected function getAuthModel(): ?User;
-  abstract protected function retrieveUser(string|int|User $user): ?User;
+  abstract protected function retrieveUser(string|int|User|null $user): ?User;
 
   public function blockUser($user_id = null)
   {

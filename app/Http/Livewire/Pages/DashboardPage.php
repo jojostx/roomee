@@ -11,6 +11,7 @@ use Livewire\Component;
 use App\Http\Livewire\Traits;
 use App\Models\RoommateRequest;
 use Filament\Notifications\Notification;
+use Filament\Support\Contracts\TranslatableContentDriver;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,12 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
         return $this->parentApplySortingToTableQuery($res->isEmpty() ? $query : $res->toQuery());
     }
 
+    public function makeFilamentTranslatableContentDriver(): ?TranslatableContentDriver
+    {
+        // Return null if not using translations
+        return null;
+    }
+
     protected function getTableColumns(): array
     {
         return [
@@ -88,7 +95,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                     ->components([
                         Tables\Columns\ImageColumn::make('avatar')
                             ->disk('avatars')
-                            ->rounded()
+                            ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),
 
@@ -135,7 +142,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
         ];
     }
 
-    protected function getTableRecordsPerPage(): int
+    public function getTableRecordsPerPage(): int
     {
         return 9;
     }
@@ -262,8 +269,8 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->color('warning')
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Report ' . $record->full_name)
-                ->modalSubheading('Select the relevant Issues to submit a Report.')
-                ->modalButton('Submit')
+                ->modalDescription('Select the relevant Issues to submit a Report.')
+                ->modalSubmitActionLabel('Submit')
                 ->modalWidth('sm')
                 ->form([
                     Forms\Components\CheckboxList::make('report_ids')

@@ -1,4 +1,4 @@
-<x-forms::field-wrapper 
+<x-dynamic-component :component="$getFieldWrapperView()" 
     :id="$getId()" 
     :label="$getLabel()" 
     :label-sr-only="$isLabelHidden()" 
@@ -74,4 +74,5 @@
             </div>
         </div>
     </div>
-</x-forms::field-wrapper>
+</x-dynamic-component>
+

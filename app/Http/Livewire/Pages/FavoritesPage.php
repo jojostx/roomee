@@ -89,7 +89,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
                     ->components([
                         Tables\Columns\ImageColumn::make('avatar')
                             ->disk('avatars')
-                            ->rounded()
+                            ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),
 
@@ -256,8 +256,8 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable
                 ->color('warning')
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Report ' . $record->full_name)
-                ->modalSubheading('Select the relevant Issues to submit a Report.')
-                ->modalButton('Submit')
+                ->modalDescription('Select the relevant Issues to submit a Report.')
+                ->modalSubmitActionLabel('Submit')
                 ->modalWidth('sm')
                 ->form([
                     Forms\Components\CheckboxList::make('report_ids')
