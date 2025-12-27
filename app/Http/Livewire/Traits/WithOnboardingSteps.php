@@ -19,7 +19,7 @@ trait WithOnboardingSteps
 
         $step = $this->getAuthModel()->onboarding()->nextUnfinishedStep();
 
-        $this->emit(
+        $this->dispatch(
             'openModal',
             'components.modals.onboarding-step-modal',
             ['step_data' => [

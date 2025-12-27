@@ -36,9 +36,9 @@ class DeleteRoommateRequestModal extends ModalComponent
     {
         $this->traitDeleteRoommateRequest($this->user);
             
-        $this->emit("actionTakenOnUser");
-        $this->emit("refreshChildren:{$this->user->id}");
-        $this->emit("resetUsers", $this->user->id);
+        $this->dispatch("actionTakenOnUser");
+        $this->dispatch("refreshChildren:{$this->user->id}");
+        $this->dispatch("resetUsers", $this->user->id);
 
         $this->closeModal();
     }

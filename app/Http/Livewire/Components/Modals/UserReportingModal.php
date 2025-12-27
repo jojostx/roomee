@@ -51,7 +51,7 @@ class UserReportingModal extends ModalComponent
         //saving data/reports/blocking into the database
         $this->reportUser($this->user, $this->selectedReports);;
 
-        $this->emit('actionTakenOnUser');
+        $this->dispatch('actionTakenOnUser');
         $this->closeModal();
     }
 

@@ -3,11 +3,11 @@
 <div class="flex items-center w-full gap-2">
     <!-- requesting and contacting section -->
     @if (auth()->user()->isRoommateWith($user))
-    <x-filament::button class="inline-flex shrink-0 items-center justify-center px-3" wire:click="showContactUserModal('{{ $user->uuid }}')" color="success" size="sm" icon="heroicon-s-chat" aria-label="contact {{ $user->full_name }}" title="contact {{ $user->full_name }}">
+    <x-filament::button class="inline-flex shrink-0 items-center justify-center px-3" wire:click="showContactUserModal('{{ $user->uuid }}')" color="success" size="sm" icon="heroicon-s-chat-bubble-left-right" aria-label="contact {{ $user->full_name }}" title="contact {{ $user->full_name }}">
         Contact User
     </x-filament::button>
     @elseif (auth()->user()->hasPendingSentRoommateRequestTo($user))
-    <x-filament::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal('{{ $user->uuid }}')" color="danger" size="sm" icon="heroicon-s-user-remove" aria-label="delete roommate request" title="delete roommate request">
+    <x-filament::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal('{{ $user->uuid }}')" color="danger" size="sm" icon="heroicon-s-user-minus" aria-label="delete roommate request" title="delete roommate request">
         Delete Request
     </x-filament::button>
     @elseif (auth()->user()->hasPendingRoommateRequestFrom($user))
@@ -15,7 +15,7 @@
         Accept Request
     </x-filament::button>
     @else
-    <x-filament::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest('{{ $user->uuid }}')" :outlined="true" color="secondary" size="sm" icon="heroicon-s-user-add" aria-label="send roommate request" title="send roommate request">
+    <x-filament::button class="inline-flex items-center justify-center w-full px-5" wire:click="sendRoommateRequest('{{ $user->uuid }}')" :outlined="true" color="gray" size="sm" icon="heroicon-s-user-plus" aria-label="send roommate request" title="send roommate request">
         Send Request
     </x-filament::button>
     @endif

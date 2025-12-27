@@ -14,13 +14,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Illuminate\Validation\Rules\Exists;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
-use MartinRo\FilamentCharcountField\Components\CharcountedTextarea;
-use MartinRo\FilamentCharcountField\Components\CharcountedTextInput;
 use App\Http\Livewire\Components\Filament\Forms\PhotoUpload as PhotoUpload;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Storage;
 
 class UpdateProfilePage extends Component implements HasForms
@@ -67,6 +69,9 @@ class UpdateProfilePage extends Component implements HasForms
         return Auth::user();
     }
 
+    /**
+   * @return \Filament\Forms\Components\Component[]
+   */
     protected function getFormSchema(): array
     {
         return [
@@ -112,7 +117,7 @@ class UpdateProfilePage extends Component implements HasForms
                             'lg' => 6,
                         ]),
 
-                    CharcountedTextInput::make('first_name')
+                    TextInput::make('first_name')
                         ->label('First Name')
                         ->minCharacters(2)
                         ->maxCharacters(160)
@@ -125,7 +130,7 @@ class UpdateProfilePage extends Component implements HasForms
                             'lg' => 4,
                         ]),
 
-                    CharcountedTextInput::make('last_name')
+                    TextInput::make('last_name')
                         ->label('Last Name')
                         ->minCharacters(2)
                         ->maxCharacters(160)
@@ -167,7 +172,7 @@ class UpdateProfilePage extends Component implements HasForms
                 ->description('These are Information that describe who you are.')
                 ->columns(2)
                 ->schema([
-                    CharcountedTextarea::make('bio')
+                    Textarea::make('bio')
                         ->label('About')
                         ->minCharacters(15)
                         ->maxCharacters(255)
@@ -214,7 +219,7 @@ class UpdateProfilePage extends Component implements HasForms
                         ->getSearchResultsUsing(fn (string $searchQuery) => School::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id')->toArray())
                         ->getOptionLabelUsing(fn ($value): ?string => School::find($value)?->name)
                         ->options(School::all()->pluck('name', 'id')->toArray())
-                        ->afterStateUpdated(function (callable $set) {
+                        ->afterStateUpdated(function (Set $set) {
                             $set('course', null);
                             $set('course_level', null);
                             $set('towns', null);
@@ -228,12 +233,12 @@ class UpdateProfilePage extends Component implements HasForms
                         ->placeholder('Please select your course of study')
                         ->live()
                         ->searchable()
-                        ->getSearchResultsUsing(fn (string $searchQuery, callable $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
+                        ->getSearchResultsUsing(fn (string $searchQuery, Get $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
                         ->getOptionLabelUsing(fn ($value): ?string => Course::find($value)?->name)
-                        ->options(fn (callable $get) => School::find($get('school'))?->courses->pluck('name', 'id')->toArray() ?? [])
-                        ->afterStateUpdated(fn (callable $set) => $set('course_level', null))
+                        ->options(fn (Get $get) => School::find($get('school'))?->courses->pluck('name', 'id')->toArray() ?? [])
+                        ->afterStateUpdated(fn (Set $set) => $set('course_level', null))
                         ->required()
-                        ->exists('course_school', 'course_id', fn (Exists $rule, callable $get) => $rule->where('school_id', $get('school')))
+                        ->exists('course_school', 'course_id', fn (Exists $rule, Get $get) => $rule->where('school_id', $get('school')))
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 1,
@@ -243,8 +248,8 @@ class UpdateProfilePage extends Component implements HasForms
                     Select::make('course_level')
                         ->label('Course Level')
                         ->live()
-                        ->options(fn (callable $get) => Course::getCourseLevels(Course::find($get('course'))))
-                        ->in(fn (callable $get) => Course::find($get('course'))?->levels ?? [])
+                        ->options(fn (Get $get) => Course::getCourseLevels(Course::find($get('course'))))
+                        ->in(fn (Get $get) => Course::find($get('course'))?->levels ?? [])
                         ->required()
                         ->columnSpan([
                             'default' => 2,
@@ -260,8 +265,8 @@ class UpdateProfilePage extends Component implements HasForms
                     Select::make('towns')
                         ->multiple()
                         ->label('Preferred property locations')
-                        ->options(fn (callable $get) => School::find($get('school'))?->towns->pluck('name', 'id')->toArray() ?? [])
-                        ->exists('school_town', 'town_id', fn (Exists $rule, callable $get) => $rule->where('school_id', $get('school')))
+                        ->options(fn (Get $get) => School::find($get('school'))?->towns->pluck('name', 'id')->toArray() ?? [])
+                        ->exists('school_town', 'town_id', fn (Exists $rule, Get $get) => $rule->where('school_id', $get('school')))
                         ->required(),
 
                     Select::make('rooms')

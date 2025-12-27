@@ -34,7 +34,7 @@ class UserBlockingModal extends ModalComponent
             $this->unblockUser();
         };
 
-        $this->emit('actionTakenOnUser');
+        $this->dispatch('actionTakenOnUser');
         $this->closeModal();
     }
 

@@ -7,12 +7,12 @@
         </p>
     </div>
     <ul class="py-2 divide-y">
-        <x-responsive-nav-link icon_before="heroicon-o-phone-outgoing">
+        <x-responsive-nav-link icon_before="heroicon-o-phone-arrow-up-right">
             <p>
                 {{ __('Call') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>
         </x-responsive-nav-link>
-        <x-responsive-nav-link icon_before="heroicon-o-mall">
+        <x-responsive-nav-link icon_before="heroicon-o-building-storefront">
             <p>
                 {{ __('Email') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>

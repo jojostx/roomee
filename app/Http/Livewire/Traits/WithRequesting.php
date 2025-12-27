@@ -114,7 +114,7 @@ trait WithRequesting
             return;
         }
 
-        $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $user->uuid]);
+        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $user->uuid]);
     }
 
     public function showReportOrBlockModal($user_id = null)
@@ -125,6 +125,6 @@ trait WithRequesting
             return;
         }
 
-        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $user->uuid]);
+        $this->dispatch('openModal', 'components.modals.report-or-block-modal', ["user" => $user->uuid]);
     }
 }

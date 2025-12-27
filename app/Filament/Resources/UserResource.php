@@ -90,7 +90,7 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('verify_email')
                     ->label('Mark Verified')
-                    ->icon('heroicon-o-badge-check')
+                    ->icon('heroicon-o-check-badge')
                     ->color('success')
                     ->visible(static fn (User $record): bool => blank($record->email_verified_at))
                     ->action(static function (User $record): void {

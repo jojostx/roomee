@@ -11,7 +11,7 @@
     </div>
 
     <div class="w-6 h-6">
-      <x-heroicon-o-menu />
+      <x-heroicon-o-bars-3 />
     </div>
   </button>
 
@@ -41,7 +41,7 @@
             </x-responsive-nav-link>
             @endunless
 
-            <x-responsive-nav-link :href="route('roommate-requests')" :active="request()->routeIs('roommate-requests')" icon_before="heroicon-o-user-add">
+            <x-responsive-nav-link :href="route('roommate-requests')" :active="request()->routeIs('roommate-requests')" icon_before="heroicon-o-user-plus">
               {{ __('Roommate Requests') }}
             </x-responsive-nav-link>
 
@@ -49,7 +49,7 @@
               {{ __('Favorites') }}
             </x-responsive-nav-link>
 
-            <x-responsive-nav-link :href="route('blocklist')" :active="request()->routeIs('blocklist')" icon_before="heroicon-o-ban">
+            <x-responsive-nav-link :href="route('blocklist')" :active="request()->routeIs('blocklist')" icon_before="heroicon-o-no-symbol">
               {{ __('Blocklist') }}
             </x-responsive-nav-link>
 
@@ -104,7 +104,7 @@
           </div>
           <form method="POST" action="{{ route('logout') }}" class="mt-auto">
             @csrf
-            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" icon_before="heroicon-o-logout">
+            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();" icon_before="heroicon-o-arrow-left-on-rectangle">
               {{ __('Logout') }}
             </x-responsive-nav-link>
           </form>

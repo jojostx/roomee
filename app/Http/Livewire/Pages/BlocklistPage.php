@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Report;
 use App\Http\Livewire\Traits;
 use Filament\Notifications\Notification;
+use Filament\Support\Contracts\TranslatableContentDriver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
@@ -129,11 +130,11 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable
                 ...$this->getReportingAction(),
             ])
                 ->color('gray')
-                ->icon('heroicon-o-dots-vertical'),
+                ->icon('heroicon-o-ellipsis-vertical'),
         ];
     }
 
-    protected function getTableRecordsPerPage(): int
+    public function getTableRecordsPerPage(): int
     {
         return 9;
     }
@@ -225,7 +226,7 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->unblockUser($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Unblock ' . $record->full_name)
@@ -239,5 +240,11 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable
         $view = view('livewire.pages.blocklist-page');
 
         return $view->layout('layouts.guest');
+    }
+
+    public function makeFilamentTranslatableContentDriver(): ?TranslatableContentDriver
+    {
+        // Return null if not using translations
+        return null;
     }
 }

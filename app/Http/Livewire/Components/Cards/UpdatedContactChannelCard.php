@@ -53,7 +53,7 @@ class UpdatedContactChannelCard extends Component implements HasForms
     {
         return [
             Forms\Components\Toggle::make('is_enabled')
-                ->disableLabel()
+                ->hiddenLabel()
                 ->inline()
                 ->afterStateUpdated(fn () => $this->submit())
                 ->live(),
@@ -103,10 +103,10 @@ class UpdatedContactChannelCard extends Component implements HasForms
                 Action::make('Delete')
                     ->button()
                     ->color('danger')
-                    ->emit("deleteContactChannel:" . $this->contactChannel->uuid)
+                    ->dispatch("deleteContactChannel:" . $this->contactChannel->uuid)
                     ->close(),
                 Action::make('Cancel')
-                    ->color('secondary')
+                    ->color('gray')
                     ->close(),
             ])
             ->persistent()

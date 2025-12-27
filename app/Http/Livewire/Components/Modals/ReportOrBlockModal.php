@@ -79,7 +79,7 @@ class ReportOrBlockModal extends ModalComponent implements HasForms
                 break;
         }
 
-        $this->emit('actionTakenOnUser');
+        $this->dispatch('actionTakenOnUser');
         $this->closeModal();
     }
 

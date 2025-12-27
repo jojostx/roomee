@@ -80,7 +80,7 @@
             </p>
           </x-responsive-nav-link>
           <x-responsive-nav-link 
-            icon_before="heroicon-o-ban" 
+            icon_before="heroicon-o-no-symbol" 
             x-on:click="showBlockUserModal"
           >
             <p>

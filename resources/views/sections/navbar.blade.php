@@ -46,7 +46,7 @@
     <div class="relative z-40 block sm:hidden" x-data="{ isOpen: false }" x-trap.noscroll="isOpen" x-on:close-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = false" x-on:open-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = true" role="dialog" aria-modal="true">
         <div class="flex items-center sm:hidden">
             <button @click="$dispatch('open-modal', { id: 'nav-menu-panel' });" title="open menu" class="inline-flex items-center justify-center w-10 h-10 p-1 transition duration-150 ease-in-out rounded-md text-secondary-200 hover:text-secondary-900 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-900">
-                <x-heroicon-o-menu />
+                <x-heroicon-o-bars-3 />
             </button>
         </div>
 
@@ -56,7 +56,7 @@
             <div x-show="isOpen" x-on:keydown.window.escape="$dispatch('close-modal', { id: 'nav-menu-panel' })" x-transition:enter="ease duration-300" x-transition:leave="ease duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="relative w-full cursor-pointer pointer-events-none" slideover="slideover">
                 <div class="relative w-full h-screen max-w-sm ml-auto -mr-4 overflow-y-auto bg-white cursor-default pointer-events-auto filament-modal-window rtl:mr-auto rtl:-ml-4">
                     <button x-on:click="isOpen = false" tabindex="-1" type="button" class="absolute cursor-pointer top-4 right-4 rtl:right-0 rtl:left-4 text-secondary-800">
-                        <x-heroicon-o-x title="close menu" tabindex="-1" class="w-9 h-9"/>
+                        <x-heroicon-o-x-mark title="close menu" tabindex="-1" class="w-9 h-9"/>
                         <span class="sr-only">
                             Close
                         </span>
@@ -67,7 +67,7 @@
                             {{ __('Home') }}
                         </x-responsive-nav-link>
 
-                        <x-responsive-nav-link :href="route('features')" :active="request()->routeIs('features')" icon_before="heroicon-o-lightning-bolt">
+                        <x-responsive-nav-link :href="route('features')" :active="request()->routeIs('features')" icon_before="heroicon-o-bolt">
                             {{ __('Features') }}
                         </x-responsive-nav-link>
 

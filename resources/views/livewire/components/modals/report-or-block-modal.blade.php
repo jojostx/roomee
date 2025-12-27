@@ -58,7 +58,7 @@
                 {{ __('Report') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>
         </x-responsive-nav-link>
-        <x-responsive-nav-link wire:click="triggerBlockUserAction()" icon_before="heroicon-o-ban">
+        <x-responsive-nav-link wire:click="triggerBlockUserAction()" icon_before="heroicon-o-no-symbol">
             <p>
                 {{ __('Block') }}&nbsp;<span class="font-semibold user-name">{{ $user->full_name }}</span>
             </p>

@@ -5,8 +5,9 @@ namespace App\Http\Livewire\Pages\Settings;
 use App\Enums\ContactChannelType;
 use App\Models\ContactChannel;
 use App\Models\User;
-use Closure;
 use Filament\Forms;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Livewire\Component;
 use Filament\Forms\Components\Section;
 use Illuminate\Support\Facades\Blade;
@@ -172,7 +173,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ->rules($rules)
                 ->live()
                 ->suffixAction(
-                    fn (?string $state, Closure $set): Action =>
+                    fn (?string $state, Set $set): Action =>
                     Action::make('generate-' . $channel)
                         ->icon('heroicon-o-plus')
                         ->action(function () use ($state, $set, $channel) {
@@ -189,7 +190,7 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
             Forms\Components\TextInput::make($channel . '-code')
                 ->label('Verification code')
                 ->disabled()
-                ->visible(fn (Closure $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
+                ->visible(fn (Get $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
 
             Forms\Components\Placeholder::make($channel . '-account')
                 ->label('Our ' . $channel . ' account')
@@ -206,9 +207,9 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                     Forms\Components\Placeholder::make('submit-' . $channel)
                         ->columnSpan(2)
                         ->extraAttributes(fn () => blank($this->getChannel($channel)) ? [] : ['class' => 'flex justify-end'])
-                        ->disableLabel()
+                        ->hiddenLabel()
                         ->content(self::getSubmitButton())
-                        ->visible(fn (Closure $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
+                        ->visible(fn (Get $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
                 ])->columns([
                     'default' => 3,
                     'sm' => 3,

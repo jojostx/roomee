@@ -108,7 +108,7 @@ $res = $this->image->store('test', 'avatars');
 // ]),
 
 // Fileupload::make('avatar')
-// ->disableLabel()
+// ->hiddenLabel()
 // ->avatar()
 // ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
 // return (string) str($file->getClientOriginalName())->prepend('avatar-photo-', md5(strval(auth()->user()->id)), now() . '-');

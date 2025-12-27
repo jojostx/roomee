@@ -13,6 +13,7 @@ use App\Models\User;
 use Closure;
 use Filament\Forms;
 use Filament\Notifications\Notification;
+use Filament\Support\Contracts\TranslatableContentDriver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Pagination\Paginator;
@@ -52,8 +53,8 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     // fires a card component refresh when another user blocks the currently authenticated user
     protected function handleUserblockedEvent($data)
     {
-        $this->emit('refreshChildren:' . $data['blocker_id']);
-        $this->emit('resetUsers', $data['blocker_id']);
+        $this->dispatch('refreshChildren:' . $data['blocker_id']);
+        $this->dispatch('resetUsers', $data['blocker_id']);
     }
 
     public function getAuthModel(): ?User
@@ -173,11 +174,11 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ...$this->getBlockingActions(),
             ])
                 ->color('gray')
-                ->icon('heroicon-o-dots-vertical'),
+                ->icon('heroicon-o-ellipsis-vertical'),
         ];
     }
 
-    protected function getTableRecordsPerPage(): int
+    public function getTableRecordsPerPage(): int
     {
         return 9;
     }
@@ -338,7 +339,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->color('danger')
                 ->action(function (User $record) {
                     $this->blockUser($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Block ' . $record->full_name)
@@ -358,7 +359,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->icon('heroicon-o-star')
                 ->action(function (User $record) {
                     $this->favorite($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => !$this->hasBeenFavorited($record)),
@@ -370,7 +371,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->icon('heroicon-s-star')
                 ->action(function (User $record) {
                     $this->unfavorite($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => $this->hasBeenFavorited($record))
@@ -391,7 +392,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ])
                 ->action(function (User $record) {
                     $this->acceptRoommateRequest($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
@@ -401,7 +402,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
             Tables\Actions\Action::make('delete-roommate-request')
                 ->button()
                 ->label('Delete Request')
-                ->icon('heroicon-s-user-remove')
+                ->icon('heroicon-s-user-minus')
                 ->color('danger')
                 ->extraAttributes([
                     'title' => 'delete roommate request',
@@ -409,7 +410,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ])
                 ->action(function (User $record) {
                     $this->deleteRoommateRequest($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
@@ -419,15 +420,15 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
             Tables\Actions\Action::make('contact-user')
                 ->button()
                 ->label('Contact User')
-                ->icon('heroicon-s-phone-outgoing')
+                ->icon('heroicon-s-phone-arrow-up-right')
                 ->color('success')
                 ->extraAttributes([
                     'title' => 'contact user',
                     'class' => 'w-full filament-tables-action-contact-user',
                 ])
                 ->action(function (User $record) {
-                    $this->emit('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];
@@ -439,5 +440,11 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
         $view = view('livewire.pages.roommate-requests-page');
 
         return $view->layout('layouts.guest');
+    }
+
+    public function makeFilamentTranslatableContentDriver(): ?TranslatableContentDriver
+    {
+        // Return null if not using translations
+        return null;
     }
 }

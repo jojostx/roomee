@@ -3,7 +3,7 @@
     x-on:click="$dispatch('close-update-form', { id : '{{ $getId() }}' });" 
     size='sm'
     type='button'
-    color='secondary'
+    color='gray'
     style='font-weight: 600;'
 >
     {{ __('Cancel') }}

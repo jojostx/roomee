@@ -70,7 +70,7 @@ class ContactChannelResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('verify')
                     ->label('Verify')
-                    ->icon('heroicon-o-badge-check')
+                    ->icon('heroicon-o-check-badge')
                     ->color('success')
                     ->visible(static fn (ContactChannel $record): bool => blank($record->verified_at))
                     ->action(static function (ContactChannel $record): void {

@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class BlocklistCard extends Component
 {
-    public User $user;
+    public ?User $user;
 
     public function unblockUser()
     {
@@ -21,7 +21,7 @@ class BlocklistCard extends Component
                 ->body("You have succesfully unblocked **{$this->user->full_name}**")
                 ->send();
 
-            $this->emit('actionTakenOnUser', $this->user->full_name);
+            $this->dispatch('actionTakenOnUser', $this->user->full_name);
         }
 
         $this->user = null;

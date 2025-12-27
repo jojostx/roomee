@@ -32,6 +32,11 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
 
     public Collection $similarity_scores;
 
+    public function mount(): void
+    {
+        $this->similarity_scores = collect();
+    }
+
     protected function getListeners()
     {
         return [
@@ -138,7 +143,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ...$this->getBlockingActions(),
             ])
                 ->color('gray')
-                ->icon('heroicon-o-dots-vertical'),
+                ->icon('heroicon-o-ellipsis-vertical'),
         ];
     }
 
@@ -165,7 +170,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
         return fn (User $record) => match (true) {
             $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
             $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-received',
-            $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
+            $this->hasPendingRoommateRequestTo($record) => 'filament-user-card roommate-request-sent',
             $this->hasBeenBlocked($record) => 'filament-user-card user-blocked',
             $this->hasBeenFavorited($record) => 'filament-user-card user-favorited',
             default => 'filament-user-card',
@@ -179,7 +184,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
 
     public function getTableEmptyStateDescription(): ?string
     {
-        return 'No User currently match your preferences, Please Check back later.';
+        return 'No users currently match your preferences. Please check back later.';
     }
 
     /** dynamic properties */
@@ -302,7 +307,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->color('danger')
                 ->action(function (User $record) {
                     $this->blockUser($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Block ' . $record->full_name)
@@ -316,7 +321,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->color('danger')
                 ->action(function (User $record) {
                     $this->unblockUser($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Unblock ' . $record->full_name)
@@ -336,7 +341,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->icon('heroicon-o-star')
                 ->action(function (User $record) {
                     $this->favorite($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => !$this->hasBeenFavorited($record)),
@@ -348,7 +353,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->icon('heroicon-s-star')
                 ->action(function (User $record) {
                     $this->unfavorite($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => $this->hasBeenFavorited($record))
@@ -362,15 +367,15 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ->button()
                 ->outlined()
                 ->label('Send Request')
-                ->icon('heroicon-s-user-add')
-                ->color('secondary')
+                ->icon('heroicon-s-user-plus')
+                ->color('gray')
                 ->extraAttributes([
                     'title' => 'send roommate request',
                     'class' => 'w-full filament-tables-action-send-roommate-request',
                 ])
                 ->action(function (User $record) {
                     $this->sendRoommateRequest($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Send Roommate Request')
@@ -388,7 +393,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->acceptRoommateRequest($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
@@ -398,7 +403,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
             Tables\Actions\Action::make('delete-roommate-request')
                 ->button()
                 ->label('Delete Request')
-                ->icon('heroicon-s-user-remove')
+                ->icon('heroicon-s-user-minus')
                 ->color('danger')
                 ->extraAttributes([
                     'title' => 'delete roommate request',
@@ -406,7 +411,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
                 ])
                 ->action(function (User $record) {
                     $this->deleteRoommateRequest($record);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
@@ -416,15 +421,15 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable
             Tables\Actions\Action::make('contact-user')
                 ->button()
                 ->label('Contact User')
-                ->icon('heroicon-s-phone-outgoing')
+                ->icon('heroicon-s-phone-arrow-up-right')
                 ->color('success')
                 ->extraAttributes([
                     'title' => 'contact user',
                     'class' => 'w-full filament-tables-action-contact-user',
                 ])
                 ->action(function (User $record) {
-                    $this->emit('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
-                    $this->emitSelf('refresh-component');
+                    $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
+                    $this->dispatchSelf('refresh-component');
                 })
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];

@@ -14,8 +14,8 @@
 
   <x-filament::icon-button 
     size="sm"
-    color="secondary"
-    icon="heroicon-s-dots-vertical" 
+    color="gray"
+    icon="heroicon-s-ellipsis-vertical" 
     x-data="" 
     x-on:click="$dispatch('open-modal', 
       { 

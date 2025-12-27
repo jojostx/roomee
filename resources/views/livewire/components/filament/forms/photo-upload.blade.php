@@ -118,7 +118,7 @@
     
             <x-slot name="footer">
                 <div class="flex justify-end space-x-2 rtl:space-x-reverse" x-cloak x-show="croppable">
-                    <x-filament::button size='sm' color="secondary" x-on:click="resetCropper(); $dispatch('close-modal', {id: 'photo-upload-cropper-{{ $getStatePath() }}', save: false})">
+                    <x-filament::button size='sm' color="gray" x-on:click="resetCropper(); $dispatch('close-modal', {id: 'photo-upload-cropper-{{ $getStatePath() }}', save: false})">
                         {{ __('Cancel') }}
                     </x-filament::button>
     

@@ -45,33 +45,33 @@ class ViewProfilePage extends Component
     public function acceptRoommateRequest()
     {
         $this->traitAcceptRoommateRequest($this->user);
-        $this->emit('actionTakenOnUser');
+        $this->dispatch('actionTakenOnUser');
     }
 
     public function sendRoommateRequest()
     {
         $this->traitSendRoommateRequest($this->user);
-        $this->emitSelf('actionTakenOnUser');
+        $this->dispatchSelf('actionTakenOnUser');
     }
 
     public function showContactUserModal()
     {
-        $this->emit('openModal', 'components.modals.contact-user-modal', ["user" => $this->user->uuid]);
+        $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $this->user->uuid]);
     }
 
     public function showDeleteRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
+        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function showReportOrBlockModal()
     {
-        $this->emit('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
+        $this->dispatch('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
     }
 
     public function showUserBlockingModal()
     {
-        $this->emit('openModal', 'components.modals.user-blocking-modal', ["user" => $this->user->uuid]);
+        $this->dispatch('openModal', 'components.modals.user-blocking-modal', ["user" => $this->user->uuid]);
     }
 
     public function render()

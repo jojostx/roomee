@@ -16,8 +16,8 @@ trait CanReactToRoommateRequestUpdate
         $status = RoommateRequestStatus::tryFrom($data['status']);
 
         if (filled($status) && filled($recipient) && filled($sender)) {
-            $this->emit('refreshChildren:' . $recipient->id);
-            $this->emit('refreshChildren:' . $sender->id);
+            $this->dispatch('refreshChildren:' . $recipient->id);
+            $this->dispatch('refreshChildren:' . $sender->id);
             $this->showRequestUpdatedNotification($recipient, $sender, $status);
         }
     }

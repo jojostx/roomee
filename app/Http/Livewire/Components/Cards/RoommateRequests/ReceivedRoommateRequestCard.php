@@ -31,7 +31,7 @@ class ReceivedRoommateRequestCard extends Component
 
     public function showDeleteRoommateRequestModal()
     {
-        $this->emit('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
+        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
     }
 
     public function acceptRoommateRequest()

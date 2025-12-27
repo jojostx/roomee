@@ -22,11 +22,11 @@
             display: none !important;
         }
     </style>
-    @livewireStyles
+    @filamentStyles
 
     <!-- Scripts -->
     <script src="{{ asset('js/tabula_rasa.js') }}" defer></script>
-    @livewireScripts
+    @filamentScripts
     @stack('scripts')
 </head>
 
