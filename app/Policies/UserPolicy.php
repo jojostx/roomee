@@ -19,6 +19,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
+        // Admins can view all users in Filament, regular users can browse
         return true;
     }
 
@@ -31,7 +32,25 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
+        // Admins can view any user profile
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Regular users can only view profiles of same gender and school
         return ($user->gender === $model->gender) && ($user->school_id === $model->school_id);
+    }
+
+    /**
+     * Determine whether the user can create models.
+     *
+     * @param  \App\Models\User  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        // Only admins can create users in Filament
+        return $user->isAdmin();
     }
 
     /**
@@ -43,7 +62,67 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
+        // Admins can update any user
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Regular users can only update themselves
         return $user->id == $model->id;
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function delete(User $user, User $model)
+    {
+        // Only admins can delete users
+        // Prevent admins from deleting themselves
+        return $user->isAdmin() && $user->id !== $model->id;
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function restore(User $user, User $model)
+    {
+        // Only admins can restore deleted users
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function forceDelete(User $user, User $model)
+    {
+        // Only admins can force delete users
+        // Prevent admins from force deleting themselves
+        return $user->isAdmin() && $user->id !== $model->id;
+    }
+
+    /**
+     * Determine whether the user can replicate the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return mixed
+     */
+    public function replicate(User $user, User $model)
+    {
+        // Only admins can replicate users
+        return $user->isAdmin();
     }
 
     /**
