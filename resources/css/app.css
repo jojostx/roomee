@@ -158,19 +158,19 @@
     }
 
     .filament-user-card.user-favorited {
-        @apply border-primary-300
+        @apply border-primary-300;
     }
     .filament-user-card.user-blocked {
-        @apply border-danger-400
+        @apply border-danger-400;
     }
     .filament-user-card.rooomate-request-sent {
-        @apply border-danger-300
+        @apply border-danger-300;
     }
     .filament-user-card.roommate-request-received {
-        @apply border-primary-500
+        @apply border-primary-500;
     }
     .filament-user-card.roommate-request-accepted {
-        @apply border-success-300
+        @apply border-success-300;
     }
 }
 

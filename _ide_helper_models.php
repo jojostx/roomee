@@ -1,6 +1,7 @@
 <?php
 
 // @formatter:off
+// phpcs:ignoreFile
 /**
  * A helper file for your Eloquent Models
  * Copy the phpDocs from this file to the correct Model,
@@ -12,30 +13,31 @@
 
 namespace App\Models{
 /**
- * App\Models\Blocklist
- *
  * @property int $blocker_id
  * @property int $blockee_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $id
+ * @property-read \App\Models\User $blockee
+ * @property-read \App\Models\User $blocker
  * @property-read \App\Models\User $user
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist query()
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereBlockeeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereBlockerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Blocklist whereUuid($uuid, $uuidColumn = null)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereBlockeeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereBlockerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereUuid($uuid, $uuidColumn = null)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperBlocklist {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Contact
- *
  * @property int $id
  * @property string $uuid
  * @property string $first_name
@@ -44,60 +46,58 @@ namespace App\Models{
  * @property string $message
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Contact newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Contact newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Contact query()
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Contact whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Contact whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperContact {}
 }
 
 namespace App\Models{
 /**
- * App\Models\ContactChannel
- *
  * @property int $id
  * @property string $uuid
  * @property int $user_id
  * @property string $type
  * @property string $link
  * @property bool $is_enabled
- * @property array|null $metadata
+ * @property array<array-key, mixed>|null $metadata
  * @property string|null $verified_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
  * @method static \Database\Factories\ContactChannelFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel query()
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereIsEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereLink($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereMetadata($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ContactChannel whereVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereIsEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereLink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereMetadata($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ContactChannel whereVerifiedAt($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperContactChannel {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Course
- *
  * @property int $id
  * @property string $uuid
  * @property string $name
@@ -105,29 +105,29 @@ namespace App\Models{
  * @property string $max_level
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $levels
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\School> $schools
  * @property-read int|null $schools_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|Course newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Course newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Course query()
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereMaxLevel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereShortName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Course whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereMaxLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereShortName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Course whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperCourse {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Dislike
- *
  * @property int $id
  * @property string $uuid
  * @property string $name
@@ -135,23 +135,22 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike query()
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Dislike whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Dislike whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperDislike {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Faq
- *
  * @property int $id
  * @property string $uuid
  * @property int $faq_category_id
@@ -160,25 +159,24 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\FaqCategory $category
- * @method static \Illuminate\Database\Eloquent\Builder|Faq newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Faq newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Faq query()
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereAnswer($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereFaqCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereQuestion($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Faq whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereAnswer($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereFaqCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereQuestion($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Faq whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperFaq {}
 }
 
 namespace App\Models{
 /**
- * App\Models\FaqCategory
- *
  * @property int $id
  * @property string $uuid
  * @property string $title
@@ -186,65 +184,66 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Faq> $faqs
  * @property-read int|null $faqs_count
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FaqCategory whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FaqCategory whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperFaqCategory {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Favorite
- *
  * @property int $favoriter_id
  * @property int $favoritee_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite query()
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereFavoriteeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereFavoriterId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Favorite whereUpdatedAt($value)
+ * @property int $id
+ * @property-read \App\Models\User $favoritee
+ * @property-read \App\Models\User $favoriter
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereFavoriteeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereFavoriterId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Favorite whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperFavorite {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Feedback
- *
  * @property int $id
  * @property string $uuid
  * @property int $feedback
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback query()
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereFeedback($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feedback whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback whereFeedback($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Feedback whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperFeedback {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Hobby
- *
  * @property int $id
  * @property string $uuid
  * @property string $name
@@ -252,23 +251,22 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby query()
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Hobby whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Hobby whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperHobby {}
 }
 
 namespace App\Models{
 /**
- * App\Models\PendingUserEmail
- *
  * @property int $id
  * @property string $user_type
  * @property int $user_id
@@ -276,25 +274,24 @@ namespace App\Models{
  * @property string $token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $user
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail forUser(\Illuminate\Database\Eloquent\Model $user)
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail query()
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PendingUserEmail whereUserType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail forUser(\Illuminate\Database\Eloquent\Model $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PendingUserEmail whereUserType($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperPendingUserEmail {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Report
- *
  * @property int $id
  * @property string $uuid
  * @property string $description
@@ -303,24 +300,23 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|Report newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Report newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Report query()
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereSeverity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Report whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereSeverity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Report whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperReport {}
 }
 
 namespace App\Models{
 /**
- * App\Models\RoommateRequest
- *
  * @property string $id
  * @property string $uuid
  * @property int $sender_id
@@ -330,32 +326,31 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $recipient
  * @property-read \App\Models\User $sender
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest accepted()
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest betweenModels(\App\Models\User $sender, \App\Models\User $recipient)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest denied()
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest pending()
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest query()
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest status(\App\Enums\RoommateRequestStatus|string $status = '')
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipient(\App\Models\User $model)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereRecipientId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSender(\App\Models\User $model)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereSenderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RoommateRequest whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest accepted()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest betweenModels(\App\Models\User $sender, \App\Models\User $recipient)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest denied()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest pending()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest status(\App\Enums\RoommateRequestStatus|string $status = '')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereRecipient(\App\Models\User $model)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereRecipientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereSender(\App\Models\User $model)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RoommateRequest whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperRoommateRequest {}
 }
 
 namespace App\Models{
 /**
- * App\Models\School
- *
  * @property int $id
  * @property string $uuid
  * @property string $name
@@ -370,25 +365,24 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  * @method static \Database\Factories\SchoolFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|School newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|School newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|School query()
- * @method static \Illuminate\Database\Eloquent\Builder|School whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|School whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|School whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|School whereShortName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|School whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|School whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|School whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereShortName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|School whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperSchool {}
 }
 
 namespace App\Models{
 /**
- * App\Models\Town
- *
  * @property int $id
  * @property string $uuid
  * @property string $name
@@ -398,23 +392,22 @@ namespace App\Models{
  * @property-read int|null $school_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @method static \Illuminate\Database\Eloquent\Builder|Town newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Town newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Town query()
- * @method static \Illuminate\Database\Eloquent\Builder|Town whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Town whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Town whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Town whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Town whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Town whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperTown {}
 }
 
 namespace App\Models{
 /**
- * App\Models\User
- *
  * @property int $id
  * @property string $uuid
  * @property string $first_name
@@ -423,6 +416,7 @@ namespace App\Models{
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
+ * @property \App\Enums\UserRole $role
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -436,7 +430,7 @@ namespace App\Models{
  * @property string|null $avatar
  * @property string|null $cover_photo
  * @property string|null $rooms
- * @property array|null $settings
+ * @property array<array-key, mixed>|null $settings
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $blockers
  * @property-read int|null $blockers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $blocklists
@@ -466,42 +460,46 @@ namespace App\Models{
  * @property-read int|null $tokens_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Town> $towns
  * @property-read int|null $towns_count
- * @method static \Illuminate\Database\Eloquent\Builder|User betweenModels(\App\Models\User $sender, \App\Models\User $recipient)
- * @method static \Illuminate\Database\Eloquent\Builder|User excludeUser($user_id)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $allPotentialRoommates
+ * @property-read int|null $all_potential_roommates_count
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User betweenModels(\App\Models\User $sender, \App\Models\User $recipient)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User excludeUser($user_id)
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|User gender($gender)
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User school($school_id)
- * @method static \Illuminate\Database\Eloquent\Builder|User validNonBlockedByUsers()
- * @method static \Illuminate\Database\Eloquent\Builder|User validNonBlockedUsers()
- * @method static \Illuminate\Database\Eloquent\Builder|User validNonBlockingUsers()
- * @method static \Illuminate\Database\Eloquent\Builder|User validUsers()
- * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereBio($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCourseId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCourseLevel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCoverPhoto($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereGender($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereMaxBudget($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereMinBudget($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereProfileUpdated($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRooms($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSchoolId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSettings($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User gender($gender)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User school($school_id)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User validNonBlockedByUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User validNonBlockedUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User validNonBlockingUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User validUsers()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereAvatar($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereBio($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCourseId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCourseLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCoverPhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereGender($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMaxBudget($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereMinBudget($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereProfileUpdated($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRole($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRooms($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSchoolId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSettings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereUuid($value)
  * @mixin \Eloquent
  */
+	#[\AllowDynamicProperties]
 	class IdeHelperUser {}
 }
 

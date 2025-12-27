@@ -119,8 +119,8 @@ class UpdateProfilePage extends Component implements HasForms
 
                     TextInput::make('first_name')
                         ->label('First Name')
-                        ->minCharacters(2)
-                        ->maxCharacters(160)
+                        ->minLength(2)
+                        ->maxLength(160)
                         ->rules(['string', 'max:160', 'min:2'])
                         ->required()
                         ->columnSpan([
@@ -132,8 +132,8 @@ class UpdateProfilePage extends Component implements HasForms
 
                     TextInput::make('last_name')
                         ->label('Last Name')
-                        ->minCharacters(2)
-                        ->maxCharacters(160)
+                        ->minLength(2)
+                        ->maxLength(160)
                         ->rules(['string', 'max:160', 'min:2'])
                         ->required()
                         ->columnSpan([
@@ -174,8 +174,8 @@ class UpdateProfilePage extends Component implements HasForms
                 ->schema([
                     Textarea::make('bio')
                         ->label('About')
-                        ->minCharacters(15)
-                        ->maxCharacters(255)
+                        ->minLength(15)
+                        ->maxLength(255)
                         ->rules(['string', 'max:255', 'min:15'])
                         ->required()
                         ->columnSpan(2)
