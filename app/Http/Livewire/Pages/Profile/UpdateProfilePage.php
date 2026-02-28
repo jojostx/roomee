@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Validation\Rules\Exists;
@@ -78,73 +79,66 @@ class UpdateProfilePage extends Component implements HasForms
             Section::make('General Information')
                 ->collapsible()
                 ->schema([
-                    PhotoUpload::make('avatar_image')
-                        ->label('Avatar Photo')
-                        ->avatar()
-                        ->disk('avatars')
-                        ->imageResizeTargetWidth(320)
-                        ->getPreviewImageUrlUsing($this->getFormModel()->avatar_path)
-                        ->directory(fn() => (string) auth()->id())
-                        ->getUploadedFileNameForStorageUsing(function (): string {
-                            return (string) str()->uuid()->prepend('avatar-photo-', md5(strval(auth()->user()->id)), '-');
-                        })
-                        ->required()
-                        ->rules(['between:10,5098', 'dimensions:max_height=322'])
-                        ->columnSpan([
-                            'default' => 'full',
-                            'sm' => 1,
-                            'md' => 1,
-                            'lg' => 2,
-                        ]),
-                    Placeholder::make('Email')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
-                        ->content(auth()->user()->email)
-                        ->columnSpan([
-                            'default' => 2,
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 4,
-                        ]),
+                    Grid::make([
+                        'default' => 1,
+                        'sm' => 1,
+                        'md' => 4,
+                        'lg' => 8,
+                    ])
+                        ->schema([
+                            PhotoUpload::make('avatar_image')
+                                ->label('Avatar Photo')
+                                ->avatar()
+                                ->disk('avatars')
+                                ->imageResizeTargetWidth(320)
+                                ->getPreviewImageUrlUsing($this->getFormModel()->avatar_path)
+                                ->directory(fn() => (string) auth()->id())
+                                ->getUploadedFileNameForStorageUsing(function (): string {
+                                    return (string) str()->uuid()->prepend('avatar-photo-', md5(strval(auth()->user()->id)), '-');
+                                })
+                                ->required()
+                                ->rules(['between:10,5098', 'dimensions:max_height=322'])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 1,
+                                    'lg' => 2,
+                                ]),
 
-                    Placeholder::make('Gender')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
-                        ->content(auth()->user()->gender)
-                        ->columnSpan([
-                            'default' => 2,
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 4,
-                        ]),
+                            Grid::make([
+                                'default' => 1,
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
+                            ])
+                                ->schema([
+                                    Placeholder::make('Email')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
+                                        ->content(auth()->user()->email),
 
-                    TextInput::make('first_name')
-                        ->label('First Name')
-                        ->minLength(2)
-                        ->maxLength(160)
-                        ->rules(['string', 'max:160', 'min:2'])
-                        ->required()
-                        ->columnSpan([
-                            'default' => 2,
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 4,
-                        ]),
+                                    Placeholder::make('Gender')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
+                                        ->content(auth()->user()->gender),
 
-                    TextInput::make('last_name')
-                        ->label('Last Name')
-                        ->minLength(2)
-                        ->maxLength(160)
-                        ->rules(['string', 'max:160', 'min:2'])
-                        ->required()
-                        ->columnSpan([
-                            'default' => 2,
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 4,
-                        ])
-                ])
-                ->columns([
-                    'default' => 2,
-                    'sm' => 2,
-                    'md' => 4,
-                    'lg' => 8,
+                                    TextInput::make('first_name')
+                                        ->label('First Name')
+                                        ->minLength(2)
+                                        ->maxLength(160)
+                                        ->rules(['string', 'max:160', 'min:2'])
+                                        ->required(),
+
+                                    TextInput::make('last_name')
+                                        ->label('Last Name')
+                                        ->minLength(2)
+                                        ->maxLength(160)
+                                        ->rules(['string', 'max:160', 'min:2'])
+                                        ->required(),
+                                ])
+                                ->columnSpan([
+                                    'default' => 1,
+                                    'sm' => 1,
+                                    'md' => 3,
+                                    'lg' => 6,
+                                ]),
+                        ]),
                 ]),
 
             Section::make('Personal Information')
