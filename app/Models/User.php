@@ -306,9 +306,33 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   {
     $avatar = asset('images/avatar_placeholder.png');
 
-    if (filled($this->avatar) && Storage::disk('avatars')->exists($this->avatar)) {
+    if (blank($this->avatar)) {
+      return $avatar;
+    }
+
+    $rawPath = ltrim($this->avatar, '/');
+    $normalizedPath = str_starts_with($rawPath, 'avatars/') ? $rawPath : 'avatars/' . $rawPath;
+
+    try {
+      $publicDisk = Storage::disk('public');
+
+      foreach ([$normalizedPath, $rawPath] as $candidatePath) {
+        if ($publicDisk->exists($candidatePath)) {
+          return $publicDisk->url($candidatePath);
+        }
+      }
+    } catch (\RuntimeException $th) {
+    }
+
+    if (array_key_exists('avatars', config('filesystems.disks', []))) {
       try {
-        $avatar = Storage::disk('avatars')->url($this->avatar);
+        $legacyDisk = Storage::disk('avatars');
+
+        foreach ([$rawPath, $normalizedPath] as $legacyPath) {
+          if ($legacyDisk->exists($legacyPath)) {
+            return $legacyDisk->url($legacyPath);
+          }
+        }
       } catch (\RuntimeException $th) {
       }
     }

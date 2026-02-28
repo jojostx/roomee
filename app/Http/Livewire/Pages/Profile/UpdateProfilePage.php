@@ -15,13 +15,13 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Illuminate\Validation\Rules\Exists;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
-use App\Http\Livewire\Components\Filament\Forms\PhotoUpload as PhotoUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Storage;
@@ -47,9 +47,16 @@ class UpdateProfilePage extends Component implements HasForms
     public function mount()
     {
         $user = $this->getFormModel();
+        $avatarPath = $this->resolveAvatarPathForForm($user->avatar);
+
+        if (filled($avatarPath) && $avatarPath !== $user->avatar) {
+            $user->forceFill([
+                'avatar' => $avatarPath,
+            ])->saveQuietly();
+        }
 
         $this->form->fill([
-            'avatar_image' => $user->avatar,
+            'avatar_image' => $avatarPath,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'rooms' => $user->rooms ?? '',
@@ -86,18 +93,21 @@ class UpdateProfilePage extends Component implements HasForms
                         'lg' => 8,
                     ])
                         ->schema([
-                            PhotoUpload::make('avatar_image')
+                            FileUpload::make('avatar_image')
                                 ->label('Avatar Photo')
                                 ->avatar()
-                                ->disk('avatars')
-                                ->imageResizeTargetWidth(320)
-                                ->getPreviewImageUrlUsing($this->getFormModel()->avatar_path)
-                                ->directory(fn() => (string) auth()->id())
-                                ->getUploadedFileNameForStorageUsing(function (): string {
-                                    return (string) str()->uuid()->prepend('avatar-photo-', md5(strval(auth()->user()->id)), '-');
-                                })
+                                ->imageEditor()
+                                ->imageEditorAspectRatios(['1:1'])
+                                ->circleCropper()
+                                ->imageResizeTargetWidth('320')
+                                ->imageResizeTargetHeight('320')
+                                ->disk('public')
+                                ->directory(fn (): string => 'avatars/' . (string) auth()->id())
+                                ->visibility('public')
+                                ->image()
+                                ->minSize(10)
+                                ->maxSize(5098)
                                 ->required()
-                                ->rules(['between:10,5098', 'dimensions:max_height=322'])
                                 ->columnSpan([
                                     'default' => 1,
                                     'sm' => 1,
@@ -283,9 +293,10 @@ class UpdateProfilePage extends Component implements HasForms
         $user = $this->getFormModel();
 
         $userAvatar = (filled($data['avatar_image']) && $user->avatar !== $data['avatar_image']) ? $data['avatar_image'] : $user->avatar;
+        $userAvatar = $this->resolveAvatarPathForForm($userAvatar);
 
         try {
-            $canProceed = Storage::disk('avatars')->exists($userAvatar ?? '');
+            $canProceed = filled($userAvatar) && Storage::disk('public')->exists($userAvatar);
         } catch (\Throwable $th) {
             $canProceed = false;
         }
@@ -324,6 +335,59 @@ class UpdateProfilePage extends Component implements HasForms
         } else {
             return $this->showAlertOnSaveError();
         }
+    }
+
+    protected function resolveAvatarPathForForm(?string $path): ?string
+    {
+        if (blank($path)) {
+            return null;
+        }
+
+        $rawPath = ltrim($path, '/');
+        $normalizedPath = str_starts_with($rawPath, 'avatars/') ? $rawPath : 'avatars/' . $rawPath;
+        $publicDisk = Storage::disk('public');
+
+        foreach ([$normalizedPath, $rawPath] as $candidatePath) {
+            if ($publicDisk->exists($candidatePath)) {
+                return $candidatePath;
+            }
+        }
+
+        if (!array_key_exists('avatars', config('filesystems.disks', []))) {
+            return null;
+        }
+
+        $legacyRelativePath = str_starts_with($normalizedPath, 'avatars/')
+            ? substr($normalizedPath, strlen('avatars/'))
+            : $normalizedPath;
+
+        try {
+            $legacyDisk = Storage::disk('avatars');
+
+            foreach (array_unique([$rawPath, $legacyRelativePath, $normalizedPath]) as $legacyPath) {
+                if (blank($legacyPath) || !$legacyDisk->exists($legacyPath)) {
+                    continue;
+                }
+
+                $stream = $legacyDisk->readStream($legacyPath);
+
+                if ($stream === false) {
+                    continue;
+                }
+
+                $publicDisk->writeStream($normalizedPath, $stream);
+
+                if (is_resource($stream)) {
+                    fclose($stream);
+                }
+
+                return $normalizedPath;
+            }
+        } catch (\Throwable $th) {
+            return null;
+        }
+
+        return null;
     }
 
     public function render()

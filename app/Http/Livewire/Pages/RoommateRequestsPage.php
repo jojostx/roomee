@@ -131,8 +131,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                             ->formatStateUsing(fn ($state) => filled($state) ? Date::parse($state)->setTimezone('WAT') : null)
                             ->sortable(),
 
-                        Tables\Columns\ImageColumn::make('avatar')
-                            ->disk('avatars')
+                        Tables\Columns\ImageColumn::make('avatar_path')
                             ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),

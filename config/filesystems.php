@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('FILESYSTEM_DISK', env('FILESYSTEM_DRIVER', 'local')),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,6 +42,7 @@ return [
             'visibility' => 'public',
         ],
         
+        // Legacy avatar disk kept for backward compatibility with pre-v3 uploads.
         'avatars' => [
             'driver' => 'local',
             'root' => storage_path('app/avatars'),
@@ -72,7 +73,7 @@ return [
     */
 
     'links' => [
-        // public_path('storage') => storage_path('app/public'),
+        public_path('storage') => storage_path('app/public'),
         public_path('avatars') => storage_path('app/avatars'),
     ],
 

@@ -101,8 +101,7 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable, HasF
             Tables\Columns\Layout\Split::make([
                 Tables\Columns\Layout\View::make('livewire.components.filament.tables.user-card-detail-row')
                     ->components([
-                        Tables\Columns\ImageColumn::make('avatar')
-                            ->disk('avatars')
+                        Tables\Columns\ImageColumn::make('avatar_path')
                             ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),

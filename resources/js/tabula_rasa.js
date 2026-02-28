@@ -1,13 +1,8 @@
 import './bootstrap';
-import Cropper from "cropperjs";
-
-import customPhotoUploadFormComponent from './alpinejs/filamentphp/photo-upload'
 import multiselect from './alpinejs/filamentphp/multi-select'
 
 import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
 import Tooltip from "@ryangjchandler/alpine-tooltip";
-
-window.Cropper = Cropper;
 
 document.addEventListener('livewire:init', () => {
     const Alpine = window.Alpine;
@@ -15,7 +10,6 @@ document.addEventListener('livewire:init', () => {
     // 1. Register non-bundled plugins
     Alpine.plugin(Tooltip);
     Alpine.plugin(AlpineFloatingUI);
-    Alpine.plugin(customPhotoUploadFormComponent);
 
     // 2. Register Custom Data
     Alpine.data('multiselect', multiselect);
