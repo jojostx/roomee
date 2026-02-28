@@ -1,5 +1,7 @@
 @php
 $datalistOptions = $getDatalistOptions();
+$prefixActions = method_exists($field, 'getPrefixActions') ? $getPrefixActions() : [];
+$suffixActions = method_exists($field, 'getSuffixActions') ? $getSuffixActions() : [];
 $sideLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', 'text-gray-400' => !$errors->has($getStatePath()), 'text-danger-400' => $errors->has($getStatePath())];
 $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', 'text-gray-400' => !$errors->has($getStatePath()), 'text-danger-400' => $errors->has($getStatePath())];
 @endphp
@@ -17,9 +19,11 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
 >
     <div
         {{ $attributes->merge($getExtraAttributes())->class(['flex items-center space-x-2 rtl:space-x-reverse group filament-forms-text-input-component']) }}>
-        @if (($prefixAction = $getPrefixAction()) && !$prefixAction->isHidden())
-            {{ $prefixAction }}
-        @endif
+        @foreach ($prefixActions as $prefixAction)
+            @if (! $prefixAction->isHidden())
+                {{ $prefixAction }}
+            @endif
+        @endforeach
 
         @if ($icon = $getPrefixIcon())
             <x-dynamic-component
@@ -155,9 +159,11 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
             />
         @endif
 
-        @if (($suffixAction = $getSuffixAction()) && !$suffixAction->isHidden())
-            {{ $suffixAction }}
-        @endif
+        @foreach ($suffixActions as $suffixAction)
+            @if (! $suffixAction->isHidden())
+                {{ $suffixAction }}
+            @endif
+        @endforeach
     </div>
 
     @if ($datalistOptions)

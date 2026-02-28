@@ -12,6 +12,8 @@ use App\Models\Report;
 use App\Models\User;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Support\Contracts\TranslatableContentDriver;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,10 +24,11 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 
 
-class RoommateRequestsPage extends Component implements Tables\Contracts\HasTable
+class RoommateRequestsPage extends Component implements Tables\Contracts\HasTable, HasForms
 {
     use CanReactToRoommateRequestUpdate;
     use
+        InteractsWithForms,
         Traits\WithFavoriting,
         Traits\WithRequesting,
         Traits\WithBlocking,

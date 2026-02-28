@@ -29,7 +29,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Blocklist whereUuid($uuid, $uuidColumn = null)
  * @mixin \Eloquent
  */
 	#[\AllowDynamicProperties]

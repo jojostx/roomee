@@ -31,6 +31,8 @@ class UpdateProfilePage extends Component implements HasForms
 
     public $cover_image;
     public $avatar_image;
+    public $first_name;
+    public $last_name;
     public $bio;
     public $hobbies;
     public $dislikes;
@@ -295,13 +297,11 @@ class UpdateProfilePage extends Component implements HasForms
 
     protected function showAlertOnSaveError()
     {
-        $this->dispatchBrowserEvent(
-            "open-alert",
-            [
-                "alert_type" => "danger",
-                "message" => 'An error occurred while updating your profile please try again',
-                "closeAfterTimeout" => false,
-            ]
+        $this->dispatch(
+            'open-alert',
+            alert_type: 'danger',
+            message: 'An error occurred while updating your profile please try again',
+            closeAfterTimeout: false
         );
     }
 
@@ -327,6 +327,8 @@ class UpdateProfilePage extends Component implements HasForms
 
             try {
                 $user->bio = $this->bio;
+                $user->first_name = $this->first_name;
+                $user->last_name = $this->last_name;
                 $user->avatar = $userAvatar;
                 $user->cover_photo = $userCover;
                 $user->hobbies()->sync($this->hobbies);

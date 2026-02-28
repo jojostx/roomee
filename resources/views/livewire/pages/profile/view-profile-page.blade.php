@@ -148,7 +148,7 @@
                                     Institute of Study
                                 </x-livewire.label>
                                 <p class="block py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 bg-primary-50">
-                                    {{ $user->school['name'] }}
+                                    {{ $user->school?->name ?? 'N/A' }}
                                 </p>
                             </div>
                             <div class="col-span-1 mb-2">
@@ -161,7 +161,7 @@
                                     Course of Study
                                 </x-livewire.label>
                                 <p class="block py-2 pl-3 pr-4 text-base font-medium border-l-4 text-primary-800 border-primary-400 bg-primary-50">
-                                    {{ $user->course['name'] }}
+                                    {{ $user->course?->name ?? 'N/A' }}
                                 </p>
                             </div>
                             <div class="col-span-1 mb-2">

@@ -9,6 +9,8 @@ use App\Models\RoommateRequest;
 use App\Models\User;
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Support\Contracts\TranslatableContentDriver;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,9 +21,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class FavoritesPage extends Component implements Tables\Contracts\HasTable
+class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasForms
 {
     use
+        InteractsWithForms,
         Traits\WithFavoriting,
         Traits\WithRequesting,
         Traits\WithBlocking,

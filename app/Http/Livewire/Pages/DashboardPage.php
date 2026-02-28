@@ -8,6 +8,8 @@ use App\Models\User;
 use Filament\Tables;
 use App\Models\Report;
 use Livewire\Component;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use App\Http\Livewire\Traits;
 use App\Models\RoommateRequest;
 use Filament\Notifications\Notification;
@@ -18,9 +20,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Pagination\Paginator;
 
-class DashboardPage extends Component implements Tables\Contracts\HasTable
+class DashboardPage extends Component implements Tables\Contracts\HasTable, HasForms
 {
     use
+        InteractsWithForms,
         Traits\WithFavoriting,
         Traits\WithRequesting,
         Traits\WithOnboardingSteps,

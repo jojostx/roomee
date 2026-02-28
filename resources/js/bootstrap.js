@@ -1,4 +1,6 @@
-// window._ = require('lodash');
+import axios from 'axios';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,7 +8,7 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
@@ -16,20 +18,27 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from 'laravel-echo';
+window.Pusher = Pusher;
 
-window.Pusher = require('pusher-js');
+const env = import.meta.env ?? {};
+const pusherKey = env.VITE_PUSHER_APP_KEY ?? env.MIX_PUSHER_APP_KEY ?? '';
+const pusherHost = env.VITE_PUSHER_HOST ?? env.MIX_PUSHER_HOST ?? window.location.hostname;
+const pusherPort = env.VITE_PUSHER_PORT ?? env.MIX_PUSHER_PORT ?? 6001;
+const pusherScheme = (env.VITE_PUSHER_SCHEME ?? env.MIX_PUSHER_SCHEME ?? '').toLowerCase();
+const hasConfiguredPusherKey = typeof pusherKey === 'string' && pusherKey !== '' && pusherKey !== 'app-key-123';
 
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
+if (hasConfiguredPusherKey) {
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: pusherKey,
 
-    wsHost: process.env.MIX_PUSHER_HOST,
-    wsPort: process.env.MIX_PUSHER_PORT,
-    wssPort: process.env.MIX_PUSHER_PORT,
+        wsHost: pusherHost,
+        wsPort: pusherPort,
+        wssPort: pusherPort,
 
-    disableStats: true,
-    forceTLS: false,
-    encrypted: true,
-    enabledTransports: ['ws', 'wss']
-});
+        disableStats: true,
+        forceTLS: pusherScheme === 'https',
+        encrypted: true,
+        enabledTransports: ['ws', 'wss']
+    });
+}

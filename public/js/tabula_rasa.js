@@ -4780,17 +4780,21 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  broadcaster: 'pusher',
-  key: "app-key-123",
-  wsHost: "127.0.0.1",
-  wsPort: "6001",
-  wssPort: "6001",
-  disableStats: true,
-  forceTLS: false,
-  encrypted: true,
-  enabledTransports: ['ws', 'wss']
-});
+var pusherKey = "app-key-123";
+var hasConfiguredPusherKey = typeof pusherKey === 'string' && pusherKey !== '' && pusherKey !== 'app-key-123';
+if (hasConfiguredPusherKey) {
+  window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
+    broadcaster: 'pusher',
+    key: pusherKey,
+    wsHost: "127.0.0.1",
+    wsPort: "6001",
+    wssPort: "6001",
+    disableStats: true,
+    forceTLS: false,
+    encrypted: true,
+    enabledTransports: ['ws', 'wss']
+  });
+}
 
 /***/ }),
 
@@ -26461,20 +26465,28 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 window.Cropper = (cropperjs__WEBPACK_IMPORTED_MODULE_0___default());
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_focus__WEBPACK_IMPORTED_MODULE_6__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_ryangjchandler_alpine_tooltip__WEBPACK_IMPORTED_MODULE_9__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_awcodes_alpine_floating_ui__WEBPACK_IMPORTED_MODULE_8__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_collapse__WEBPACK_IMPORTED_MODULE_7__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_5__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_vendor_filament_notifications_dist_module_esm__WEBPACK_IMPORTED_MODULE_4__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_2__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].plugin(_alpinejs_persist__WEBPACK_IMPORTED_MODULE_10__["default"]);
-window.Alpine = alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"];
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].data('multiselect', _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_3__["default"]);
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].store('onboarding_steps', {
-  'show': alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].$persist(true).using(sessionStorage)
-});
-alpinejs__WEBPACK_IMPORTED_MODULE_1__["default"].start();
+var alpinePluginsRegistered = false;
+var registerAlpinePlugins = function registerAlpinePlugins() {
+  var Alpine = window.Alpine;
+  if (!Alpine || alpinePluginsRegistered) {
+    return;
+  }
+  Alpine.plugin(_alpinejs_focus__WEBPACK_IMPORTED_MODULE_6__["default"]);
+  Alpine.plugin(_ryangjchandler_alpine_tooltip__WEBPACK_IMPORTED_MODULE_9__["default"]);
+  Alpine.plugin(_awcodes_alpine_floating_ui__WEBPACK_IMPORTED_MODULE_8__["default"]);
+  Alpine.plugin(_alpinejs_collapse__WEBPACK_IMPORTED_MODULE_7__["default"]);
+  Alpine.plugin(_vendor_filament_forms_dist_module_esm__WEBPACK_IMPORTED_MODULE_5__["default"]);
+  Alpine.plugin(_vendor_filament_notifications_dist_module_esm__WEBPACK_IMPORTED_MODULE_4__["default"]);
+  Alpine.plugin(_alpinejs_filamentphp_photo_upload__WEBPACK_IMPORTED_MODULE_2__["default"]);
+  Alpine.plugin(_alpinejs_persist__WEBPACK_IMPORTED_MODULE_10__["default"]);
+  Alpine.data('multiselect', _alpinejs_filamentphp_multi_select__WEBPACK_IMPORTED_MODULE_3__["default"]);
+  Alpine.store('onboarding_steps', {
+    show: Alpine.$persist(true).using(sessionStorage)
+  });
+  alpinePluginsRegistered = true;
+};
+document.addEventListener('alpine:init', registerAlpinePlugins);
+registerAlpinePlugins();
 })();
 
 /******/ })()

@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                 'first_name' => 'Mark',
                 'last_name' => 'Ivan',
                 'gender' => 'male',
-                'email' => 'Mark.ivan@yahoo.com',
+                'email' => 'Marka.ivan@yahoo.com',
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', //password
                 'remember_token' => str()->random(10),
                 'profile_updated' => false,

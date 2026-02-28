@@ -29,7 +29,7 @@ class RoommateRequest extends Model
     /**
      * @var array
      */
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $guarded = ['created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast.
@@ -39,6 +39,18 @@ class RoommateRequest extends Model
     protected $casts = [
         'status' => RoommateRequestStatus::class,
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $request): void {
+            if (blank($request->id) && filled($request->sender_id) && filled($request->recipient_id)) {
+                $request->id = static::getCompositeKeyFromIds(
+                    (int) $request->sender_id,
+                    (int) $request->recipient_id,
+                );
+            }
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -91,9 +103,17 @@ class RoommateRequest extends Model
 
     static function getCompositeKey(User $sender, User $recipient): string
     {
-        $min = min([$sender->getKey(), $recipient->getKey()]);
-        $max = max([$sender->getKey(), $recipient->getKey()]);
+        return static::getCompositeKeyFromIds(
+            (int) $sender->getKey(),
+            (int) $recipient->getKey(),
+        );
+    }
 
-        return "$min" . "_" . "$max";
+    public static function getCompositeKeyFromIds(int $senderId, int $recipientId): string
+    {
+        $min = min([$senderId, $recipientId]);
+        $max = max([$senderId, $recipientId]);
+
+        return "{$min}_{$max}";
     }
 }

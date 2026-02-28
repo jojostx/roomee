@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Dyrynda\Database\Support\BindsOnUuid;
-use Dyrynda\Database\Support\GeneratesUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Blocklist extends Model
 {
-    use HasFactory, BindsOnUuid, GeneratesUuid;
+    use HasFactory;
 
     protected $guarded = ['id'];
 

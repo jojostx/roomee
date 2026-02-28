@@ -7,22 +7,20 @@
     showReportUserModal: () => {
       if($data.user_id)
       {
-        Livewire.emit(
-          "openModal", 
-          "components.modals.user-reporting-modal", 
-          { user: $data.user_id }
-        );
+        Livewire.dispatch("openModal", {
+          component: "components.modals.user-reporting-modal",
+          arguments: { user: $data.user_id }
+        });
       }
       $data.isOpen = false;
     },
     showBlockUserModal: () => {
       if($data.user_id)
       {
-        Livewire.emit(
-          "openModal", 
-          "components.modals.user-blocking-modal", 
-          { user: $data.user_id }
-        );
+        Livewire.dispatch("openModal", {
+          component: "components.modals.user-blocking-modal",
+          arguments: { user: $data.user_id }
+        });
       }
       $data.isOpen = false;
     },

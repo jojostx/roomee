@@ -126,7 +126,7 @@ class UpdatedContactChannelCard extends Component implements HasForms
                 ->send();
         }
 
-        $this->dispatchBrowserEvent('reload-page');
+        $this->dispatch('reload-page');
     }
 
     public function render()

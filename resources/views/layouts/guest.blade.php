@@ -16,16 +16,15 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         [x-cloak] {
             display: none !important;
         }
     </style>
     @filamentStyles
+    @vite(['resources/css/app.css', 'resources/js/tabula_rasa.js'])
 
     <!-- Scripts -->
-    <script src="{{ asset('js/tabula_rasa.js') }}" defer></script>
     @filamentScripts
     @stack('scripts')
 </head>
@@ -43,7 +42,7 @@
 
     @include('sections.footer-alt')
 
-    @livewire('livewire-ui-modal')
+    @livewire('wire-elements-modal')
     <script type="application/javascript">
         function setCustomCSSViewportHeightVariable() {
             // First we get the viewport height and we multiple it by 1% to get a value for a vh unit

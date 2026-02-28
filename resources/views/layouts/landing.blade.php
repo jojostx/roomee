@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
+    @vite(['resources/css/welcome.css', 'resources/js/welcome.js'])
 
     <style>
         [x-cloak] {
@@ -22,7 +22,6 @@
     </style>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/welcome.js') }}" defer></script>
 </head>
 
 <body class="relative min-h-screen overflow-x-hidden font-sans antialiased bg-secondary-100 vh">

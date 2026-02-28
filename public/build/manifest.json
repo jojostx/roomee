@@ -1,13 +1,44 @@
 {
+  "__commonjsHelpers-CqkleIqs.js": {
+    "file": "assets/_commonjsHelpers-CqkleIqs.js",
+    "name": "_commonjsHelpers"
+  },
   "resources/css/app.css": {
-    "file": "assets/app-CS-NCOKf.css",
+    "file": "assets/app-B8y4nUmU.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
+  "resources/css/welcome.css": {
+    "file": "assets/welcome-CJ6ekFBK.css",
+    "src": "resources/css/welcome.css",
+    "isEntry": true
+  },
   "resources/js/app.js": {
-    "file": "assets/app-BS63dcDB.js",
+    "file": "assets/app-Bayl3dgi.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers-CqkleIqs.js"
+    ]
+  },
+  "resources/js/tabula_rasa.js": {
+    "file": "assets/tabula_rasa-at4tHD7m.js",
+    "name": "tabula_rasa",
+    "src": "resources/js/tabula_rasa.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/app.js",
+      "__commonjsHelpers-CqkleIqs.js"
+    ]
+  },
+  "resources/js/welcome.js": {
+    "file": "assets/welcome-BK9IARLX.js",
+    "name": "welcome",
+    "src": "resources/js/welcome.js",
+    "isEntry": true,
+    "imports": [
+      "__commonjsHelpers-CqkleIqs.js"
+    ]
   }
 }

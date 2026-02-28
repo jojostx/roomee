@@ -6,11 +6,16 @@ $course_name = Illuminate\Support\Arr::get($getColumns(), 'course.name', null)?-
 $min_budget = Illuminate\Support\Arr::get($getColumns(), 'min_budget', null)?->getState() ?? 'N/A';
 $max_budget = Illuminate\Support\Arr::get($getColumns(), 'max_budget', null)?->getState() ?? 'N/A';
 $similarity_score = Illuminate\Support\Arr::get($getColumns(), 'similarity_score', null)?->getState() ?? 'N/A';
+$min_budget_display = is_numeric($min_budget) ? number_format((float) $min_budget) : 'N/A';
+$max_budget_display = is_numeric($max_budget) ? number_format((float) $max_budget) : 'N/A';
 
 $towns = Illuminate\Support\Arr::get($getColumns(), 'towns.name', null)?->getState() ?? '';
 $towns = str()->of($towns)->explode(', ');
 
-$pivot_created_at = Illuminate\Support\Arr::get($getColumns(), 'pivot_created_at', null)?->getFormattedState() ?? null;
+$pivot_created_at = Illuminate\Support\Arr::get($getColumns(), 'pivot_created_at', null)?->getState() ?? null;
+if (filled($pivot_created_at) && !($pivot_created_at instanceof \Carbon\CarbonInterface)) {
+    $pivot_created_at = Illuminate\Support\Carbon::parse($pivot_created_at);
+}
 @endphp
 
 <div>
@@ -71,9 +76,9 @@ $pivot_created_at = Illuminate\Support\Arr::get($getColumns(), 'pivot_created_at
         <div class="mr-auto">
             <p class="font-semibold">
                 <span class="text-sm text-secondary-500">Budget:</span>
-                <span class="text-secondary-500">₦</span>{{ number_format($min_budget) }}
+                <span class="text-secondary-500">₦</span>{{ $min_budget_display }}
                 -
-                <span class="text-secondary-500 ">₦</span>{{ number_format($max_budget) }}
+                <span class="text-secondary-500 ">₦</span>{{ $max_budget_display }}
             </p>
         </div>
     </div>

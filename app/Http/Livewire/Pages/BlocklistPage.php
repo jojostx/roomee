@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Pages;
 
 use Closure;
 use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Tables;
 use App\Models\User;
 use App\Models\Report;
@@ -18,9 +20,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class BlocklistPage extends Component implements Tables\Contracts\HasTable
+class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasForms
 {
     use
+        InteractsWithForms,
         Traits\WithFavoriting,
         Traits\WithRequesting,
         Traits\WithBlocking,

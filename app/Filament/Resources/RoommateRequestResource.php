@@ -30,6 +30,7 @@ class RoommateRequestResource extends Resource
                 Forms\Components\Select::make('recipient_id')
                     ->relationship('recipient', 'full_name')
                     ->searchable()
+                    ->different('sender_id')
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->options(self::getStatusOptions())
