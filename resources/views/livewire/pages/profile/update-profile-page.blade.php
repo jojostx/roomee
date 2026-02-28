@@ -51,6 +51,17 @@
             </div>
     
             <form wire:submit.prevent="save" class="max-w-3xl pb-6 sm:grid-cols-2 col-span-full lg:col-span-5 lg:mt-12">
+                @if ($errors->any())
+                    <div class="p-4 mb-4 border rounded-md border-danger-300 bg-danger-50 text-danger-800" role="alert">
+                        <p class="mb-2 font-semibold">Please fix the following errors:</p>
+                        <ul class="pl-5 list-disc">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <div class="my-8 text-secondary-500 lg:mt-6">
                     {{ $this->form }}
                 </div>

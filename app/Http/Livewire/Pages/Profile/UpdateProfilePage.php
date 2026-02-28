@@ -25,6 +25,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class UpdateProfilePage extends Component implements HasForms
 {
@@ -286,54 +287,75 @@ class UpdateProfilePage extends Component implements HasForms
         );
     }
 
+    protected function showAlert(string $type, string $message, bool $closeAfterTimeout = false): void
+    {
+        $this->dispatch(
+            'open-alert',
+            alert_type: $type,
+            message: $message,
+            closeAfterTimeout: $closeAfterTimeout,
+        );
+    }
+
+    protected function onValidationError(ValidationException $exception): void
+    {
+        $firstError = $exception->validator?->errors()?->first()
+            ?? 'Please review the highlighted fields and try again.';
+
+        $this->showAlert('danger', $firstError, false);
+    }
+
     public function save()
     {
         $data = $this->form->getState();
 
         $user = $this->getFormModel();
+        if (!$user) {
+            $this->showAlertOnSaveError();
+            return;
+        }
 
         $userAvatar = (filled($data['avatar_image']) && $user->avatar !== $data['avatar_image']) ? $data['avatar_image'] : $user->avatar;
         $userAvatar = $this->resolveAvatarPathForForm($userAvatar);
 
-        try {
-            $canProceed = filled($userAvatar) && Storage::disk('public')->exists($userAvatar);
-        } catch (\Throwable $th) {
-            $canProceed = false;
+        if (blank($userAvatar) || !Storage::disk('public')->exists($userAvatar)) {
+            $this->addError('avatar_image', 'Please upload a valid avatar image before saving your profile.');
+            $this->showAlert('danger', 'Please upload a valid avatar image before saving your profile.', false);
+            return;
         }
 
-        //store data using db transactions & set profile_updated field to true
-        if ($canProceed) {
-            DB::beginTransaction();
+        DB::beginTransaction();
 
-            try {
-                $user->bio = $this->bio;
-                $user->first_name = $this->first_name;
-                $user->last_name = $this->last_name;
-                $user->avatar = $userAvatar;
-                $user->hobbies()->sync($this->hobbies);
-                $user->dislikes()->sync($this->dislikes);
-                $user->school()->associate($this->school);
-                $user->course()->associate($this->course);
-                $user->course_level = intval($this->course_level);
-                $user->towns()->sync($this->towns);
-                $user->rooms = $this->rooms;
-                $user->min_budget = intval($this->min_budget);
-                $user->max_budget = intval($this->max_budget);
-                $user->profile_updated = true;
+        try {
+            $user->bio = $data['bio'];
+            $user->first_name = $data['first_name'];
+            $user->last_name = $data['last_name'];
+            $user->avatar = $userAvatar;
+            $user->hobbies()->sync($data['hobbies']);
+            $user->dislikes()->sync($data['dislikes']);
+            $user->school()->associate($data['school']);
+            $user->course()->associate($data['course']);
+            $user->course_level = intval($data['course_level']);
+            $user->towns()->sync($data['towns']);
+            $user->rooms = $data['rooms'];
+            $user->min_budget = intval($data['min_budget']);
+            $user->max_budget = intval($data['max_budget']);
+            $user->profile_updated = true;
 
-                $user->save();
+            $user->save();
 
-                DB::commit();
+            DB::commit();
 
-                //redirect to dashboard
-                return $this->redirect(route('profile.view', compact('user')));
-            } catch (\Exception $th) {
-                DB::rollBack();
+            $this->showAlert('success', 'Profile updated successfully.', true);
 
-                return $this->showAlertOnSaveError();
-            }
-        } else {
-            return $this->showAlertOnSaveError();
+            return $this->redirectRoute('dashboard');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            report($th);
+
+            $this->showAlertOnSaveError();
+            return;
         }
     }
 
