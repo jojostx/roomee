@@ -29,7 +29,6 @@ class UpdateProfilePage extends Component implements HasForms
 {
     use InteractsWithForms;
 
-    public $cover_image;
     public $avatar_image;
     public $first_name;
     public $last_name;
@@ -50,7 +49,6 @@ class UpdateProfilePage extends Component implements HasForms
 
         $this->form->fill([
             'avatar_image' => $user->avatar,
-            'cover_image' => $user->cover_photo,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'rooms' => $user->rooms ?? '',
@@ -72,8 +70,8 @@ class UpdateProfilePage extends Component implements HasForms
     }
 
     /**
-   * @return \Filament\Forms\Components\Component[]
-   */
+     * @return \Filament\Forms\Components\Component[]
+     */
     protected function getFormSchema(): array
     {
         return [
@@ -86,7 +84,7 @@ class UpdateProfilePage extends Component implements HasForms
                         ->disk('avatars')
                         ->imageResizeTargetWidth(320)
                         ->getPreviewImageUrlUsing($this->getFormModel()->avatar_path)
-                        ->directory(fn () => (string) auth()->id())
+                        ->directory(fn() => (string) auth()->id())
                         ->getUploadedFileNameForStorageUsing(function (): string {
                             return (string) str()->uuid()->prepend('avatar-photo-', md5(strval(auth()->user()->id)), '-');
                         })
@@ -98,25 +96,22 @@ class UpdateProfilePage extends Component implements HasForms
                             'md' => 1,
                             'lg' => 2,
                         ]),
-
-                    PhotoUpload::make('cover_image')
-                        ->label('Cover Photo')
-                        ->image()
-                        ->disk('cover_photos')
-                        ->directory(fn () => (string) auth()->id())
-                        ->imageCropAspectRatio('16:9')
-                        ->imageResizeTargetWidth(640)
-                        ->getPreviewImageUrlUsing($this->getFormModel()->cover_photo_path)
-                        ->getUploadedFileNameForStorageUsing(function (): string {
-                            return (string) str()->uuid()->prepend('cover-photo-', md5(strval(auth()->user()->id)), '-');
-                        })
-                        ->required()
-                        ->rules(['between:10,6098'])
+                    Placeholder::make('Email')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
+                        ->content(auth()->user()->email)
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 2,
-                            'md' => 3,
-                            'lg' => 6,
+                            'md' => 2,
+                            'lg' => 4,
+                        ]),
+
+                    Placeholder::make('Gender')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
+                        ->content(auth()->user()->gender)
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 2,
+                            'md' => 2,
+                            'lg' => 4,
                         ]),
 
                     TextInput::make('first_name')
@@ -143,25 +138,7 @@ class UpdateProfilePage extends Component implements HasForms
                             'sm' => 2,
                             'md' => 2,
                             'lg' => 4,
-                        ]),
-
-                    Placeholder::make('Email')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
-                        ->content(auth()->user()->email)
-                        ->columnSpan([
-                            'default' => 2,
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 4,
-                        ]),
-
-                    Placeholder::make('Gender')->extraAttributes(['class' => 'text-lg font-semibold capitalize'])
-                        ->content(auth()->user()->gender)
-                        ->columnSpan([
-                            'default' => 2,
-                            'sm' => 2,
-                            'md' => 2,
-                            'lg' => 4,
-                        ]),
+                        ])
                 ])
                 ->columns([
                     'default' => 2,
@@ -218,8 +195,8 @@ class UpdateProfilePage extends Component implements HasForms
                         ->label('Institute of Study')
                         ->live()
                         ->searchable()
-                        ->getSearchResultsUsing(fn (string $searchQuery) => School::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id')->toArray())
-                        ->getOptionLabelUsing(fn ($value): ?string => School::find($value)?->name)
+                        ->getSearchResultsUsing(fn(string $searchQuery) => School::where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('name', 'id')->toArray())
+                        ->getOptionLabelUsing(fn($value): ?string => School::find($value)?->name)
                         ->options(School::all()->pluck('name', 'id')->toArray())
                         ->afterStateUpdated(function (Set $set) {
                             $set('course', null);
@@ -235,12 +212,12 @@ class UpdateProfilePage extends Component implements HasForms
                         ->placeholder('Please select your course of study')
                         ->live()
                         ->searchable()
-                        ->getSearchResultsUsing(fn (string $searchQuery, Get $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
-                        ->getOptionLabelUsing(fn ($value): ?string => Course::find($value)?->name)
-                        ->options(fn (Get $get) => School::find($get('school'))?->courses->pluck('name', 'id')->toArray() ?? [])
-                        ->afterStateUpdated(fn (Set $set) => $set('course_level', null))
+                        ->getSearchResultsUsing(fn(string $searchQuery, Get $get) => School::find($get('school'))->courses()->where('name', 'like', "%{$searchQuery}%")->limit(50)->pluck('courses.name', 'courses.id')->toArray())
+                        ->getOptionLabelUsing(fn($value): ?string => Course::find($value)?->name)
+                        ->options(fn(Get $get) => School::find($get('school'))?->courses->pluck('name', 'id')->toArray() ?? [])
+                        ->afterStateUpdated(fn(Set $set) => $set('course_level', null))
                         ->required()
-                        ->exists('course_school', 'course_id', fn (Exists $rule, Get $get) => $rule->where('school_id', $get('school')))
+                        ->exists('course_school', 'course_id', fn(Exists $rule, Get $get) => $rule->where('school_id', $get('school')))
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 1,
@@ -250,8 +227,8 @@ class UpdateProfilePage extends Component implements HasForms
                     Select::make('course_level')
                         ->label('Course Level')
                         ->live()
-                        ->options(fn (Get $get) => Course::getCourseLevels(Course::find($get('course'))))
-                        ->in(fn (Get $get) => Course::find($get('course'))?->levels ?? [])
+                        ->options(fn(Get $get) => Course::getCourseLevels(Course::find($get('course'))))
+                        ->in(fn(Get $get) => Course::find($get('course'))?->levels ?? [])
                         ->required()
                         ->columnSpan([
                             'default' => 2,
@@ -267,8 +244,8 @@ class UpdateProfilePage extends Component implements HasForms
                     Select::make('towns')
                         ->multiple()
                         ->label('Preferred property locations')
-                        ->options(fn (Get $get) => School::find($get('school'))?->towns->pluck('name', 'id')->toArray() ?? [])
-                        ->exists('school_town', 'town_id', fn (Exists $rule, Get $get) => $rule->where('school_id', $get('school')))
+                        ->options(fn(Get $get) => School::find($get('school'))?->towns->pluck('name', 'id')->toArray() ?? [])
+                        ->exists('school_town', 'town_id', fn(Exists $rule, Get $get) => $rule->where('school_id', $get('school')))
                         ->required(),
 
                     Select::make('rooms')
@@ -312,11 +289,9 @@ class UpdateProfilePage extends Component implements HasForms
         $user = $this->getFormModel();
 
         $userAvatar = (filled($data['avatar_image']) && $user->avatar !== $data['avatar_image']) ? $data['avatar_image'] : $user->avatar;
-        $userCover = (filled($data['cover_image']) && $user->cover_photo !== $data['cover_image']) ? $data['cover_image'] : $user->cover_photo;
 
         try {
-            $canProceed = Storage::disk('avatars')->exists($userAvatar ?? '') &&
-                Storage::disk('cover_photos')->exists($userCover ?? '');
+            $canProceed = Storage::disk('avatars')->exists($userAvatar ?? '');
         } catch (\Throwable $th) {
             $canProceed = false;
         }
@@ -330,7 +305,6 @@ class UpdateProfilePage extends Component implements HasForms
                 $user->first_name = $this->first_name;
                 $user->last_name = $this->last_name;
                 $user->avatar = $userAvatar;
-                $user->cover_photo = $userCover;
                 $user->hobbies()->sync($this->hobbies);
                 $user->dislikes()->sync($this->dislikes);
                 $user->school()->associate($this->school);

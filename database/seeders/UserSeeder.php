@@ -29,7 +29,6 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
                 'avatar' => '1628751944-iuoKwaPW.png',
-                'cover_photo' => '1628751944-vzT2iZ8J.png',
             ],
             [
                 'uuid' => str()->uuid()->toString(),
@@ -44,7 +43,6 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
                 'avatar' => null,
-                'cover_photo' => null,
             ],
         ];
 

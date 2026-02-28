@@ -76,7 +76,6 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     'profile_updated',
     'gender',
     'avatar',
-    'cover_photo',
     'bio',
     'rooms',
     'min_budget',
@@ -315,20 +314,6 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     }
 
     return $avatar;
-  }
-
-  public function getCoverPhotoPathAttribute(): string
-  {
-    $cover_photo = asset('images/cover_placeholder.png');
-
-    if (filled($this->cover_photo) && Storage::disk('cover_photos')->exists($this->cover_photo)) {
-      try {
-        $cover_photo = Storage::disk('cover_photos')->url($this->cover_photo);
-      } catch (\RuntimeException $th) {
-      }
-    }
-
-    return $cover_photo;
   }
 
   public function getVerifiedContactChannels(): Collection|ContactChannel

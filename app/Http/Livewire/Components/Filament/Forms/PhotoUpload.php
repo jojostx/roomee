@@ -262,7 +262,7 @@ class PhotoUpload extends BaseFileUpload
     public function getAltText(): ?string
     {
         if (blank($this->evaluate($this->altText))) {
-            return $this->isAvatar() ? 'avatar image' : 'cover image';
+            return $this->isAvatar() ? 'avatar image' : 'profile image';
         }
 
         return $this->evaluate($this->altText);

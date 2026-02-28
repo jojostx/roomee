@@ -18,26 +18,6 @@ export default () => ({
         }
     },
 
-    cover: {
-        ['@change']($event) {
-            const cover = document.getElementById('cover_out');
-            let loader = document.getElementById('loader_cover');
-            let coverSVG = document.getElementById('cover-svg');
-
-            let options = {
-                max_size: 4507566,
-                aspectRatio: 1.5,
-                maxWidth: 500,
-                maxHeight: 320,
-                loader,
-                output: cover,
-                hideableElems: [coverSVG]
-            }
-
-            this.handleFileUpload($event, 'cover_photo', options);
-        }
-    },
-
     //image manipulation utility functions
     handleFileUpload(event, livewireProperty, options) {
         let {

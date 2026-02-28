@@ -70,7 +70,7 @@
              ])>
             <img 
                 class="object-cover"
-                src="{{ ($imageSrc = $getPreviewImageUrl()) ? $imageSrc : ($isAvatar() ? asset('images/avatar_placeholder.png') : asset('images/cover_placeholder.png')) }}" 
+                src="{{ ($imageSrc = $getPreviewImageUrl()) ? $imageSrc : asset('images/avatar_placeholder.png') }}" 
                 x-ref="poster_{{ $getStatePath() }}" 
                 alt="{{ $getAltText() }}" 
                 width="100%">

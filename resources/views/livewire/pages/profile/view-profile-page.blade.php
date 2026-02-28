@@ -1,8 +1,8 @@
 <div class="w-11/12 pt-6 pb-6 m-auto md:pt-12" wire:poll.15s>
     <div class="flex justify-center w-full">
         <div class="w-full max-w-3xl pb-6">
-            <div class="relative flex flex-col-reverse items-center justify-start px-4 py-4 mb-6 bg-white border rounded-lg border-secondary-300 sm:flex-row">
-                <div class="relative z-10 flex flex-col items-center justify-start w-full md:w-1/2 md:mr-2">
+            <div class="relative flex items-center justify-start px-4 py-4 mb-6 bg-white border rounded-lg border-secondary-300">
+                <div class="relative z-10 flex flex-col items-center justify-start w-full">
                     <div class="absolute z-0 sm:static -top-14 md:top-0 sm:w-2/5 sm:mb-0">
                         <div class="flex flex-col items-center justify-center mt-1">
                             <div class="block w-24 h-24 mb-2 overflow-hidden border-4 rounded-full border-primary-700/50 bg-primary-200">
@@ -59,13 +59,6 @@
                             @endcan
                         </div>
                         <!-- end of user interactions -->
-                    </div>
-                </div>
-                <div class="relative flex items-center justify-center w-full mt-1 overflow-hidden md:w-1/2">
-                    <div class="overflow-hidden border-4 rounded-lg border-primary-700/50">
-                        @if ($user->cover_photo)
-                        <img src="{{ $user->cover_photo_path }}" id="cover_out" class="w-full" width="100%" height="100%" alt="{{ $user->first_name }}'s cover photo">
-                        @endif
                     </div>
                 </div>
             </div>
