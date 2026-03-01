@@ -78,6 +78,36 @@ class UpdateProfilePage extends Component implements HasForms
         return Auth::user();
     }
 
+    protected function filledArray(mixed $value): bool
+    {
+        if (!is_array($value)) {
+            return false;
+        }
+
+        return count(array_filter($value, static fn ($item): bool => filled($item))) > 0;
+    }
+
+    protected function isGeneralInformationComplete(Get $get): bool
+    {
+        return filled($get('avatar_image'))
+            && filled($get('first_name'))
+            && filled($get('last_name'));
+    }
+
+    protected function isPersonalInformationComplete(Get $get): bool
+    {
+        return filled($get('bio'))
+            && $this->filledArray($get('hobbies'))
+            && $this->filledArray($get('dislikes'));
+    }
+
+    protected function isEducationalInformationComplete(Get $get): bool
+    {
+        return filled($get('school'))
+            && filled($get('course'))
+            && filled($get('course_level'));
+    }
+
     /**
      * @return \Filament\Forms\Components\Component[]
      */
@@ -96,6 +126,7 @@ class UpdateProfilePage extends Component implements HasForms
                         ->schema([
                             FileUpload::make('avatar_image')
                                 ->label('Avatar Photo')
+                                ->live()
                                 ->avatar()
                                 ->imageEditor()
                                 ->imageEditorAspectRatios(['1:1'])
@@ -131,6 +162,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                                     TextInput::make('first_name')
                                         ->label('First Name')
+                                        ->live()
                                         ->minLength(2)
                                         ->maxLength(160)
                                         ->rules(['string', 'max:160', 'min:2'])
@@ -138,6 +170,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                                     TextInput::make('last_name')
                                         ->label('Last Name')
+                                        ->live()
                                         ->minLength(2)
                                         ->maxLength(160)
                                         ->rules(['string', 'max:160', 'min:2'])
@@ -153,11 +186,15 @@ class UpdateProfilePage extends Component implements HasForms
                 ]),
 
             Section::make('Personal Information')
-                ->description('These are Information that describe who you are.')
+                ->description(fn (Get $get): string => $this->isGeneralInformationComplete($get)
+                    ? 'These are Information that describe who you are.'
+                    : 'These are Information that describe who you are. Complete General Information to continue.')
+                ->disabled(fn (Get $get): bool => !$this->isGeneralInformationComplete($get))
                 ->columns(2)
                 ->schema([
                     Textarea::make('bio')
                         ->label('About')
+                        ->live()
                         ->minLength(15)
                         ->maxLength(255)
                         ->rules(['string', 'max:255', 'min:15'])
@@ -167,6 +204,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                     Select::make('hobbies')
                         ->multiple()
+                        ->live()
                         ->label('Hobbies')
                         ->placeholder('Please select your hobbies')
                         ->options(Hobby::all('id', 'name')->pluck('name', 'id')->toArray())
@@ -180,6 +218,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                     Select::make('dislikes')
                         ->multiple()
+                        ->live()
                         ->label('Dislikes')
                         ->placeholder('Please select your dislikes')
                         ->options(Dislike::all('id', 'name')->pluck('name', 'id')->toArray())
@@ -193,7 +232,10 @@ class UpdateProfilePage extends Component implements HasForms
                 ])->collapsible(),
 
             Section::make('Educational Information')
-                ->description('These are Information about your current Educational arrangement.')
+                ->description(fn (Get $get): string => $this->isGeneralInformationComplete($get) && $this->isPersonalInformationComplete($get)
+                    ? 'These are Information about your current Educational arrangement.'
+                    : 'These are Information about your current Educational arrangement. Complete Personal Information to continue.')
+                ->disabled(fn (Get $get): bool => !($this->isGeneralInformationComplete($get) && $this->isPersonalInformationComplete($get)))
                 ->columns(2)
                 ->schema([
                     Select::make('school')
@@ -243,7 +285,10 @@ class UpdateProfilePage extends Component implements HasForms
                 ])->collapsible(),
 
             Section::make('Apartment Information')
-                ->description('These are Information that describe your preferred apartment type and location.')
+                ->description(fn (Get $get): string => $this->isGeneralInformationComplete($get) && $this->isPersonalInformationComplete($get) && $this->isEducationalInformationComplete($get)
+                    ? 'These are Information that describe your preferred apartment type and location.'
+                    : 'These are Information that describe your preferred apartment type and location. Complete Educational Information to continue.')
+                ->disabled(fn (Get $get): bool => !($this->isGeneralInformationComplete($get) && $this->isPersonalInformationComplete($get) && $this->isEducationalInformationComplete($get)))
                 ->columns(2)
                 ->schema([
                     Select::make('towns')
