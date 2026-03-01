@@ -442,7 +442,6 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $favorites
  * @property-read int|null $favorites_count
  * @property-read string $avatar_path
- * @property-read string $cover_photo_path
  * @property-read string $full_name
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Hobby> $hobbies
  * @property-read int|null $hobbies_count

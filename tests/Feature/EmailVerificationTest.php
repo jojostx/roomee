@@ -28,12 +28,13 @@ class EmailVerificationTest extends TestCase
 
     public function test_email_can_be_verified()
     {
-        Event::fake();
-
         /** @var \Illuminate\Contracts\Auth\Authenticatable|\Illuminate\Database\Eloquent\Model|TModel>|\Illuminate\Database\Eloquent\Model|TModel */
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
+
+        // Fake only the event under test so model creating events still run (UUID generation).
+        Event::fake([Verified::class]);
 
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
@@ -45,7 +46,7 @@ class EmailVerificationTest extends TestCase
 
         Event::assertDispatched(Verified::class);
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(RouteServiceProvider::HOME . '?verified=1');
+        $response->assertRedirect(RouteServiceProvider::PROFILE . '?verified=1');
     }
 
     public function test_email_is_not_verified_with_invalid_hash()

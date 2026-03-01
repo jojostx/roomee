@@ -10,12 +10,12 @@ use App\Models\ContactChannel;
 use App\Models\Favorite;
 use App\Models\RoommateRequest;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PanelLivewireRouteSmokeTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected User $admin;
     protected User $member;
@@ -132,4 +132,3 @@ class PanelLivewireRouteSmokeTest extends TestCase
         }
     }
 }
-
