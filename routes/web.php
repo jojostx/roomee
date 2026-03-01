@@ -3,12 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
+use App\Http\Controllers\Admin\VerificationFileController;
 use App\Http\Livewire\Pages\Profile\UpdateProfilePage;
 use App\Http\Livewire\Pages\Profile\ViewProfilePage;
-use App\Http\Livewire\Pages\Blocklist;
-use App\Http\Livewire\Pages\Dashboard;
-use App\Http\Livewire\Pages\Favorite;
-use App\Http\Livewire\Pages\RoommateRequests;
+use App\Http\Livewire\Pages\Profile\PendingVerificationPage;
 use App\Http\Livewire\Pages\BlocklistPage;
 use App\Http\Livewire\Pages\DashboardPage;
 use App\Http\Livewire\Pages\FavoritesPage;
@@ -45,21 +43,31 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'verified', 'profile.updated'])
+Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended'])
     ->group(function () {
-        Route::get('/profile/update', UpdateProfilePage::class)->withoutMiddleware(['profile.updated'])->name('profile.update');
-        Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
-
-        Route::get('/dashboard', DashboardPage::class)->name('dashboard');
-        Route::get('/favorites', FavoritesPage::class)->name('favorites');
-        Route::get('/roommate-requests', RoommateRequestsPage::class)->name('roommate-requests');
-        Route::get('/blocklist', BlocklistPage::class)->name('blocklist');
+        Route::get('/profile/update', UpdateProfilePage::class)->name('profile.update');
+        Route::get('/verification/pending', PendingVerificationPage::class)->name('verification.pending');
 
         Route::as('settings.')->prefix('settings')->group(function () {
             Route::get('/account', AccountSettingsPage::class)->name('account');
             Route::get('/contact-channels', ContactChannelsSettingsPage::class)->name('contact-channels');
             Route::get('/notifications', NotificationsSettingsPage::class)->name('notifications');
         });
+
+        Route::middleware(['profile.updated', 'identity.verified'])->group(function () {
+            Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
+
+            Route::get('/dashboard', DashboardPage::class)->name('dashboard');
+            Route::get('/favorites', FavoritesPage::class)->name('favorites');
+            Route::get('/roommate-requests', RoommateRequestsPage::class)->name('roommate-requests');
+            Route::get('/blocklist', BlocklistPage::class)->name('blocklist');
+        });
     });
+
+Route::middleware(['auth:sanctum', 'signed'])->group(function () {
+    Route::get('/admin/verification-files/{user}/{type}', [VerificationFileController::class, 'show'])
+        ->whereIn('type', ['identity', 'selfie'])
+        ->name('admin.verification-file.show');
+});
 
 require __DIR__ . '/auth.php';

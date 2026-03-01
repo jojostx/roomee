@@ -41,6 +41,13 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],
+
+        'kyc_private' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/kyc'),
+            'visibility' => 'private',
+            'throw' => false,
+        ],
         
         // Legacy avatar disk kept for backward compatibility with pre-v3 uploads.
         'avatars' => [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,30 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        if (!$request->user()->profile_updated) {
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+
+        if ($user->isSuspended()) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()
+                ->route('login')
+                ->withErrors([
+                    'email' => __('auth.failed'),
+                ]);
+        }
+
+        if (!$user->profile_updated) {
+            return redirect(RouteServiceProvider::PROFILE);
+        }
+
+        if ($user->verification_status === User::VERIFICATION_STATUS_PENDING) {
+            return redirect(RouteServiceProvider::VERIFICATION_PENDING);
+        }
+
+        if ($user->verification_status !== User::VERIFICATION_STATUS_APPROVED && !$user->isAdminOrStaff()) {
             return redirect(RouteServiceProvider::PROFILE);
         }
 

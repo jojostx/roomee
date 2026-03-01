@@ -85,11 +85,14 @@ class PanelLivewireRouteSmokeTest extends TestCase
             'filament.admin.resources.roommate-requests.create' => [],
             'filament.admin.resources.roommate-requests.edit' => ['record' => $this->roommateRequest],
 
+            'filament.admin.resources.verification-requests.index' => [],
+
             'filament.admin.resources.users.index' => [],
             'filament.admin.resources.users.create' => [],
             'filament.admin.resources.users.edit' => ['record' => $this->member],
 
             'filament.admin.pages.message-users' => [],
+            'filament.admin.pages.verification-settings' => [],
         ];
 
         foreach ($routes as $routeName => $params) {
@@ -112,6 +115,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
             'favorites' => [],
             'roommate-requests' => [],
             'blocklist' => [],
+            'verification.pending' => [],
             'profile.update' => [],
             'profile.view' => ['user' => $this->member],
             'settings.account' => [],

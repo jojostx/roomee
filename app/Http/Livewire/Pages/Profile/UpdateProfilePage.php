@@ -25,6 +25,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\HtmlString;
 use Illuminate\Validation\ValidationException;
 
 class UpdateProfilePage extends Component implements HasForms
@@ -32,6 +33,9 @@ class UpdateProfilePage extends Component implements HasForms
     use InteractsWithForms;
 
     public $avatar_image;
+    public $identity_document_path;
+    public $selfie_path;
+    public $rejection_reason;
     public $first_name;
     public $last_name;
     public $bio;
@@ -58,6 +62,9 @@ class UpdateProfilePage extends Component implements HasForms
 
         $this->form->fill([
             'avatar_image' => $avatarPath,
+            'identity_document_path' => $user->identity_document_path,
+            'selfie_path' => $user->selfie_path,
+            'rejection_reason' => $user->rejection_reason,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'rooms' => $user->rooms ?? '',
@@ -106,6 +113,61 @@ class UpdateProfilePage extends Component implements HasForms
         return filled($get('school'))
             && filled($get('course'))
             && filled($get('course_level'));
+    }
+
+    protected function getVerificationStatus(Get $get): string
+    {
+        $status = $this->getFormModel()?->verification_status;
+
+        return is_string($status) && filled($status)
+            ? $status
+            : User::VERIFICATION_STATUS_UNVERIFIED;
+    }
+
+    protected function canUploadVerificationDocuments(Get $get): bool
+    {
+        return in_array($this->getVerificationStatus($get), [
+            User::VERIFICATION_STATUS_UNVERIFIED,
+            User::VERIFICATION_STATUS_REJECTED,
+        ], true);
+    }
+
+    protected function getVerificationDescription(Get $get): string
+    {
+        return match ($this->getVerificationStatus($get)) {
+            User::VERIFICATION_STATUS_APPROVED => 'Your identity has been verified.',
+            User::VERIFICATION_STATUS_PENDING => 'Your identity documents are under review.',
+            User::VERIFICATION_STATUS_REJECTED => 'Your previous verification request was rejected. Please upload new documents to resubmit.',
+            default => 'Upload your identity document and selfie to start manual verification.',
+        };
+    }
+
+    protected function getIdentityVerificationHeading(Get $get): HtmlString
+    {
+        $isVerified = $this->getVerificationStatus($get) === User::VERIFICATION_STATUS_APPROVED;
+        $statusText = $isVerified ? 'Verified' : 'Unverified';
+        $statusClass = $isVerified
+            ? 'inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-semibold text-blue-700'
+            : 'inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700';
+
+        return new HtmlString(
+            '<span class="flex items-center gap-2">Identity Verification <span class="' . $statusClass . '">' . e($statusText) . '</span></span>'
+        );
+    }
+
+    protected function normalizeSingleFileState(mixed $state): ?string
+    {
+        if (is_array($state)) {
+            $state = collect($state)->first(fn ($item): bool => filled($item));
+        }
+
+        if (!is_string($state)) {
+            return null;
+        }
+
+        $state = trim($state);
+
+        return $state !== '' ? $state : null;
     }
 
     /**
@@ -230,6 +292,61 @@ class UpdateProfilePage extends Component implements HasForms
                             'md' => 1,
                         ])
                 ])->collapsible(),
+
+            Section::make(fn (Get $get): HtmlString => $this->getIdentityVerificationHeading($get))
+                ->id('identity-verification')
+                ->description(fn (Get $get): string => $this->getVerificationDescription($get))
+                ->schema([
+                    Placeholder::make('verification_rejection_reason')
+                        ->label('Rejection Reason')
+                        ->content(fn (Get $get): string => $get('rejection_reason') ?? '')
+                        ->visible(fn (Get $get): bool => $this->getVerificationStatus($get) === User::VERIFICATION_STATUS_REJECTED && filled($get('rejection_reason'))),
+
+                    FileUpload::make('identity_document_path')
+                        ->label('Identity Document')
+                        ->disk('kyc_private')
+                        ->directory(fn (): string => (string) auth()->id() . '/identity-document')
+                        ->visibility('private')
+                        ->acceptedFileTypes([
+                            'application/pdf',
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ])
+                        ->maxSize(5120)
+                        ->live()
+                        ->visible(fn (Get $get): bool => $this->canUploadVerificationDocuments($get))
+                        ->helperText('Accepted: PDF or image files. Maximum size: 5MB.')
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 1,
+                            'md' => 1,
+                        ]),
+
+                    FileUpload::make('selfie_path')
+                        ->label('Selfie Photo')
+                        ->disk('kyc_private')
+                        ->directory(fn (): string => (string) auth()->id() . '/selfie')
+                        ->visibility('private')
+                        ->image()
+                        ->acceptedFileTypes([
+                            'image/jpeg',
+                            'image/png',
+                            'image/webp',
+                        ])
+                        ->maxSize(5120)
+                        ->extraInputAttributes(['capture' => 'user'])
+                        ->live()
+                        ->visible(fn (Get $get): bool => $this->canUploadVerificationDocuments($get))
+                        ->helperText('Accepted: image files only. Maximum size: 5MB.')
+                        ->columnSpan([
+                            'default' => 2,
+                            'sm' => 1,
+                            'md' => 1,
+                        ]),
+                ])
+                ->columns(2)
+                ->collapsible(),
 
             Section::make('Educational Information')
                 ->description(fn (Get $get): string => $this->isGeneralInformationComplete($get) && $this->isPersonalInformationComplete($get)
@@ -360,13 +477,50 @@ class UpdateProfilePage extends Component implements HasForms
             return;
         }
 
-        $userAvatar = (filled($data['avatar_image']) && $user->avatar !== $data['avatar_image']) ? $data['avatar_image'] : $user->avatar;
+        $avatarImagePath = $this->normalizeSingleFileState($data['avatar_image'] ?? null);
+        $identityDocumentPath = $this->normalizeSingleFileState($data['identity_document_path'] ?? null);
+        $selfiePath = $this->normalizeSingleFileState($data['selfie_path'] ?? null);
+
+        $userAvatar = (filled($avatarImagePath) && $user->avatar !== $avatarImagePath) ? $avatarImagePath : $user->avatar;
         $userAvatar = $this->resolveAvatarPathForForm($userAvatar);
 
         if (blank($userAvatar) || !Storage::disk('public')->exists($userAvatar)) {
             $this->addError('avatar_image', 'Please upload a valid avatar image before saving your profile.');
             $this->showAlert('danger', 'Please upload a valid avatar image before saving your profile.', false);
             return;
+        }
+
+        $canSubmitIdentityVerification = in_array($user->verification_status, [
+            User::VERIFICATION_STATUS_UNVERIFIED,
+            User::VERIFICATION_STATUS_REJECTED,
+        ], true);
+
+        if ($canSubmitIdentityVerification) {
+            $hasIdentityDocument = filled($identityDocumentPath);
+            $hasSelfie = filled($selfiePath);
+
+            if ($hasIdentityDocument xor $hasSelfie) {
+                if (!$hasIdentityDocument) {
+                    $this->addError('identity_document_path', 'Please upload your identity document.');
+                }
+
+                if (!$hasSelfie) {
+                    $this->addError('selfie_path', 'Please upload your selfie photo.');
+                }
+
+                $this->showAlert('danger', 'Upload both identity document and selfie photo to submit verification.', false);
+                return;
+            }
+
+            if ($hasIdentityDocument && $hasSelfie) {
+                if (
+                    !Storage::disk('kyc_private')->exists($identityDocumentPath)
+                    || !Storage::disk('kyc_private')->exists($selfiePath)
+                ) {
+                    $this->showAlert('danger', 'Uploaded verification files are invalid. Please upload again.', false);
+                    return;
+                }
+            }
         }
 
         DB::beginTransaction();
@@ -386,6 +540,18 @@ class UpdateProfilePage extends Component implements HasForms
             $user->min_budget = intval($data['min_budget']);
             $user->max_budget = intval($data['max_budget']);
             $user->profile_updated = true;
+
+            if (
+                $canSubmitIdentityVerification
+                && filled($identityDocumentPath)
+                && filled($selfiePath)
+            ) {
+                $user->identity_document_path = $identityDocumentPath;
+                $user->selfie_path = $selfiePath;
+                $user->verification_status = User::VERIFICATION_STATUS_PENDING;
+                $user->verification_submitted_at = now();
+                $user->rejection_reason = null;
+            }
 
             $user->save();
 

@@ -36,6 +36,11 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
  */
 class User extends Authenticatable implements Onboardable, FilamentUser, HasName
 {
+  public const VERIFICATION_STATUS_UNVERIFIED = 'unverified';
+  public const VERIFICATION_STATUS_PENDING = 'pending';
+  public const VERIFICATION_STATUS_APPROVED = 'approved';
+  public const VERIFICATION_STATUS_REJECTED = 'rejected';
+
   use GetsOnboarded,
     HasFactory,
     HasApiTokens,
@@ -59,6 +64,8 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
    */
   protected $attributes = [
     'profile_updated' => false,
+    'verification_status' => self::VERIFICATION_STATUS_UNVERIFIED,
+    'is_suspended' => false,
   ];
 
   /**
@@ -76,6 +83,14 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     'profile_updated',
     'gender',
     'avatar',
+    'identity_document_path',
+    'selfie_path',
+    'verification_status',
+    'rejection_reason',
+    'verification_submitted_at',
+    'is_suspended',
+    'suspended_at',
+    'suspension_reason',
     'bio',
     'rooms',
     'min_budget',
@@ -102,6 +117,9 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   protected $casts = [
     'email_verified_at' => 'datetime',
     'profile_updated' => 'boolean',
+    'verification_submitted_at' => 'datetime',
+    'is_suspended' => 'boolean',
+    'suspended_at' => 'datetime',
     'settings' => 'array',
     'role' => UserRole::class,
   ];
@@ -133,6 +151,65 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   public function isAdmin(): bool
   {
     return $this->role === UserRole::ADMIN;
+  }
+
+  public function isAdminOrStaff(): bool
+  {
+    $role = $this->role;
+
+    if ($role instanceof UserRole) {
+      return in_array($role, [UserRole::ADMIN, UserRole::STAFF], true);
+    }
+
+    return in_array((string) $role, [UserRole::ADMIN->value, UserRole::STAFF->value], true);
+  }
+
+  public function isVerified(): bool
+  {
+    return $this->verification_status === self::VERIFICATION_STATUS_APPROVED;
+  }
+
+  public function isPendingVerification(): bool
+  {
+    return $this->verification_status === self::VERIFICATION_STATUS_PENDING;
+  }
+
+  public function isRejectedVerification(): bool
+  {
+    return $this->verification_status === self::VERIFICATION_STATUS_REJECTED;
+  }
+
+  public function isUnverifiedVerification(): bool
+  {
+    return $this->verification_status === self::VERIFICATION_STATUS_UNVERIFIED;
+  }
+
+  public function requiresIdentityVerification(): bool
+  {
+    return !$this->isAdminOrStaff() && !$this->isVerified();
+  }
+
+  public function isSuspended(): bool
+  {
+    return (bool) $this->is_suspended;
+  }
+
+  public function suspend(?string $reason = null): bool
+  {
+    return $this->forceFill([
+      'is_suspended' => true,
+      'suspended_at' => now(),
+      'suspension_reason' => $reason,
+    ])->save();
+  }
+
+  public function unsuspend(): bool
+  {
+    return $this->forceFill([
+      'is_suspended' => false,
+      'suspended_at' => null,
+      'suspension_reason' => null,
+    ])->save();
   }
 
     // -------- RELATIONSHIPS -------- //

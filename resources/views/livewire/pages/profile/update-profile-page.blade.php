@@ -11,7 +11,7 @@
                 <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none bg-white border rounded-md shadow-sm text-secondary-800 lg:flex">
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="general" class="absolute opacity-0 left-20" autocomplete="off">
-                        <label @click="document.getElementById('general').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                        <label @click="document.getElementById('general-information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
@@ -25,6 +25,15 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                             Personal Information
+                        </label>
+                    </li>
+                    <li class="relative w-full my-1 cursor-pointer">
+                        <input type="radio" name="section-link" id="identity-verification-nav" class="absolute opacity-0 left-20" autocomplete="off">
+                        <label @click="document.getElementById('identity-verification').scrollIntoView()" for="identity-verification-nav" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 mr-3" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 .53-.21 1.04-.59 1.41A2 2 0 0110 13a2 2 0 01-1.41-.59A2 2 0 018 11V9a4 4 0 118 0v2zm0 0v2a4 4 0 11-8 0h8zm4 0h2a2 2 0 012 2v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5a2 2 0 012-2h2" />
+                            </svg>
+                            Identity Verification
                         </label>
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">

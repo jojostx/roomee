@@ -19,6 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/dashboard';
     public const PROFILE = '/profile/update';
+    public const VERIFICATION_PENDING = '/verification/pending';
 
     /**
      * The controller namespace for the application.
