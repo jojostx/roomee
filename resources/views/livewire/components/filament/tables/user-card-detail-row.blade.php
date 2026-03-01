@@ -1,6 +1,7 @@
 @php
 $user = $getRecord();
-$avatarComponent = Illuminate\Support\Arr::get($getColumns(), 'avatar', null);
+$avatarComponent = Illuminate\Support\Arr::get($getColumns(), 'avatar_path', null)
+    ?? Illuminate\Support\Arr::get($getColumns(), 'avatar', null);
 $full_name = Illuminate\Support\Arr::get($getColumns(), 'full_name', null)?->getState() ?? 'N/A';
 $course_name = Illuminate\Support\Arr::get($getColumns(), 'course.name', null)?->getState() ?? 'N/A';
 $min_budget = Illuminate\Support\Arr::get($getColumns(), 'min_budget', null)?->getState() ?? 'N/A';
@@ -36,7 +37,17 @@ if (filled($pivot_created_at) && !($pivot_created_at instanceof \Carbon\CarbonIn
 
     <div class="flex justify-between">
         <div class="flex">
-            {{ $avatarComponent->render() }}
+            @if ($avatarComponent)
+                {{ $avatarComponent->render() }}
+            @else
+                <div class="w-12 h-12 mr-3 overflow-hidden rounded-full bg-secondary-100">
+                    <img
+                        src="{{ $user->avatar_path }}"
+                        alt="{{ $full_name }} avatar"
+                        class="object-cover w-full h-full"
+                    >
+                </div>
+            @endif
             <div class="max-w-[160px]">
                 <p class="overflow-x-hidden text-base font-semibold text-secondary-700 text-ellipsis">
                     {{ $full_name }}
