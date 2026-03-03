@@ -305,7 +305,6 @@ class UpdateProfilePage extends Component implements HasForms
 
                     FileUpload::make('identity_document_path')
                         ->label('Identity Document')
-                        ->helperText('Upload a valid government-issued ID (e.g., National Identity card, passport, driver\'s license).')
                         ->disk('kyc_private')
                         ->directory(fn (): string => (string) auth()->id() . '/identity-document')
                         ->visibility('private')
@@ -318,7 +317,7 @@ class UpdateProfilePage extends Component implements HasForms
                         ->maxSize(5120)
                         ->live()
                         ->visible(fn (Get $get): bool => $this->canUploadVerificationDocuments($get))
-                        ->helperText('Accepted: PDF or image files. Maximum size: 5MB.')
+                        ->helperText('Upload a valid government-issued ID (e.g., National Identity card, passport, driver\'s license). Accepted: PDF or image files. Maximum size: 5MB.')
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 1,
