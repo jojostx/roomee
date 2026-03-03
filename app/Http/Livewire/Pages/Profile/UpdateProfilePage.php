@@ -27,6 +27,7 @@ use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\ValidationException;
+use emmanpbarrameda\FilamentTakePictureField\Forms\Components\TakePicture;
 
 class UpdateProfilePage extends Component implements HasForms
 {
@@ -304,6 +305,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                     FileUpload::make('identity_document_path')
                         ->label('Identity Document')
+                        ->helperText('Upload a valid government-issued ID (e.g., National Identity card, passport, driver\'s license).')
                         ->disk('kyc_private')
                         ->directory(fn (): string => (string) auth()->id() . '/identity-document')
                         ->visibility('private')
@@ -323,22 +325,20 @@ class UpdateProfilePage extends Component implements HasForms
                             'md' => 1,
                         ]),
 
-                    FileUpload::make('selfie_path')
-                        ->label('Selfie Photo')
+                    TakePicture::make('selfie_path')
+                        ->label('Live Selfie Capture')
                         ->disk('kyc_private')
-                        ->directory(fn (): string => (string) auth()->id() . '/selfie')
+                        ->directory((string) auth()->id() . '/selfie')
                         ->visibility('private')
-                        ->image()
-                        ->acceptedFileTypes([
-                            'image/jpeg',
-                            'image/png',
-                            'image/webp',
-                        ])
-                        ->maxSize(5120)
-                        ->extraInputAttributes(['capture' => 'user'])
+                        ->aspect('1:1')
+                        ->imageQuality(100)
+                        ->showCameraSelector(true)
+                        ->useModal(true)
+                        ->captureMaxDimensions(1600, 1600)
+                        ->shouldDeleteOnEdit(false)
                         ->live()
                         ->visible(fn (Get $get): bool => $this->canUploadVerificationDocuments($get))
-                        ->helperText('Accepted: image files only. Maximum size: 5MB.')
+                        ->helperText('Use your device camera for a live selfie. HTTPS is required on mobile browsers.')
                         ->columnSpan([
                             'default' => 2,
                             'sm' => 1,

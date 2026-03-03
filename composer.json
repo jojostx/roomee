@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.2",
         "dyrynda/laravel-model-uuid": "^8.1.1",
+        "emmanpbarrameda/filament-take-picture-field": "^1.2",
         "filament/filament": "^3.2",
         "intervention/image": "^2.6",
         "laravel/framework": "^11.15",
