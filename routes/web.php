@@ -10,6 +10,7 @@ use App\Http\Livewire\Pages\Profile\PendingVerificationPage;
 use App\Http\Livewire\Pages\BlocklistPage;
 use App\Http\Livewire\Pages\DashboardPage;
 use App\Http\Livewire\Pages\FavoritesPage;
+use App\Http\Livewire\Pages\ListingsPage;
 use App\Http\Livewire\Pages\RoommateRequestsPage;
 use App\Http\Livewire\Pages\Settings\AccountSettingsPage;
 use App\Http\Livewire\Pages\Settings\ContactChannelsSettingsPage;
@@ -52,6 +53,10 @@ Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended'])
             Route::get('/account', AccountSettingsPage::class)->name('account');
             Route::get('/contact-channels', ContactChannelsSettingsPage::class)->name('contact-channels');
             Route::get('/notifications', NotificationsSettingsPage::class)->name('notifications');
+        });
+
+        Route::middleware(['can.manage.listings'])->group(function () {
+            Route::get('/listings', ListingsPage::class)->name('listings');
         });
 
         Route::middleware(['profile.updated', 'identity.verified'])->group(function () {

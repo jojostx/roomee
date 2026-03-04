@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'profile.updated' => \App\Http\Middleware\UserHasUpdatedProfile::class,
         'account.not_suspended' => \App\Http\Middleware\EnsureAccountNotSuspended::class,
         'identity.verified' => \App\Http\Middleware\EnsureIdentityVerified::class,
+        'can.manage.listings' => \App\Http\Middleware\EnsureCanManageListings::class,
     ];
 }

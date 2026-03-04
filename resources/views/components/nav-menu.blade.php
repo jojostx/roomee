@@ -41,6 +41,12 @@
             </x-responsive-nav-link>
             @endunless
 
+            @if (auth()->user()->canManageListings())
+            <x-responsive-nav-link :href="route('listings')" :active="request()->routeIs('listings')" icon_before="heroicon-o-home-modern">
+              {{ __('Listings') }}
+            </x-responsive-nav-link>
+            @endif
+
             <x-responsive-nav-link :href="route('roommate-requests')" :active="request()->routeIs('roommate-requests')" icon_before="heroicon-o-user-plus">
               {{ __('Roommate Requests') }}
             </x-responsive-nav-link>

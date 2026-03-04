@@ -40,6 +40,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
             'role' => UserRole::USER,
             'profile_updated' => true,
             'email_verified_at' => now(),
+            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
         ]);
 
         $this->blocklist = Blocklist::create([
@@ -122,6 +123,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
     {
         $routes = [
             'dashboard' => [],
+            'listings' => [],
             'favorites' => [],
             'roommate-requests' => [],
             'blocklist' => [],
@@ -135,7 +137,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
 
         foreach ($routes as $routeName => $params) {
             $response = $this
-                ->actingAs($this->admin)
+                ->actingAs($this->member)
                 ->get(route($routeName, $params));
 
             $this->assertSame(
