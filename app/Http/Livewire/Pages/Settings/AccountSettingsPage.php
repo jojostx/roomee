@@ -9,6 +9,7 @@ use App\Models\User;
 use Closure;
 use Filament\Forms;
 use Filament\Notifications\Notification;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,25 +21,32 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 {
     use Forms\Concerns\InteractsWithForms;
 
-    public User $authUser;
+    /** @var array<string, mixed> */
+    public array $personalData = [];
 
-    public $savedPersonalInfo = false;
-    public $savedContactInfo = false;
-    public $savedPasswordInfo = false;
+    /** @var array<string, mixed> */
+    public array $contactData = [];
 
-    public $first_name;
-    public $middle_name;
+    /** @var array<string, mixed> */
+    public array $passwordData = [];
 
-    public $email;
-
-    public $current_password;
-    public $new_password;
-    public $new_password_confirmation;
-    public $strict_gender_filter = true;
+    /** @var array<string, mixed> */
+    public array $matchingData = [];
 
     protected function getFormModel(): ?User
     {
         return Auth::user();
+    }
+
+    protected function getAuthUserOrFail(): User
+    {
+        $authUser = $this->getFormModel();
+
+        if (! $authUser) {
+            throw new AuthenticationException();
+        }
+
+        return $authUser;
     }
 
     protected array $messages = [
@@ -47,7 +55,7 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
-        $authUser = $this->getFormModel();
+        $authUser = $this->getAuthUserOrFail();
 
         $this->personalInfoForm->fill([
             'first_name' => $authUser->first_name,
@@ -63,15 +71,39 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             'new_password_confirmation' => '',
         ]);
 
+        $this->matchingPreferencesForm->fill($this->getMatchingPreferencesState($authUser));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getMatchingPreferencesState(User $authUser): array
+    {
         $listingPreferences = $authUser->getListingDiscoveryPreferences();
 
-        $this->matchingPreferencesForm->fill([
+        return [
             'strict_gender_filter' => $authUser->isGenderSpecificFilteringEnabled(),
             'listing_budget_min' => $listingPreferences['budget_min'],
             'listing_budget_max' => $listingPreferences['budget_max'],
             'listing_move_in_date' => $listingPreferences['move_in_date'],
             'listing_dealbreakers' => $listingPreferences['dealbreakers'],
-        ]);
+        ];
+    }
+
+    /**
+     * @param  mixed  $dealbreakers
+     * @return array<int, string>
+     */
+    protected function sanitizeDealbreakers(mixed $dealbreakers): array
+    {
+        if (! is_array($dealbreakers)) {
+            return [];
+        }
+
+        return array_values(array_intersect(
+            array_map(static fn (mixed $value): string => (string) $value, $dealbreakers),
+            array_keys(Listing::DEALBREAKER_OPTIONS)
+        ));
     }
 
     protected function getPersonalInfoFormSchema(): array
@@ -139,7 +171,7 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
                             ->password()
                             ->required()
                             ->confirmed()
-                            ->maxValue(100)
+                            ->maxLength(100)
                             ->rule(Password::defaults())
                             ->generatable(),
                         PasswordFormComponent::make('new_password_confirmation')
@@ -195,63 +227,71 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
     protected function getForms(): array
     {
-        $authUser = $this->getFormModel();
+        $authUser = $this->getAuthUserOrFail();
 
         return [
             'personalInfoForm' => $this->makeForm()
                 ->schema($this->getPersonalInfoFormSchema())
-                ->model($authUser),
+                ->model($authUser)
+                ->statePath('personalData'),
 
             'contactInfoForm' => $this->makeForm()
                 ->schema($this->getContactInfoFormSchema())
-                ->model($authUser),
+                ->model($authUser)
+                ->statePath('contactData'),
 
             'passwordInfoForm' => $this->makeForm()
                 ->schema($this->getPasswordInfoFormSchema())
-                ->model($authUser),
+                ->model($authUser)
+                ->statePath('passwordData'),
 
             'matchingPreferencesForm' => $this->makeForm()
                 ->schema($this->getMatchingPreferencesFormSchema())
-                ->model($authUser),
+                ->model($authUser)
+                ->statePath('matchingData'),
         ];
     }
 
     public function savePersonalInfo(): void
     {
-        $saved = $this->getFormModel()->fill($this->personalInfoForm->getState())->save();
+        $saved = $this->getAuthUserOrFail()
+            ->fill($this->personalInfoForm->getState())
+            ->save();
 
-        $saved && $this->showSuccessNotification('Details saved successfully.');
+        if ($saved) {
+            $this->showSuccessNotification('Details saved successfully.');
+        }
     }
 
     public function saveContactInfo(): void
     {
         try {
-            $saved_attributes = DB::transaction(function () {
-                $authUser = $this->getFormModel();
-                $saved_attributes = ['email' => false];
+            $authUser = $this->getAuthUserOrFail();
+            $state = $this->contactInfoForm->getState();
+            $email = $state['email'] ?? null;
 
-                $email = $this->contactInfoForm->getState()['email'];
+            $savedEmail = false;
 
-                if (filled($email)) {
-                    $saved_attributes['email'] = filled($authUser->newEmail($email));
-                }
-                return $saved_attributes;
-            });
+            if (filled($email)) {
+                $savedEmail = DB::transaction(fn (): bool => filled($authUser->newEmail((string) $email)));
+            }
 
-            if ($saved_attributes['email']) {
+            if ($savedEmail) {
                 $this->showSuccessNotification('Follow the instructions in the mail sent to the email address you provided to add the new email.');
             }
         } catch (\Throwable $th) {
+            report($th);
             $this->showFailureNotification('Unable to save details. Try again later');
         }
     }
 
     public function savePasswordInfo(): void
     {
-        $authUser = $this->getFormModel();
+        $authUser = $this->getAuthUserOrFail();
+        $passwordData = $this->passwordInfoForm->getState();
 
         $saved =  $authUser->forceFill([
-            'password' => Hash::make($this->passwordInfoForm->getState()['new_password']),
+            'password' => Hash::make((string) ($passwordData['new_password'] ?? '')),
             'remember_token' => str()->random(60),
         ])->save();
 
@@ -269,18 +309,9 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
     public function saveMatchingPreferences(): void
     {
-        $authUser = $this->getFormModel();
+        $authUser = $this->getAuthUserOrFail();
         $state = $this->matchingPreferencesForm->getState();
-        $selectedDealbreakers = $state['listing_dealbreakers'] ?? [];
-
-        if (!is_array($selectedDealbreakers)) {
-            $selectedDealbreakers = [];
-        }
-
-        $selectedDealbreakers = array_values(array_intersect(
-            array_map(static fn (mixed $value): string => (string) $value, $selectedDealbreakers),
-            array_keys(Listing::DEALBREAKER_OPTIONS)
-        ));
+        $selectedDealbreakers = $this->sanitizeDealbreakers($state['listing_dealbreakers'] ?? []);
 
         $savedGenderPreference = $authUser->updateGenderSpecificFiltering((bool) ($state['strict_gender_filter'] ?? true));
         $savedListingPreferences = $authUser->updateListingDiscoveryPreferences([
@@ -292,7 +323,10 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
         if ($savedGenderPreference && $savedListingPreferences) {
             $this->showSuccessNotification('Discovery preference updated successfully.');
+            return;
         }
+
+        $this->showFailureNotification('Unable to update discovery preference. Try again later.');
     }
 
     protected function showSuccessNotification(string|Closure|null $body)
@@ -321,3 +355,4 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
         return $view->layout('layouts.guest');
     }
 }
+
