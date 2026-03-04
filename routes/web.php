@@ -10,6 +10,7 @@ use App\Http\Livewire\Pages\Profile\PendingVerificationPage;
 use App\Http\Livewire\Pages\BlocklistPage;
 use App\Http\Livewire\Pages\DashboardPage;
 use App\Http\Livewire\Pages\FavoritesPage;
+use App\Http\Livewire\Pages\ListingDiscoveryPage;
 use App\Http\Livewire\Pages\ListingsPage;
 use App\Http\Livewire\Pages\RoommateRequestsPage;
 use App\Http\Livewire\Pages\Settings\AccountSettingsPage;
@@ -57,6 +58,7 @@ Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended'])
 
         Route::middleware(['can.manage.listings'])->group(function () {
             Route::get('/listings', ListingsPage::class)->name('listings');
+            Route::get('/listings/discover', ListingDiscoveryPage::class)->name('listings.discover');
         });
 
         Route::middleware(['profile.updated', 'identity.verified'])->group(function () {

@@ -123,6 +123,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
     {
         $routes = [
             'dashboard' => [],
+            'listings.discover' => [],
             'listings' => [],
             'favorites' => [],
             'roommate-requests' => [],

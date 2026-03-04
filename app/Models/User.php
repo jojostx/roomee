@@ -41,6 +41,11 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   public const VERIFICATION_STATUS_APPROVED = 'approved';
   public const VERIFICATION_STATUS_REJECTED = 'rejected';
   public const MATCHING_SETTINGS_STRICT_GENDER_FILTER = 'matching.strict_gender_filter';
+  public const LISTING_PREFERENCES_KEY = 'listing_preferences';
+  public const LISTING_PREFERENCE_BUDGET_MIN = 'listing_preferences.budget_min';
+  public const LISTING_PREFERENCE_BUDGET_MAX = 'listing_preferences.budget_max';
+  public const LISTING_PREFERENCE_MOVE_IN_DATE = 'listing_preferences.move_in_date';
+  public const LISTING_PREFERENCE_DEALBREAKERS = 'listing_preferences.dealbreakers';
 
   use GetsOnboarded,
     HasFactory,
@@ -232,6 +237,60 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     $settings = $this->settings ?? [];
 
     data_set($settings, self::MATCHING_SETTINGS_STRICT_GENDER_FILTER, $enabled);
+
+    return $this->forceFill([
+      'settings' => $settings,
+    ])->save();
+  }
+
+  /**
+   * @return array{budget_min: int|null, budget_max: int|null, move_in_date: string|null, dealbreakers: array<int, string>}
+   */
+  public function getListingDiscoveryPreferences(): array
+  {
+    $settings = $this->settings ?? [];
+    $dealbreakers = data_get($settings, self::LISTING_PREFERENCE_DEALBREAKERS, []);
+
+    if (!is_array($dealbreakers)) {
+      $dealbreakers = [];
+    }
+
+    return [
+      'budget_min' => filled(data_get($settings, self::LISTING_PREFERENCE_BUDGET_MIN))
+        ? (int) data_get($settings, self::LISTING_PREFERENCE_BUDGET_MIN)
+        : null,
+      'budget_max' => filled(data_get($settings, self::LISTING_PREFERENCE_BUDGET_MAX))
+        ? (int) data_get($settings, self::LISTING_PREFERENCE_BUDGET_MAX)
+        : null,
+      'move_in_date' => filled(data_get($settings, self::LISTING_PREFERENCE_MOVE_IN_DATE))
+        ? (string) data_get($settings, self::LISTING_PREFERENCE_MOVE_IN_DATE)
+        : null,
+      'dealbreakers' => array_values(array_filter(
+        array_map(static fn (mixed $value): string => trim((string) $value), $dealbreakers),
+        static fn (string $value): bool => $value !== ''
+      )),
+    ];
+  }
+
+  /**
+   * @param  array{budget_min?: int|string|null, budget_max?: int|string|null, move_in_date?: string|null, dealbreakers?: array<int, string>|null}  $preferences
+   */
+  public function updateListingDiscoveryPreferences(array $preferences): bool
+  {
+    $settings = $this->settings ?? [];
+    $dealbreakers = $preferences['dealbreakers'] ?? [];
+
+    if (!is_array($dealbreakers)) {
+      $dealbreakers = [];
+    }
+
+    data_set($settings, self::LISTING_PREFERENCE_BUDGET_MIN, filled($preferences['budget_min'] ?? null) ? (int) $preferences['budget_min'] : null);
+    data_set($settings, self::LISTING_PREFERENCE_BUDGET_MAX, filled($preferences['budget_max'] ?? null) ? (int) $preferences['budget_max'] : null);
+    data_set($settings, self::LISTING_PREFERENCE_MOVE_IN_DATE, filled($preferences['move_in_date'] ?? null) ? (string) $preferences['move_in_date'] : null);
+    data_set($settings, self::LISTING_PREFERENCE_DEALBREAKERS, array_values(array_filter(
+      array_map(static fn (mixed $value): string => trim((string) $value), $dealbreakers),
+      static fn (string $value): bool => $value !== ''
+    )));
 
     return $this->forceFill([
       'settings' => $settings,

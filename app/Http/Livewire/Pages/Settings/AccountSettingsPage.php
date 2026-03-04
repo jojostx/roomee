@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Pages\Settings;
 
+use App\Enums\BudgetLimit;
 use App\Http\Livewire\Components\Filament\Forms\Password as PasswordFormComponent;
+use App\Models\Listing;
 use App\Models\User;
 use Closure;
 use Filament\Forms;
@@ -61,8 +63,14 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             'new_password_confirmation' => '',
         ]);
 
+        $listingPreferences = $authUser->getListingDiscoveryPreferences();
+
         $this->matchingPreferencesForm->fill([
             'strict_gender_filter' => $authUser->isGenderSpecificFilteringEnabled(),
+            'listing_budget_min' => $listingPreferences['budget_min'],
+            'listing_budget_max' => $listingPreferences['budget_max'],
+            'listing_move_in_date' => $listingPreferences['move_in_date'],
+            'listing_dealbreakers' => $listingPreferences['dealbreakers'],
         ]);
     }
 
@@ -155,6 +163,32 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
                         ->helperText('When enabled, you only see users of your gender, and only users of your gender can discover your profile.')
                         ->default(true)
                         ->inline(false),
+                    Forms\Components\Grid::make([
+                        'default' => 1,
+                        'md' => 2,
+                    ])->schema([
+                        Forms\Components\Select::make('listing_budget_min')
+                            ->label('Listing Budget Min')
+                            ->placeholder('Use profile minimum budget')
+                            ->options(BudgetLimit::budgetRangeAssoc())
+                            ->searchable(),
+                        Forms\Components\Select::make('listing_budget_max')
+                            ->label('Listing Budget Max')
+                            ->placeholder('Use profile maximum budget')
+                            ->options(BudgetLimit::budgetRangeAssoc())
+                            ->gte('listing_budget_min')
+                            ->searchable(),
+                    ]),
+                    Forms\Components\DatePicker::make('listing_move_in_date')
+                        ->label('Latest Move-in Date')
+                        ->helperText('Only listings with move-in date on or before this date will be shown.')
+                        ->native(false)
+                        ->minDate(now()->toDateString()),
+                    Forms\Components\CheckboxList::make('listing_dealbreakers')
+                        ->label('Dealbreakers')
+                        ->options(Listing::DEALBREAKER_OPTIONS)
+                        ->helperText('Listings failing selected dealbreakers are filtered out.')
+                        ->columns(1),
                 ]),
         ];
     }
@@ -237,10 +271,26 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
     {
         $authUser = $this->getFormModel();
         $state = $this->matchingPreferencesForm->getState();
+        $selectedDealbreakers = $state['listing_dealbreakers'] ?? [];
 
-        $saved = $authUser->updateGenderSpecificFiltering((bool) ($state['strict_gender_filter'] ?? true));
+        if (!is_array($selectedDealbreakers)) {
+            $selectedDealbreakers = [];
+        }
 
-        if ($saved) {
+        $selectedDealbreakers = array_values(array_intersect(
+            array_map(static fn (mixed $value): string => (string) $value, $selectedDealbreakers),
+            array_keys(Listing::DEALBREAKER_OPTIONS)
+        ));
+
+        $savedGenderPreference = $authUser->updateGenderSpecificFiltering((bool) ($state['strict_gender_filter'] ?? true));
+        $savedListingPreferences = $authUser->updateListingDiscoveryPreferences([
+            'budget_min' => $state['listing_budget_min'] ?? null,
+            'budget_max' => $state['listing_budget_max'] ?? null,
+            'move_in_date' => $state['listing_move_in_date'] ?? null,
+            'dealbreakers' => $selectedDealbreakers,
+        ]);
+
+        if ($savedGenderPreference && $savedListingPreferences) {
             $this->showSuccessNotification('Discovery preference updated successfully.');
         }
     }

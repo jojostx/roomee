@@ -11,6 +11,14 @@ class ListingAccessMiddlewareTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * @return array<int, string>
+     */
+    protected function listingRoutes(): array
+    {
+        return ['listings', 'listings.discover'];
+    }
+
     public function test_eligible_user_can_open_listings_page(): void
     {
         $user = User::factory()->create([
@@ -20,9 +28,10 @@ class ListingAccessMiddlewareTest extends TestCase
             'verification_status' => User::VERIFICATION_STATUS_APPROVED,
         ]);
 
-        $response = $this->actingAs($user)->get(route('listings'));
-
-        $response->assertOk();
+        foreach ($this->listingRoutes() as $routeName) {
+            $response = $this->actingAs($user)->get(route($routeName));
+            $response->assertOk();
+        }
     }
 
     public function test_pending_verification_user_is_redirected_to_pending_page(): void
@@ -34,9 +43,10 @@ class ListingAccessMiddlewareTest extends TestCase
             'verification_status' => User::VERIFICATION_STATUS_PENDING,
         ]);
 
-        $response = $this->actingAs($user)->get(route('listings'));
-
-        $response->assertRedirect(route('verification.pending'));
+        foreach ($this->listingRoutes() as $routeName) {
+            $response = $this->actingAs($user)->get(route($routeName));
+            $response->assertRedirect(route('verification.pending'));
+        }
     }
 
     public function test_incomplete_profile_user_is_redirected_to_profile_update_page(): void
@@ -48,9 +58,10 @@ class ListingAccessMiddlewareTest extends TestCase
             'verification_status' => User::VERIFICATION_STATUS_APPROVED,
         ]);
 
-        $response = $this->actingAs($user)->get(route('listings'));
-
-        $response->assertRedirect(route('profile.update'));
+        foreach ($this->listingRoutes() as $routeName) {
+            $response = $this->actingAs($user)->get(route($routeName));
+            $response->assertRedirect(route('profile.update'));
+        }
     }
 
     public function test_admin_cannot_access_user_listings_page(): void
@@ -61,8 +72,9 @@ class ListingAccessMiddlewareTest extends TestCase
             'profile_updated' => true,
         ]);
 
-        $response = $this->actingAs($admin)->get(route('listings'));
-
-        $response->assertForbidden();
+        foreach ($this->listingRoutes() as $routeName) {
+            $response = $this->actingAs($admin)->get(route($routeName));
+            $response->assertForbidden();
+        }
     }
 }

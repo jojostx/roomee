@@ -42,8 +42,12 @@
             @endunless
 
             @if (auth()->user()->canManageListings())
+            <x-responsive-nav-link :href="route('listings.discover')" :active="request()->routeIs('listings.discover')" icon_before="heroicon-o-magnifying-glass">
+              {{ __('Discover Listings') }}
+            </x-responsive-nav-link>
+
             <x-responsive-nav-link :href="route('listings')" :active="request()->routeIs('listings')" icon_before="heroicon-o-home-modern">
-              {{ __('Listings') }}
+              {{ __('Manage Listings') }}
             </x-responsive-nav-link>
             @endif
 

@@ -56,8 +56,11 @@
                                 {{ __('Roommate Requests') }}
                             </x-dropdown-link>
                             @if (auth()->user()->canManageListings())
+                            <x-dropdown-link :href="route('listings.discover')">
+                                {{ __('Discover Listings') }}
+                            </x-dropdown-link>
                             <x-dropdown-link :href="route('listings')">
-                                {{ __('Listings') }}
+                                {{ __('Manage Listings') }}
                             </x-dropdown-link>
                             @endif
                             <x-dropdown-link :href="route('favorites')">
@@ -133,11 +136,17 @@
                         {{ __('Roommate Requests') }}
                     </x-responsive-nav-link>
                     @if (auth()->user()->canManageListings())
+                    <x-responsive-nav-link :href="route('listings.discover')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="inline w-5 h-5 mr-1" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-4.2-4.2m1.2-4.8a6 6 0 11-12 0 6 6 0 0112 0z" />
+                        </svg>
+                        {{ __('Discover Listings') }}
+                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('listings')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="inline w-5 h-5 mr-1" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 3h8a2 2 0 012 2v14a2 2 0 01-2 2H8a2 2 0 01-2-2V5a2 2 0 012-2zm2 8h4m-4 4h4m-4-8h4" />
                         </svg>
-                        {{ __('Listings') }}
+                        {{ __('Manage Listings') }}
                     </x-responsive-nav-link>
                     @endif
                     <x-responsive-nav-link :href="route('favorites')">
