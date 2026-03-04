@@ -15,10 +15,24 @@ trait WithValidUsersQueryScopes
 
   public function scopeValidUsers(Builder $query): Builder
   {
+    $gender = $this->gender;
+    $strictGenderFilteringEnabled = $this->isGenderSpecificFilteringEnabled();
+
     return $query
       ->excludeUser($this->id)
-      ->gender($this->gender)
-      ->school($this->school_id);
+      ->school($this->school_id)
+      ->when(
+        $strictGenderFilteringEnabled && filled($gender),
+        fn (Builder $builder): Builder => $builder->gender($gender)
+      )
+      ->when(
+        filled($gender),
+        fn (Builder $builder): Builder => $builder->where(
+          fn (Builder $visibilityQuery): Builder => $visibilityQuery
+            ->where('gender', $gender)
+            ->orWhereJsonContains('settings->matching->strict_gender_filter', false)
+        )
+      );
   }
 
   public function scopeValidNonBlockingUsers(Builder $query): Builder

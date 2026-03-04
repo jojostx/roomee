@@ -29,6 +29,13 @@
                             Password Information
                         </label>
                     </li>
+                    <li class="relative w-full my-1 cursor-pointer">
+                        <input type="radio" name="section-link" id="matching-preferences-link" class="absolute opacity-0 left-20" autocomplete="off">
+                        <label @click="document.getElementById('matching_preferences').scrollIntoView()" for="matching-preferences-link" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
+                            <x-heroicon-o-adjustments-horizontal class="flex-shrink-0 w-5 mr-3" />
+                            Matching Preferences
+                        </label>
+                    </li>
                 </ul>
             </div>
 
@@ -87,6 +94,22 @@
 
                             <div class="flex items-center mt-6">
                                 <x-filament::button type="submit" id="save-password-info" size='sm' style="font-weight: 600;">
+                                    {{ __('Update') }}
+                                </x-filament::button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="mt-6 sm:mt-10" id="matching_preferences">
+                    <p class="mb-4 font-bold tracking-wide sm:text-lg">Matching Preferences</p>
+
+                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                        <form wire:submit.prevent="saveMatchingPreferences">
+                            {{ $this->matchingPreferencesForm }}
+
+                            <div class="flex items-center mt-6">
+                                <x-filament::button type="submit" id="save-matching-preferences" size='sm' style="font-weight: 600;">
                                     {{ __('Update') }}
                                 </x-filament::button>
                             </div>

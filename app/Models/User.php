@@ -40,6 +40,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   public const VERIFICATION_STATUS_PENDING = 'pending';
   public const VERIFICATION_STATUS_APPROVED = 'approved';
   public const VERIFICATION_STATUS_REJECTED = 'rejected';
+  public const MATCHING_SETTINGS_STRICT_GENDER_FILTER = 'matching.strict_gender_filter';
 
   use GetsOnboarded,
     HasFactory,
@@ -215,6 +216,26 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   public function isSuspended(): bool
   {
     return (bool) $this->is_suspended;
+  }
+
+  public function isGenderSpecificFilteringEnabled(): bool
+  {
+    return (bool) data_get(
+      $this->settings ?? [],
+      self::MATCHING_SETTINGS_STRICT_GENDER_FILTER,
+      true
+    );
+  }
+
+  public function updateGenderSpecificFiltering(bool $enabled): bool
+  {
+    $settings = $this->settings ?? [];
+
+    data_set($settings, self::MATCHING_SETTINGS_STRICT_GENDER_FILTER, $enabled);
+
+    return $this->forceFill([
+      'settings' => $settings,
+    ])->save();
   }
 
   public function suspend(?string $reason = null): bool

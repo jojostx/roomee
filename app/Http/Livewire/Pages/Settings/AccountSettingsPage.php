@@ -32,6 +32,7 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
     public $current_password;
     public $new_password;
     public $new_password_confirmation;
+    public $strict_gender_filter = true;
 
     protected function getFormModel(): ?User
     {
@@ -58,6 +59,10 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
         $this->passwordInfoForm->fill([
             'new_password' => '',
             'new_password_confirmation' => '',
+        ]);
+
+        $this->matchingPreferencesForm->fill([
+            'strict_gender_filter' => $authUser->isGenderSpecificFilteringEnabled(),
         ]);
     }
 
@@ -139,6 +144,21 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
         ];
     }
 
+    protected function getMatchingPreferencesFormSchema(): array
+    {
+        return [
+            Forms\Components\Section::make('Discovery Preferences')
+                ->description('Control gender-specific matching visibility for discovery and recommendations.')
+                ->schema([
+                    Forms\Components\Toggle::make('strict_gender_filter')
+                        ->label('Strict gender-specific filtering')
+                        ->helperText('When enabled, you only see users of your gender, and only users of your gender can discover your profile.')
+                        ->default(true)
+                        ->inline(false),
+                ]),
+        ];
+    }
+
     protected function getForms(): array
     {
         $authUser = $this->getFormModel();
@@ -154,6 +174,10 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
             'passwordInfoForm' => $this->makeForm()
                 ->schema($this->getPasswordInfoFormSchema())
+                ->model($authUser),
+
+            'matchingPreferencesForm' => $this->makeForm()
+                ->schema($this->getMatchingPreferencesFormSchema())
                 ->model($authUser),
         ];
     }
@@ -206,6 +230,18 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
             event(new PasswordReset($authUser));
             $this->showSuccessNotification('Password updated successfully.');
+        }
+    }
+
+    public function saveMatchingPreferences(): void
+    {
+        $authUser = $this->getFormModel();
+        $state = $this->matchingPreferencesForm->getState();
+
+        $saved = $authUser->updateGenderSpecificFiltering((bool) ($state['strict_gender_filter'] ?? true));
+
+        if ($saved) {
+            $this->showSuccessNotification('Discovery preference updated successfully.');
         }
     }
 
