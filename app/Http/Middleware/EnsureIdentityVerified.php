@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -21,15 +20,22 @@ class EnsureIdentityVerified
             return $next($request);
         }
 
-        if ($user->verification_status === User::VERIFICATION_STATUS_APPROVED) {
-            return $next($request);
-        }
+        if ($user->isPendingVerification()) {
+            if ($request->routeIs('verification.pending')) {
+                return $next($request);
+            }
 
-        if ($user->verification_status === User::VERIFICATION_STATUS_PENDING) {
             return redirect()->route('verification.pending');
         }
 
-        return redirect()->route('profile.update');
+        if (! $user->profile_updated || ! $user->isVerified()) {
+            if ($request->routeIs('profile.update')) {
+                return $next($request);
+            }
+
+            return redirect()->route('profile.update');
+        }
+
+        return $next($request);
     }
 }
-

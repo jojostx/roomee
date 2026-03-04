@@ -45,7 +45,7 @@ Route::middleware(['throttle:xhrFormRequest'])->group(function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended'])
+Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended', 'identity.verified'])
     ->group(function () {
         Route::get('/profile/update', UpdateProfilePage::class)->name('profile.update');
         Route::get('/verification/pending', PendingVerificationPage::class)->name('verification.pending');
@@ -61,7 +61,7 @@ Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended'])
             Route::get('/listings/discover', ListingDiscoveryPage::class)->name('listings.discover');
         });
 
-        Route::middleware(['profile.updated', 'identity.verified'])->group(function () {
+        Route::middleware(['profile.updated'])->group(function () {
             Route::get('/profile/view/{user}', ViewProfilePage::class)->name('profile.view');
 
             Route::get('/dashboard', DashboardPage::class)->name('dashboard');
