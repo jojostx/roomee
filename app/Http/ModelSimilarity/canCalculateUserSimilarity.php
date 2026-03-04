@@ -2,9 +2,9 @@
 
 namespace App\Http\ModelSimilarity;
 
+use App\Models\Listing;
 use App\Models\User;
 use App\Services\Similarity;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Collection;
 
 trait canCalculateUserSimilarity
@@ -50,5 +50,27 @@ trait canCalculateUserSimilarity
     public function calculateUserSimilarityScore(?User $user): int
     {
         return filled($user)? intval($this->calculateSimilarityScore($user) * 100) : 0;
+    }
+
+    public function calculateListingAmenitiesSimilarityScore(?Listing $listing): int
+    {
+        if (blank($listing)) {
+            return 0;
+        }
+
+        $preferredAmenities = data_get($this->settings ?? [], 'listing_preferences.amenities', []);
+
+        if (!is_array($preferredAmenities)) {
+            $preferredAmenities = [];
+        }
+
+        $listingAmenities = is_array($listing->amenities) ? $listing->amenities : [];
+
+        // No amenity preference means "no strong constraints", so treat it as a full match.
+        if (count($preferredAmenities) === 0) {
+            return 100;
+        }
+
+        return (int) round(Similarity::jaccard($preferredAmenities, $listingAmenities) * 100);
     }
 }

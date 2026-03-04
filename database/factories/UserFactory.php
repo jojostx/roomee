@@ -32,6 +32,7 @@ class UserFactory extends Factory
             'remember_token' => str()->random(10),
             'profile_updated' => false,
             'role' => UserRole::USER,
+            'is_premium' => false,
         ];
     }
 }

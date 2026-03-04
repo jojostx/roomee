@@ -66,6 +66,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     'profile_updated' => false,
     'verification_status' => self::VERIFICATION_STATUS_UNVERIFIED,
     'is_suspended' => false,
+    'is_premium' => false,
   ];
 
   /**
@@ -80,6 +81,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     'email',
     'password',
     'role',
+    'is_premium',
     'profile_updated',
     'gender',
     'avatar',
@@ -119,6 +121,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     'profile_updated' => 'boolean',
     'verification_submitted_at' => 'datetime',
     'is_suspended' => 'boolean',
+    'is_premium' => 'boolean',
     'suspended_at' => 'datetime',
     'settings' => 'array',
     'role' => UserRole::class,
@@ -162,6 +165,26 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     }
 
     return in_array((string) $role, [UserRole::ADMIN->value, UserRole::STAFF->value], true);
+  }
+
+  public function isRegularUser(): bool
+  {
+    $role = $this->role;
+
+    if ($role instanceof UserRole) {
+      return $role === UserRole::USER;
+    }
+
+    return (string) $role === UserRole::USER->value;
+  }
+
+  public function canManageListings(): bool
+  {
+    return $this->isRegularUser()
+      && $this->hasVerifiedEmail()
+      && (bool) $this->profile_updated
+      && $this->isVerified()
+      && !$this->isSuspended();
   }
 
   public function isVerified(): bool
@@ -319,6 +342,14 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   public function contactChannels(): HasMany
   {
     return $this->hasMany(ContactChannel::class, 'user_id');
+  }
+
+  /**
+   * The property listings created by the user.
+   */
+  public function listings(): HasMany
+  {
+    return $this->hasMany(Listing::class, 'user_id');
   }
 
   public function allPotentialRoommates(): MergedRelation

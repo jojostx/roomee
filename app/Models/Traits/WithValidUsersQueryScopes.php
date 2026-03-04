@@ -39,6 +39,36 @@ trait WithValidUsersQueryScopes
     return $query->validUsers($this)->whereIntegerNotInRaw('id', $this->blockers()->pluck('blocker_id')->toArray());
   }
 
+  /**
+   * Filter listing-like queries using the seeker's budget range and preferred move-in timeline.
+   * This is a cross-model helper scope and is intended for builders that target the `listings` table.
+   */
+  public function scopeForBudgetAndTimeline(Builder $query, ?User $seeker = null): Builder
+  {
+    $seeker = $seeker ?? $this;
+
+    if (blank($seeker) || $query->getModel()->getTable() !== 'listings') {
+      return $query;
+    }
+
+    $preferredMoveInDate = data_get($seeker->settings ?? [], 'listing_preferences.move_in_date');
+
+    return $query
+      ->when(
+        filled($seeker->min_budget),
+        fn (Builder $builder) => $builder->where('rent_amount', '>=', (int) $seeker->min_budget)
+      )
+      ->when(
+        filled($seeker->max_budget),
+        fn (Builder $builder) => $builder->where('rent_amount', '<=', (int) $seeker->max_budget)
+      )
+      ->when(
+        filled($preferredMoveInDate),
+        fn (Builder $builder) => $builder->whereDate('move_in_date', '<=', $preferredMoveInDate)
+      )
+      ->whereDate('move_in_date', '>=', now()->toDateString());
+  }
+
   /** checks */
   public function isValidUser(?User $user = null): bool
   {

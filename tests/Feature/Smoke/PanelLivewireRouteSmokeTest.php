@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use App\Models\Blocklist;
 use App\Models\ContactChannel;
 use App\Models\Favorite;
+use App\Models\Listing;
 use App\Models\RoommateRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,6 +24,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
     protected Favorite $favorite;
     protected ContactChannel $contactChannel;
     protected RoommateRequest $roommateRequest;
+    protected Listing $listing;
 
     protected function setUp(): void
     {
@@ -64,6 +66,10 @@ class PanelLivewireRouteSmokeTest extends TestCase
             'recipient_id' => $this->member->getKey(),
             'status' => RoommateRequestStatus::PENDING->value,
         ]);
+
+        $this->listing = Listing::factory()->create([
+            'user_id' => $this->member->getKey(),
+        ]);
     }
 
     public function test_filament_admin_routes_return_success_for_admin(): void
@@ -86,6 +92,10 @@ class PanelLivewireRouteSmokeTest extends TestCase
             'filament.admin.resources.roommate-requests.edit' => ['record' => $this->roommateRequest],
 
             'filament.admin.resources.verification-requests.index' => [],
+
+            'filament.admin.resources.listings.index' => [],
+            'filament.admin.resources.listings.create' => [],
+            'filament.admin.resources.listings.edit' => ['record' => $this->listing],
 
             'filament.admin.resources.users.index' => [],
             'filament.admin.resources.users.create' => [],
