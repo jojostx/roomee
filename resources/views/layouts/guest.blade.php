@@ -22,6 +22,7 @@
         }
     </style>
     @filamentStyles
+    <link rel="stylesheet" href="{{ asset('css/filament/filament/app.css') }}">
     @vite(['resources/css/app.css', 'resources/js/tabula_rasa.js'])
 
     <!-- Scripts -->

@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Services\Sms\NullSmsSender;
 use App\Services\Sms\SmsSender;
 use App\Services\Sms\TwilioSmsSender;
+use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentColor;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Onboard\Facades\Onboard;
 
@@ -36,6 +38,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        FilamentColor::register([
+            'primary' => Color::Blue,
+        ]);
+
         Onboard::addStep('Add Contact Channels')
             ->link('/settings/contact-channels')
             ->cta('Add Contact Channels')
