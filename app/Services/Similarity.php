@@ -54,9 +54,9 @@ class Similarity
 
     public static function OVRS($arr_1 = [], $arr_2 = []): float 
     {
-        //if both arrays are identical return one 1
+        // If both ranges are identical, return perfect similarity.
         if ($arr_1 === $arr_2) {
-            return 1;
+            return 1.0;
         }
 
         if (
@@ -67,22 +67,74 @@ class Similarity
             is_null($arr_2[0]) ||
             is_null($arr_2[1])
         ) {
-            return 0;
+            return 0.0;
         }
 
-        //else destructure the arrays into the four needed variables
-        list($min_1, $max_1) = $arr_1;
-        list($min_2, $max_2) = $arr_2;
+        $min_1 = (int) $arr_1[0];
+        $max_1 = (int) $arr_1[1];
+        $min_2 = (int) $arr_2[0];
+        $max_2 = (int) $arr_2[1];
 
-        // if the arrays do not overlap return 0
-        if (!(($max_2 >= $min_1) && ($min_2 <= $max_1))) {
-            return 0;
+        if ($min_1 > $max_1) {
+            [$min_1, $max_1] = [$max_1, $min_1];
         }
 
-        $arr_1_range = range($arr_1[0], $arr_1[1], env('BUDGET_PRICE_STEP', 20000));
-        $arr_2_range = range($arr_2[0], $arr_2[1], env('BUDGET_PRICE_STEP', 20000));
+        if ($min_2 > $max_2) {
+            [$min_2, $max_2] = [$max_2, $min_2];
+        }
 
-        return Similarity::OVRS_kernel($arr_1_range, $arr_2_range);
+        if ($max_2 < $min_1 || $min_2 > $max_1) {
+            return 0.0;
+        }
+
+        $step = (int) env('BUDGET_PRICE_STEP', 20000);
+        if ($step <= 0) {
+            $step = 1;
+        }
+
+        $points_1 = (int) floor(($max_1 - $min_1) / $step) + 1;
+        $points_2 = (int) floor(($max_2 - $min_2) / $step) + 1;
+
+        if ($points_1 <= 0 || $points_2 <= 0) {
+            return 0.0;
+        }
+
+        $overlap_min = max($min_1, $min_2);
+        $overlap_max = min($max_1, $max_2);
+
+        $mod_1 = (($min_1 % $step) + $step) % $step;
+        $mod_2 = (($min_2 % $step) + $step) % $step;
+
+        // Different arithmetic progressions cannot intersect.
+        if ($mod_1 !== $mod_2) {
+            return 0.0;
+        }
+
+        $offset = (($mod_1 - (($overlap_min % $step) + $step) % $step) + $step) % $step;
+        $first_intersection = $overlap_min + $offset;
+
+        if ($first_intersection > $overlap_max) {
+            return 0.0;
+        }
+
+        $intersection_points = (int) floor(($overlap_max - $first_intersection) / $step) + 1;
+
+        if ($intersection_points <= 0) {
+            return 0.0;
+        }
+
+        $arr_1_diff = $points_1 - $intersection_points;
+        $arr_2_diff = $points_2 - $intersection_points;
+
+        if ($arr_1_diff <= 0) {
+            return $intersection_points / $points_2;
+        }
+
+        if ($arr_2_diff <= 0) {
+            return $intersection_points / $points_1;
+        }
+
+        return $intersection_points / (min($arr_2_diff, $arr_1_diff) + $intersection_points);
     }
 
     public static function jaccard($arr_1 = [], $arr_2 = []): float 

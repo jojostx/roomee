@@ -54,8 +54,10 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable, HasF
 
     protected function getTableQuery(): Builder
     {
-        return $this->getAuthModel()
-            ->validNonBlockingUsers();
+        $authUser = $this->getAuthModel();
+
+        return $authUser
+            ->validSimilarityCandidates($authUser);
     }
 
     protected function paginateTableQuery(Builder $query): Paginator

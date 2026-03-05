@@ -14,14 +14,20 @@ trait WithValidUsersQueryScopes
   abstract public function blocklists(): BelongsToMany;
   abstract public function blockers(): BelongsToMany;
 
-  public function scopeValidUsers(Builder $query): Builder
+  public function scopeValidUsers(Builder $query, ?User $subject = null): Builder
   {
-    $gender = $this->gender;
-    $strictGenderFilteringEnabled = $this->isGenderSpecificFilteringEnabled();
+    $subject = $subject ?? $this;
+
+    if (blank($subject) || blank($subject->getKey())) {
+      return $query->whereRaw('1 = 0');
+    }
+
+    $gender = $subject->gender;
+    $strictGenderFilteringEnabled = $subject->isGenderSpecificFilteringEnabled();
 
     return $query
-      ->excludeUser($this->id)
-      ->school($this->school_id)
+      ->excludeUser($subject->id)
+      ->school($subject->school_id)
       ->when(
         $strictGenderFilteringEnabled && filled($gender),
         fn (Builder $builder): Builder => $builder->gender($gender)
@@ -36,22 +42,87 @@ trait WithValidUsersQueryScopes
       );
   }
 
-  public function scopeValidNonBlockingUsers(Builder $query): Builder
+  public function scopeValidNonBlockingUsers(Builder $query, ?User $subject = null): Builder
   {
+    $subject = $subject ?? $this;
+
+    if (blank($subject) || blank($subject->getKey())) {
+      return $query->whereRaw('1 = 0');
+    }
+
     return $query
-      ->validUsers($this)
-      ->whereIntegerNotInRaw('id', $this->blocklists()->pluck('blockee_id')->toArray())
-      ->whereIntegerNotInRaw('id', $this->blockers()->pluck('blocker_id')->toArray());
+      ->validUsers($subject)
+      ->whereIntegerNotInRaw('id', $subject->blocklists()->pluck('blockee_id')->toArray())
+      ->whereIntegerNotInRaw('id', $subject->blockers()->pluck('blocker_id')->toArray());
   }
 
-  public function scopeValidNonBlockedUsers(Builder $query): Builder
+  public function scopeValidNonBlockedUsers(Builder $query, ?User $subject = null): Builder
   {
-    return $query->validUsers($this)->whereIntegerNotInRaw('id', $this->blocklists()->pluck('blockee_id')->toArray());
+    $subject = $subject ?? $this;
+
+    if (blank($subject) || blank($subject->getKey())) {
+      return $query->whereRaw('1 = 0');
+    }
+
+    return $query->validUsers($subject)->whereIntegerNotInRaw('id', $subject->blocklists()->pluck('blockee_id')->toArray());
   }
 
-  public function scopeValidNonBlockedByUsers(Builder $query): Builder
+  public function scopeValidNonBlockedByUsers(Builder $query, ?User $subject = null): Builder
   {
-    return $query->validUsers($this)->whereIntegerNotInRaw('id', $this->blockers()->pluck('blocker_id')->toArray());
+    $subject = $subject ?? $this;
+
+    if (blank($subject) || blank($subject->getKey())) {
+      return $query->whereRaw('1 = 0');
+    }
+
+    return $query->validUsers($subject)->whereIntegerNotInRaw('id', $subject->blockers()->pluck('blocker_id')->toArray());
+  }
+
+  /**
+   * Hard filters used before expensive similarity scoring.
+   */
+  public function scopeValidSimilarityCandidates(Builder $query, ?User $subject = null): Builder
+  {
+    $subject = $subject ?? $this;
+
+    if (blank($subject) || blank($subject->getKey())) {
+      return $query->whereRaw('1 = 0');
+    }
+
+    return $query
+      ->validNonBlockingUsers($subject)
+      ->forSimilarityBudgetOverlap($subject);
+  }
+
+  /**
+   * Filter user-like queries to records with overlapping budget ranges.
+   * Intended as a prefilter before running in-PHP similarity scoring.
+   */
+  public function scopeForSimilarityBudgetOverlap(Builder $query, ?User $subject = null): Builder
+  {
+    $subject = $subject ?? $this;
+
+    if (
+      blank($subject) ||
+      !filled($subject->min_budget) ||
+      !filled($subject->max_budget)
+    ) {
+      return $query;
+    }
+
+    $subjectMinBudget = (int) $subject->min_budget;
+    $subjectMaxBudget = (int) $subject->max_budget;
+
+    if ($subjectMinBudget > $subjectMaxBudget) {
+      [$subjectMinBudget, $subjectMaxBudget] = [$subjectMaxBudget, $subjectMinBudget];
+    }
+
+    return $query
+      ->whereNotNull('min_budget')
+      ->whereNotNull('max_budget')
+      ->whereColumn('min_budget', '<=', 'max_budget')
+      ->where('max_budget', '>=', $subjectMinBudget)
+      ->where('min_budget', '<=', $subjectMaxBudget);
   }
 
   /**
