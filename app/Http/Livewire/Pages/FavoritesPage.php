@@ -35,6 +35,8 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     }
 
     public Collection $similarity_scores;
+    /** @var array<int, int> */
+    public array $restrictedFavoriteIds = [];
 
     protected function getListeners()
     {
@@ -61,22 +63,58 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
 
     protected function applySortingToTableQuery(Builder $query): Builder
     {
-        /** @var \Illuminate\Database\Eloquent\Collection */
-        $res = $this
-            ->getAuthModel()
-            ->calculateUsersSimilarityScore(
-                $query->withOnly([
-                    'course:id,name',
-                    'towns:id,name',
-                    'hobbies:id,name',
-                    'dislikes:id,name'
-                ])->get()
-            );
+        $authUser = $this->getAuthModel();
 
-        $this->similarity_scores = $res->mapWithKeys(fn ($model) => [$model->id => $model->similarity_score]);
+        if (blank($authUser)) {
+            $this->similarity_scores = collect();
+            $this->restrictedFavoriteIds = [];
+
+            return $query->whereRaw('1 = 0');
+        }
+
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $records */
+        $records = $query->withOnly([
+            'course:id,name',
+            'towns:id,name',
+            'hobbies:id,name',
+            'dislikes:id,name',
+        ])->get();
+
+        $recordIds = $records->pluck('id')->values();
+
+        $eligibleFavoriteIds = User::query()
+            ->whereIn('id', $recordIds)
+            ->validSimilarityCandidates($authUser)
+            ->pluck('id')
+            ->all();
+
+        $eligibleFavoriteIds = array_map('intval', $eligibleFavoriteIds);
+        $eligibleFavoriteIdLookup = array_flip($eligibleFavoriteIds);
+
+        $this->restrictedFavoriteIds = $recordIds
+            ->reject(fn ($id): bool => array_key_exists((int) $id, $eligibleFavoriteIdLookup))
+            ->map(fn ($id): int => (int) $id)
+            ->values()
+            ->all();
+
+        $scoredEligibleRecords = $authUser->calculateUsersSimilarityScore(
+            $records
+                ->filter(fn (User $record): bool => array_key_exists((int) $record->id, $eligibleFavoriteIdLookup))
+                ->values()
+        );
+
+        $this->similarity_scores = $scoredEligibleRecords->mapWithKeys(fn ($model) => [$model->id => $model->similarity_score]);
+
+        $res = $records;
 
         if ($this->tableSortColumn == "similarity_score" || $this->tableSortColumn == null) {
-            $res = $res->sortBy('similarity_score');
+            $res = $res->sortBy(function (User $record): float {
+                if ($this->isRestrictedFavorite($record)) {
+                    return 1000000.0;
+                }
+
+                return (float) $this->similarity_scores->get($record->id, 0.0);
+            });
             $this->tableSortColumn = 'similarity_score';
 
             return $res->isEmpty() ? $query : $res->toQuery();
@@ -116,9 +154,15 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                             ->sortable(),
 
                         Tables\Columns\TextColumn::make('similarity_score')
-                            ->getStateUsing(fn (User $record): string => $this->similarity_scores->get($record->id) . '%')
+                            ->getStateUsing(fn (User $record): string => $this->isRestrictedFavorite($record)
+                                ? 'Restricted'
+                                : (($this->similarity_scores->get($record->id) ?? 'N/A') . '%'))
                             ->color('danger')
                             ->sortable(),
+
+                        Tables\Columns\TextColumn::make('hard_filter_restricted')
+                            ->getStateUsing(fn (User $record): string => $this->isRestrictedFavorite($record) ? '1' : '0')
+                            ->hidden(),
                     ]),
             ]),
         ];
@@ -160,6 +204,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getTableRecordClassesUsing(): ?Closure
     {
         return fn (User $record) => match (true) {
+            $this->isRestrictedFavorite($record) => 'filament-user-card user-favorited favorite-restricted',
             $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
             $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-received',
             $this->hasPendingRoommateRequestTo($record) => 'filament-user-card rooomate-request-sent',
@@ -249,6 +294,11 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
             });
     }
 
+    protected function isRestrictedFavorite(User $user): bool
+    {
+        return in_array((int) $user->id, $this->restrictedFavoriteIds, true);
+    }
+
     // actions
     protected function getReportingAction()
     {
@@ -257,6 +307,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->label('Report User')
                 ->icon('heroicon-o-flag')
                 ->color('warning')
+                ->visible(fn (User $record): bool => !$this->isRestrictedFavorite($record))
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Report ' . $record->full_name)
                 ->modalDescription('Select the relevant Issues to submit a Report.')
@@ -290,6 +341,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->label('Block User')
                 ->icon('heroicon-o-lock-closed')
                 ->color('danger')
+                ->visible(fn (User $record): bool => !$this->isRestrictedFavorite($record) && !$this->hasBeenBlocked($record))
                 ->action(function (User $record) {
                     $this->blockUser($record);
                     $this->dispatchSelf('refresh:component');
@@ -297,8 +349,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Block ' . $record->full_name)
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will prevent <span class='font-semibold text-secondary-600'>{$record->full_name}</span> from viewing your profile and sending you Roommate requests.</p>")->toHtmlString())
-                ->extraAttributes(['class' => 'mt-1'])
-                ->visible(fn (User $record): bool => !$this->hasBeenBlocked($record)),
+                ->extraAttributes(['class' => 'mt-1']),
         ];
     }
 
@@ -347,7 +398,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->requiresConfirmation()
                 ->modalHeading('Send Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will send a Roommate roommate-request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasNoSentOrReceivedRoommateRequest($record)),
+                ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasNoSentOrReceivedRoommateRequest($record)),
 
             Tables\Actions\Action::make('accept-roommate-request')
                 ->button()
@@ -365,7 +416,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasPendingRoommateRequestFrom($record)),
+                ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasPendingRoommateRequestFrom($record)),
 
             Tables\Actions\Action::make('delete-roommate-request')
                 ->button()
@@ -383,7 +434,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasPendingRoommateRequestTo($record)),
+                ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasPendingRoommateRequestTo($record)),
 
             Tables\Actions\Action::make('contact-user')
                 ->button()
@@ -398,7 +449,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                     $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
                     $this->dispatchSelf('refresh:component');
                 })
-                ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
+                ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasAcceptedRoommateRequest($record)),
         ];
     }
 
