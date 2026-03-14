@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Favorites;
 
+use App\Enums\VerificationStatus;
 use App\Models\School;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,7 +26,7 @@ class FavoritesHardFilterVisibilityTest extends TestCase
             'min_budget' => 80000,
             'max_budget' => 160000,
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
             'email_verified_at' => now(),
             'settings' => [
                 'matching' => [

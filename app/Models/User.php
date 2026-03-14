@@ -4,7 +4,9 @@ namespace App\Models;
 
 use App\Enums\ContactChannelType;
 use App\Enums\UserRole;
+use App\Enums\VerificationStatus;
 use App\Models\Traits\Blockable;
+use App\Models\Traits\HasRolesAndPermissions;
 use App\Models\Traits\Requestable;
 use App\Http\ModelSimilarity\canCalculateUserSimilarity;
 use App\Models\Traits\Favoritable;
@@ -25,7 +27,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
-use Filament\Panel;
 use Spatie\Onboard\Concerns\GetsOnboarded;
 use Spatie\Onboard\Concerns\Onboardable;
 use \Staudenmeir\LaravelMergedRelations\Eloquent\HasMergedRelationships;
@@ -36,10 +37,6 @@ use Staudenmeir\LaravelMergedRelations\Eloquent\Relations\MergedRelation;
  */
 class User extends Authenticatable implements Onboardable, FilamentUser, HasName
 {
-  public const VERIFICATION_STATUS_UNVERIFIED = 'unverified';
-  public const VERIFICATION_STATUS_PENDING = 'pending';
-  public const VERIFICATION_STATUS_APPROVED = 'approved';
-  public const VERIFICATION_STATUS_REJECTED = 'rejected';
   public const MATCHING_SETTINGS_STRICT_GENDER_FILTER = 'matching.strict_gender_filter';
   public const LISTING_PREFERENCES_KEY = 'listing_preferences';
   public const LISTING_PREFERENCE_BUDGET_MIN = 'listing_preferences.budget_min';
@@ -61,7 +58,8 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     Reportable,
     WithValidUsersQueryScopes,
     canCalculateUserSimilarity,
-    HasSettings;
+    HasSettings,
+    HasRolesAndPermissions;
 
   /**
    * The default values of attributes.
@@ -70,7 +68,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
    */
   protected $attributes = [
     'profile_updated' => false,
-    'verification_status' => self::VERIFICATION_STATUS_UNVERIFIED,
+    'verification_status' => VerificationStatus::UNVERIFIED,
     'is_suspended' => false,
     'is_premium' => false,
   ];
@@ -131,6 +129,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     'suspended_at' => 'datetime',
     'settings' => 'array',
     'role' => UserRole::class,
+    'verification_status' => VerificationStatus::class,
   ];
 
   /**
@@ -146,71 +145,24 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
     return $this->email ?? 'User';
   }
 
-  public function canAccessPanel(Panel $panel): bool
-  {
-    $role = $this->role;
-
-    if ($role instanceof UserRole) {
-      return in_array($role, [UserRole::ADMIN, UserRole::STAFF], true);
-    }
-
-    return in_array($role, [UserRole::ADMIN->value, UserRole::STAFF->value], true);
-  }
-
-  public function isAdmin(): bool
-  {
-    return $this->role === UserRole::ADMIN;
-  }
-
-  public function isAdminOrStaff(): bool
-  {
-    $role = $this->role;
-
-    if ($role instanceof UserRole) {
-      return in_array($role, [UserRole::ADMIN, UserRole::STAFF], true);
-    }
-
-    return in_array((string) $role, [UserRole::ADMIN->value, UserRole::STAFF->value], true);
-  }
-
-  public function isRegularUser(): bool
-  {
-    $role = $this->role;
-
-    if ($role instanceof UserRole) {
-      return $role === UserRole::USER;
-    }
-
-    return (string) $role === UserRole::USER->value;
-  }
-
-  public function canManageListings(): bool
-  {
-    return $this->isRegularUser()
-      && $this->hasVerifiedEmail()
-      && (bool) $this->profile_updated
-      && $this->isVerified()
-      && !$this->isSuspended();
-  }
-
   public function isVerified(): bool
   {
-    return $this->verification_status === self::VERIFICATION_STATUS_APPROVED;
+    return $this->verification_status === VerificationStatus::APPROVED;
   }
 
   public function isPendingVerification(): bool
   {
-    return $this->verification_status === self::VERIFICATION_STATUS_PENDING;
+    return $this->verification_status === VerificationStatus::PENDING;
   }
 
   public function isRejectedVerification(): bool
   {
-    return $this->verification_status === self::VERIFICATION_STATUS_REJECTED;
+    return $this->verification_status === VerificationStatus::REJECTED;
   }
 
   public function isUnverifiedVerification(): bool
   {
-    return $this->verification_status === self::VERIFICATION_STATUS_UNVERIFIED;
+    return $this->verification_status === VerificationStatus::UNVERIFIED;
   }
 
   public function requiresIdentityVerification(): bool

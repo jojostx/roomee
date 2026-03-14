@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\VerificationStatus;
 use App\Filament\Resources\VerificationRequestResource\Pages;
 use App\Models\User;
 use App\Notifications\IdentityVerificationStatusNotification;
@@ -27,7 +28,7 @@ class VerificationRequestResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('verification_status', User::VERIFICATION_STATUS_PENDING);
+            ->where('verification_status', VerificationStatus::PENDING);
     }
 
     public static function table(Table $table): Table
@@ -67,11 +68,11 @@ class VerificationRequestResource extends Resource
                     ->requiresConfirmation()
                     ->action(function (User $record): void {
                         $record->forceFill([
-                            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+                            'verification_status' => VerificationStatus::APPROVED,
                             'rejection_reason' => null,
                         ])->save();
 
-                        $record->notify(new IdentityVerificationStatusNotification(User::VERIFICATION_STATUS_APPROVED));
+                        $record->notify(new IdentityVerificationStatusNotification(VerificationStatus::APPROVED));
 
                         Notification::make()
                             ->title('Verification approved.')
@@ -100,7 +101,7 @@ class VerificationRequestResource extends Resource
                         }
 
                         $record->forceFill([
-                            'verification_status' => User::VERIFICATION_STATUS_REJECTED,
+                            'verification_status' => VerificationStatus::REJECTED,
                             'rejection_reason' => $data['rejection_reason'],
                             'identity_document_path' => null,
                             'selfie_path' => null,
@@ -108,7 +109,7 @@ class VerificationRequestResource extends Resource
                         ])->save();
 
                         $record->notify(new IdentityVerificationStatusNotification(
-                            User::VERIFICATION_STATUS_REJECTED,
+                            VerificationStatus::REJECTED,
                             $data['rejection_reason'],
                         ));
 

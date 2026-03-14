@@ -3,6 +3,7 @@
 namespace Tests\Feature\Listing;
 
 use App\Enums\UserRole;
+use App\Enums\VerificationStatus;
 use App\Models\Listing;
 use App\Models\School;
 use App\Models\User;
@@ -25,7 +26,7 @@ class ListingDiscoveryPageTest extends TestCase
             'role' => UserRole::USER,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
             'school_id' => $school->getKey(),
             'settings' => [
                 'listing_preferences' => [
@@ -41,7 +42,7 @@ class ListingDiscoveryPageTest extends TestCase
             'role' => UserRole::USER,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
             'school_id' => $school->getKey(),
         ]);
 

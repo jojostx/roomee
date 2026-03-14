@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\User;
+use App\Enums\VerificationStatus;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -15,7 +15,7 @@ class IdentityVerificationStatusNotification extends Notification implements Sho
     use Queueable;
 
     public function __construct(
-        protected string $status,
+        protected VerificationStatus $status,
         protected ?string $rejectionReason = null,
     ) {
     }
@@ -27,7 +27,7 @@ class IdentityVerificationStatusNotification extends Notification implements Sho
 
     public function toMail($notifiable): MailMessage
     {
-        if ($this->status === User::VERIFICATION_STATUS_APPROVED) {
+        if ($this->status === VerificationStatus::APPROVED) {
             return (new MailMessage)
                 ->subject('Identity Verification Approved')
                 ->line('Your identity verification request has been approved.')
@@ -45,7 +45,7 @@ class IdentityVerificationStatusNotification extends Notification implements Sho
 
     public function toDatabase($notifiable): array
     {
-        if ($this->status === User::VERIFICATION_STATUS_APPROVED) {
+        if ($this->status === VerificationStatus::APPROVED) {
             return FilamentNotification::make()
                 ->title('Identity Verification Approved')
                 ->body('Your identity verification has been approved.')

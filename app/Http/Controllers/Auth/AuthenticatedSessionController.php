@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\VerificationStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
@@ -51,11 +52,11 @@ class AuthenticatedSessionController extends Controller
             return redirect(RouteServiceProvider::PROFILE);
         }
 
-        if ($user->verification_status === User::VERIFICATION_STATUS_PENDING) {
+        if ($user->verification_status === VerificationStatus::PENDING) {
             return redirect(RouteServiceProvider::VERIFICATION_PENDING);
         }
 
-        if ($user->verification_status !== User::VERIFICATION_STATUS_APPROVED && !$user->isAdminOrStaff()) {
+        if ($user->verification_status !== VerificationStatus::APPROVED && !$user->isAdminOrStaff()) {
             return redirect(RouteServiceProvider::PROFILE);
         }
 

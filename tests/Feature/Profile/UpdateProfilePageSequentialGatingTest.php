@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Profile;
 
-use App\Http\Livewire\Pages\Profile\UpdateProfilePage;
+use App\Livewire\Pages\Profile\UpdateProfilePage;
 use App\Models\Course;
 use App\Models\Dislike;
 use App\Models\Hobby;

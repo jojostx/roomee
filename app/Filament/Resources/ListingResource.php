@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\UserRole;
+use App\Enums\VerificationStatus;
 use App\Filament\Resources\ListingResource\Pages;
 use App\Models\Listing;
 use App\Models\User;
@@ -48,7 +49,7 @@ class ListingResource extends Resource
                                     ->where('role', UserRole::USER->value)
                                     ->whereNotNull('email_verified_at')
                                     ->where('profile_updated', true)
-                                    ->where('verification_status', User::VERIFICATION_STATUS_APPROVED)
+                                    ->where('verification_status', VerificationStatus::APPROVED)
                                     ->where('is_suspended', false)
                             )
                             ->getOptionLabelFromRecordUsing(fn (User $record): string => $record->full_name)

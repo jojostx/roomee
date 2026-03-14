@@ -3,8 +3,8 @@
 namespace Tests\Feature;
 
 use App\Enums\RoommateRequestStatus;
-use App\Http\Livewire\Traits\CanRetrieveUser;
-use App\Http\Livewire\Traits\WithRequesting;
+use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\WithRequesting;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

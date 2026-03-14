@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Middleware;
 
+use App\Enums\VerificationStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +15,7 @@ class IdentityVerificationFlowMiddlewareTest extends TestCase
     {
         $user = User::factory()->create([
             'profile_updated' => false,
-            'verification_status' => User::VERIFICATION_STATUS_UNVERIFIED,
+            'verification_status' => VerificationStatus::UNVERIFIED,
         ]);
 
         $this->actingAs($user);
@@ -30,7 +31,7 @@ class IdentityVerificationFlowMiddlewareTest extends TestCase
     {
         $user = User::factory()->create([
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_PENDING,
+            'verification_status' => VerificationStatus::PENDING,
         ]);
 
         $this->actingAs($user);
@@ -49,7 +50,7 @@ class IdentityVerificationFlowMiddlewareTest extends TestCase
     {
         $user = User::factory()->create([
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_PENDING,
+            'verification_status' => VerificationStatus::PENDING,
         ]);
 
         $this->actingAs($user);

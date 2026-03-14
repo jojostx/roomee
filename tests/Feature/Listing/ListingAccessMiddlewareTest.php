@@ -3,6 +3,7 @@
 namespace Tests\Feature\Listing;
 
 use App\Enums\UserRole;
+use App\Enums\VerificationStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -25,7 +26,7 @@ class ListingAccessMiddlewareTest extends TestCase
             'role' => UserRole::USER,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
         ]);
 
         foreach ($this->listingRoutes() as $routeName) {
@@ -40,7 +41,7 @@ class ListingAccessMiddlewareTest extends TestCase
             'role' => UserRole::USER,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_PENDING,
+            'verification_status' => VerificationStatus::PENDING,
         ]);
 
         foreach ($this->listingRoutes() as $routeName) {
@@ -55,7 +56,7 @@ class ListingAccessMiddlewareTest extends TestCase
             'role' => UserRole::USER,
             'email_verified_at' => now(),
             'profile_updated' => false,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
         ]);
 
         foreach ($this->listingRoutes() as $routeName) {

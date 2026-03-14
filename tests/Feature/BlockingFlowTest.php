@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\Traits\CanRetrieveUser;
-use App\Http\Livewire\Traits\WithBlocking;
+use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\WithBlocking;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

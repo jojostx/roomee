@@ -4,18 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FaqsController;
 use App\Http\Controllers\ContactsController;
 use App\Http\Controllers\Admin\VerificationFileController;
-use App\Http\Livewire\Pages\Profile\UpdateProfilePage;
-use App\Http\Livewire\Pages\Profile\ViewProfilePage;
-use App\Http\Livewire\Pages\Profile\PendingVerificationPage;
-use App\Http\Livewire\Pages\BlocklistPage;
-use App\Http\Livewire\Pages\DashboardPage;
-use App\Http\Livewire\Pages\FavoritesPage;
-use App\Http\Livewire\Pages\ListingDiscoveryPage;
-use App\Http\Livewire\Pages\ListingsPage;
-use App\Http\Livewire\Pages\RoommateRequestsPage;
-use App\Http\Livewire\Pages\Settings\AccountSettingsPage;
-use App\Http\Livewire\Pages\Settings\ContactChannelsSettingsPage;
-use App\Http\Livewire\Pages\Settings\NotificationsSettingsPage;
+use App\Livewire\Pages\Profile\UpdateProfilePage;
+use App\Livewire\Pages\Profile\ViewProfilePage;
+use App\Livewire\Pages\Profile\PendingVerificationPage;
+use App\Livewire\Pages\BlocklistPage;
+use App\Livewire\Pages\DashboardPage;
+use App\Livewire\Pages\FavoritesPage;
+use App\Livewire\Pages\ListingDiscoveryPage;
+use App\Livewire\Pages\ListingsPage;
+use App\Livewire\Pages\RoommateRequestsPage;
+use App\Livewire\Pages\Settings\AccountSettingsPage;
+use App\Livewire\Pages\Settings\ContactChannelsSettingsPage;
+use App\Livewire\Pages\Settings\NotificationsSettingsPage;
 
 /*
 |--------------------------------------------------------------------------

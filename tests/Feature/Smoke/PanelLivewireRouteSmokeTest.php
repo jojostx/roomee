@@ -5,6 +5,7 @@ namespace Tests\Feature\Smoke;
 use App\Enums\ContactChannelType;
 use App\Enums\RoommateRequestStatus;
 use App\Enums\UserRole;
+use App\Enums\VerificationStatus;
 use App\Models\Blocklist;
 use App\Models\ContactChannel;
 use App\Models\Favorite;
@@ -40,7 +41,7 @@ class PanelLivewireRouteSmokeTest extends TestCase
             'role' => UserRole::USER,
             'profile_updated' => true,
             'email_verified_at' => now(),
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
         ]);
 
         $this->blocklist = Blocklist::create([

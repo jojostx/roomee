@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"c:/Users/USER/Desktop/code/roomee/app/Livewire\" -name \"*.php\" -exec sed -i 's/namespace App\\\\\\\\Http\\\\\\\\Livewire/namespace App\\\\\\\\Livewire/g' {} +)"
+    ]
+  }
+}

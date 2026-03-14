@@ -3,6 +3,7 @@
 namespace Tests\Feature\Filament;
 
 use App\Enums\UserRole;
+use App\Enums\VerificationStatus;
 use App\Filament\Resources\ListingResource;
 use App\Models\Listing;
 use App\Models\User;
@@ -21,7 +22,7 @@ class ListingResourceRulesTest extends TestCase
             'is_premium' => false,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
         ]);
 
         Listing::factory()->create([
@@ -40,7 +41,7 @@ class ListingResourceRulesTest extends TestCase
             'role' => UserRole::USER,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_UNVERIFIED,
+            'verification_status' => VerificationStatus::UNVERIFIED,
         ]);
 
         $this->expectException(ValidationException::class);
@@ -55,7 +56,7 @@ class ListingResourceRulesTest extends TestCase
             'is_premium' => true,
             'email_verified_at' => now(),
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
         ]);
 
         Listing::factory()->create([
@@ -73,7 +74,7 @@ class ListingResourceRulesTest extends TestCase
         $user = User::factory()->create([
             'role' => UserRole::USER,
             'profile_updated' => true,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
             'email_verified_at' => null,
         ]);
 
@@ -87,7 +88,7 @@ class ListingResourceRulesTest extends TestCase
         $user = User::factory()->create([
             'role' => UserRole::USER,
             'profile_updated' => false,
-            'verification_status' => User::VERIFICATION_STATUS_APPROVED,
+            'verification_status' => VerificationStatus::APPROVED,
             'email_verified_at' => now(),
         ]);
 
