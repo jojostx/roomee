@@ -2,33 +2,19 @@
 
 namespace App\Livewire\Pages\Chat;
 
-use App\Events\MessageSent;
-use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\User;
-use Filament\Actions\Action;
-use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-class ChatRoomPage extends Component implements HasForms, HasActions
+class ChatRoomPage extends Component
 {
-    use InteractsWithForms, InteractsWithActions;
     public ChatRoom $chatRoom;
-
-    public string $newMessage = '';
 
     public function mount(ChatRoom $chatRoom): void
     {
         $authUser = $this->getAuthModel();
 
-        // Ensure the authenticated user is a participant in this room.
         abort_unless(
             (int) $chatRoom->user_a_id === $authUser->getKey()
                 || (int) $chatRoom->user_b_id === $authUser->getKey(),
@@ -36,23 +22,6 @@ class ChatRoomPage extends Component implements HasForms, HasActions
         );
 
         $this->chatRoom = $chatRoom;
-
-        // Mark all messages from the other participant as read.
-        $this->markMessagesAsRead();
-    }
-
-    protected function getListeners(): array
-    {
-        return [
-            "echo-private:chat-room.{$this->chatRoom->id},MessageSent" => 'handleIncomingMessage',
-        ];
-    }
-
-    public function handleIncomingMessage(): void
-    {
-        $this->chatRoom->refresh();
-        $this->markMessagesAsRead();
-        unset($this->chatMessages);
     }
 
     protected function getAuthModel(): ?User
@@ -60,130 +29,7 @@ class ChatRoomPage extends Component implements HasForms, HasActions
         return Auth::user();
     }
 
-    /** @return Collection<int, ChatMessage> */
-    #[Computed]
-    public function chatMessages(): Collection
-    {
-        return $this->chatRoom
-            ->messages()
-            ->with('sender')
-            ->oldest()
-            ->get();
-    }
-
-    #[Computed]
-    public function otherUser(): ?User
-    {
-        return $this->chatRoom->otherParticipant($this->getAuthModel());
-    }
-
-    #[Computed]
-    public function hasBothSharedContacts(): bool
-    {
-        return $this->chatRoom->hasBothSharedContacts();
-    }
-
-    #[Computed]
-    public function hasCurrentUserSharedContacts(): bool
-    {
-        return $this->chatRoom->hasUserSharedContacts($this->getAuthModel());
-    }
-
-    public function sendMessage(): void
-    {
-        $this->validate(['newMessage' => ['required', 'string', 'max:1000']]);
-
-        $message = $this->chatRoom->messages()->create([
-            'sender_id' => $this->getAuthModel()->getKey(),
-            'message' => $this->newMessage,
-        ]);
-
-        MessageSent::dispatch($message);
-
-        $this->newMessage = '';
-
-        // Bump the room's updated_at so the index sorts it to the top.
-        $this->chatRoom->touch();
-        unset($this->chatMessages);
-    }
-
-    public function shareContactsAction(): Action
-    {
-        return Action::make('shareContacts')
-            ->label('Share Contacts')
-            ->requiresConfirmation()
-            ->modalHeading('Share your contact details?')
-            ->modalDescription('Your contact information will be shared with ' . ($this->otherUser?->first_name ?? 'this user') . '. They will need to share theirs too before either of you can view them.')
-            ->modalSubmitActionLabel('Yes, share contacts')
-            ->color('primary')
-            ->action(function (): void {
-                $authUser = $this->getAuthModel();
-
-                if ($this->chatRoom->hasUserSharedContacts($authUser)) {
-                    return;
-                }
-
-                $this->chatRoom->markContactSharedBy($authUser);
-                $this->chatRoom->refresh();
-                unset($this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts);
-
-                Notification::make()
-                    ->title('Contact sharing request sent')
-                    ->body('Waiting for ' . $this->otherUser?->first_name . ' to also share their contacts.')
-                    ->info()
-                    ->send();
-            });
-    }
-
-    public function unshareContactsAction(): Action
-    {
-        return Action::make('unshareContacts')
-            ->label('Undo')
-            ->requiresConfirmation()
-            ->modalHeading('Withdraw contact sharing request?')
-            ->modalDescription('Your contact sharing request will be cancelled. ' . ($this->otherUser?->first_name ?? 'The other user') . ' will no longer be notified that you want to share contacts.')
-            ->modalSubmitActionLabel('Yes, withdraw')
-            ->color('danger')
-            ->action(function (): void {
-                $authUser = $this->getAuthModel();
-
-                if (!$this->chatRoom->hasUserSharedContacts($authUser)) {
-                    return;
-                }
-
-                $this->chatRoom->markContactUnsharedBy($authUser);
-                $this->chatRoom->refresh();
-                unset($this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts);
-
-                Notification::make()
-                    ->title('Contact sharing request withdrawn')
-                    ->body('Your contact sharing request has been cancelled.')
-                    ->warning()
-                    ->send();
-            });
-    }
-
-    public function openContactModal(): void
-    {
-        if (!$this->chatRoom->hasBothSharedContacts()) {
-            return;
-        }
-
-        $this->dispatch('openModal', 'components.modals.contact-user-modal', [
-            'user' => $this->otherUser?->uuid,
-        ]);
-    }
-
-    protected function markMessagesAsRead(): void
-    {
-        $this->chatRoom
-            ->messages()
-            ->where('sender_id', '!=', $this->getAuthModel()->getKey())
-            ->whereNull('read_at')
-            ->update(['read_at' => now()]);
-    }
-
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.pages.chat.chat-room-page')
             ->layout('layouts.guest');

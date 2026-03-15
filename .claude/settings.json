@@ -28,7 +28,8 @@
       "WebFetch(domain:fly.io)",
       "WebFetch(domain:alpinejs.dev)",
       "Bash(grep -r \"openOnboardingStepModal\\\\|InteractsWithTable\\\\|InteractsWithActions\" /c/Users/USER/Desktop/code/roomee/app/Livewire --include=*.php -l)",
-      "Bash(ls /c/Users/USER/Desktop/code/roomee/bootstrap/cache/*.php)"
+      "Bash(ls /c/Users/USER/Desktop/code/roomee/bootstrap/cache/*.php)",
+      "Bash(npm run:*)"
     ]
   }
 }
