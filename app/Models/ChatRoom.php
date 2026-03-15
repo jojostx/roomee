@@ -73,6 +73,18 @@ class ChatRoom extends Model
     }
 
     /**
+     * Revoke a given user's contact-sharing consent.
+     */
+    public function markContactUnsharedBy(User $user): void
+    {
+        if ((int) $this->user_a_id === $user->getKey()) {
+            $this->update(['contact_shared_by_a' => false]);
+        } else {
+            $this->update(['contact_shared_by_b' => false]);
+        }
+    }
+
+    /**
      * Returns whether the given user has already shared their contacts.
      */
     public function hasUserSharedContacts(User $user): bool

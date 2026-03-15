@@ -6,14 +6,20 @@ use App\Events\MessageSent;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\User;
+use Filament\Actions\Action;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-class ChatRoomPage extends Component
+class ChatRoomPage extends Component implements HasForms, HasActions
 {
+    use InteractsWithForms, InteractsWithActions;
     public ChatRoom $chatRoom;
 
     public string $newMessage = '';
@@ -101,23 +107,60 @@ class ChatRoomPage extends Component
         unset($this->chatMessages);
     }
 
-    public function shareContacts(): void
+    public function shareContactsAction(): Action
     {
-        $authUser = $this->getAuthModel();
+        return Action::make('shareContacts')
+            ->label('Share Contacts')
+            ->requiresConfirmation()
+            ->modalHeading('Share your contact details?')
+            ->modalDescription('Your contact information will be shared with ' . ($this->otherUser?->first_name ?? 'this user') . '. They will need to share theirs too before either of you can view them.')
+            ->modalSubmitActionLabel('Yes, share contacts')
+            ->color('primary')
+            ->action(function (): void {
+                $authUser = $this->getAuthModel();
 
-        if ($this->chatRoom->hasUserSharedContacts($authUser)) {
-            return;
-        }
+                if ($this->chatRoom->hasUserSharedContacts($authUser)) {
+                    return;
+                }
 
-        $this->chatRoom->markContactSharedBy($authUser);
-        $this->chatRoom->refresh();
-        unset($this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts);
+                $this->chatRoom->markContactSharedBy($authUser);
+                $this->chatRoom->refresh();
+                unset($this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts);
 
-        Notification::make()
-            ->title('Contact sharing request sent')
-            ->body('Waiting for ' . $this->otherUser?->first_name . ' to also share their contacts.')
-            ->info()
-            ->send();
+                Notification::make()
+                    ->title('Contact sharing request sent')
+                    ->body('Waiting for ' . $this->otherUser?->first_name . ' to also share their contacts.')
+                    ->info()
+                    ->send();
+            });
+    }
+
+    public function unshareContactsAction(): Action
+    {
+        return Action::make('unshareContacts')
+            ->label('Undo')
+            ->requiresConfirmation()
+            ->modalHeading('Withdraw contact sharing request?')
+            ->modalDescription('Your contact sharing request will be cancelled. ' . ($this->otherUser?->first_name ?? 'The other user') . ' will no longer be notified that you want to share contacts.')
+            ->modalSubmitActionLabel('Yes, withdraw')
+            ->color('danger')
+            ->action(function (): void {
+                $authUser = $this->getAuthModel();
+
+                if (!$this->chatRoom->hasUserSharedContacts($authUser)) {
+                    return;
+                }
+
+                $this->chatRoom->markContactUnsharedBy($authUser);
+                $this->chatRoom->refresh();
+                unset($this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts);
+
+                Notification::make()
+                    ->title('Contact sharing request withdrawn')
+                    ->body('Your contact sharing request has been cancelled.')
+                    ->warning()
+                    ->send();
+            });
     }
 
     public function openContactModal(): void

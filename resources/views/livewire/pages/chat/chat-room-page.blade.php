@@ -17,7 +17,7 @@
                 <p class="text-sm font-semibold text-secondary-800 leading-tight">
                     {{ $this->otherUser?->full_name }}
                 </p>
-                <p class="text-xs text-secondary-400">{{ $this->otherUser?->course?->name }}</p>
+                <p class="hidden sm:block text-xs text-secondary-400">{{ $this->otherUser?->course?->name }}</p>
             </div>
         </div>
 
@@ -25,23 +25,30 @@
             @if ($this->hasBothSharedContacts)
                 <button
                     wire:click="openContactModal"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-success-600 hover:bg-success-700 transition-colors focus:outline-none focus:ring-2 focus:ring-success-500">
+                    class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-success-600 hover:bg-success-700 transition-colors focus:outline-none focus:ring-2 focus:ring-success-500">
                     <x-heroicon-s-phone class="w-4 h-4" />
-                    Contact Info
+                    <span class="hidden sm:inline">Contact Info</span>
                 </button>
             @elseif (!$this->hasCurrentUserSharedContacts)
                 <button
-                    wire:click="shareContacts"
+                    wire:click="mountAction('shareContacts')"
                     wire:loading.attr="disabled"
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-primary-700 rounded-lg border border-primary-300 bg-primary-50 hover:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-60">
+                    class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-primary-700 rounded-lg border border-primary-300 bg-primary-50 hover:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-60">
                     <x-heroicon-o-share class="w-4 h-4" />
-                    Share Contacts
+                    <span class="hidden sm:inline">Share Contacts</span>
                 </button>
             @else
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-secondary-500 rounded-lg bg-secondary-100">
+                <span class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-medium text-secondary-500 rounded-lg bg-secondary-100">
                     <x-heroicon-o-clock class="w-4 h-4" />
-                    Waiting for {{ $this->otherUser?->first_name }}
+                    <span class="hidden sm:inline">Waiting for {{ $this->otherUser?->first_name }}</span>
                 </span>
+                <button
+                    wire:click="mountAction('unshareContacts')"
+                    wire:loading.attr="disabled"
+                    class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-danger-700 rounded-lg border border-danger-300 bg-danger-50 hover:bg-danger-100 transition-colors focus:outline-none focus:ring-2 focus:ring-danger-500 disabled:opacity-60">
+                    <x-heroicon-o-x-mark class="w-4 h-4" />
+                    <span class="hidden sm:inline">Undo</span>
+                </button>
             @endif
         </div>
     </div>
@@ -135,6 +142,8 @@
             </button>
         </form>
     </div>
+
+    <x-filament-actions::modals />
 
     @push('scripts')
     <script>
