@@ -10,8 +10,8 @@ $similarity_score = Illuminate\Support\Arr::get($getColumns(), 'similarity_score
 $min_budget_display = is_numeric($min_budget) ? number_format((float) $min_budget) : 'N/A';
 $max_budget_display = is_numeric($max_budget) ? number_format((float) $max_budget) : 'N/A';
 
-$towns = Illuminate\Support\Arr::get($getColumns(), 'towns.name', null)?->getState() ?? '';
-$towns = str()->of($towns)->explode(', ');
+$townsState = Illuminate\Support\Arr::get($getColumns(), 'towns.name', null)?->getState() ?? [];
+$towns = collect(is_array($townsState) ? $townsState : explode(', ', (string) $townsState))->filter();
 
 $pivot_created_at = Illuminate\Support\Arr::get($getColumns(), 'pivot_created_at', null)?->getState() ?? null;
 if (filled($pivot_created_at) && !($pivot_created_at instanceof \Carbon\CarbonInterface)) {
