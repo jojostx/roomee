@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use ValueError;
 use App\Enums\RoommateRequestStatus;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -34,11 +35,11 @@ trait ManagesRoommateRequestStatus
   /**
    * Scope a query to only query RoommateRequest of the type indicated by the $status parameter
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
+   * @param Builder $query
    * @param \App\Enums\Models\RoommateRequestStatus $type
-   * @throws \ValueError
-   * 
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @throws ValueError
+   *
+   * @return Builder
    */
   public function scopeStatus(Builder $query, string|RoommateRequestStatus $status = '')
   {
@@ -50,8 +51,8 @@ trait ManagesRoommateRequestStatus
   /**
    * Scope a query to only include DENIED roommate request.
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @param Builder $query
+   * @return Builder
    */
   public function scopeDenied(Builder $query)
   {
@@ -61,8 +62,8 @@ trait ManagesRoommateRequestStatus
   /**
    * Scope a query to only include pending roommate request.
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @param Builder $query
+   * @return Builder
    */
   public function scopePending(Builder $query)
   {
@@ -72,8 +73,8 @@ trait ManagesRoommateRequestStatus
   /**
    * Scope a query to only include accepted roommate request.
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @param Builder $query
+   * @return Builder
    */
   public function scopeAccepted(Builder $query)
   {

@@ -2,12 +2,12 @@
 
 namespace App\Notifications;
 
+use Filament\Actions\Action;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 
 class RoommateRequestAcceptedNotification extends Notification implements ShouldQueue
@@ -41,7 +41,7 @@ class RoommateRequestAcceptedNotification extends Notification implements Should
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return MailMessage
      */
     public function toMail($notifiable)
     {

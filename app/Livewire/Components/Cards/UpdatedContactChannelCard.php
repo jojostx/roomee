@@ -2,6 +2,10 @@
 
 namespace App\Livewire\Components\Cards;
 
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Forms\Components\Toggle;
+use Filament\Actions\Action;
 use App\Enums\ContactChannelType;
 use App\Models\ContactChannel;
 use App\Models\User;
@@ -11,12 +15,12 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Livewire\Component;
 use Filament\Forms;
-use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Validation\ValidationException;
 
-class UpdatedContactChannelCard extends Component implements HasForms
+class UpdatedContactChannelCard extends Component implements HasForms, HasActions
 {
+    use InteractsWithActions;
     use InteractsWithForms, WithRateLimiting;
 
     public ContactChannel $contactChannel;
@@ -52,7 +56,7 @@ class UpdatedContactChannelCard extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Toggle::make('is_enabled')
+            Toggle::make('is_enabled')
                 ->hiddenLabel()
                 ->inline()
                 ->afterStateUpdated(fn () => $this->submit())

@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -r \":*)",
+      "Bash(grep -n \"protected static string.*view\\\\|static string.*$view\" vendor/filament/tables/src/Columns/ImageColumn.php)",
+      "Bash(./vendor/bin/phpunit tests/Feature/FavoritesHardFilterVisibilityTest.php)",
+      "Bash(./vendor/bin/phpunit tests/Feature/Favorites/FavoritesHardFilterVisibilityTest.php)",
+      "Bash(./vendor/bin/phpunit tests/Feature/Favorites/FavoritesHardFilterVisibilityTest.php tests/Feature/Smoke/PanelLivewireRouteSmokeTest.php)",
+      "Bash(./vendor/bin/phpunit tests/Feature/Smoke/PanelLivewireRouteSmokeTest.php)",
+      "Bash(xargs ls:*)",
+      "Bash(find vendor/filament -name *.php -exec grep -l 'function makeForm' {})",
+      "Bash(2)",
+      "Bash(./vendor/bin/phpunit tests/Feature/Smoke/PanelLivewireRouteSmokeTest.php::test_livewire_page_routes_return_success_for_verified_user)",
+      "Bash(./vendor/bin/phpunit --do-not-cache-result)"
+    ]
+  }
+}

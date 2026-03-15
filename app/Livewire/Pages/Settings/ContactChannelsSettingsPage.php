@@ -2,25 +2,34 @@
 
 namespace App\Livewire\Pages\Settings;
 
+use Filament\Forms\Contracts\HasForms;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Actions\Action;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Forms\Components\Placeholder;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\ViewField;
+use Illuminate\View\View;
 use App\Enums\ContactChannelType;
 use App\Models\ContactChannel;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-use Filament\Forms\Components\Section;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\HtmlString;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Collection;
 
-class ContactChannelsSettingsPage extends Component implements Forms\Contracts\HasForms
+class ContactChannelsSettingsPage extends Component implements HasForms, HasActions
 {
-    use Forms\Concerns\InteractsWithForms;
-
+    use InteractsWithActions;
+    use InteractsWithForms;
     /**
      * facebook
      * instagram
@@ -32,17 +41,14 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
      *  this puts the account on pending_admin_approval
      */
     public Collection $channels;
-
     public $whatsapp;
     public $facebook;
     public $instagram;
     public $twitter;
-
     public bool $show_whatsapp_code = false;
     public bool $show_facebook_code = false;
     public bool $show_instagram_code = false;
     public bool $show_twitter_code = false;
-
     public function mount()
     {
         $this->getChannels();
@@ -59,17 +65,14 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
             'twitter' => '',
         ]);
     }
-
     protected function getAuthUser(): User
     {
         return \auth()->user();
     }
-
     protected function getChannels()
     {
         $this->channels = $this->getAuthUser()->getLatestContactChannels();
     }
-
     protected function getWhatsappFormSchema(): array
     {
         return [
@@ -90,7 +93,6 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ->collapsible()
         ];
     }
-
     protected function getFacebookFormSchema(): array
     {
         return [
@@ -116,7 +118,6 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ->collapsible()
         ];
     }
-
     protected function getInstagramFormSchema(): array
     {
         return [
@@ -140,7 +141,6 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ->collapsible()
         ];
     }
-
     public function getTwitterFormSchema(): array
     {
         return [
@@ -164,11 +164,10 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ->collapsible()
         ];
     }
-
     protected function getFormSchema(string $channel, array $data, array $rules)
     {
         return [
-            Forms\Components\TextInput::make($channel)
+            TextInput::make($channel)
                 ->label($data['link_label'] ?? 'Profile link')
                 ->placeholder($data['link_placeholder'])
                 ->rules($rules)
@@ -188,24 +187,24 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                         }),
                 ),
 
-            Forms\Components\TextInput::make($channel . '-code')
+            TextInput::make($channel . '-code')
                 ->label('Verification code')
                 ->disabled()
                 ->visible(fn (Get $get) => $get($channel) && $this->{'show_' . $channel . '_code'}),
 
-            Forms\Components\Placeholder::make($channel . '-account')
+            Placeholder::make($channel . '-account')
                 ->label('Our ' . $channel . ' account')
                 ->content($data['account_placeholder_content']),
 
-            Forms\Components\Grid::make()
+            Grid::make()
                 ->schema([
-                    Forms\Components\ViewField::make('cancel')
+                    ViewField::make('cancel')
                         ->view('livewire.components.filament.forms.cancel-update-button')
                         ->id($channel)
                         ->visible(fn ()  => filled($this->getChannel($channel)))
                         ->columnSpan(1),
 
-                    Forms\Components\Placeholder::make('submit-' . $channel)
+                    Placeholder::make('submit-' . $channel)
                         ->columnSpan(2)
                         ->extraAttributes(fn () => blank($this->getChannel($channel)) ? [] : ['class' => 'flex justify-end'])
                         ->hiddenLabel()
@@ -219,21 +218,19 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
                 ])
         ];
     }
-
     protected function getForms(): array
     {
         return [
-            'whatsappForm' => $this->makeForm()
+            'whatsappForm' => $this->makeSchema()
                 ->schema($this->getWhatsappFormSchema()),
-            'facebookForm' => $this->makeForm()
+            'facebookForm' => $this->makeSchema()
                 ->schema($this->getFacebookFormSchema()),
-            'instagramForm' => $this->makeForm()
+            'instagramForm' => $this->makeSchema()
                 ->schema($this->getInstagramFormSchema()),
-            'twitterForm' => $this->makeForm()
+            'twitterForm' => $this->makeSchema()
                 ->schema($this->getTwitterFormSchema()),
         ];
     }
-
     protected static function getSubmitButton(): HtmlString
     {
         return new HtmlString(Blade::render("
@@ -241,20 +238,17 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
             {{ __('Submit For Verification') }}
         </x-filament::button>"));
     }
-
     #[Computed]
     public function channelNames()
     {
         return ContactChannelType::getChannelNames(['email']);
     }
-
     public function getChannel(ContactChannelType|string $channelType)
     {
         $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;
 
         return $this->channels->firstWhere('type', $channelType->value);
     }
-
     public function showUpdatedChannelComponent(ContactChannel|string $channel)
     {
         $channel = \is_string($channel) ? $this->getChannel($channel) : $channel;
@@ -266,7 +260,6 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         // if your contact channel is successfully verified, you can only change it after one week
         return $channel->isVerified() && $channel->verified_at->lessThanOrEqualTo(now()->subWeek());
     }
-
     public function updateChannel(ContactChannelType|string $channelType)
     {
         $channelType = is_string($channelType) ? ContactChannelType::from($channelType) : $channelType;
@@ -292,10 +285,9 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
             ->seconds(15)
             ->send();
     }
-
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.settings.contact-channels-settings-page');
 
         return $view->layout('layouts.guest');

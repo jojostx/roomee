@@ -2,10 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\BlocklistResource\Pages\ListBlocklists;
+use App\Filament\Resources\BlocklistResource\Pages\CreateBlocklist;
+use App\Filament\Resources\BlocklistResource\Pages\EditBlocklist;
 use App\Filament\Resources\BlocklistResource\Pages;
 use App\Models\Blocklist;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,21 +26,27 @@ class BlocklistResource extends Resource
 {
     protected static ?string $model = Blocklist::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
-
-    protected static ?string $navigationGroup = 'Connections';
-
     protected static ?string $navigationLabel = 'Blocklist';
 
-    public static function form(Form $form): Form
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('blocker_id')
+        return 'heroicon-o-lock-closed';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Connections';
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Select::make('blocker_id')
                     ->relationship('blocker', 'full_name')
                     ->searchable()
                     ->required(),
-                Forms\Components\Select::make('blockee_id')
+                Select::make('blockee_id')
                     ->relationship('blockee', 'full_name')
                     ->searchable()
                     ->required()
@@ -40,25 +58,25 @@ class BlocklistResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('blocker.full_name')
+                TextColumn::make('blocker.full_name')
                     ->label('Blocker')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('blockee.full_name')
+                TextColumn::make('blockee.full_name')
                     ->label('Blocked User')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -66,9 +84,9 @@ class BlocklistResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBlocklists::route('/'),
-            'create' => Pages\CreateBlocklist::route('/create'),
-            'edit' => Pages\EditBlocklist::route('/{record}/edit'),
+            'index' => ListBlocklists::route('/'),
+            'create' => CreateBlocklist::route('/create'),
+            'edit' => EditBlocklist::route('/{record}/edit'),
         ];
     }
 }

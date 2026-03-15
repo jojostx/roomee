@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Traits;
 
+use Throwable;
 use App\Models\Blocklist;
 use App\Models\RoommateRequest;
 use App\Models\User;
@@ -38,7 +39,7 @@ trait WithBlocking
         ->title("You have succesfully blocked **{$user->full_name}**.")
         ->success()
         ->send();
-    } catch (\Throwable $th) {
+    } catch (Throwable $th) {
       Notification::make()
         ->title("An error occurred while blocking **{$user->full_name}** please try again later.")
         ->success()

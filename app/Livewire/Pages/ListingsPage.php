@@ -2,13 +2,20 @@
 
 namespace App\Livewire\Pages;
 
+use Filament\Tables\Contracts\HasTable;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Schemas\Components\Section;
+use Illuminate\View\View;
 use App\Filament\Resources\ListingResource;
 use App\Models\Listing;
 use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -18,7 +25,6 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Support\Contracts\TranslatableContentDriver;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,10 +32,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
-class ListingsPage extends Component implements Tables\Contracts\HasTable, HasForms
+class ListingsPage extends Component implements HasTable, HasForms, HasActions
 {
+    use InteractsWithActions;
     use InteractsWithForms;
-    use Tables\Concerns\InteractsWithTable;
+    use InteractsWithTable;
 
     public function getAuthModel(): ?User
     {
@@ -93,7 +100,7 @@ class ListingsPage extends Component implements Tables\Contracts\HasTable, HasFo
                 ->color('primary')
                 ->modalHeading('Create Listing')
                 ->modalSubmitActionLabel('Save Listing')
-                ->form($this->getListingFormSchema())
+                ->schema($this->getListingFormSchema())
                 ->action(function (array $data): void {
                     $owner = $this->getListingOwnerOrFail();
 
@@ -137,7 +144,7 @@ class ListingsPage extends Component implements Tables\Contracts\HasTable, HasFo
                     'images' => $record->images ?? [],
                     'is_published' => (bool) $record->is_published,
                 ])
-                ->form($this->getListingFormSchema())
+                ->schema($this->getListingFormSchema())
                 ->action(function (Listing $record, array $data): void {
                     $owner = $this->getListingOwnerOrFail();
                     $this->ensureListingBelongsToOwner($record, $owner);
@@ -185,7 +192,7 @@ class ListingsPage extends Component implements Tables\Contracts\HasTable, HasFo
                         ->send();
                 }),
 
-            Tables\Actions\DeleteAction::make()
+            DeleteAction::make()
                 ->before(function (Listing $record): void {
                     $owner = $this->getListingOwnerOrFail();
                     $this->ensureListingBelongsToOwner($record, $owner);
@@ -204,7 +211,7 @@ class ListingsPage extends Component implements Tables\Contracts\HasTable, HasFo
     }
 
     /**
-     * @return array<int, \Filament\Forms\Components\Component>
+     * @return array<int, \Filament\Schemas\Components\Component>
      */
     protected function getListingFormSchema(): array
     {
@@ -353,7 +360,7 @@ class ListingsPage extends Component implements Tables\Contracts\HasTable, HasFo
 
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.listings-page');
 
         return $view->layout('layouts.guest');

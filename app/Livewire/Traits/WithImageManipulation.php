@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Traits;
 
+use Exception;
 use Illuminate\Http\UploadedFile;
 
 trait WithImageManipulation
@@ -25,7 +26,7 @@ trait WithImageManipulation
         try {
             $image->move(storage_path("app\\" . $folderName), $imageName);
             return $imageName;
-        } catch (\Exception $th) {
+        } catch (Exception $th) {
             return false;
         }
     }

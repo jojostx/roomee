@@ -2,6 +2,23 @@
 
 namespace App\Livewire\Pages;
 
+use Filament\Tables\Contracts\HasTable;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use App\Livewire\Traits\WithFavoriting;
+use App\Livewire\Traits\WithRequesting;
+use App\Livewire\Traits\WithBlocking;
+use App\Livewire\Traits\WithOnboardingSteps;
+use App\Livewire\Traits\CanRetrieveUser;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\View;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\Action;
+use Filament\Forms\Components\CheckboxList;
 use App\Livewire\Traits\CanReactToRoommateRequestUpdate;
 use App\Models\RoommateRequest;
 use Illuminate\Support\Collection;
@@ -25,17 +42,18 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 
 
-class RoommateRequestsPage extends Component implements Tables\Contracts\HasTable, HasForms
+class RoommateRequestsPage extends Component implements HasTable, HasForms, HasActions
 {
+    use InteractsWithActions;
     use CanReactToRoommateRequestUpdate;
     use
         InteractsWithForms,
-        Traits\WithFavoriting,
-        Traits\WithRequesting,
-        Traits\WithBlocking,
-        Traits\WithOnboardingSteps,
-        Traits\CanRetrieveUser,
-        Tables\Concerns\InteractsWithTable {
+        WithFavoriting,
+        WithRequesting,
+        WithBlocking,
+        WithOnboardingSteps,
+        CanRetrieveUser,
+        InteractsWithTable {
         applySortingToTableQuery as parentApplySortingToTableQuery;
     }
 
@@ -74,7 +92,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     protected function getTableFilters(): array
     {
         return [
-            Tables\Filters\TernaryFilter::make('requests')
+            TernaryFilter::make('requests')
                 ->placeholder('All')
                 ->trueLabel('Received')
                 ->falseLabel('Sent')
@@ -112,9 +130,9 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
 
         $this->similarity_scores = $res->mapWithKeys(fn ($model) => [$model->id => $model->similarity_score]);
 
-        if ($this->tableSortColumn == "similarity_score" || $this->tableSortColumn == null) {
+        if ($this->getTableSortColumn() == "similarity_score" || $this->getTableSortColumn() == null) {
             $res = $res->sortBy('similarity_score');
-            $this->tableSortColumn = 'similarity_score';
+            $this->tableSort = 'similarity_score';
 
             return $res->isEmpty() ? $query : $res->toQuery();
         }
@@ -125,39 +143,39 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\Layout\Split::make([
-                Tables\Columns\Layout\View::make('livewire.components.filament.tables.user-card-detail-row')
+            Split::make([
+                View::make('livewire.components.filament.tables.user-card-detail-row')
                     ->components([
-                        Tables\Columns\TextColumn::make('pivot_created_at')
+                        TextColumn::make('pivot_created_at')
                             ->formatStateUsing(fn ($state) => filled($state) ? Date::parse($state)->setTimezone('WAT') : null)
                             ->sortable(),
 
-                        Tables\Columns\ImageColumn::make('avatar_path')
+                        ImageColumn::make('avatar_path')
                             ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),
 
-                        Tables\Columns\TextColumn::make('full_name')
+                        TextColumn::make('full_name')
                             ->sortable(query: function (Builder $query, string $direction): Builder {
                                 return $query
                                     ->orderBy('last_name', $direction)
                                     ->orderBy('first_name', $direction);
                             }),
 
-                        Tables\Columns\TextColumn::make('course.name'),
+                        TextColumn::make('course.name'),
 
-                        Tables\Columns\TextColumn::make('towns.name'),
-                        Tables\Columns\TextColumn::make('min_budget')
+                        TextColumn::make('towns.name'),
+                        TextColumn::make('min_budget')
                             ->formatStateUsing(fn ($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('max_budget')
+                        TextColumn::make('max_budget')
                             ->formatStateUsing(fn ($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('similarity_score')
+                        TextColumn::make('similarity_score')
                             ->getStateUsing(fn (User $record): string => $this->similarity_scores->get($record->id) . '%')
                             ->color('danger')
                             ->sortable(),
@@ -171,7 +189,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
         return [
             ...$this->getRoommateRequestingActions(),
 
-            Tables\Actions\ActionGroup::make([
+            ActionGroup::make([
                 ...$this->getFavoritingActions(),
                 ...$this->getReportingAction(),
                 ...$this->getBlockingActions(),
@@ -306,7 +324,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     protected function getReportingAction()
     {
         return [
-            Tables\Actions\Action::make('report')
+            Action::make('report')
                 ->label('Report User')
                 ->icon('heroicon-o-flag')
                 ->color('warning')
@@ -315,8 +333,8 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->modalDescription('Select the relevant Issues to submit a Report.')
                 ->modalSubmitActionLabel('Submit')
                 ->modalWidth('sm')
-                ->form([
-                    Forms\Components\CheckboxList::make('report_ids')
+                ->schema([
+                    CheckboxList::make('report_ids')
                         ->label('Reports')
                         ->options(Report::pluck('description', 'id')->transform(fn ($val) => ucfirst($val)))
                         ->required()
@@ -339,7 +357,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     protected function getBlockingActions()
     {
         return [
-            Tables\Actions\Action::make('block')
+            Action::make('block')
                 ->label('Block User')
                 ->icon('heroicon-o-lock-closed')
                 ->color('danger')
@@ -358,7 +376,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     protected function getFavoritingActions()
     {
         return [
-            Tables\Actions\Action::make('favorite')
+            Action::make('favorite')
                 ->label('Add to Favorites')
                 ->tooltip('Add to Favorites')
                 ->color('primary')
@@ -370,7 +388,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => !$this->hasBeenFavorited($record)),
 
-            Tables\Actions\Action::make('unfavorite')
+            Action::make('unfavorite')
                 ->label('Remove from Favorites')
                 ->tooltip('Remove from Favorites')
                 ->color('primary')
@@ -387,7 +405,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
     protected function getRoommateRequestingActions()
     {
         return [
-            Tables\Actions\Action::make('accept-roommate-request')
+            Action::make('accept-roommate-request')
                 ->button()
                 ->label('Accept Request')
                 ->icon('heroicon-s-check-circle')
@@ -405,7 +423,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasPendingRoommateRequestFrom($record)),
 
-            Tables\Actions\Action::make('delete-roommate-request')
+            Action::make('delete-roommate-request')
                 ->button()
                 ->label('Delete Request')
                 ->icon('heroicon-s-user-minus')
@@ -423,7 +441,7 @@ class RoommateRequestsPage extends Component implements Tables\Contracts\HasTabl
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasPendingRoommateRequestTo($record)),
 
-            Tables\Actions\Action::make('contact-user')
+            Action::make('contact-user')
                 ->button()
                 ->label('Contact User')
                 ->icon('heroicon-s-phone-arrow-up-right')

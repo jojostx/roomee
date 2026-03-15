@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use App\Enums\RoommateRequestStatus;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -24,7 +25,7 @@ class RoommateRequestUpdated implements ShouldBroadcast
     public $recipient_id;
        
     /**
-     * @var App\Enums\RoommateRequestStatus
+     * @var RoommateRequestStatus
      */
     public $status;
 
@@ -43,7 +44,7 @@ class RoommateRequestUpdated implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return \Illuminate\Broadcasting\Channel|array
+     * @return Channel|array
      */
     public function broadcastOn()
     {

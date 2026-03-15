@@ -2,6 +2,12 @@
 
 namespace App\Livewire\Pages;
 
+use Filament\Tables\Contracts\HasTable;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Actions\Action;
+use Illuminate\View\View;
 use App\Enums\VerificationStatus;
 use App\Models\Listing;
 use App\Models\User;
@@ -9,16 +15,16 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Contracts\TranslatableContentDriver;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ListingDiscoveryPage extends Component implements Tables\Contracts\HasTable, HasForms
+class ListingDiscoveryPage extends Component implements HasTable, HasForms, HasActions
 {
+    use InteractsWithActions;
     use InteractsWithForms;
-    use Tables\Concerns\InteractsWithTable;
+    use InteractsWithTable;
 
     public function getAuthModel(): ?User
     {
@@ -120,7 +126,7 @@ class ListingDiscoveryPage extends Component implements Tables\Contracts\HasTabl
 
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.listing-discovery-page');
 
         return $view->layout('layouts.guest');

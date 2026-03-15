@@ -2,11 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\RoommateRequestResource\Pages\ListRoommateRequests;
+use App\Filament\Resources\RoommateRequestResource\Pages\CreateRoommateRequest;
+use App\Filament\Resources\RoommateRequestResource\Pages\EditRoommateRequest;
 use App\Enums\RoommateRequestStatus;
 use App\Filament\Resources\RoommateRequestResource\Pages;
 use App\Models\RoommateRequest;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,24 +28,30 @@ class RoommateRequestResource extends Resource
 {
     protected static ?string $model = RoommateRequest::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
-    protected static ?string $navigationGroup = 'Requests';
-
-    public static function form(Form $form): Form
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('sender_id')
+        return 'heroicon-o-user-group';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Requests';
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Select::make('sender_id')
                     ->relationship('sender', 'full_name')
                     ->searchable()
                     ->required(),
-                Forms\Components\Select::make('recipient_id')
+                Select::make('recipient_id')
                     ->relationship('recipient', 'full_name')
                     ->searchable()
                     ->different('sender_id')
                     ->required(),
-                Forms\Components\Select::make('status')
+                Select::make('status')
                     ->options(self::getStatusOptions())
                     ->required(),
             ]);
@@ -42,15 +61,15 @@ class RoommateRequestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('sender.full_name')
+                TextColumn::make('sender.full_name')
                     ->label('Sender')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('recipient.full_name')
+                TextColumn::make('recipient.full_name')
                     ->label('Recipient')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->formatStateUsing(static function ($state): string {
                         if ($state instanceof RoommateRequestStatus) {
@@ -59,22 +78,22 @@ class RoommateRequestResource extends Resource
 
                         return self::getStatusOptions()[$state] ?? (string) $state;
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('status')
+                SelectFilter::make('status')
                     ->options(self::getStatusOptions()),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -82,9 +101,9 @@ class RoommateRequestResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRoommateRequests::route('/'),
-            'create' => Pages\CreateRoommateRequest::route('/create'),
-            'edit' => Pages\EditRoommateRequest::route('/{record}/edit'),
+            'index' => ListRoommateRequests::route('/'),
+            'create' => CreateRoommateRequest::route('/create'),
+            'edit' => EditRoommateRequest::route('/{record}/edit'),
         ];
     }
 

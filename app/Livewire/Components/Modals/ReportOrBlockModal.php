@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Components\Modals;
 
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
 use App\Models\User;
 use App\Models\Report;
 use App\Enums\OnUserAction;
@@ -14,8 +16,9 @@ use App\Livewire\Traits\CanRetrieveUser;
 use Filament\Forms\Concerns\InteractsWithForms;
 use LivewireUI\Modal\ModalComponent;
 
-class ReportOrBlockModal extends ModalComponent implements HasForms
+class ReportOrBlockModal extends ModalComponent implements HasForms, HasActions
 {
+    use InteractsWithActions;
     use WithBlocking, WithReporting, CanRetrieveUser, InteractsWithForms;
 
     public ?OnUserAction $action = null;

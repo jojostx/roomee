@@ -1,24 +1,31 @@
 @php
-$datalistOptions = $getDatalistOptions();
+$fieldWrapperView = $getFieldWrapperView();
+$statePath = $getStatePath();
+$isDisabled = $isDisabled();
 $prefixActions = method_exists($field, 'getPrefixActions') ? $getPrefixActions() : [];
 $suffixActions = method_exists($field, 'getSuffixActions') ? $getSuffixActions() : [];
-$sideLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', 'text-gray-400' => !$errors->has($getStatePath()), 'text-danger-400' => $errors->has($getStatePath())];
-$affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', 'text-gray-400' => !$errors->has($getStatePath()), 'text-danger-400' => $errors->has($getStatePath())];
 @endphp
 
 <x-dynamic-component
-    :component="$getFieldWrapperView()"
-    :id="$getId()"
-    :label="$getLabel()"
-    :label-sr-only="$isLabelHidden()"
-    :helper-text="$getHelperText()"
-    :hint="$getHint()"
-    :hint-icon="$getHintIcon()"
-    :required="$isRequired()"
-    :state-path="$getStatePath()"
+    :component="$fieldWrapperView"
+    :field="$field"
+    :inline-label-vertical-alignment="\Filament\Support\Enums\VerticalAlignment::Center"
 >
     <div
-        {{ $attributes->merge($getExtraAttributes())->class(['flex items-center space-x-2 rtl:space-x-reverse group filament-forms-text-input-component']) }}>
+        {{ $attributes->merge($getExtraAttributes())->class(['flex items-center space-x-2 rtl:space-x-reverse group filament-forms-text-input-component']) }}
+        x-data="{
+            show: false,
+            generatePassword: function() {
+                let chars = '{{ $getPasswordChars() }}';
+                let password = '';
+                for (let i = 0; i < {{ $getPasswordLength() }}; i++) {
+                    password += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                $wire.set('{{ $statePath }}', password);
+                this.show = true;
+            }
+        }"
+    >
         @foreach ($prefixActions as $prefixAction)
             @if (! $prefixAction->isHidden())
                 {{ $prefixAction }}
@@ -26,62 +33,31 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
         @endforeach
 
         @if ($icon = $getPrefixIcon())
-            <x-dynamic-component
-                :component="$icon"
-                class="w-5 h-5"
-            />
+            <x-dynamic-component :component="$icon" class="w-5 h-5" />
         @endif
 
         @if ($label = $getPrefixLabel())
-            <span @class($sideLabelClasses)>
+            <span class="whitespace-nowrap group-focus-within:text-primary-500 {{ $errors->has($statePath) ? 'text-danger-400' : 'text-gray-400' }}">
                 {{ $label }}
             </span>
         @endif
 
-        <div
-            class="relative flex-1"
-            x-data="{
-                state: $wire.{{ 
-                    $isLazy() ?
-                        'entangle(\'' . $getStatePath() . '\').defer' :
-                        $applyStateBindingModifiers('entangle(\'' . $getStatePath() . '\')')
-                }},
-                id: 0,
-                show: false,
-                generatePassword: function() {
-                    let chars = '{{ $getPasswordChars() }}';
-                    let password = '';
-                    for (let i = 0; i < {{ $getPasswordLength() }}; i++) {
-                        password += chars.charAt(Math.floor(Math.random() * chars.length));
-                    }
-                    this.state = password;
-                    this.show = true;
-                }
-            }"
-        >
+        <div class="relative flex-1">
             <input
-                @if ($isLazy()) 
-                    x-model.lazy="state"
-                @else
-                    x-model="state"
-                @endif
                 :type="show ? 'text' : 'password'"
+                {{ $applyStateBindingModifiers('wire:model') }}="{{ $statePath }}"
                 {{ $getExtraAlpineAttributeBag() }}
-                dusk="filament.forms.{{ $getStatePath() }}"
-                {!! ($autocomplete = $getAutocomplete()) ? "autocomplete=\" {$autocomplete}\"" : null !!}
+                {!! ($autocomplete = $getAutocomplete()) ? "autocomplete=\"{$autocomplete}\"" : null !!}
                 {!! $isAutofocused() ? 'autofocus' : null !!}
-                {!! $isDisabled() ? 'disabled' : null !!}
+                {!! $isDisabled ? 'disabled' : null !!}
                 id="{{ $getId() }}"
-                {!! filled($value = $getMaxValue()) ? "max=\" {$value}\"" : null !!}
-                {!! ($placeholder = $getPlaceholder()) ? "placeholder=\" {$placeholder}\"" : null !!}
+                {!! ($placeholder = $getPlaceholder()) ? "placeholder=\"{$placeholder}\"" : null !!}
                 {!! $isRequired() ? 'required' : null !!}
                 {{ $getExtraInputAttributeBag()->class([
                     'block w-full transition duration-75 rounded-lg shadow-sm focus:border-primary-600 focus:ring-1 focus:ring-inset focus:ring-primary-600 disabled:opacity-70',
-                    'dark:bg-gray-700 dark:text-white' => config('forms.dark_mode'),
-                    'border-gray-300' => !$errors->has($getStatePath()),
-                    'dark:border-gray-600' => !$errors->has($getStatePath()) && config('forms.dark_mode'),
-                    'border-danger-600 ring-danger-600' => $errors->has($getStatePath()),
-                    '!pr-8' => !$isCopyable(),
+                    'border-gray-300' => ! $errors->has($statePath),
+                    'border-danger-600 ring-danger-600' => $errors->has($statePath),
+                    '!pr-8' => ! $isCopyable(),
                     '!pr-14' => $isCopyable(),
                 ]) }}
             >
@@ -96,7 +72,7 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
                     >
                         <x-dynamic-component
                             :component="$getGenerateIcon()"
-                            class="h-5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
+                            class="h-5 text-gray-400 hover:text-gray-500"
                         />
                     </button>
                 @endif
@@ -106,11 +82,11 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
                         x-tooltip.raw="Copy Password"
                         title="Copy Password"
                         type="button"
-                        @click="navigator.clipboard.writeText($refs.{{ $getXRef() }}.value);$dispatch('notify', {id: 'notification.' + (++id), status: 'primary', message: @js(__('Copied to clipboard'))})"
+                        @click="navigator.clipboard.writeText($el.closest('[x-data]').querySelector('input').value)"
                     >
                         <x-dynamic-component
                             :component="$getCopyIcon()"
-                            class="h-5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
+                            class="h-5 text-gray-400 hover:text-gray-500"
                         />
                     </button>
                 @endif
@@ -125,7 +101,7 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
                     >
                         <x-dynamic-component
                             :component="$getShowIcon()"
-                            class="h-5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
+                            class="h-5 text-gray-400 hover:text-gray-500"
                         />
                     </button>
 
@@ -138,7 +114,7 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
                     >
                         <x-dynamic-component
                             :component="$getHideIcon()"
-                            class="h-5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
+                            class="h-5 text-gray-400 hover:text-gray-500"
                         />
                     </button>
                 </div>
@@ -147,16 +123,13 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
         </div>
 
         @if ($label = $getSuffixLabel())
-            <span @class($affixLabelClasses)>
+            <span class="whitespace-nowrap group-focus-within:text-primary-500 {{ $errors->has($statePath) ? 'text-danger-400' : 'text-gray-400' }}">
                 {{ $label }}
             </span>
         @endif
 
         @if ($icon = $getSuffixIcon())
-            <x-dynamic-component
-                :component="$icon"
-                class="w-5 h-5"
-            />
+            <x-dynamic-component :component="$icon" class="w-5 h-5" />
         @endif
 
         @foreach ($suffixActions as $suffixAction)
@@ -165,12 +138,4 @@ $affixLabelClasses = ['whitespace-nowrap group-focus-within:text-primary-500', '
             @endif
         @endforeach
     </div>
-
-    @if ($datalistOptions)
-        <datalist id="{{ $getId() }}-list">
-            @foreach ($datalistOptions as $option)
-                <option value="{{ $option }}" />
-            @endforeach
-        </datalist>
-    @endif
 </x-dynamic-component>

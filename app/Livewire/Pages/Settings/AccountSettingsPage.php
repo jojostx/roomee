@@ -2,6 +2,19 @@
 
 namespace App\Livewire\Pages\Settings;
 
+use Filament\Forms\Contracts\HasForms;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Schemas\Components\Grid;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\CheckboxList;
+use Throwable;
+use Illuminate\View\View;
 use App\Enums\BudgetLimit;
 use App\Livewire\Components\Filament\Forms\Password as PasswordFormComponent;
 use App\Models\Listing;
@@ -17,27 +30,22 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Component;
 
-class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
+class AccountSettingsPage extends Component implements HasForms, HasActions
 {
-    use Forms\Concerns\InteractsWithForms;
-
+    use InteractsWithActions;
+    use InteractsWithForms;
     /** @var array<string, mixed> */
     public array $personalData = [];
-
     /** @var array<string, mixed> */
     public array $contactData = [];
-
     /** @var array<string, mixed> */
     public array $passwordData = [];
-
     /** @var array<string, mixed> */
     public array $matchingData = [];
-
     protected function getFormModel(): ?User
     {
         return Auth::user();
     }
-
     protected function getAuthUserOrFail(): User
     {
         $authUser = $this->getFormModel();
@@ -48,11 +56,9 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
         return $authUser;
     }
-
     protected array $messages = [
         'current_password' => 'The provided password does not match your current password',
     ];
-
     public function mount()
     {
         $authUser = $this->getAuthUserOrFail();
@@ -73,7 +79,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
         $this->matchingPreferencesForm->fill($this->getMatchingPreferencesState($authUser));
     }
-
     /**
      * @return array<string, mixed>
      */
@@ -89,7 +94,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             'listing_dealbreakers' => $listingPreferences['dealbreakers'],
         ];
     }
-
     /**
      * @param  mixed  $dealbreakers
      * @return array<int, string>
@@ -105,20 +109,19 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             array_keys(Listing::DEALBREAKER_OPTIONS)
         ));
     }
-
     protected function getPersonalInfoFormSchema(): array
     {
         return [
-            Forms\Components\Grid::make([
+            Grid::make([
                 'default' => 1,
                 'md' => 2,
             ])
                 ->schema([
-                    Forms\Components\TextInput::make('first_name')
+                    TextInput::make('first_name')
                         ->label('First Name')
                         ->required()
                         ->maxLength(255),
-                    Forms\Components\TextInput::make('last_name')
+                    TextInput::make('last_name')
                         ->label('Last Name')
                         ->required()
                         ->maxLength(255)
@@ -126,15 +129,14 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
                 ]),
         ];
     }
-
     protected function getContactInfoFormSchema(): array
     {
         return [
-            Forms\Components\Grid::make([
+            Grid::make([
                 'default' => 1,
             ])
             ->schema([
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->label('Email Address')
                     ->helperText(
                         'To change your email you need to verify the new email address that you provide.
@@ -148,11 +150,10 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             ]),
         ];
     }
-
     protected function getPasswordInfoFormSchema(): array
     {
         return [
-            Forms\Components\Grid::make([
+            Grid::make([
                 'default' => 1,
                 'md' => 2,
             ])->schema([
@@ -164,7 +165,7 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
                     ->currentPassword()
                     ->autocomplete('off')
                     ->columnSpan(1),
-                Forms\Components\Grid::make()
+                Grid::make()
                     ->schema([
                         PasswordFormComponent::make('new_password')
                             ->label('New Password')
@@ -183,40 +184,39 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             ]),
         ];
     }
-
     protected function getMatchingPreferencesFormSchema(): array
     {
         return [
-            Forms\Components\Section::make('Discovery Preferences')
+            Section::make('Discovery Preferences')
                 ->description('Control gender-specific matching visibility for discovery and recommendations.')
                 ->schema([
-                    Forms\Components\Toggle::make('strict_gender_filter')
+                    Toggle::make('strict_gender_filter')
                         ->label('Strict gender-specific filtering')
                         ->helperText('When enabled, you only see users of your gender, and only users of your gender can discover your profile.')
                         ->default(true)
                         ->inline(false),
-                    Forms\Components\Grid::make([
+                    Grid::make([
                         'default' => 1,
                         'md' => 2,
                     ])->schema([
-                        Forms\Components\Select::make('listing_budget_min')
+                        Select::make('listing_budget_min')
                             ->label('Listing Budget Min')
                             ->placeholder('Use profile minimum budget')
                             ->options(BudgetLimit::budgetRangeAssoc())
                             ->searchable(),
-                        Forms\Components\Select::make('listing_budget_max')
+                        Select::make('listing_budget_max')
                             ->label('Listing Budget Max')
                             ->placeholder('Use profile maximum budget')
                             ->options(BudgetLimit::budgetRangeAssoc())
                             ->gte('listing_budget_min')
                             ->searchable(),
                     ]),
-                    Forms\Components\DatePicker::make('listing_move_in_date')
+                    DatePicker::make('listing_move_in_date')
                         ->label('Latest Move-in Date')
                         ->helperText('Only listings with move-in date on or before this date will be shown.')
                         ->native(false)
                         ->minDate(now()->toDateString()),
-                    Forms\Components\CheckboxList::make('listing_dealbreakers')
+                    CheckboxList::make('listing_dealbreakers')
                         ->label('Dealbreakers')
                         ->options(Listing::DEALBREAKER_OPTIONS)
                         ->helperText('Listings failing selected dealbreakers are filtered out.')
@@ -224,34 +224,32 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
                 ]),
         ];
     }
-
     protected function getForms(): array
     {
         $authUser = $this->getAuthUserOrFail();
 
         return [
-            'personalInfoForm' => $this->makeForm()
+            'personalInfoForm' => $this->makeSchema()
                 ->schema($this->getPersonalInfoFormSchema())
                 ->model($authUser)
                 ->statePath('personalData'),
 
-            'contactInfoForm' => $this->makeForm()
+            'contactInfoForm' => $this->makeSchema()
                 ->schema($this->getContactInfoFormSchema())
                 ->model($authUser)
                 ->statePath('contactData'),
 
-            'passwordInfoForm' => $this->makeForm()
+            'passwordInfoForm' => $this->makeSchema()
                 ->schema($this->getPasswordInfoFormSchema())
                 ->model($authUser)
                 ->statePath('passwordData'),
 
-            'matchingPreferencesForm' => $this->makeForm()
+            'matchingPreferencesForm' => $this->makeSchema()
                 ->schema($this->getMatchingPreferencesFormSchema())
                 ->model($authUser)
                 ->statePath('matchingData'),
         ];
     }
-
     public function savePersonalInfo(): void
     {
         $saved = $this->getAuthUserOrFail()
@@ -262,7 +260,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             $this->showSuccessNotification('Details saved successfully.');
         }
     }
-
     public function saveContactInfo(): void
     {
         try {
@@ -279,12 +276,11 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             if ($savedEmail) {
                 $this->showSuccessNotification('Follow the instructions in the mail sent to the email address you provided to add the new email.');
             }
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             report($th);
             $this->showFailureNotification('Unable to save details. Try again later');
         }
     }
-
     public function savePasswordInfo(): void
     {
         $authUser = $this->getAuthUserOrFail();
@@ -306,7 +302,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             $this->showSuccessNotification('Password updated successfully.');
         }
     }
-
     public function saveMatchingPreferences(): void
     {
         $authUser = $this->getAuthUserOrFail();
@@ -328,7 +323,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
 
         $this->showFailureNotification('Unable to update discovery preference. Try again later.');
     }
-
     protected function showSuccessNotification(string|Closure|null $body)
     {
         Notification::make('save-success-' . str()->random(5))
@@ -337,7 +331,6 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             ->seconds(10)
             ->send();
     }
-
     protected function showFailureNotification(string|Closure|null $body)
     {
         Notification::make('save-failed-' . str()->random(5))
@@ -346,10 +339,9 @@ class AccountSettingsPage extends Component implements Forms\Contracts\HasForms
             ->seconds(10)
             ->send();
     }
-
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.settings.account-settings-page');
 
         return $view->layout('layouts.guest');

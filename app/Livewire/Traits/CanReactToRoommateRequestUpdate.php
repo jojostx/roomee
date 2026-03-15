@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Traits;
 
+use Filament\Actions\Action;
 use App\Enums\RoommateRequestStatus;
 use App\Models\User;
-use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 
 trait CanReactToRoommateRequestUpdate

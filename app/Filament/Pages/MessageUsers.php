@@ -2,14 +2,22 @@
 
 namespace App\Filament\Pages;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Select;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Textarea;
 use App\Models\User;
 use App\Notifications\AdminBroadcastNotification;
 use App\Enums\RoommateRequestStatus;
 use App\Enums\UserRole;
 use App\Services\Sms\SmsSender;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Notifications\Notification;
@@ -20,13 +28,19 @@ class MessageUsers extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
-
-    protected static ?string $navigationGroup = 'Communications';
-
     protected static ?string $navigationLabel = 'Message Users';
 
-    protected static string $view = 'filament.pages.message-users';
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-envelope';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Communications';
+    }
+
+    protected string $view = 'filament.pages.message-users';
 
     public ?array $data = [];
 
@@ -40,16 +54,16 @@ class MessageUsers extends Page implements HasForms
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Recipients')
+        return $schema
+            ->components([
+                Section::make('Recipients')
                     ->schema([
-                        Forms\Components\Toggle::make('send_to_all')
+                        Toggle::make('send_to_all')
                             ->label('Send to all users')
                             ->live(),
-                        Forms\Components\Select::make('recipients')
+                        Select::make('recipients')
                             ->label('Recipients')
                             ->multiple()
                             ->searchable()
@@ -70,13 +84,13 @@ class MessageUsers extends Page implements HasForms
                             })
                             ->required(fn (Get $get) => ! $get('send_to_all'))
                             ->visible(fn (Get $get) => ! $get('send_to_all')),
-                        Forms\Components\Select::make('filter_roles')
+                        Select::make('filter_roles')
                             ->label('Filter by Role')
                             ->options(UserRole::labels())
                             ->multiple()
                             ->searchable()
                             ->visible(fn (Get $get) => (bool) $get('send_to_all')),
-                        Forms\Components\Select::make('filter_verified')
+                        Select::make('filter_verified')
                             ->label('Filter by Verified Status')
                             ->options([
                                 'any' => 'Any',
@@ -84,25 +98,25 @@ class MessageUsers extends Page implements HasForms
                                 'unverified' => 'Unverified only',
                             ])
                             ->visible(fn (Get $get) => (bool) $get('send_to_all')),
-                        Forms\Components\Select::make('filter_request_statuses')
+                        Select::make('filter_request_statuses')
                             ->label('Filter by Request Status')
                             ->options(self::getRequestStatusOptions())
                             ->multiple()
                             ->visible(fn (Get $get) => (bool) $get('send_to_all')),
                     ])
                     ->columns(2),
-                Forms\Components\Section::make('Message')
+                Section::make('Message')
                     ->schema([
-                        Forms\Components\TextInput::make('subject')
+                        TextInput::make('subject')
                             ->required(fn (Get $get) => (bool) $get('send_email'))
                             ->maxLength(150),
-                        Forms\Components\Textarea::make('message')
+                        Textarea::make('message')
                             ->required()
                             ->rows(6),
-                        Forms\Components\Toggle::make('send_email')
+                        Toggle::make('send_email')
                             ->label('Send Email')
                             ->inline(),
-                        Forms\Components\Toggle::make('send_sms')
+                        Toggle::make('send_sms')
                             ->label('Send SMS')
                             ->inline(),
                     ])

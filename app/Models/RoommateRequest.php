@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enums\RoommateRequestStatus;
 use App\Models\Traits\ManagesRoommateRequestStatus;
 use Dyrynda\Database\Support\BindsOnUuid;
@@ -53,7 +54,7 @@ class RoommateRequest extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function sender()
     {
@@ -61,7 +62,7 @@ class RoommateRequest extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function recipient()
     {
@@ -69,9 +70,9 @@ class RoommateRequest extends Model
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param Builder $query
      * @param User $model
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeWhereRecipient($query, User $model)
     {
@@ -79,9 +80,9 @@ class RoommateRequest extends Model
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param Builder $query
      * @param User $model
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeWhereSender($query, User $model)
     {
@@ -89,10 +90,10 @@ class RoommateRequest extends Model
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param Builder $query
      * @param Model $sender
      * @param Model $recipient
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeBetweenModels(Builder $query, User $sender, User $recipient)
     {

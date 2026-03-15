@@ -34,7 +34,7 @@ class Course extends Model
     /**
      * Get the course levels for the course.
      *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     * @return Attribute
      */
     protected function levels(): Attribute
     {

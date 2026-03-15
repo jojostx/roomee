@@ -86,7 +86,7 @@ class Password extends TextInput
             ->join('');
     }
 
-    public function copyable(bool|Closure $condition = true): static
+    public function copyable(bool|Closure $condition = true, Closure|string|null $copyMessage = null, Closure|int|null $copyMessageDuration = null): static
     {
         $this->copyable = $condition;
 

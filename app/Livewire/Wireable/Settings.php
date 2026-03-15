@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Wireable;
 
+use Livewire\Wireable;
 use Livewire;
 
-class Settings implements Livewire\Wireable
+class Settings implements Wireable
 {
     public array $items = [];
 

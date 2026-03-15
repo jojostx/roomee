@@ -2,6 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\Action;
+use App\Filament\Resources\VerificationRequestResource\Pages\ListVerificationRequests;
 use App\Enums\VerificationStatus;
 use App\Filament\Resources\VerificationRequestResource\Pages;
 use App\Models\User;
@@ -19,11 +25,17 @@ class VerificationRequestResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
-
-    protected static ?string $navigationGroup = 'User Management';
-
     protected static ?string $navigationLabel = 'Verification Requests';
+
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-identification';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'User Management';
+    }
 
     public static function getEloquentQuery(): Builder
     {
@@ -35,18 +47,18 @@ class VerificationRequestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('full_name')
+                TextColumn::make('full_name')
                     ->label('Name')
                     ->searchable(['first_name', 'last_name'])
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('verification_submitted_at')
+                TextColumn::make('verification_submitted_at')
                     ->label('Date Submitted')
                     ->dateTime()
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('review')
+            ->recordActions([
+                Action::make('review')
                     ->label('Review')
                     ->icon('heroicon-o-eye')
                     ->color('info')
@@ -61,7 +73,7 @@ class VerificationRequestResource extends Resource
                         ],
                     )),
 
-                Tables\Actions\Action::make('approve')
+                Action::make('approve')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
@@ -80,11 +92,11 @@ class VerificationRequestResource extends Resource
                             ->send();
                     }),
 
-                Tables\Actions\Action::make('reject')
+                Action::make('reject')
                     ->label('Reject')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
-                    ->form([
+                    ->schema([
                         Textarea::make('rejection_reason')
                             ->label('Rejection Reason')
                             ->required()
@@ -119,11 +131,11 @@ class VerificationRequestResource extends Resource
                             ->send();
                     }),
 
-                Tables\Actions\Action::make('suspend')
+                Action::make('suspend')
                     ->label('Suspend Account')
                     ->icon('heroicon-o-no-symbol')
                     ->color('danger')
-                    ->form([
+                    ->schema([
                         Textarea::make('suspension_reason')
                             ->label('Suspension Reason')
                             ->required()
@@ -140,7 +152,7 @@ class VerificationRequestResource extends Resource
                             ->send();
                     }),
 
-                Tables\Actions\Action::make('unsuspend')
+                Action::make('unsuspend')
                     ->label('Unsuspend Account')
                     ->icon('heroicon-o-lock-open')
                     ->color('gray')
@@ -163,7 +175,7 @@ class VerificationRequestResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVerificationRequests::route('/'),
+            'index' => ListVerificationRequests::route('/'),
         ];
     }
 

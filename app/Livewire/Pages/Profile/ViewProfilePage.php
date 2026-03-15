@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Profile;
 
+use Illuminate\View\View;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +77,7 @@ class ViewProfilePage extends Component
 
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.profile.view-profile-page');
 
         return $view->layout('layouts.guest');

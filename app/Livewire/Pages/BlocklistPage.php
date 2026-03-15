@@ -2,6 +2,22 @@
 
 namespace App\Livewire\Pages;
 
+use Filament\Tables\Contracts\HasTable;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use App\Livewire\Traits\WithFavoriting;
+use App\Livewire\Traits\WithRequesting;
+use App\Livewire\Traits\WithBlocking;
+use App\Livewire\Traits\WithOnboardingSteps;
+use App\Livewire\Traits\CanRetrieveUser;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\View;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\Action;
+use Filament\Forms\Components\CheckboxList;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -21,16 +37,17 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasForms
+class BlocklistPage extends Component implements HasTable, HasForms, HasActions
 {
+    use InteractsWithActions;
     use
         InteractsWithForms,
-        Traits\WithFavoriting,
-        Traits\WithRequesting,
-        Traits\WithBlocking,
-        Traits\WithOnboardingSteps,
-        Traits\CanRetrieveUser,
-        Tables\Concerns\InteractsWithTable {
+        WithFavoriting,
+        WithRequesting,
+        WithBlocking,
+        WithOnboardingSteps,
+        CanRetrieveUser,
+        InteractsWithTable {
         applySortingToTableQuery as parentApplySortingToTableQuery;
     }
 
@@ -75,9 +92,9 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
 
         $this->similarity_scores = $res->mapWithKeys(fn ($model) => [$model->id => $model->similarity_score]);
 
-        if ($this->tableSortColumn == "similarity_score" || $this->tableSortColumn == null) {
+        if ($this->getTableSortColumn() == "similarity_score" || $this->getTableSortColumn() == null) {
             $res = $res->sortBy('similarity_score');
-            $this->tableSortColumn = 'similarity_score';
+            $this->tableSort = 'similarity_score';
 
             return $res->isEmpty() ? $query : $res->toQuery();
         }
@@ -88,34 +105,34 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\Layout\Split::make([
-                Tables\Columns\Layout\View::make('livewire.components.filament.tables.user-card-detail-row')
+            Split::make([
+                View::make('livewire.components.filament.tables.user-card-detail-row')
                     ->components([
-                        Tables\Columns\ImageColumn::make('avatar_path')
+                        ImageColumn::make('avatar_path')
                             ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),
 
-                        Tables\Columns\TextColumn::make('full_name')
+                        TextColumn::make('full_name')
                             ->sortable(query: function (Builder $query, string $direction): Builder {
                                 return $query
                                     ->orderBy('last_name', $direction)
                                     ->orderBy('first_name', $direction);
                             }),
 
-                        Tables\Columns\TextColumn::make('course.name'),
-                        Tables\Columns\TextColumn::make('towns.name'),
-                        Tables\Columns\TextColumn::make('min_budget')
+                        TextColumn::make('course.name'),
+                        TextColumn::make('towns.name'),
+                        TextColumn::make('min_budget')
                             ->formatStateUsing(fn ($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('max_budget')
+                        TextColumn::make('max_budget')
                             ->formatStateUsing(fn ($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('similarity_score')
+                        TextColumn::make('similarity_score')
                             ->getStateUsing(fn (User $record): string => $this->similarity_scores->get($record->id) . '%')
                             ->color('danger')
                             ->sortable(),
@@ -129,7 +146,7 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
         return [
             ...$this->getBlockingActions(),
 
-            Tables\Actions\ActionGroup::make([
+            ActionGroup::make([
                 ...$this->getReportingAction(),
             ])
                 ->color('gray')
@@ -181,7 +198,7 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getReportingAction()
     {
         return [
-            Tables\Actions\Action::make('report')
+            Action::make('report')
                 ->button()
                 ->label('Report User')
                 ->icon('heroicon-o-flag')
@@ -195,8 +212,8 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->modalDescription('Select the relevant Issues to submit a Report.')
                 ->modalSubmitActionLabel('Submit')
                 ->modalWidth('sm')
-                ->form([
-                    Forms\Components\CheckboxList::make('report_ids')
+                ->schema([
+                    CheckboxList::make('report_ids')
                         ->label('Reports')
                         ->options(Report::pluck('description', 'id')->transform(fn ($val) => ucfirst($val)))
                         ->required()
@@ -219,7 +236,7 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getBlockingActions()
     {
         return [
-            Tables\Actions\Action::make('unblock')
+            Action::make('unblock')
                 ->button()
                 ->label('Unblock User')
                 ->icon('heroicon-o-lock-open')

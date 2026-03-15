@@ -2,11 +2,17 @@
 
 namespace App\Filament\Pages;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Placeholder;
 use App\Services\Settings\VerificationTimelineSettings;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 
@@ -14,13 +20,19 @@ class VerificationSettings extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shield-check';
-
-    protected static ?string $navigationGroup = 'Settings';
-
     protected static ?string $navigationLabel = 'Verification Settings';
 
-    protected static string $view = 'filament.pages.verification-settings';
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
+    {
+        return 'heroicon-o-shield-check';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Settings';
+    }
+
+    protected string $view = 'filament.pages.verification-settings';
 
     public ?array $data = [];
 
@@ -32,27 +44,27 @@ class VerificationSettings extends Page implements HasForms
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Pending Verification Timeline')
+        return $schema
+            ->components([
+                Section::make('Pending Verification Timeline')
                     ->description('Configure the review timeline shown to users while verification is pending.')
                     ->schema([
-                        Forms\Components\TextInput::make('timeline_min_hours')
+                        TextInput::make('timeline_min_hours')
                             ->label('Minimum Hours')
                             ->required()
                             ->numeric()
                             ->minValue(1),
 
-                        Forms\Components\TextInput::make('timeline_max_hours')
+                        TextInput::make('timeline_max_hours')
                             ->label('Maximum Hours')
                             ->required()
                             ->numeric()
                             ->minValue(1)
                             ->gte('timeline_min_hours'),
 
-                        Forms\Components\Placeholder::make('current_display')
+                        Placeholder::make('current_display')
                             ->label('Current Display')
                             ->content(fn () => VerificationTimelineSettings::getDisplayText()),
                     ])

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Profile;
 
+use Illuminate\View\View;
 use App\Services\Settings\VerificationTimelineSettings;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -16,7 +17,7 @@ class PendingVerificationPage extends Component
 
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.profile.pending-verification-page');
 
         return $view->layout('layouts.guest');

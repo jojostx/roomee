@@ -2,11 +2,29 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\UserResource\Pages\ListUsers;
+use App\Filament\Resources\UserResource\Pages\CreateUser;
+use App\Filament\Resources\UserResource\Pages\EditUser;
 use App\Enums\UserRole;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -16,34 +34,40 @@ class UserResource extends Resource
 {
   protected static ?string $model = User::class;
 
-  protected static ?string $navigationIcon = 'heroicon-o-users';
-
-  protected static ?string $navigationGroup = 'User Management';
-
-  public static function form(Form $form): Form
+  public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
   {
-    return $form
-      ->schema([
-        Forms\Components\Section::make('Profile')
+      return 'heroicon-o-users';
+  }
+
+  public static function getNavigationGroup(): string|UnitEnum|null
+  {
+      return 'User Management';
+  }
+
+  public static function form(Schema $schema): Schema
+  {
+    return $schema
+      ->components([
+        Section::make('Profile')
           ->schema([
-            Forms\Components\TextInput::make('first_name')
+            TextInput::make('first_name')
               ->required()
               ->maxLength(255),
-            Forms\Components\TextInput::make('last_name')
+            TextInput::make('last_name')
               ->required()
               ->maxLength(255),
-            Forms\Components\TextInput::make('email')
+            TextInput::make('email')
               ->email()
               ->required()
               ->maxLength(255),
-            Forms\Components\Select::make('role')
+            Select::make('role')
               ->options(UserRole::labels())
               ->required(),
-            Forms\Components\Toggle::make('email_verified_at')
+            Toggle::make('email_verified_at')
               ->label('Email Verified')
               ->onColor('success')
               ->offColor('danger')
-              ->afterStateHydrated(static function (Forms\Components\Toggle $component, $state): void {
+              ->afterStateHydrated(static function (Toggle $component, $state): void {
                 $component->state(filled($state));
               })
               ->dehydrateStateUsing(static fn($state) => $state ? now() : null),
@@ -56,14 +80,14 @@ class UserResource extends Resource
   {
     return $table
       ->columns([
-        Tables\Columns\TextColumn::make('full_name')
+        TextColumn::make('full_name')
           ->label('Name')
           ->searchable(['first_name', 'last_name'])
           ->sortable(),
-        Tables\Columns\TextColumn::make('email')
+        TextColumn::make('email')
           ->searchable()
           ->sortable(),
-        Tables\Columns\TextColumn::make('role')
+        TextColumn::make('role')
           ->badge()
           ->formatStateUsing(static function ($state): string {
             if ($state instanceof UserRole) {
@@ -72,24 +96,24 @@ class UserResource extends Resource
 
             return UserRole::labels()[$state] ?? (string) $state;
           }),
-        Tables\Columns\IconColumn::make('email_verified_at')
+        IconColumn::make('email_verified_at')
           ->label('Verified')
           ->boolean()
           ->sortable(),
-        Tables\Columns\TextColumn::make('created_at')
+        TextColumn::make('created_at')
           ->dateTime()
           ->sortable()
           ->toggleable(),
       ])
       ->filters([
-        Tables\Filters\SelectFilter::make('role')
+        SelectFilter::make('role')
           ->options(UserRole::labels()),
-        Tables\Filters\TernaryFilter::make('email_verified_at')
+        TernaryFilter::make('email_verified_at')
           ->label('Email Verified')
           ->nullable(),
       ])
-      ->actions([
-        Tables\Actions\Action::make('verify_email')
+      ->recordActions([
+        Action::make('verify_email')
           ->label('Mark Verified')
           ->icon('heroicon-o-check-badge')
           ->color('success')
@@ -97,7 +121,7 @@ class UserResource extends Resource
           ->action(static function (User $record): void {
             $record->forceFill(['email_verified_at' => now()])->save();
           }),
-        Tables\Actions\Action::make('unverify_email')
+        Action::make('unverify_email')
           ->label('Mark Unverified')
           ->icon('heroicon-o-x-circle')
           ->color('danger')
@@ -105,11 +129,11 @@ class UserResource extends Resource
           ->action(static function (User $record): void {
             $record->forceFill(['email_verified_at' => null])->save();
           }),
-        Tables\Actions\EditAction::make(),
+        EditAction::make(),
       ])
-      ->bulkActions([
-        Tables\Actions\BulkActionGroup::make([
-          Tables\Actions\DeleteBulkAction::make(),
+      ->toolbarActions([
+        BulkActionGroup::make([
+          DeleteBulkAction::make(),
         ]),
       ]);
   }
@@ -117,9 +141,9 @@ class UserResource extends Resource
   public static function getPages(): array
   {
     return [
-      'index' => Pages\ListUsers::route('/'),
-      'create' => Pages\CreateUser::route('/create'),
-      'edit' => Pages\EditUser::route('/{record}/edit'),
+      'index' => ListUsers::route('/'),
+      'create' => CreateUser::route('/create'),
+      'edit' => EditUser::route('/{record}/edit'),
     ];
   }
 

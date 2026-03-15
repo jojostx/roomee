@@ -2,6 +2,23 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\ListingResource\Pages\ListListings;
+use App\Filament\Resources\ListingResource\Pages\CreateListing;
+use App\Filament\Resources\ListingResource\Pages\EditListing;
 use App\Enums\UserRole;
 use App\Enums\VerificationStatus;
 use App\Filament\Resources\ListingResource\Pages;
@@ -10,13 +27,10 @@ use App\Models\User;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -27,16 +41,22 @@ class ListingResource extends Resource
 {
     protected static ?string $model = Listing::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
-
-    protected static ?string $navigationGroup = 'Listings';
-
     protected static ?string $navigationLabel = 'Room Listings';
 
-    public static function form(Form $form): Form
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
-        return $form
-            ->schema([
+        return 'heroicon-o-home-modern';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Listings';
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
                 Section::make('Listing Basics')
                     ->description('Share a friendly and clear snapshot of the space you are offering.')
                     ->schema([
@@ -145,54 +165,54 @@ class ListingResource extends Resource
         return $table
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('user.first_name')
+                TextColumn::make('user.first_name')
                     ->label('Owner')
                     ->formatStateUsing(fn (Listing $record): string => $record->user?->full_name ?? 'N/A')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->limit(45),
 
-                Tables\Columns\TextColumn::make('city')
+                TextColumn::make('city')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('rent_amount')
+                TextColumn::make('rent_amount')
                     ->label('Rent')
                     ->money('NGN')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('rent_period')
+                TextColumn::make('rent_period')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => ucfirst($state)),
 
-                Tables\Columns\TextColumn::make('move_in_date')
+                TextColumn::make('move_in_date')
                     ->date()
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_published')
+                IconColumn::make('is_published')
                     ->label('Published')
                     ->boolean()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_published')
+                TernaryFilter::make('is_published')
                     ->label('Published'),
 
-                Tables\Filters\SelectFilter::make('rent_period')
+                SelectFilter::make('rent_period')
                     ->options([
                         Listing::RENT_PERIOD_MONTHLY => 'Monthly',
                         Listing::RENT_PERIOD_ANNUALLY => 'Annually',
                     ]),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -208,9 +228,9 @@ class ListingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListListings::route('/'),
-            'create' => Pages\CreateListing::route('/create'),
-            'edit' => Pages\EditListing::route('/{record}/edit'),
+            'index' => ListListings::route('/'),
+            'create' => CreateListing::route('/create'),
+            'edit' => EditListing::route('/{record}/edit'),
         ];
     }
 

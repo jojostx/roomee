@@ -8,7 +8,7 @@ use App\Models\Dislike;
 use App\Models\Hobby;
 use App\Models\School;
 use App\Models\User;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;

@@ -16,10 +16,10 @@ trait Requestable
 
     /** query builders and scopes */
     /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param Builder $query
      * @param User $sender
      * @param User $recipient
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Builder
      */
     public function scopeBetweenModels(Builder $query, User $sender, User $recipient)
     {

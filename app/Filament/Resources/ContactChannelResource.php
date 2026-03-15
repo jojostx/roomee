@@ -2,11 +2,30 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\ContactChannelResource\Pages\ListContactChannels;
+use App\Filament\Resources\ContactChannelResource\Pages\CreateContactChannel;
+use App\Filament\Resources\ContactChannelResource\Pages\EditContactChannel;
 use App\Enums\ContactChannelType;
 use App\Filament\Resources\ContactChannelResource\Pages;
 use App\Models\ContactChannel;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,27 +34,33 @@ class ContactChannelResource extends Resource
 {
     protected static ?string $model = ContactChannel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-link';
-
-    protected static ?string $navigationGroup = 'Connections';
-
-    public static function form(Form $form): Form
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('user_id')
+        return 'heroicon-o-link';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Connections';
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Select::make('user_id')
                     ->relationship('user', 'full_name')
                     ->searchable()
                     ->required(),
-                Forms\Components\Select::make('type')
+                Select::make('type')
                     ->options(self::getTypeOptions())
                     ->required(),
-                Forms\Components\TextInput::make('link')
+                TextInput::make('link')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_enabled')
+                Toggle::make('is_enabled')
                     ->label('Enabled'),
-                Forms\Components\DateTimePicker::make('verified_at')
+                DateTimePicker::make('verified_at')
                     ->label('Verified At'),
             ]);
     }
@@ -44,31 +69,31 @@ class ContactChannelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.full_name')
+                TextColumn::make('user.full_name')
                     ->label('User')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->formatStateUsing(static fn ($state) => self::getTypeOptions()[$state] ?? $state),
-                Tables\Columns\TextColumn::make('link')
+                TextColumn::make('link')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_enabled')
+                IconColumn::make('is_enabled')
                     ->boolean()
                     ->label('Enabled'),
-                Tables\Columns\TextColumn::make('verified_at')
+                TextColumn::make('verified_at')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->options(self::getTypeOptions()),
-                Tables\Filters\TernaryFilter::make('verified_at')
+                TernaryFilter::make('verified_at')
                     ->label('Verified')
                     ->nullable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('verify')
+            ->recordActions([
+                Action::make('verify')
                     ->label('Verify')
                     ->icon('heroicon-o-check-badge')
                     ->color('success')
@@ -76,7 +101,7 @@ class ContactChannelResource extends Resource
                     ->action(static function (ContactChannel $record): void {
                         $record->forceFill(['verified_at' => now()])->save();
                     }),
-                Tables\Actions\Action::make('unverify')
+                Action::make('unverify')
                     ->label('Unverify')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
@@ -84,12 +109,12 @@ class ContactChannelResource extends Resource
                     ->action(static function (ContactChannel $record): void {
                         $record->forceFill(['verified_at' => null])->save();
                     }),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -97,9 +122,9 @@ class ContactChannelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListContactChannels::route('/'),
-            'create' => Pages\CreateContactChannel::route('/create'),
-            'edit' => Pages\EditContactChannel::route('/{record}/edit'),
+            'index' => ListContactChannels::route('/'),
+            'create' => CreateContactChannel::route('/create'),
+            'edit' => EditContactChannel::route('/{record}/edit'),
         ];
     }
 

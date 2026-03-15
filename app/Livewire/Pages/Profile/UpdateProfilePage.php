@@ -2,6 +2,14 @@
 
 namespace App\Livewire\Pages\Profile;
 
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Utilities\Set;
+use Throwable;
+use Illuminate\View\View;
 use App\Enums\VerificationStatus;
 use App\Models\User;
 use App\Models\Hobby;
@@ -14,11 +22,7 @@ use App\Enums\ApartmentRooms;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Illuminate\Validation\Rules\Exists;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Contracts\HasForms;
@@ -30,8 +34,9 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Validation\ValidationException;
 use emmanpbarrameda\FilamentTakePictureField\Forms\Components\TakePicture;
 
-class UpdateProfilePage extends Component implements HasForms
+class UpdateProfilePage extends Component implements HasForms, HasActions
 {
+    use InteractsWithActions;
     use InteractsWithForms;
 
     public $avatar_image;
@@ -173,7 +178,7 @@ class UpdateProfilePage extends Component implements HasForms
     }
 
     /**
-     * @return \Filament\Forms\Components\Component[]
+     * @return \Filament\Schemas\Components\Component[]
      */
     protected function getFormSchema(): array
     {
@@ -560,7 +565,7 @@ class UpdateProfilePage extends Component implements HasForms
             $this->showAlert('success', 'Profile updated successfully.', true);
 
             return $this->redirectRoute('dashboard');
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
 
             report($th);
@@ -616,7 +621,7 @@ class UpdateProfilePage extends Component implements HasForms
 
                 return $normalizedPath;
             }
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             return null;
         }
 
@@ -625,7 +630,7 @@ class UpdateProfilePage extends Component implements HasForms
 
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.profile.update-profile-page');
 
         return $view->layout('layouts.guest');

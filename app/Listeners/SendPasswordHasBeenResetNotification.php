@@ -15,7 +15,7 @@ class SendPasswordHasBeenResetNotification implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param \Illuminate\Auth\Events\PasswordReset  $event
+     * @param PasswordReset $event
      * @return void
      */
     public function handle(PasswordReset $event)

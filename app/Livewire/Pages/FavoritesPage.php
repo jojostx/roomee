@@ -2,6 +2,22 @@
 
 namespace App\Livewire\Pages;
 
+use Filament\Tables\Contracts\HasTable;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Concerns\InteractsWithActions;
+use App\Livewire\Traits\WithFavoriting;
+use App\Livewire\Traits\WithRequesting;
+use App\Livewire\Traits\WithBlocking;
+use App\Livewire\Traits\WithOnboardingSteps;
+use App\Livewire\Traits\CanRetrieveUser;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\View;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\Action;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Tables;
 use App\Livewire\Traits;
 use App\Models\Report;
@@ -22,16 +38,17 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
-class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasForms
+class FavoritesPage extends Component implements HasTable, HasForms, HasActions
 {
+    use InteractsWithActions;
     use
         InteractsWithForms,
-        Traits\WithFavoriting,
-        Traits\WithRequesting,
-        Traits\WithBlocking,
-        Traits\WithOnboardingSteps,
-        Traits\CanRetrieveUser,
-        Tables\Concerns\InteractsWithTable {
+        WithFavoriting,
+        WithRequesting,
+        WithBlocking,
+        WithOnboardingSteps,
+        CanRetrieveUser,
+        InteractsWithTable {
         applySortingToTableQuery as parentApplySortingToTableQuery;
     }
 
@@ -73,7 +90,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
             return $query->whereRaw('1 = 0');
         }
 
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $records */
+        /** @var \Illuminate\Database\Eloquent\Collection<int, User> $records */
         $records = $query->withOnly([
             'course:id,name',
             'towns:id,name',
@@ -108,7 +125,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
 
         $res = $records;
 
-        if ($this->tableSortColumn == "similarity_score" || $this->tableSortColumn == null) {
+        if ($this->getTableSortColumn() == "similarity_score" || $this->getTableSortColumn() == null) {
             $res = $res->sortBy(function (User $record): float {
                 if ($this->isRestrictedFavorite($record)) {
                     return 1000000.0;
@@ -116,7 +133,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
 
                 return (float) $this->similarity_scores->get($record->id, 0.0);
             });
-            $this->tableSortColumn = 'similarity_score';
+            $this->tableSort = 'similarity_score';
 
             return $res->isEmpty() ? $query : $res->toQuery();
         }
@@ -127,41 +144,41 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getTableColumns(): array
     {
         return [
-            Tables\Columns\Layout\Split::make([
-                Tables\Columns\Layout\View::make('livewire.components.filament.tables.user-card-detail-row')
+            Split::make([
+                View::make('livewire.components.filament.tables.user-card-detail-row')
                     ->components([
-                        Tables\Columns\ImageColumn::make('avatar_path')
+                        ImageColumn::make('avatar_path')
                             ->circular()
                             ->grow(false)
                             ->extraAttributes(['class' => 'pl-0 pt-1']),
 
-                        Tables\Columns\TextColumn::make('full_name')
+                        TextColumn::make('full_name')
                             ->sortable(query: function (Builder $query, string $direction): Builder {
                                 return $query
                                     ->orderBy('last_name', $direction)
                                     ->orderBy('first_name', $direction);
                             }),
 
-                        Tables\Columns\TextColumn::make('course.name'),
-                        Tables\Columns\TextColumn::make('towns.name'),
-                        Tables\Columns\TextColumn::make('min_budget')
+                        TextColumn::make('course.name'),
+                        TextColumn::make('towns.name'),
+                        TextColumn::make('min_budget')
                             ->formatStateUsing(fn ($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('max_budget')
+                        TextColumn::make('max_budget')
                             ->formatStateUsing(fn ($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('similarity_score')
+                        TextColumn::make('similarity_score')
                             ->getStateUsing(fn (User $record): string => $this->isRestrictedFavorite($record)
                                 ? 'Restricted'
                                 : (($this->similarity_scores->get($record->id) ?? 'N/A') . '%'))
                             ->color('danger')
                             ->sortable(),
 
-                        Tables\Columns\TextColumn::make('hard_filter_restricted')
+                        TextColumn::make('hard_filter_restricted')
                             ->getStateUsing(fn (User $record): string => $this->isRestrictedFavorite($record) ? '1' : '0')
                             ->hidden(),
                     ]),
@@ -175,7 +192,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
             ...$this->getRoommateRequestingActions(),
             ...$this->getFavoritingActions(),
 
-            Tables\Actions\ActionGroup::make([
+            ActionGroup::make([
                 ...$this->getReportingAction(),
                 ...$this->getBlockingActions(),
             ])
@@ -307,7 +324,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getReportingAction()
     {
         return [
-            Tables\Actions\Action::make('report')
+            Action::make('report')
                 ->label('Report User')
                 ->icon('heroicon-o-flag')
                 ->color('warning')
@@ -317,8 +334,8 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->modalDescription('Select the relevant Issues to submit a Report.')
                 ->modalSubmitActionLabel('Submit')
                 ->modalWidth('sm')
-                ->form([
-                    Forms\Components\CheckboxList::make('report_ids')
+                ->schema([
+                    CheckboxList::make('report_ids')
                         ->label('Reports')
                         ->options(Report::pluck('description', 'id')->transform(fn ($val) => ucfirst($val)))
                         ->required()
@@ -341,7 +358,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getBlockingActions()
     {
         return [
-            Tables\Actions\Action::make('block')
+            Action::make('block')
                 ->label('Block User')
                 ->icon('heroicon-o-lock-closed')
                 ->color('danger')
@@ -360,7 +377,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getFavoritingActions()
     {
         return [
-            Tables\Actions\Action::make('unfavorite')
+            Action::make('unfavorite')
                 ->iconButton()
                 ->label('Remove from Favorites')
                 ->tooltip('Remove from Favorites')
@@ -385,7 +402,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     protected function getRoommateRequestingActions()
     {
         return [
-            Tables\Actions\Action::make('send-roommate-request')
+            Action::make('send-roommate-request')
                 ->button()
                 ->outlined()
                 ->label('Send Request')
@@ -404,7 +421,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will send a Roommate roommate-request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
                 ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasNoSentOrReceivedRoommateRequest($record)),
 
-            Tables\Actions\Action::make('accept-roommate-request')
+            Action::make('accept-roommate-request')
                 ->button()
                 ->label('Accept Request')
                 ->icon('heroicon-s-check-circle')
@@ -422,7 +439,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
                 ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasPendingRoommateRequestFrom($record)),
 
-            Tables\Actions\Action::make('delete-roommate-request')
+            Action::make('delete-roommate-request')
                 ->button()
                 ->label('Delete Request')
                 ->icon('heroicon-s-user-minus')
@@ -440,7 +457,7 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
                 ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasPendingRoommateRequestTo($record)),
 
-            Tables\Actions\Action::make('contact-user')
+            Action::make('contact-user')
                 ->button()
                 ->label('Contact User')
                 ->icon('heroicon-s-phone-arrow-up-right')

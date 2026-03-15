@@ -16,7 +16,7 @@ trait MustVerifyNewEmail
    *
    * @param string $email
    * @param callable $withMailable
-   * @return \Illuminate\Database\Eloquent\Model|null
+   * @return Model|null
    */
   public function newEmail(string $email, callable $withMailable = null): ?Model
   {
@@ -32,7 +32,7 @@ trait MustVerifyNewEmail
   /**
    * returns the model to use as PendingUserModel model.
    *
-   * @return \Illuminate\Database\Eloquent\Model
+   * @return Model
    */
   public function getEmailVerificationModel(): Model
   {
@@ -43,7 +43,7 @@ trait MustVerifyNewEmail
    * Creates new PendingUserModel model for the given email.
    *
    * @param string $email
-   * @return \Illuminate\Database\Eloquent\Model
+   * @return Model
    */
   public function createPendingUserEmailModel(string $email): Model
   {
@@ -82,7 +82,7 @@ trait MustVerifyNewEmail
   /**
    * Sends the VerifyNewEmail Mailable to the new email address.
    *
-   * @param \Illuminate\Database\Eloquent\Model $pendingUserEmail
+   * @param Model $pendingUserEmail
    * @param callable $withMailable
    * @return mixed
    */
@@ -100,7 +100,7 @@ trait MustVerifyNewEmail
   /**
    * Grabs the pending user email address, generates a new token and sends the Mailable.
    *
-   * @return \Illuminate\Database\Eloquent\Model|null
+   * @return Model|null
    */
   public function resendPendingEmailVerificationMail(): ?Model
   {

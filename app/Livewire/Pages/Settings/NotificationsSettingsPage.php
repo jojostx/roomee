@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Settings;
 
+use Illuminate\View\View;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -15,7 +16,7 @@ class NotificationsSettingsPage extends Component
 
     public function render()
     {
-        /** @var \Illuminate\View\View */
+        /** @var View */
         $view = view('livewire.pages.settings.notifications-settings-page');
 
         return $view->layout('layouts.guest');

@@ -41,7 +41,7 @@ $is_hard_filter_restricted = (Illuminate\Support\Arr::get($getColumns(), 'hard_f
         <div class="flex justify-between">
             <div class="flex">
                 @if ($avatarComponent)
-                    {{ $avatarComponent->render() }}
+                    {!! $avatarComponent->toHtml() !!}
                 @else
                     <div class="w-12 h-12 mr-3 overflow-hidden rounded-full bg-secondary-100">
                         <img

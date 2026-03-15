@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use RuntimeException;
 use App\Enums\ContactChannelType;
 use App\Enums\UserRole;
 use App\Enums\VerificationStatus;
@@ -403,9 +404,9 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   /**
    * Scope a query to only include users of the same gender.
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
+   * @param Builder $query
    * @param  Str  $gender
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @return Builder
    */
   public function scopeGender($query, $gender)
   {
@@ -415,9 +416,9 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   /**
    * Scope a query to only include users that attend the same school.
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
+   * @param Builder $query
    * @param  int  $school_id
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @return Builder
    */
   public function scopeSchool($query, $school_id)
   {
@@ -427,9 +428,9 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   /**
    * Scope a query to only exclude the currently authenticated user.
    *
-   * @param  \Illuminate\Database\Eloquent\Builder  $query
+   * @param Builder $query
    * @param  int  $user_id
-   * @return \Illuminate\Database\Eloquent\Builder
+   * @return Builder
    */
   public function scopeExcludeUser($query, $user_id)
   {
@@ -461,7 +462,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
           return $publicDisk->url($candidatePath);
         }
       }
-    } catch (\RuntimeException $th) {
+    } catch (RuntimeException $th) {
     }
 
     if (array_key_exists('avatars', config('filesystems.disks', []))) {
@@ -473,7 +474,7 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
             return $legacyDisk->url($legacyPath);
           }
         }
-      } catch (\RuntimeException $th) {
+      } catch (RuntimeException $th) {
       }
     }
 

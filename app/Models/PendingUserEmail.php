@@ -31,7 +31,7 @@ class PendingUserEmail extends Model
     /**
      * User relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @return MorphTo
      */
     public function user(): MorphTo
     {
@@ -42,7 +42,7 @@ class PendingUserEmail extends Model
      * Scope for the user.
      *
      * @param $query
-     * @param \Illuminate\Database\Eloquent\Model $user
+     * @param Model $user
      * @return void
      */
     public function scopeForUser($query, Model $user)

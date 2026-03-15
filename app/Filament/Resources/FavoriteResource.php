@@ -2,10 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use BackedEnum;
+use Illuminate\Contracts\Support\Htmlable;
+use UnitEnum;
+use Filament\Schemas\Schema;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\FavoriteResource\Pages\ListFavorites;
+use App\Filament\Resources\FavoriteResource\Pages\CreateFavorite;
+use App\Filament\Resources\FavoriteResource\Pages\EditFavorite;
 use App\Filament\Resources\FavoriteResource\Pages;
 use App\Models\Favorite;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -14,21 +26,27 @@ class FavoriteResource extends Resource
 {
     protected static ?string $model = Favorite::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-star';
-
-    protected static ?string $navigationGroup = 'Connections';
-
     protected static ?string $navigationLabel = 'Favorites';
 
-    public static function form(Form $form): Form
+    public static function getNavigationIcon(): string|BackedEnum|Htmlable|null
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('favoriter_id')
+        return 'heroicon-o-star';
+    }
+
+    public static function getNavigationGroup(): string|UnitEnum|null
+    {
+        return 'Connections';
+    }
+
+    public static function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Select::make('favoriter_id')
                     ->relationship('favoriter', 'full_name')
                     ->searchable()
                     ->required(),
-                Forms\Components\Select::make('favoritee_id')
+                Select::make('favoritee_id')
                     ->relationship('favoritee', 'full_name')
                     ->searchable()
                     ->required()
@@ -40,25 +58,25 @@ class FavoriteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('favoriter.full_name')
+                TextColumn::make('favoriter.full_name')
                     ->label('Favoriter')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('favoritee.full_name')
+                TextColumn::make('favoritee.full_name')
                     ->label('Favorited User')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -66,9 +84,9 @@ class FavoriteResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFavorites::route('/'),
-            'create' => Pages\CreateFavorite::route('/create'),
-            'edit' => Pages\EditFavorite::route('/{record}/edit'),
+            'index' => ListFavorites::route('/'),
+            'create' => CreateFavorite::route('/create'),
+            'edit' => EditFavorite::route('/{record}/edit'),
         ];
     }
 }

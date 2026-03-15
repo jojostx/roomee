@@ -2,14 +2,17 @@
 
 namespace App\Livewire\Components\Filament\Forms;
 
+use Filament\Support\Concerns\HasExtraAlpineAttributes;
+use Filament\Forms\Components\Concerns\HasOptions;
+use Filament\Forms\Components\Concerns\HasPlaceholder;
 use Filament\Forms\Components\Concerns;
 use Filament\Forms\Components\Field;
 
 class Multiselect extends Field
 {
-    Use \Filament\Support\Concerns\HasExtraAlpineAttributes;
-    use Concerns\HasOptions;
-    use Concerns\HasPlaceholder;
+    Use HasExtraAlpineAttributes;
+    use HasOptions;
+    use HasPlaceholder;
     
     protected string $view = 'livewire.components.filament.forms.multi-select';
 

@@ -2,8 +2,8 @@
 
 namespace App\Notifications;
 
+use Filament\Actions\Action;
 use App\Enums\VerificationStatus;
-use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
