@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @mixin IdeHelperListing
+ */
 class Listing extends Model
 {
     use HasFactory;

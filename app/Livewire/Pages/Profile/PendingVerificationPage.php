@@ -3,11 +3,13 @@
 namespace App\Livewire\Pages\Profile;
 
 use App\Services\Settings\VerificationTimelineSettings;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class PendingVerificationPage extends Component
 {
-    public function getTimelineTextProperty(): string
+    #[Computed]
+    public function timelineText(): string
     {
         return VerificationTimelineSettings::getDisplayText();
     }

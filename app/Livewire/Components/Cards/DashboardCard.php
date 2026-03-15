@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Components\Cards;
 
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -64,7 +65,8 @@ class DashboardCard extends Component
         $this->dispatch('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
     }
 
-    public function getIsBlockerProperty()
+    #[Computed]
+    public function isBlocker()
     {
         $blocking = DB::table('blocklists')->where([
             'blocker_id' => $this->user->id,

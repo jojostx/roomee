@@ -4,6 +4,7 @@ namespace App\Livewire\Components\Cards;
 
 use App\Models\User;
 use Filament\Notifications\Notification;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class BlocklistCard extends Component
@@ -27,7 +28,8 @@ class BlocklistCard extends Component
         $this->user = null;
     }
 
-    public function getAuthUserProperty(): User
+    #[Computed]
+    public function authUser(): User
     {
         return User::find(auth()->id());
     }

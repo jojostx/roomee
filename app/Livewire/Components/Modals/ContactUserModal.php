@@ -5,6 +5,7 @@ namespace App\Livewire\Components\Modals;
 use App\Livewire\Traits\CanRetrieveUser;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use LivewireUI\Modal\ModalComponent;
 
 class ContactUserModal extends ModalComponent
@@ -23,7 +24,8 @@ class ContactUserModal extends ModalComponent
         return Auth::user();
     }
 
-    public function getVerifiedContactChannelsProperty()
+    #[Computed]
+    public function verifiedContactChannels()
     {
         $user = $this->retrieveUser();
 

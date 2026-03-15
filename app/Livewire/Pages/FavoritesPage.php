@@ -19,6 +19,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasForms
@@ -224,17 +225,20 @@ class FavoritesPage extends Component implements Tables\Contracts\HasTable, HasF
     }
 
     /** dynamic properties */
-    public function getFavoritesProperty(): Collection
+    #[Computed]
+    public function favorites(): Collection
     {
         return $this->getAuthModel()->favorites()->get(['favoritee_id']);
     }
 
-    public function getBlockedUsersProperty(): Collection
+    #[Computed]
+    public function blockedUsers(): Collection
     {
         return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
     }
 
-    public function getRoommateRequestsProperty(): Collection
+    #[Computed]
+    public function roommateRequests(): Collection
     {
         return $this->getAuthModel()->getRoommateRequests();
     }

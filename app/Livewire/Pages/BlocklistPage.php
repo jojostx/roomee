@@ -18,6 +18,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasForms
@@ -170,7 +171,8 @@ class BlocklistPage extends Component implements Tables\Contracts\HasTable, HasF
     }
 
     /** dynamic properties */
-    public function getBlockedUsersProperty(): Collection
+    #[Computed]
+    public function blockedUsers(): Collection
     {
         return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
     }

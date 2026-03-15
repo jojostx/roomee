@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Filament\Forms\Components\Section;
 use Illuminate\Support\Facades\Blade;
@@ -241,7 +242,8 @@ class ContactChannelsSettingsPage extends Component implements Forms\Contracts\H
         </x-filament::button>"));
     }
 
-    public function getChannelNamesProperty()
+    #[Computed]
+    public function channelNames()
     {
         return ContactChannelType::getChannelNames(['email']);
     }

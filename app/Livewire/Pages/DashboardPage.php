@@ -7,6 +7,7 @@ use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use App\Models\Report;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -192,17 +193,20 @@ class DashboardPage extends Component implements Tables\Contracts\HasTable, HasF
     }
 
     /** dynamic properties */
-    public function getFavoritesProperty(): Collection
+    #[Computed]
+    public function favorites(): Collection
     {
         return $this->getAuthModel()->favorites()->get(['favoritee_id']);
     }
 
-    public function getBlockedUsersProperty(): Collection
+    #[Computed]
+    public function blockedUsers(): Collection
     {
         return DB::table('blocklists')->where(['blocker_id' => $this->getAuthModel()->id])->get('blockee_id');
     }
 
-    public function getRoommateRequestsProperty(): Collection
+    #[Computed]
+    public function roommateRequests(): Collection
     {
         return $this->getAuthModel()->getRoommateRequests();
     }
