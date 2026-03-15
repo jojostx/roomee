@@ -23,8 +23,7 @@
         "spatie/laravel-cookie-consent": "^3.2",
         "spatie/laravel-onboard": "^2.4",
         "stancl/virtualcolumn": "^1.2",
-        "staudenmeir/laravel-merged-relations": "^1.2",
-        "wire-elements/modal": "^3.0"
+        "staudenmeir/laravel-merged-relations": "^1.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.10",

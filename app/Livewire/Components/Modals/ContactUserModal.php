@@ -6,12 +6,13 @@ use App\Livewire\Traits\CanRetrieveUser;
 use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Livewire\Traits\ClosesModal;
 use Livewire\Attributes\Computed;
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 
-class ContactUserModal extends ModalComponent
+class ContactUserModal extends Component
 {
-    use CanRetrieveUser;
+    use CanRetrieveUser, ClosesModal;
 
     public string | User $user;
 
@@ -38,11 +39,6 @@ class ContactUserModal extends ModalComponent
         throw_unless($chatRoom && $chatRoom->hasBothSharedContacts());
 
         return $user?->getVerifiedContactChannels();
-    }
-
-    public static function modalMaxWidth(): string
-    {
-        return 'sm';
     }
 
     public function render()

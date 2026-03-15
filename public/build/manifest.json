@@ -4,12 +4,12 @@
     "name": "_commonjsHelpers"
   },
   "resources/css/app.css": {
-    "file": "assets/app-zreAsTwE.css",
+    "file": "assets/app-CA_v4gyi.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/css/welcome.css": {
-    "file": "assets/welcome-C4DD6lod.css",
+    "file": "assets/welcome-BL7DUZvJ.css",
     "src": "resources/css/welcome.css",
     "isEntry": true
   },
@@ -23,7 +23,7 @@
     ]
   },
   "resources/js/tabula_rasa.js": {
-    "file": "assets/tabula_rasa-B39cHg9H.js",
+    "file": "assets/tabula_rasa-CCRmZphh.js",
     "name": "tabula_rasa",
     "src": "resources/js/tabula_rasa.js",
     "isEntry": true,

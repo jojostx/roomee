@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Components\Modals;
 
-use App\Models\User;
 use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\ClosesModal;
 use App\Livewire\Traits\WithRequesting;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 
-class UserRequestingModal extends ModalComponent
+class UserRequestingModal extends Component
 {
-    use CanRetrieveUser, WithRequesting {
+    use CanRetrieveUser, ClosesModal, WithRequesting {
         acceptRoommateRequest as traitAcceptRoommateRequest;
         deleteRoommateRequest as traitDeleteRoommateRequest;
     }
@@ -39,11 +40,6 @@ class UserRequestingModal extends ModalComponent
         $this->traitDeleteRoommateRequest($this->user);
         $this->dispatch('actionTakenOnUser');
         $this->closeModal();
-    }
-
-    public static function modalMaxWidth(): string
-    {
-        return 'sm';
     }
 
     public function render()

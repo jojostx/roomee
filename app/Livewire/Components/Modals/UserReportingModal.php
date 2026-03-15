@@ -2,17 +2,18 @@
 
 namespace App\Livewire\Components\Modals;
 
-use App\Models\User;
-use App\Models\Report;
-use Illuminate\Validation\Rule;
-use LivewireUI\Modal\ModalComponent;
-use Illuminate\Support\Facades\Auth;
 use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\ClosesModal;
 use App\Livewire\Traits\WithReporting;
+use App\Models\Report;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Livewire\Component;
 
-class UserReportingModal extends ModalComponent
+class UserReportingModal extends Component
 {
-    use WithReporting, CanRetrieveUser;
+    use WithReporting, CanRetrieveUser, ClosesModal;
 
     public string | User $user;
     public array $selectedReports = [];
@@ -53,12 +54,6 @@ class UserReportingModal extends ModalComponent
 
         $this->dispatch('actionTakenOnUser');
         $this->closeModal();
-    }
-
-    /** UI definitions and triggers */
-    public static function modalMaxWidth(): string
-    {
-        return 'sm';
     }
 
     public function render()

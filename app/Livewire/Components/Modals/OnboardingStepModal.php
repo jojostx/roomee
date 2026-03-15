@@ -2,14 +2,15 @@
 
 namespace App\Livewire\Components\Modals;
 
+use App\Livewire\Traits\ClosesModal;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 
-class OnboardingStepModal extends ModalComponent
+class OnboardingStepModal extends Component
 {
+    use ClosesModal;
     public $step_cta, $step_title, $step_body, $step_link;
-    protected static $modalMaxWidth = 'sm';
 
     public function mount($step_data)
     {
@@ -17,17 +18,11 @@ class OnboardingStepModal extends ModalComponent
         $this->step_title = $step_data['title'];
         $this->step_body = $step_data['body'];
         $this->step_link = $step_data['link'];
-        static::$modalMaxWidth = $step_data['modalMaxWidth'] ?? 'sm';
     }
 
     protected function getAuthModel(): ?User
     {
         return Auth::user();
-    }
-
-    public static function modalMaxWidth(): string
-    {
-        return static::$modalMaxWidth ?? 'sm';
     }
 
     public function render()

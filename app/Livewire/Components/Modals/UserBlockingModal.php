@@ -2,15 +2,16 @@
 
 namespace App\Livewire\Components\Modals;
 
-use App\Models\User;
 use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\ClosesModal;
 use App\Livewire\Traits\WithBlocking;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 
-class UserBlockingModal extends ModalComponent
+class UserBlockingModal extends Component
 {
-    use CanRetrieveUser, WithBlocking;
+    use CanRetrieveUser, ClosesModal, WithBlocking;
 
     public string | User $user;
 
@@ -36,11 +37,6 @@ class UserBlockingModal extends ModalComponent
 
         $this->dispatch('actionTakenOnUser');
         $this->closeModal();
-    }
-
-    public static function modalMaxWidth(): string
-    {
-        return 'sm';
     }
 
     public function render()

@@ -58,6 +58,64 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * @property string $id
+ * @property string $chat_room_id
+ * @property int $sender_id
+ * @property string $message
+ * @property \Illuminate\Support\Carbon|null $read_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\ChatRoom $chatRoom
+ * @property-read \App\Models\User $sender
+ * @method static \Database\Factories\ChatMessageFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereChatRoomId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereReadAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereSenderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatMessage whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperChatMessage {}
+}
+
+namespace App\Models{
+/**
+ * @property string $id
+ * @property int $user_a_id
+ * @property int $user_b_id
+ * @property bool $contact_shared_by_a
+ * @property bool $contact_shared_by_b
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChatMessage> $messages
+ * @property-read int|null $messages_count
+ * @property-read \App\Models\User $userA
+ * @property-read \App\Models\User $userB
+ * @method static \Database\Factories\ChatRoomFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereContactSharedByA($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereContactSharedByB($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereUserAId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ChatRoom whereUserBId($value)
+ * @mixin \Eloquent
+ */
+	#[\AllowDynamicProperties]
+	class IdeHelperChatRoom {}
+}
+
+namespace App\Models{
+/**
  * @property int $id
  * @property string $uuid
  * @property string $first_name
@@ -522,6 +580,10 @@ namespace App\Models{
  * @property-read int|null $blockers_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $blocklists
  * @property-read int|null $blocklists_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChatRoom> $chatRoomsAsUserA
+ * @property-read int|null $chat_rooms_as_user_a_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChatRoom> $chatRoomsAsUserB
+ * @property-read int|null $chat_rooms_as_user_b_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ContactChannel> $contactChannels
  * @property-read int|null $contact_channels_count
  * @property-read \App\Models\Course|null $course

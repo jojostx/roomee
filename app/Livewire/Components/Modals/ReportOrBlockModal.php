@@ -10,16 +10,17 @@ use App\Enums\OnUserAction;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Contracts\HasForms;
+use App\Livewire\Traits\ClosesModal;
 use App\Livewire\Traits\WithBlocking;
 use App\Livewire\Traits\WithReporting;
 use App\Livewire\Traits\CanRetrieveUser;
 use Filament\Forms\Concerns\InteractsWithForms;
-use LivewireUI\Modal\ModalComponent;
+use Livewire\Component;
 
-class ReportOrBlockModal extends ModalComponent implements HasForms, HasActions
+class ReportOrBlockModal extends Component implements HasForms, HasActions
 {
     use InteractsWithActions;
-    use WithBlocking, WithReporting, CanRetrieveUser, InteractsWithForms;
+    use WithBlocking, WithReporting, CanRetrieveUser, ClosesModal, InteractsWithForms;
 
     public ?OnUserAction $action = null;
     public string | User $user;
@@ -95,11 +96,6 @@ class ReportOrBlockModal extends ModalComponent implements HasForms, HasActions
     public function triggerReportUserAction()
     {
         $this->action = OnUserAction::REPORT;
-    }
-
-    public static function modalMaxWidth(): string
-    {
-        return 'sm';
     }
 
     public function render()

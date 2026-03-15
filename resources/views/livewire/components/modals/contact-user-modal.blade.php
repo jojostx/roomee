@@ -14,7 +14,7 @@
             @endforeach
         </div>
         <div class="flex justify-end pt-2">
-            <button wire:click="$emit('closeModal')" class="px-1 py-2 mr-3 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Cancel</button>
+            <button wire:click="closeModal()" class="px-1 py-2 mr-3 font-semibold hover:text-primary-500 focus:text-primary-600 focus:outline-none">Cancel</button>
         </div>
     </div>
 </div>
