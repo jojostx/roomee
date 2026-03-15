@@ -1,6 +1,6 @@
 <div
     @if (\method_exists($this, 'openOnboardingStepModal'))
-        x-init="$store.onboarding_steps.show && $wire.openOnboardingStepModal;"
+        x-init="$store.onboarding_steps.show && $wire.openOnboardingStepModal();"
     @endif 
     class="w-full h-full mx-auto bg-secondary-50">
     <x-page-header>

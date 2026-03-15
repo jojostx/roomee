@@ -16,7 +16,19 @@
       "Bash(cp tests/Feature/Feature/Chat/ChatRoomCreationTest.php tests/Feature/Chat/ChatRoomCreationTest.php)",
       "Bash(rm tests/Feature/Feature/Chat/ChatRoomCreationTest.php)",
       "Bash(rmdir tests/Feature/Feature/Chat)",
-      "Bash(rmdir tests/Feature/Feature)"
+      "Bash(rmdir tests/Feature/Feature)",
+      "Bash(grep -r toJSON /c/Users/USER/Desktop/code/roomee/resources --include=*.blade.php --include=*.js -n)",
+      "Bash(grep -rn toJSON /c/Users/USER/Desktop/code/roomee/vendor/filament --include=*.js --include=*.blade.php)",
+      "Bash(grep -rn toJSON /c/Users/USER/Desktop/code/roomee/vendor/livewire --include=*.js --include=*.php)",
+      "Bash(grep -n \"$wire\\\\|wireProxy\\\\|wire_proxy\\\\|makeProxy\" /c/Users/USER/Desktop/code/roomee/vendor/livewire/livewire/dist/livewire.js)",
+      "Bash(grep -r \"toJSON\\\\|JSON\\\\.stringify.*wire\\\\|wire.*JSON\" /c/Users/USER/Desktop/code/roomee/vendor/filament --include=*.js -l)",
+      "Bash(grep -rn .toJSONb /c/Users/USER/Desktop/code/roomee/vendor/filament --include=*.js)",
+      "WebFetch(domain:dev.to)",
+      "WebFetch(domain:forum.laravel-livewire.com)",
+      "WebFetch(domain:fly.io)",
+      "WebFetch(domain:alpinejs.dev)",
+      "Bash(grep -r \"openOnboardingStepModal\\\\|InteractsWithTable\\\\|InteractsWithActions\" /c/Users/USER/Desktop/code/roomee/app/Livewire --include=*.php -l)",
+      "Bash(ls /c/Users/USER/Desktop/code/roomee/bootstrap/cache/*.php)"
     ]
   }
 }
