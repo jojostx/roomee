@@ -20,6 +20,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Closure;
 use Filament\Forms;
+use App\Models\ChatRoom;
 use App\Models\User;
 use Filament\Tables;
 use App\Models\Report;
@@ -443,18 +444,20 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasPendingRoommateRequestTo($record)),
 
-            Action::make('contact-user')
+            Action::make('message-user')
                 ->button()
-                ->label('Contact User')
-                ->icon('heroicon-s-phone-arrow-up-right')
+                ->label('Message')
+                ->icon('heroicon-s-chat-bubble-left-right')
                 ->color('success')
                 ->extraAttributes([
-                    'title' => 'contact user',
-                    'class' => 'w-full filament-tables-action-contact-user',
+                    'title' => 'message user',
+                    'class' => 'w-full filament-tables-action-message-user',
                 ])
                 ->action(function (User $record) {
-                    $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
-                    $this->dispatchSelf('refresh-component');
+                    $room = ChatRoom::findBetween($this->getAuthModel(), $record);
+                    if ($room) {
+                        $this->redirect(route('chat.room', $room));
+                    }
                 })
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];

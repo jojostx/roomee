@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\ChatRoom;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -383,6 +384,19 @@ class User extends Authenticatable implements Onboardable, FilamentUser, HasName
   public function listings(): HasMany
   {
     return $this->hasMany(Listing::class, 'user_id');
+  }
+
+  /**
+   * All chat rooms this user participates in (either as user_a or user_b).
+   */
+  public function chatRoomsAsUserA(): HasMany
+  {
+    return $this->hasMany(ChatRoom::class, 'user_a_id');
+  }
+
+  public function chatRoomsAsUserB(): HasMany
+  {
+    return $this->hasMany(ChatRoom::class, 'user_b_id');
   }
 
   public function allPotentialRoommates(): MergedRelation

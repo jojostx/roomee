@@ -13,6 +13,12 @@
             <a href="{{ route('dashboard') }}" style="border-width: 1.5px;" class="items-center justify-start hidden px-2 py-1 text-sm transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 md:flex sm:text-base hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">Dashboard</a>
             @endunless
 
+            @auth
+            <a href="{{ route('chat.index') }}" class="relative ml-2 flex items-center justify-center w-9 h-9 rounded-lg text-secondary-500 hover:bg-secondary-100 transition-colors" title="Messages">
+                <x-heroicon-o-chat-bubble-left-right class="w-5 h-5" />
+            </a>
+            @endauth
+
             <div class="mx-2">
                 @livewire('notifications')
             </div>

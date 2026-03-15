@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\RoommateRequest;
@@ -195,6 +196,10 @@ trait Requestable
             ->update([
                 'status' => Status::ACCEPTED->value,
             ]);
+
+        if ($updated) {
+            ChatRoom::firstOrCreateBetween($sender, $this);
+        }
 
         RoommateRequestUpdated::dispatch($sender->getKey(), $this->getKey(), Status::ACCEPTED);
 

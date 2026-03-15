@@ -13,6 +13,8 @@ use App\Livewire\Pages\FavoritesPage;
 use App\Livewire\Pages\ListingDiscoveryPage;
 use App\Livewire\Pages\ListingsPage;
 use App\Livewire\Pages\RoommateRequestsPage;
+use App\Livewire\Pages\Chat\ChatIndexPage;
+use App\Livewire\Pages\Chat\ChatRoomPage;
 use App\Livewire\Pages\Settings\AccountSettingsPage;
 use App\Livewire\Pages\Settings\ContactChannelsSettingsPage;
 use App\Livewire\Pages\Settings\NotificationsSettingsPage;
@@ -68,6 +70,11 @@ Route::middleware(['auth:sanctum', 'verified', 'account.not_suspended', 'identit
             Route::get('/favorites', FavoritesPage::class)->name('favorites');
             Route::get('/roommate-requests', RoommateRequestsPage::class)->name('roommate-requests');
             Route::get('/blocklist', BlocklistPage::class)->name('blocklist');
+
+            Route::as('chat.')->prefix('chat')->group(function () {
+                Route::get('/', ChatIndexPage::class)->name('index');
+                Route::get('/{chatRoom}', ChatRoomPage::class)->name('room');
+            });
         });
     });
 

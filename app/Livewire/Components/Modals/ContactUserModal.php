@@ -3,6 +3,7 @@
 namespace App\Livewire\Components\Modals;
 
 use App\Livewire\Traits\CanRetrieveUser;
+use App\Models\ChatRoom;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -14,7 +15,7 @@ class ContactUserModal extends ModalComponent
 
     public string | User $user;
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
         $this->user = $user;
     }
@@ -27,9 +28,14 @@ class ContactUserModal extends ModalComponent
     #[Computed]
     public function verifiedContactChannels()
     {
+        $authUser = $this->getAuthModel();
         $user = $this->retrieveUser();
 
-        \throw_unless($this->getAuthModel()->isRoommateWith($user));
+        throw_unless($authUser->isRoommateWith($user));
+
+        $chatRoom = ChatRoom::findBetween($authUser, $user);
+
+        throw_unless($chatRoom && $chatRoom->hasBothSharedContacts());
 
         return $user?->getVerifiedContactChannels();
     }

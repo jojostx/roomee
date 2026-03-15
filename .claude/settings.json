@@ -11,7 +11,12 @@
       "Bash(find vendor/filament -name *.php -exec grep -l 'function makeForm' {})",
       "Bash(2)",
       "Bash(./vendor/bin/phpunit tests/Feature/Smoke/PanelLivewireRouteSmokeTest.php::test_livewire_page_routes_return_success_for_verified_user)",
-      "Bash(./vendor/bin/phpunit --do-not-cache-result)"
+      "Bash(./vendor/bin/phpunit --do-not-cache-result)",
+      "Bash(mkdir -p tests/Feature/Chat)",
+      "Bash(cp tests/Feature/Feature/Chat/ChatRoomCreationTest.php tests/Feature/Chat/ChatRoomCreationTest.php)",
+      "Bash(rm tests/Feature/Feature/Chat/ChatRoomCreationTest.php)",
+      "Bash(rmdir tests/Feature/Feature/Chat)",
+      "Bash(rmdir tests/Feature/Feature)"
     ]
   }
 }
