@@ -9,7 +9,6 @@ module.exports = {
         "./resources/**/*.js",
         "./resources/**/*.php",
         "./storage/framework/views/*.php",
-        "./vendor/wire-elements/modal/resources/views/*.blade.php",
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         "./vendor/filament/**/*.blade.php",
     ],

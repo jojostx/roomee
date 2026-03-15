@@ -5,6 +5,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent @tailwindcss/forms base resets from overriding Filament v4 input component styles.
+   Both selectors have equal specificity (0,1,0), so document order decides — these come after
+   the forms plugin rules and therefore win. */
+@layer base {
+    .fi-input {
+        background-color: transparent;
+        border-style: none;
+        border-width: 0;
+        border-radius: 0;
+        padding: unset;
+        font-size: unset;
+        line-height: unset;
+        --tw-shadow: none;
+    }
+}
+
 @layer utilities {
     .min-h-calc-screen {
         min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */

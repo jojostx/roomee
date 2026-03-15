@@ -3,8 +3,8 @@ import multiselect from './alpinejs/filamentphp/multi-select'
 
 import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
 import Tooltip from "@ryangjchandler/alpine-tooltip";
-import Persist from '@alpinejs/persist';
 import Collapse from '@alpinejs/collapse';
+// Note: @alpinejs/persist is bundled and registered internally by Livewire — do not import or re-register it here.
 
 // Register chat store early so x-show in the layout can read it before Alpine processes the DOM.
 document.addEventListener('alpine:init', () => {
@@ -38,7 +38,6 @@ document.addEventListener('livewire:init', () => {
     const Alpine = window.Alpine;
 
     // 1. Register non-bundled plugins
-    Alpine.plugin(Persist);
     Alpine.plugin(Collapse);
     Alpine.plugin(Tooltip);
     Alpine.plugin(AlpineFloatingUI);
@@ -47,7 +46,14 @@ document.addEventListener('livewire:init', () => {
     Alpine.data('multiselect', multiselect);
 
     // 3. Register Stores
+    const storedOnboarding = sessionStorage.getItem('_x_onboarding_steps_show');
     Alpine.store('onboarding_steps', {
-        show: Alpine.$persist(true).using(sessionStorage),
+        show: storedOnboarding !== null ? JSON.parse(storedOnboarding) : true,
+    });
+    Alpine.effect(() => {
+        sessionStorage.setItem(
+            '_x_onboarding_steps_show',
+            JSON.stringify(Alpine.store('onboarding_steps').show)
+        );
     });
 });
