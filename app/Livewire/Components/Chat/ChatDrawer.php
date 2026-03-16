@@ -135,6 +135,16 @@ class ChatDrawer extends Component implements HasForms, HasActions
         return $this->activeChatRoom?->hasUserSharedContacts($this->getAuthModel()) ?? false;
     }
 
+    #[Computed]
+    public function currentUserHasContactChannels(): bool
+    {
+        return $this->getAuthModel()
+            ->contactChannels()
+            ->where('is_enabled', true)
+            ->whereNotNull('verified_at')
+            ->exists();
+    }
+
     public function selectRoom(string $uuid): void
     {
         $authUser = $this->getAuthModel();

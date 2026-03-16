@@ -19,16 +19,13 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Closure;
-use Filament\Forms;
 use App\Models\ChatRoom;
 use App\Models\User;
-use Filament\Tables;
 use App\Models\Report;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use App\Livewire\Traits;
 use App\Models\RoommateRequest;
 use Filament\Notifications\Notification;
 use Filament\Support\Contracts\TranslatableContentDriver;
@@ -98,7 +95,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                 ])->get()
             );
 
-        $this->similarity_scores = $res->mapWithKeys(fn ($model) => [$model->id => $model->similarity_score]);
+        $this->similarity_scores = $res->mapWithKeys(fn($model) => [$model->id => $model->similarity_score]);
 
         if ($this->getTableSortColumn() == "similarity_score" || $this->getTableSortColumn() == null) {
             $res = $res->sortBy('similarity_score');
@@ -137,17 +134,17 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                         TextColumn::make('course.name'),
                         TextColumn::make('towns.name'),
                         TextColumn::make('min_budget')
-                            ->formatStateUsing(fn ($state) => number_format($state))
+                            ->formatStateUsing(fn($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
                         TextColumn::make('max_budget')
-                            ->formatStateUsing(fn ($state) => number_format($state))
+                            ->formatStateUsing(fn($state) => number_format($state))
                             ->prefix('₦')
                             ->sortable(),
 
                         TextColumn::make('similarity_score')
-                            ->getStateUsing(fn (User $record): string => $this->similarity_scores->get($record->id) . '%')
+                            ->getStateUsing(fn(User $record): string => $this->similarity_scores->get($record->id) . '%')
                             ->color('danger')
                             ->sortable(),
                     ]),
@@ -159,7 +156,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
     {
         return [
             ...$this->getRoommateRequestingActions(),
-            
+
             ActionGroup::make([
                 ...$this->getFavoritingActions(),
                 ...$this->getReportingAction(),
@@ -190,7 +187,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
 
     protected function getTableRecordClassesUsing(): ?Closure
     {
-        return fn (User $record) => match (true) {
+        return fn(User $record) => match (true) {
             $this->hasAcceptedRoommateRequest($record) => 'filament-user-card roommate-request-accepted',
             $this->hasPendingRoommateRequestFrom($record) => 'filament-user-card roommate-request-received',
             $this->hasPendingRoommateRequestTo($record) => 'filament-user-card roommate-request-sent',
@@ -299,14 +296,14 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                 ->icon('heroicon-o-flag')
                 ->color('warning')
                 ->requiresConfirmation()
-                ->modalHeading(fn (User $record) => 'Report ' . $record->full_name)
+                ->modalHeading(fn(User $record) => 'Report ' . $record->full_name)
                 ->modalDescription('Select the relevant Issues to submit a Report.')
                 ->modalSubmitActionLabel('Submit')
                 ->modalWidth('sm')
                 ->schema([
                     CheckboxList::make('report_ids')
                         ->label('Reports')
-                        ->options(Report::pluck('description', 'id')->transform(fn ($val) => ucfirst($val)))
+                        ->options(Report::pluck('description', 'id')->transform(fn($val) => ucfirst($val)))
                         ->required()
                         ->exists('reports', 'id')
                         ->extraAttributes(['class' => 'space-y-2']),
@@ -336,10 +333,10 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                     $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
-                ->modalHeading(fn (User $record) => 'Block ' . $record->full_name)
-                ->modalContent(fn (User $record) => str("<p class='text-center'>This will prevent <span class='font-semibold text-secondary-600'>{$record->full_name}</span> from viewing your profile and sending you Roommate requests.</p>")->toHtmlString())
+                ->modalHeading(fn(User $record) => 'Block ' . $record->full_name)
+                ->modalContent(fn(User $record) => str("<p class='text-center'>This will prevent <span class='font-semibold text-secondary-600'>{$record->full_name}</span> from viewing your profile and sending you Roommate requests.</p>")->toHtmlString())
                 ->extraAttributes(['class' => 'mt-1'])
-                ->visible(fn (User $record): bool => !$this->hasBeenBlocked($record)),
+                ->visible(fn(User $record): bool => !$this->hasBeenBlocked($record)),
 
             Action::make('unblock')
                 ->label('Unblock User')
@@ -350,10 +347,10 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                     $this->dispatchSelf('refresh-component');
                 })
                 ->requiresConfirmation()
-                ->modalHeading(fn (User $record) => 'Unblock ' . $record->full_name)
-                ->modalContent(fn (User $record) => str("<p class='text-center'>This will allow <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to view your profile and send you Roommate requests.</p>")->toHtmlString())
+                ->modalHeading(fn(User $record) => 'Unblock ' . $record->full_name)
+                ->modalContent(fn(User $record) => str("<p class='text-center'>This will allow <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to view your profile and send you Roommate requests.</p>")->toHtmlString())
                 ->extraAttributes(['class' => 'mt-1'])
-                ->visible(fn (User $record): bool => $this->hasBeenBlocked($record))
+                ->visible(fn(User $record): bool => $this->hasBeenBlocked($record))
         ];
     }
 
@@ -370,7 +367,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                     $this->dispatchSelf('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
-                ->visible(fn (User $record): bool => !$this->hasBeenFavorited($record)),
+                ->visible(fn(User $record): bool => !$this->hasBeenFavorited($record)),
 
             Action::make('unfavorite')
                 ->label('Remove from Favorites')
@@ -382,7 +379,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                     $this->dispatchSelf('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
-                ->visible(fn (User $record): bool => $this->hasBeenFavorited($record))
+                ->visible(fn(User $record): bool => $this->hasBeenFavorited($record))
         ];
     }
 
@@ -405,8 +402,8 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Send Roommate Request')
-                ->modalContent(fn (User $record) => str("<p class='text-center'>This will send a Roommate request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasNoSentOrReceivedRoommateRequest($record)),
+                ->modalContent(fn(User $record) => str("<p class='text-center'>This will send a Roommate request to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
+                ->visible(fn(User $record) => $this->hasNoSentOrReceivedRoommateRequest($record)),
 
             Action::make('accept-roommate-request')
                 ->button()
@@ -423,8 +420,8 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
-                ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasPendingRoommateRequestFrom($record)),
+                ->modalContent(fn(User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
+                ->visible(fn(User $record) => $this->hasPendingRoommateRequestFrom($record)),
 
             Action::make('delete-roommate-request')
                 ->button()
@@ -441,8 +438,8 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
-                ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
-                ->visible(fn (User $record) => $this->hasPendingRoommateRequestTo($record)),
+                ->modalContent(fn(User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
+                ->visible(fn(User $record) => $this->hasPendingRoommateRequestTo($record)),
 
             Action::make('message-user')
                 ->button()
@@ -459,7 +456,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
                         $this->redirect(route('chat.room', $room));
                     }
                 })
-                ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
+                ->visible(fn(User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];
     }
 

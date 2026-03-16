@@ -160,6 +160,13 @@
                             <x-heroicon-s-phone class="w-4 h-4" />
                             <span class="hidden sm:inline">Contact Info</span>
                         </button>
+                    @elseif (!$this->currentUserHasContactChannels)
+                        <a
+                            href="{{ route('settings.contact-channels') }}"
+                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-warning-700 rounded-lg border border-warning-300 bg-warning-50 hover:bg-warning-100 transition-colors focus:outline-none focus:ring-2 focus:ring-warning-500">
+                            <x-heroicon-o-plus-circle class="w-4 h-4" />
+                            <span class="hidden sm:inline">Add Contact Channels</span>
+                        </a>
                     @elseif (!$this->hasCurrentUserSharedContacts)
                         <button
                             wire:click="mountAction('shareContacts')"

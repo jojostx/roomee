@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Enums\ContactChannelType;
 use App\Livewire\Components\Chat\ChatDrawer;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
+use App\Models\ContactChannel;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -207,6 +209,82 @@ class ChatDrawerTest extends TestCase
     }
 
     // ----------------------------------------------------------------
+    // Contact channel gate
+    // ----------------------------------------------------------------
+
+    public function test_current_user_has_contact_channels_is_false_without_verified_channels(): void
+    {
+        $user  = User::factory()->create();
+        $other = User::factory()->create();
+        $room  = $this->makeChatRoom($user, $other);
+
+        Livewire::actingAs($user)
+            ->test(ChatDrawer::class)
+            ->call('selectRoom', $room->id)
+            ->assertSet('currentUserHasContactChannels', false);
+    }
+
+    public function test_current_user_has_contact_channels_is_true_with_verified_channel(): void
+    {
+        $user  = User::factory()->create();
+        $other = User::factory()->create();
+        $room  = $this->makeChatRoom($user, $other);
+
+        ContactChannel::create([
+            'user_id'     => $user->id,
+            'type'        => ContactChannelType::WHATSAPP->value,
+            'link'        => '+447700900000',
+            'is_enabled'  => true,
+            'verified_at' => now(),
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(ChatDrawer::class)
+            ->call('selectRoom', $room->id)
+            ->assertSet('currentUserHasContactChannels', true);
+    }
+
+    public function test_unverified_contact_channel_does_not_count(): void
+    {
+        $user  = User::factory()->create();
+        $other = User::factory()->create();
+        $room  = $this->makeChatRoom($user, $other);
+
+        ContactChannel::create([
+            'user_id'     => $user->id,
+            'type'        => ContactChannelType::WHATSAPP->value,
+            'link'        => '+447700900000',
+            'is_enabled'  => true,
+            'verified_at' => null,
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(ChatDrawer::class)
+            ->call('selectRoom', $room->id)
+            ->assertSet('currentUserHasContactChannels', false);
+    }
+
+    public function test_disabled_contact_channel_does_not_count(): void
+    {
+        $user  = User::factory()->create();
+        $other = User::factory()->create();
+        $room  = $this->makeChatRoom($user, $other);
+
+        ContactChannel::create([
+            'user_id'     => $user->id,
+            'type'        => ContactChannelType::WHATSAPP->value,
+            'link'        => '+447700900000',
+            'is_enabled'  => false,
+            'verified_at' => now(),
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(ChatDrawer::class)
+            ->call('selectRoom', $room->id)
+            ->assertSet('currentUserHasContactChannels', false);
+    }
+
+    // ----------------------------------------------------------------
     // Contact sharing
     // ----------------------------------------------------------------
 
@@ -239,6 +317,43 @@ class ChatDrawerTest extends TestCase
 
         $column = $room->user_a_id === $user->id ? 'contact_shared_by_a' : 'contact_shared_by_b';
         $this->assertDatabaseHas('chat_rooms', ['id' => $room->id, $column => false]);
+    }
+
+    // ----------------------------------------------------------------
+    // Layout integration — chat button and drawer HTML structure
+    // ----------------------------------------------------------------
+
+    public function test_authenticated_page_body_has_x_data_for_alpine_processing(): void
+    {
+        $user = User::factory()->create();
+
+        $this->withoutMiddleware()
+            ->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('x-data=""', false);
+    }
+
+    public function test_chat_button_renders_with_store_open_modal_handler(): void
+    {
+        $user = User::factory()->create();
+
+        $this->withoutMiddleware()
+            ->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('$store.chat.openModal()', false);
+    }
+
+    public function test_chat_drawer_overlay_renders_with_store_open_x_show(): void
+    {
+        $user = User::factory()->create();
+
+        $this->withoutMiddleware()
+            ->actingAs($user)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('$store.chat.open', false);
     }
 
     // ----------------------------------------------------------------
