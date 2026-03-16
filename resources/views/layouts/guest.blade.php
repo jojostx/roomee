@@ -47,6 +47,7 @@
 </head>
 
 <body
+    x-data=""
     class="relative font-sans antialiased text-secondary-900"
     data-chat-auto-open="{{ $chatAutoOpen ? 'true' : 'false' }}"
 >
