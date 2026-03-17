@@ -24,7 +24,7 @@ $is_hard_filter_restricted = (Illuminate\Support\Arr::get($getColumns(), 'hard_f
 <div class="relative">
     <div class="{{ $is_hard_filter_restricted ? 'pointer-events-none select-none opacity-50 blur-[1px]' : '' }}">
         @if (filled($pivot_created_at))
-        <div class="pb-2 mb-3 border-b">
+        <div class="pb-2 mb-3 border-b border-secondary-200">
             <p class="text-xs text-success-600">
                 <span class="inline-flex items-center h-4">
                     @if ($user->recipient_id == auth()->id())

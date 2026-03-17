@@ -1,4 +1,4 @@
-<div class="w-full col-span-1 bg-white border divide-y rounded-md shadow">
+<div class="w-full col-span-1 bg-white border divide-y divide-secondary-200 rounded-md shadow">
     <div class="flex items-center justify-between px-4 py-4">
         <div class="flex items-center">
             <div class="w-10 h-10 mr-2 overflow-hidden border-2 rounded-full border-primary-500 lg:mr-3">
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <x-livewire.includes.user-interactions :user="$user" class="px-4 py-4"/>
+    <x-livewire.includes.user-interactions :user="$user" class="px-4 py-4" />
 
     <x-filament-actions::modals />
 </div>

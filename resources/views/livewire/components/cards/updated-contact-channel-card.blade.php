@@ -13,7 +13,7 @@
             x-on:close-update-form.window="if ($event.detail.id == '{{ $type }}') { show = true; }" 
             class="grid grid-cols-1 gap-6 filament-forms-component-container">
             <div class="col-span-full">
-                <div class="bg-white border border-gray-300 filament-forms-section-component rounded-xl">
+                <div class="bg-white border border-secondary-300 filament-forms-section-component rounded-xl">
                     <div class="flex items-center px-4 py-2 overflow-hidden bg-gray-100 rtl:space-x-reverse rounded-t-xl">
                         <h3 class="font-bold tracking-tight capitalize pointer-events-none">
                             {{ $type }}

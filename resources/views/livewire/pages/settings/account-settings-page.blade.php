@@ -122,7 +122,7 @@
                         <div>
                             <h2 class="text-lg font-bold tracking-wide sm:text-xl text-danger-600">Danger Zone</h2>
                         </div>
-                        <div class="bg-white border divide-y border-danger-400 filament-forms-section-component rounded-xl">
+                        <div class="bg-white border divide-y divide-secondary-200 border-danger-400 filament-forms-section-component rounded-xl">
                             <div class="p-4 space-y-2">
                                 <h1 class="font-semibold text-secondary-800">Deactivate Account</h1>
                                 <p class="text-sm">

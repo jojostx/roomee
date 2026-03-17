@@ -52,7 +52,7 @@
     data-chat-auto-open="{{ $chatAutoOpen ? 'true' : 'false' }}"
 >
     @auth
-    <header class="relative z-20 flex flex-row items-center justify-center w-full bg-white border-b ">
+    <header class="relative z-20 flex flex-row items-center justify-center w-full bg-white border-b border-secondary-200">
         @include('sections.navbar-alt')
     </header>
     @endauth

@@ -56,14 +56,14 @@
             <div x-show="isOpen" x-on:keydown.window.escape="$dispatch('close-modal', { id: 'nav-menu-panel' })" x-transition:enter="ease duration-300" x-transition:leave="ease duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="relative w-full cursor-pointer pointer-events-none" slideover="slideover">
                 <div class="relative w-full h-screen max-w-sm ml-auto -mr-4 overflow-y-auto bg-white cursor-default pointer-events-auto filament-modal-window rtl:mr-auto rtl:-ml-4">
                     <button x-on:click="isOpen = false" tabindex="-1" type="button" class="absolute cursor-pointer top-4 right-4 rtl:right-0 rtl:left-4 text-secondary-800">
-                        <x-heroicon-o-x-mark title="close menu" tabindex="-1" class="w-9 h-9"/>
+                        <x-heroicon-o-x-mark title="close menu" tabindex="-1" class="w-9 h-9" />
                         <span class="sr-only">
                             Close
                         </span>
                     </button>
 
-                    <div class="flex flex-col justify-center h-full divide-y">
-                        <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" icon_before="heroicon-o-home" >
+                    <div class="flex flex-col divide-secondary-200 justify-center h-full divide-y">
+                        <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')" icon_before="heroicon-o-home">
                             {{ __('Home') }}
                         </x-responsive-nav-link>
 
@@ -85,20 +85,20 @@
 
                         <div class="flex items-center border divide-x divide-secondary-400 border-secondary-400">
                             @auth
-                                @if (Auth::user()->profile_updated)
-                                <a href="{{ route('dashboard') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">DASHBOARD</a>
-                                @else
-                                <a href="{{ route('profile.update') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">PROFILE</a>
-                                @endif
-                                <form method="POST" action="{{ route('logout') }}" class="flex-1">
-                                    @csrf
-                                    <a onclick="event.preventDefault(); this.closest('form').submit();" class="block w-full p-4 font-semibold text-center cursor-pointer text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600">LOGOUT</a>
-                                </form>
+                            @if (Auth::user()->profile_updated)
+                            <a href="{{ route('dashboard') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">DASHBOARD</a>
+                            @else
+                            <a href="{{ route('profile.update') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">PROFILE</a>
+                            @endif
+                            <form method="POST" action="{{ route('logout') }}" class="flex-1">
+                                @csrf
+                                <a onclick="event.preventDefault(); this.closest('form').submit();" class="block w-full p-4 font-semibold text-center cursor-pointer text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600">LOGOUT</a>
+                            </form>
                             @endauth
-        
+
                             @guest
-                                <a href="{{ route('login') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">SIGN IN</a>
-                                <a href="{{ route('register') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">SIGN UP</a>
+                            <a href="{{ route('login') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">SIGN IN</a>
+                            <a href="{{ route('register') }}" class="flex-1 p-4 font-semibold text-center text-secondary-700 bg-secondary-200 hover:bg-secondary-300 hover:text-primary-900 focus:text-primary-600 ">SIGN UP</a>
                             @endguest
                         </div>
                     </div>

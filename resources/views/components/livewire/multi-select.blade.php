@@ -7,7 +7,7 @@
         </label>
 
     </div>
-    <div class="relative block w-full transition duration-75 border border-secondary-300 divide-y rounded-lg shadow-sm focus-within:border-primary-600 focus-within:ring-1 focus-within:ring-primary-600 filament-forms-multi-select-component">
+    <div class="relative block w-full transition duration-75 border border-secondary-300 divide-y divide-secondary-200 rounded-lg shadow-sm focus-within:border-primary-600 focus-within:ring-1 focus-within:ring-primary-600 filament-forms-multi-select-component">
         <div x-on:click.away="closeListbox()" x-on:blur="closeListbox()" x-on:keydown.escape.stop="closeListbox()" class="relative">
             <div x-bind:aria-expanded="optionsVisible" aria-haspopup="listbox" tabindex="1" class="relative overflow-hidden rounded-lg" aria-expanded="false">
                 <x-input x-on:click="openListbox()" id="{{ $name }}_search" type="text" x-model="search" placeholder="Select an option" type="text" autocomplete="off" class="block w-full border-0" aria-haspopup="true" />
@@ -67,11 +67,11 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('select2_{{ $name }}', () => ({
-            capitalize(str){
+            capitalize(str) {
                 if (typeof(str) != 'string') {
                     return str;
                 }
-                
+
                 return str[0].toUpperCase() + str.substring(1);
             },
 

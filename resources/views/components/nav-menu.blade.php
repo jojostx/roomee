@@ -75,7 +75,7 @@
                   <x-heroicon-o-chevron-right />
                 </span>
               </button>
-              <div x-show="open" x-collapse class="w-full px-2 bg-white border divide-y rounded-lg shadow">
+              <div x-show="open" x-collapse class="w-full px-2 bg-white border divide-secondary-200 border-secondary-200 divide-y rounded-lg shadow">
                 <a href="{{ route('settings.account') }}" class="flex items-center w-full py-2 text-sm font-medium text-secondary-600 hover:text-secondary-800 focus:text-secondary-800">
                   <span class='inline w-6 h-6 p-1 mr-4 transform rounded-full bg-secondary-100'>
                     <x-heroicon-o-user />

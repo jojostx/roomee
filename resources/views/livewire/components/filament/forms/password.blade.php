@@ -55,7 +55,7 @@ $suffixActions = method_exists($field, 'getSuffixActions') ? $getSuffixActions()
                 {!! $isRequired() ? 'required' : null !!}
                 {{ $getExtraInputAttributeBag()->class([
                     'block w-full transition duration-75 rounded-lg shadow-xs focus:border-primary-600 focus:ring-1 focus:ring-inset focus:ring-primary-600 disabled:opacity-70',
-                    'border-gray-300' => ! $errors->has($statePath),
+                    'border-secondary-300' => ! $errors->has($statePath),
                     'border-danger-600 ring-danger-600' => $errors->has($statePath),
                     '!pr-8' => ! $isCopyable(),
                     '!pr-14' => $isCopyable(),
