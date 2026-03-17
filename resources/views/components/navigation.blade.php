@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="flex items-center flex-shrink-0">
+                <div class="flex items-center shrink-0">
                     <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
                         <x-application-logo class="block w-auto h-10 fill-current text-secondary-600" />
                     </a>
@@ -101,7 +101,7 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-secondary-200">
             <div class="flex items-center px-4">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     <div class="w-12 h-12 overflow-hidden rounded-full">
                         @if (auth()->user()->avatar)
                         <img id="avatar_img" src="{{ auth()->user()->avatarPath }}" alt="avatar image" width="100%" height="100%">

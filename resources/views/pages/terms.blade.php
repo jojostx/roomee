@@ -218,7 +218,7 @@
             <div class="w-1 h-12 border-l-2 border-secondary-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
             <!-- <button class="bg-secondary-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-secondary-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <button class="shrink-0 bg-secondary-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
 </x-landing-layout>

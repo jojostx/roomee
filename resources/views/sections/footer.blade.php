@@ -2,7 +2,7 @@
     <div class="w-11/12">
         <div class="grid grid-cols-1 gap-8 pb-8 lg:pb-12 md:grid-cols-8">
             <div class="pb-8 sm:col-span-3">
-                <div class="flex items-center flex-shrink-0 mb-6">
+                <div class="flex items-center shrink-0 mb-6">
                     <a href="{{ route('home') }}">
                         <x-application-logo class="block w-auto h-10 fill-current text-secondary-200" />
                     </a>
@@ -38,9 +38,9 @@
                 </div>
                 <div class="flex flex-col mr-auto">
                     <p class="mb-2 font-semibold text-secondary-500">LEGAL</p>
-                    <x-footer-link href="{{ route('terms') }}" :active="request()->routeIs('terms')" >{{ __('Terms') }}</x-footer-link>
-                    <x-footer-link href="{{ route('privacy') }}" :active="request()->routeIs('privacy')" >{{ __('Privacy Policy') }}</x-footer-link>
-                    <x-footer-link href="{{ route('rules') }}" :active="request()->routeIs('rules')" >{{ __('Rules and Guidelines') }}</x-footer-link>
+                    <x-footer-link href="{{ route('terms') }}" :active="request()->routeIs('terms')">{{ __('Terms') }}</x-footer-link>
+                    <x-footer-link href="{{ route('privacy') }}" :active="request()->routeIs('privacy')">{{ __('Privacy Policy') }}</x-footer-link>
+                    <x-footer-link href="{{ route('rules') }}" :active="request()->routeIs('rules')">{{ __('Rules and Guidelines') }}</x-footer-link>
                 </div>
             </div>
         </div>

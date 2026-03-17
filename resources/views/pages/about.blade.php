@@ -27,11 +27,11 @@
                 <div class="w-1 h-12 border-l-2 border-dashed border-secondary-900 md:border-t-2 md:w-full md:h-1"></div>
 
                 <!-- <button class="rounded-full bg-secondary-800"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-                <div class="flex-shrink-0 w-full md:max-w-md"><img src="{{ asset('images/goal.jpg') }}" alt="our motivation"></div>
-                <!-- <button class="flex-shrink-0 rounded-full bg-secondary-800 hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
+                <div class="shrink-0 w-full md:max-w-md"><img src="{{ asset('images/goal.jpg') }}" alt="our motivation"></div>
+                <!-- <button class="shrink-0 rounded-full bg-secondary-800 hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
             </div>
             <div class="flex flex-col-reverse items-center w-full mt-12 md:items-center md:flex-row md:justify-between">
-                <div class="flex-shrink-0 w-full md:max-w-md"><img src="{{ asset('images/motivation.jpg') }}" alt="our motivation"></div>
+                <div class="shrink-0 w-full md:max-w-md"><img src="{{ asset('images/motivation.jpg') }}" alt="our motivation"></div>
 
                 <div class="w-1 h-12 border-l-2 border-dashed border-secondary-900 md:border-t-2 md:w-full md:h-1"></div>
 
@@ -116,7 +116,7 @@
             <div class="w-1 h-12 border-l-2 border-dashed border-secondary-900 md:border-t-2 md:w-full md:h-1"></div>
 
             <!-- <button class="rounded-full bg-secondary-800"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 rounded-full bg-secondary-800 hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <button class="shrink-0 rounded-full bg-secondary-800 hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
     <!-- end of call to action -->

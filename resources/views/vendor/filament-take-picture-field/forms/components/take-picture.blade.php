@@ -1,5 +1,5 @@
 @php
-    $isDisabled = $field->isDisabled();
+$isDisabled = $field->isDisabled();
 @endphp
 
 <x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
@@ -441,7 +441,7 @@
                     <div class="flex items-center gap-4 p-3">
 
                         <!-- Thumbnail -->
-                        <div class="relative flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-950/5 dark:ring-white/10">
+                        <div class="relative shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 ring-1 ring-gray-950/5 dark:ring-white/10">
                             <img :src="photoData ? getImageUrl(photoData) : ''" class="w-full h-full object-cover" alt="Captured photo">
                         </div>
 
@@ -485,7 +485,7 @@
         <template x-if="webcamError && !modalOpen">
             <div class="mt-2 rounded-lg bg-danger-50 dark:bg-danger-400/10 p-3 text-sm text-danger-600 dark:text-danger-400">
                 <div class="flex items-start gap-2">
-                    <x-filament::icon icon="heroicon-m-exclamation-circle" class="h-5 w-5 flex-shrink-0" />
+                    <x-filament::icon icon="heroicon-m-exclamation-circle" class="h-5 w-5 shrink-0" />
                     <span x-text="webcamError"></span>
                 </div>
             </div>
@@ -595,8 +595,7 @@
                                 type="button"
                                 x-show="!showingPreview"
                                 @click="closeModal()"
-                                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-                            >
+                                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
                                 {{ __('filament-take-picture-field::take-picture-field.cancel') }}
                             </button>
 
@@ -604,8 +603,7 @@
                                 type="button"
                                 x-show="!showingPreview && webcamActive && !webcamError"
                                 @click="capturePhoto()"
-                                class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
-                            >
+                                class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-400">
                                 {{ __('filament-take-picture-field::take-picture-field.capture') }}
                             </button>
 
@@ -613,8 +611,7 @@
                                 type="button"
                                 x-show="showingPreview"
                                 @click="retakeInModal()"
-                                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
-                            >
+                                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700">
                                 {{ __('filament-take-picture-field::take-picture-field.retake') }}
                             </button>
 
@@ -622,8 +619,7 @@
                                 type="button"
                                 x-show="showingPreview"
                                 @click="confirmPhoto()"
-                                class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
-                            >
+                                class="inline-flex items-center justify-center rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-400">
                                 {{ __('filament-take-picture-field::take-picture-field.use_photo') }}
                             </button>
                         </div>

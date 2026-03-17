@@ -15,7 +15,7 @@
         x-transition:leave-end="-translate-x-full"
         class="absolute inset-y-0 left-0 z-20 flex flex-col w-72 sm:w-80 bg-white border-r border-secondary-200 shadow-2xl overflow-hidden">
         {{-- Panel header --}}
-        <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-secondary-200 flex-shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-secondary-200 shrink-0">
             <h2 class="text-sm font-semibold text-secondary-800">Messages</h2>
             <button
                 @click="listOpen = false"
@@ -43,7 +43,7 @@
                         {{ $this->activeChatRoomId === $room->id
                             ? 'bg-primary-50 hover:bg-primary-100'
                             : 'bg-white hover:bg-secondary-50' }}">
-                <div class="relative flex-shrink-0">
+                <div class="relative shrink-0">
                     <img
                         src="{{ $other?->avatar_path }}"
                         alt="{{ $other?->full_name }}"
@@ -61,7 +61,7 @@
                             {{ $other?->full_name }}
                         </span>
                         @if ($latestMsg)
-                        <span class="text-[10px] text-secondary-400 flex-shrink-0">
+                        <span class="text-[10px] text-secondary-400 shrink-0">
                             {{ $latestMsg->created_at->diffForHumans(short: true) }}
                         </span>
                         @endif
@@ -118,7 +118,7 @@
         @if ($this->activeChatRoom)
 
         {{-- Chat header --}}
-        <div class="flex-shrink-0 flex items-center justify-between px-4 py-3 bg-white border-b border-secondary-200 shadow-sm z-10">
+        <div class="shrink-0 flex items-center justify-between px-4 py-3 bg-white border-b border-secondary-200 shadow-sm z-10">
             <div class="flex items-center gap-3">
                 {{-- Toggle list panel --}}
                 <button
@@ -196,14 +196,14 @@
         $meHasShared = $this->hasCurrentUserSharedContacts;
         @endphp
         @if ($otherHasShared && !$meHasShared)
-        <div class="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-3 bg-primary-50 border-b border-primary-200">
+        <div class="shrink-0 flex items-center justify-between gap-3 px-4 py-3 bg-primary-50 border-b border-primary-200">
             <div class="flex items-center gap-2 text-sm text-primary-800">
-                <x-heroicon-s-information-circle class="w-5 h-5 flex-shrink-0 text-primary-600" />
+                <x-heroicon-s-information-circle class="w-5 h-5 shrink-0 text-primary-600" />
                 <span><strong>{{ $this->otherUser?->first_name }}</strong> wants to share contact info with you.</span>
             </div>
             <button
                 wire:click="mountAction('shareContacts')"
-                class="flex-shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500">
+                class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500">
                 <x-heroicon-s-check class="w-3.5 h-3.5" />
                 Accept
             </button>
@@ -223,7 +223,7 @@
                 <img
                     src="{{ $message->sender?->avatar_path }}"
                     alt="{{ $message->sender?->full_name }}"
-                    class="w-7 h-7 rounded-full object-cover flex-shrink-0 mb-0.5">
+                    class="w-7 h-7 rounded-full object-cover shrink-0 mb-0.5">
                 @endif
 
                 <div class="max-w-xs lg:max-w-md xl:max-w-lg">
@@ -245,7 +245,7 @@
                 <img
                     src="{{ auth()->user()->avatar_path }}"
                     alt="You"
-                    class="w-7 h-7 rounded-full object-cover flex-shrink-0 mb-0.5">
+                    class="w-7 h-7 rounded-full object-cover shrink-0 mb-0.5">
                 @endif
             </div>
             @empty
@@ -259,7 +259,7 @@
         </div>
 
         {{-- Message input --}}
-        <div class="flex-shrink-0 border-t border-secondary-200 bg-white px-4 py-3">
+        <div class="shrink-0 border-t border-secondary-200 bg-white px-4 py-3">
             <form wire:submit="sendMessage" class="flex items-end gap-3">
                 <div class="flex-1">
                     <textarea
@@ -274,7 +274,7 @@
                 <button
                     type="submit"
                     wire:loading.attr="disabled"
-                    class="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary-600 text-white hover:bg-primary-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500 disabled:opacity-50">
+                    class="shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary-600 text-white hover:bg-primary-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500 disabled:opacity-50">
                     <x-heroicon-s-paper-airplane class="w-5 h-5" />
                 </button>
             </form>

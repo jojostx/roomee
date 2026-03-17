@@ -1,6 +1,6 @@
 <nav class="flex flex-row items-center justify-between w-11/12 h-full">
     <!-- Application Logo -->
-    <div class="flex items-center flex-shrink-0">
+    <div class="flex items-center shrink-0">
         <a href="{{ route('home') }}">
             <x-application-logo class="block h-12 fill-current text-secondary-200" />
         </a>
@@ -8,7 +8,7 @@
 
     <!-- Primary Navigation Menu -->
     <div class="items-center hidden sm:flex">
-        <div class="flex flex-shrink-0">
+        <div class="flex shrink-0">
             <x-nav-link-primary :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-nav-link-primary>

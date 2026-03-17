@@ -291,7 +291,7 @@
                                 <ul class="pl-10 mb-6 list-decimal privacy">
                                     <li><span class="font-bold">Strictly Necessary Cookies.</span> We use Strictly Necessary Cookies to operate our Site. These cookies are essential to enable you to move around the Site, use its features and to log into secure areas of the Site.</li>
                                     <li><span class="font-bold">Functionality Cookies.</span> We use Functionality Cookies to recognise you when you return to our Site. This enables us to personalise our content for you, greet you by name and remember your preferences and various settings on our Site.</li>
-                                    <li><span class="font-bold">Analytical/Performance Cookies.</span>  These cookies collect information about how many people are using our Site and how they are moving around it when they re using it. For example, the pages visited most often, how people are moving from one link to another, and if they get error messages from certain pages. This helps us to improve the way our Site works, for example, by ensuring that users are finding what they are looking for easily.</li>
+                                    <li><span class="font-bold">Analytical/Performance Cookies.</span> These cookies collect information about how many people are using our Site and how they are moving around it when they re using it. For example, the pages visited most often, how people are moving from one link to another, and if they get error messages from certain pages. This helps us to improve the way our Site works, for example, by ensuring that users are finding what they are looking for easily.</li>
                                     <li><span class="font-bold">Targeting Cookies.</span> These cookies are used to deliver advertisements that are more relevant to you and your interests. They remember that you have visited our website, the pages you visited and the links you have followed. This information may be shared with other organisations such as our advertising partners.</li>
                                 </ul>
 
@@ -318,7 +318,7 @@
             <div class="w-1 h-12 border-l-2 border-secondary-900 border-dashed md:border-t-2 md:w-full md:h-1"></div>
 
             <!-- <button class="bg-secondary-800 rounded-full"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button> -->
-            <button class="flex-shrink-0 bg-secondary-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
+            <button class="shrink-0 bg-secondary-800 rounded-full hover:bg-primary-500 hover:shadow-md"><a class="inline-block px-6 py-4 text-2xl font-bold text-white" href="{{ route('contact') }}">Get in touch</a></button>
         </div>
     </div>
     <!-- end of call to action -->

@@ -11,7 +11,7 @@
             <div class="absolute w-full h-full blur-bg"></div>
 
             <div class="relative z-20 flex flex-col items-center justify-center w-11/12 h-full pt-0 lg:w-10/12 lg:flex-row lg:items-center lg:justify-between lg:pt-0 ">
-                <div class="flex-shrink-0 max-w-lg text-center text-secondary-200 lg:text-left lg:mb-8 ">
+                <div class="shrink-0 max-w-lg text-center text-secondary-200 lg:text-left lg:mb-8 ">
                     <div>
                         <h1 class="px-2 mb-6 text-4xl font-bold lg:px-0 lg:text-5xl">Finding A Roommate Just Got
                             Easier

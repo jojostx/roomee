@@ -1,7 +1,7 @@
 <div class="w-full px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
     <div class="flex justify-between h-16">
         <!-- Logo -->
-        <div class="flex items-center flex-shrink-0">
+        <div class="flex items-center shrink-0">
             <a href="{{ route('home') }}" aria-label="application logo" title="application logo">
                 <x-application-logo class="block w-auto h-10 text-secondary-600 fill-current" />
             </a>
@@ -15,22 +15,21 @@
 
             @auth
             @php
-                $unreadChatCount = \App\Models\ChatMessage::query()
-                    ->whereHas('chatRoom', fn ($q) => $q->where('user_a_id', auth()->id())->orWhere('user_b_id', auth()->id()))
-                    ->where('sender_id', '!=', auth()->id())
-                    ->whereNull('read_at')
-                    ->count();
+            $unreadChatCount = \App\Models\ChatMessage::query()
+            ->whereHas('chatRoom', fn ($q) => $q->where('user_a_id', auth()->id())->orWhere('user_b_id', auth()->id()))
+            ->where('sender_id', '!=', auth()->id())
+            ->whereNull('read_at')
+            ->count();
             @endphp
             <button
                 @click="$store.chat.openModal()"
                 class="relative ml-2 flex items-center justify-center w-9 h-9 rounded-lg text-secondary-500 hover:bg-secondary-100 transition-colors"
-                title="Messages"
-            >
+                title="Messages">
                 <x-heroicon-o-chat-bubble-left-right class="w-5 h-5" />
                 @if ($unreadChatCount > 0)
-                    <span class="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary-600 text-[9px] font-bold text-white leading-none">
-                        {{ $unreadChatCount > 9 ? '9+' : $unreadChatCount }}
-                    </span>
+                <span class="absolute top-0.5 right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary-600 text-[9px] font-bold text-white leading-none">
+                    {{ $unreadChatCount > 9 ? '9+' : $unreadChatCount }}
+                </span>
                 @endif
             </button>
             @endauth

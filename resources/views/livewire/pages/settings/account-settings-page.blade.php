@@ -11,28 +11,28 @@
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="personal-info" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('personal_information').scrollIntoView()" for="personal" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
-                            <x-heroicon-o-user class="flex-shrink-0 w-5 mr-3" />
+                            <x-heroicon-o-user class="shrink-0 w-5 mr-3" />
                             Personal Information
                         </label>
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="email-and-phone-number-link" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('email_information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
-                            <x-heroicon-o-inbox class="flex-shrink-0 w-5 mr-3" />
+                            <x-heroicon-o-inbox class="shrink-0 w-5 mr-3" />
                             Email Information
                         </label>
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="password-info-link" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('password_information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
-                            <x-heroicon-o-lock-closed class="flex-shrink-0 w-5 mr-3" />
+                            <x-heroicon-o-lock-closed class="shrink-0 w-5 mr-3" />
                             Password Information
                         </label>
                     </li>
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="matching-preferences-link" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('matching_preferences').scrollIntoView()" for="matching-preferences-link" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
-                            <x-heroicon-o-adjustments-horizontal class="flex-shrink-0 w-5 mr-3" />
+                            <x-heroicon-o-adjustments-horizontal class="shrink-0 w-5 mr-3" />
                             Matching Preferences
                         </label>
                     </li>
