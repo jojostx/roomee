@@ -106,7 +106,7 @@ trait WithRequesting
         }
     }
 
-    public function showDeleteRequestModal($user_id = null)
+    public function showDeleteRequestModal($user_id = null): void
     {
         $user = $this->retrieveUser($user_id);
 
@@ -114,10 +114,10 @@ trait WithRequesting
             return;
         }
 
-        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $user->uuid]);
+        $this->mountAction('deleteRoommateRequest', ['user' => $user->uuid]);
     }
 
-    public function showReportOrBlockModal($user_id = null)
+    public function showReportOrBlockModal($user_id = null): void
     {
         $user = $this->retrieveUser($user_id);
 
@@ -125,6 +125,6 @@ trait WithRequesting
             return;
         }
 
-        $this->dispatch('openModal', 'components.modals.report-or-block-modal', ["user" => $user->uuid]);
+        $this->mountAction('reportUser', ['user' => $user->uuid]);
     }
 }

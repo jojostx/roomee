@@ -11,7 +11,7 @@ trait WithOnboardingSteps
 {
     abstract protected function getAuthModel(): ?User;
 
-    public function openOnboardingStepModal()
+    public function openOnboardingStepModal(): void
     {
         if ($this->getAuthModel()->onboarding()->finished()) {
             return;
@@ -19,15 +19,13 @@ trait WithOnboardingSteps
 
         $step = $this->getAuthModel()->onboarding()->nextUnfinishedStep();
 
-        $this->dispatch(
-            'openModal',
-            'components.modals.onboarding-step-modal',
-            ['step_data' => [
+        $this->mountAction('onboardingStep', [
+            'step_data' => [
                 'cta' => $step->cta,
                 'title' => $step->title,
                 'body' => $step->body,
                 'link' => $step->link,
-            ]]
-        );
+            ],
+        ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Livewire\Traits\WithFavoriting;
 use App\Livewire\Traits\WithRequesting;
 use App\Livewire\Traits\WithOnboardingSteps;
 use App\Livewire\Traits\WithBlocking;
+use App\Livewire\Traits\WithUserActionModals;
 use App\Livewire\Traits\CanRetrieveUser;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Columns\Layout\Split;
@@ -40,6 +41,7 @@ class DashboardPage extends Component implements HasTable, HasForms, HasActions
     use InteractsWithActions;
     use
         InteractsWithForms,
+        WithUserActionModals,
         WithFavoriting,
         WithRequesting,
         WithOnboardingSteps,

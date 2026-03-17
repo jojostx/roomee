@@ -35,7 +35,7 @@
                         <!-- user interactions -->
                         <div class="flex justify-center w-full">
                             @can('update', $user)
-                                <a href="{{ route('profile.update') }}" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                <a href="{{ route('profile.update') }}" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border-[1.5px] rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
                                     <span class="pr-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
@@ -45,7 +45,7 @@
                                 </a>
                             @elsecannot('update', $user)
                                 @if(auth()->user()->hasBlocked($user))
-                                    <button wire:click="showUserBlockingModal" style="border-width: 1.5px;" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
+                                    <button wire:click="showUserBlockingModal" class="flex items-center justify-start px-2 py-1 text-xs transition duration-150 ease-in-out border-[1.5px] rounded-md text-primary-700 border-primary-700 sm:text-sm hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">
                                         <span class="pr-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" class="w-4 h-4" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -87,7 +87,7 @@
                                     Bio
                                 </x-livewire.label>
                                 <div class="px-2 py-4 border rounded-md border-secondary-300">
-                                    <p class="px-1 text-primary-800" style="overflow-wrap: break-word; word-wrap: break-word; hyphens: auto;">{{ $user->bio}}</p>
+                                    <p class="px-1 break-words hyphens-auto text-primary-800">{{ $user->bio}}</p>
                                 </div>
                             </div>
                             <div class="mb-2">
@@ -245,4 +245,6 @@
     <p class="text-xs text-center text-secondary-500">
         &copy; 2020 Roomee. All rights reserved
     </p>
+
+    <x-filament-actions::modals />
 </div>

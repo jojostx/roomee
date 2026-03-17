@@ -10,7 +10,7 @@
         @endif
     </div>
     <div class="flex-shrink-0 w-full">
-        <a href="{{ $step_link ?? '#' }} " class="flex items-center justify-center w-full px-4 py-2 text-sm font-semibold rounded-md cursor-pointer js-cookie-consent-agree cookie-consent__agree text-primary-50 bg-primary-600 hover:bg-primary-800">
+        <a href="{{ $step_link ?? '#' }}" class="flex items-center justify-center w-full px-4 py-2 text-sm font-semibold rounded-md cursor-pointer text-primary-50 bg-primary-600 hover:bg-primary-800">
             {{ $step_cta }}
         </a>
     </div>

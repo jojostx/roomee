@@ -31,4 +31,6 @@
     </div>
 
     <x-livewire.includes.user-interactions :user="$user" class="px-4 py-4"/>
+
+    <x-filament-actions::modals />
 </div>

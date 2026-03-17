@@ -1,4 +1,4 @@
-<div id="toast_notif" wire:ignore style="display: none;" class="fixed left-0 z-50 flex items-center justify-between w-full max-w-2xl px-4 py-4 overflow-hidden text-white shadow-lg bg-primary-500 md:px-6 md:ml-8 md:w-1/2 md:rounded-md bottom-8">
+<div id="toast_notif" wire:ignore class="fixed left-0 z-50 hidden items-center justify-between w-full max-w-2xl px-4 py-4 overflow-hidden text-white shadow-lg bg-primary-500 md:px-6 md:ml-8 md:w-1/2 md:rounded-md bottom-8">
 </div>
 @prepend('scripts')
 <script>
@@ -7,7 +7,8 @@
 
         let p;
 
-        notif.style.display = 'flex';
+        notif.classList.remove('hidden');
+        notif.classList.add('flex');
 
         if (actionTaken == 'block') {
             p = `<p>You have succesfully ${actionTaken}ed 
@@ -76,7 +77,8 @@
         notif.innerHTML = p;
 
         setTimeout(() => {
-            notif.style.display = "none"
+            notif.classList.remove('flex');
+            notif.classList.add('hidden')
         }, 7000)
     })
 

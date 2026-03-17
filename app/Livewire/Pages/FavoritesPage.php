@@ -9,6 +9,7 @@ use App\Livewire\Traits\WithFavoriting;
 use App\Livewire\Traits\WithRequesting;
 use App\Livewire\Traits\WithBlocking;
 use App\Livewire\Traits\WithOnboardingSteps;
+use App\Livewire\Traits\WithUserActionModals;
 use App\Livewire\Traits\CanRetrieveUser;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Columns\Layout\Split;
@@ -20,6 +21,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Tables;
 use App\Livewire\Traits;
+use App\Models\ChatRoom;
 use App\Models\Report;
 use App\Models\RoommateRequest;
 use App\Models\User;
@@ -43,6 +45,7 @@ class FavoritesPage extends Component implements HasTable, HasForms, HasActions
     use InteractsWithActions;
     use
         InteractsWithForms,
+        WithUserActionModals,
         WithFavoriting,
         WithRequesting,
         WithBlocking,
@@ -466,9 +469,21 @@ class FavoritesPage extends Component implements HasTable, HasForms, HasActions
                     'title' => 'contact user',
                     'class' => 'w-full filament-tables-action-contact-user',
                 ])
-                ->action(function (User $record) {
-                    $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $record->uuid]);
-                    $this->dispatchSelf('refresh:component');
+                ->modalHeading(fn (User $record): string => 'Contact ' . $record->full_name)
+                ->modalSubmitAction(false)
+                ->modalCancelAction(fn (Action $action) => $action->label('Close'))
+                ->modalWidth('sm')
+                ->modalContent(function (User $record) {
+                    $authUser = $this->getAuthModel();
+                    $chatRoom = ChatRoom::findBetween($authUser, $record);
+
+                    if (!$chatRoom || !$chatRoom->hasBothSharedContacts()) {
+                        return str('<p class="text-center text-secondary-600">Contact sharing is not yet mutual.</p>')->toHtmlString();
+                    }
+
+                    return view('livewire.partials.contact-user-modal-content', [
+                        'channels' => $record->getVerifiedContactChannels(),
+                    ]);
                 })
                 ->visible(fn (User $record) => !$this->isRestrictedFavorite($record) && $this->hasAcceptedRoommateRequest($record)),
         ];

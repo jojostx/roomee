@@ -51,7 +51,7 @@
                             {{ $this->personalInfoForm }}
 
                             <div class="flex items-center mt-6">
-                                <x-filament::button type="submit" id="save-personal-info" size='sm' style="font-weight: 600;">
+                                <x-filament::button type="submit" id="save-personal-info" size='sm' class="font-semibold">
                                     {{ __('Update') }}
                                 </x-filament::button>
                             </div>
@@ -67,7 +67,7 @@
                             {{ $this->contactInfoForm }}
 
                             <div class="flex items-center mt-6">
-                                <x-filament::button type="submit" id="save-contact-info" size='sm' style="font-weight: 600;">
+                                <x-filament::button type="submit" id="save-contact-info" size='sm' class="font-semibold">
                                     {{ __('Update') }}
                                 </x-filament::button>
                             </div>
@@ -93,7 +93,7 @@
                             </div>
 
                             <div class="flex items-center mt-6">
-                                <x-filament::button type="submit" id="save-password-info" size='sm' style="font-weight: 600;">
+                                <x-filament::button type="submit" id="save-password-info" size='sm' class="font-semibold">
                                     {{ __('Update') }}
                                 </x-filament::button>
                             </div>
@@ -109,7 +109,7 @@
                             {{ $this->matchingPreferencesForm }}
 
                             <div class="flex items-center mt-6">
-                                <x-filament::button type="submit" id="save-matching-preferences" size='sm' style="font-weight: 600;">
+                                <x-filament::button type="submit" id="save-matching-preferences" size='sm' class="font-semibold">
                                     {{ __('Update') }}
                                 </x-filament::button>
                             </div>

@@ -12,22 +12,25 @@
 
   <x-livewire.includes.favoriting-sxn :user="$user" />
 
-  <x-filament::icon-button 
+  <x-filament::icon-button
     size="sm"
-    color="gray"
-    icon="heroicon-s-ellipsis-vertical" 
-    x-data="" 
-    x-on:click="$dispatch('open-modal', 
-      { 
-        id: 'user-interaction-menu', 
-        user_id: '{{ $user->uuid }}', 
-        user_name: '{{ $user->full_name }}',
-        user_is_blocked: {{ $user_is_blocked_by_auth ? 'true' : 'false' }},
-      }
-    )"
+    color="warning"
+    icon="heroicon-o-flag"
+    wire:click="mountAction('reportUser', { user: '{{ $user->uuid }}' })"
     style="border-radius: 0.5rem;"
-    class="border rounded-lg border-secondary-300 disabled:cursor-not-allowed disabled:pointer-events-none shrink-0 " 
-    aria-label="show user menu" 
-    title="show user menu"
+    class="border rounded-lg border-secondary-300 disabled:cursor-not-allowed disabled:pointer-events-none shrink-0"
+    aria-label="report user"
+    title="Report {{ $user->full_name }}"
+  />
+
+  <x-filament::icon-button
+    size="sm"
+    color="danger"
+    icon="heroicon-o-no-symbol"
+    wire:click="mountAction('blockUser', { user: '{{ $user->uuid }}' })"
+    style="border-radius: 0.5rem;"
+    class="border rounded-lg border-secondary-300 disabled:cursor-not-allowed disabled:pointer-events-none shrink-0"
+    aria-label="{{ $user_is_blocked_by_auth ? 'unblock' : 'block' }} user"
+    title="{{ $user_is_blocked_by_auth ? 'Unblock' : 'Block' }} {{ $user->full_name }}"
   />
 </div>

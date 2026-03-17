@@ -3,8 +3,7 @@ import multiselect from './alpinejs/filamentphp/multi-select'
 
 import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
 import Tooltip from "@ryangjchandler/alpine-tooltip";
-import Collapse from '@alpinejs/collapse';
-// Note: @alpinejs/persist is bundled and registered internally by Livewire — do not import or re-register it here.
+// Note: @alpinejs/collapse and @alpinejs/persist are bundled and registered internally by Livewire — do not import or re-register them here.
 
 // Register chat store early so x-show in the layout can read it before Alpine processes the DOM.
 document.addEventListener('alpine:init', () => {
@@ -37,8 +36,7 @@ document.addEventListener('alpine:init', () => {
 document.addEventListener('livewire:init', () => {
     const Alpine = window.Alpine;
 
-    // 1. Register non-bundled plugins
-    Alpine.plugin(Collapse);
+    // 1. Register non-bundled plugins (collapse, persist, focus, intersect are bundled by Livewire)
     Alpine.plugin(Tooltip);
     Alpine.plugin(AlpineFloatingUI);
 

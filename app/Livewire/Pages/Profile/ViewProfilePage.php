@@ -9,12 +9,20 @@ use Illuminate\Support\Facades\Auth;
 use App\Livewire\Traits\WithBlocking;
 use App\Livewire\Traits\WithFavoriting;
 use App\Livewire\Traits\WithRequesting;
+use App\Livewire\Traits\WithUserActionModals;
 use App\Livewire\Traits\CanRetrieveUser;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ViewProfilePage extends Component
+class ViewProfilePage extends Component implements HasForms, HasActions
 {
-    use WithFavoriting,
+    use InteractsWithForms,
+        InteractsWithActions,
+        WithUserActionModals,
+        WithFavoriting,
         WithBlocking,
         CanRetrieveUser,
         AuthorizesRequests,
@@ -55,24 +63,24 @@ class ViewProfilePage extends Component
         $this->dispatchSelf('actionTakenOnUser');
     }
 
-    public function showContactUserModal()
+    public function showContactUserModal(): void
     {
-        $this->dispatch('openModal', 'components.modals.contact-user-modal', ["user" => $this->user->uuid]);
+        $this->mountAction('contactUser', ['user' => $this->user->uuid]);
     }
 
-    public function showDeleteRequestModal()
+    public function showDeleteRequestModal(): void
     {
-        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
+        $this->mountAction('deleteRoommateRequest', ['user' => $this->user->uuid]);
     }
 
-    public function showReportOrBlockModal()
+    public function showReportOrBlockModal(): void
     {
-        $this->dispatch('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
+        $this->mountAction('reportUser', ['user' => $this->user->uuid]);
     }
 
-    public function showUserBlockingModal()
+    public function showUserBlockingModal(): void
     {
-        $this->dispatch('openModal', 'components.modals.user-blocking-modal', ["user" => $this->user->uuid]);
+        $this->mountAction('blockUser', ['user' => $this->user->uuid]);
     }
 
     public function render()

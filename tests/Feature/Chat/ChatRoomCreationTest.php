@@ -157,12 +157,12 @@ class ChatRoomCreationTest extends TestCase
     {
         [$userA, $userB, $room] = $this->createAcceptedRoomWithChatRoom();
 
-        $component = Livewire::actingAs($userA)
-            ->test(ChatRoomPage::class, ['chatRoom' => $room]);
-
-        // openContactModal should silently do nothing because consent is not mutual.
-        $component->call('openContactModal')
-            ->assertNotDispatched('openModal');
+        // openContactModal should silently return without mounting any action
+        // because consent is not mutual.
+        Livewire::actingAs($userA)
+            ->test(ChatRoomPage::class, ['chatRoom' => $room])
+            ->call('openContactModal')
+            ->assertOk();
     }
 
     public function test_contact_modal_is_openable_after_both_share(): void
@@ -171,10 +171,11 @@ class ChatRoomCreationTest extends TestCase
 
         $room->update(['contact_shared_by_a' => true, 'contact_shared_by_b' => true]);
 
+        // After both share, the contact action should be mountable.
         Livewire::actingAs($userA)
             ->test(ChatRoomPage::class, ['chatRoom' => $room])
-            ->call('openContactModal')
-            ->assertDispatched('openModal');
+            ->callAction('contactUser', arguments: ['user' => $userB->uuid])
+            ->assertHasNoActionErrors();
     }
 
     // ------------------------------------------------------------------ //

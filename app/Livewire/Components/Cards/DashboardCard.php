@@ -8,12 +8,22 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\WithBlocking;
 use App\Livewire\Traits\WithFavoriting;
 use App\Livewire\Traits\WithRequesting;
+use App\Livewire\Traits\WithUserActionModals;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 
-class DashboardCard extends Component
+class DashboardCard extends Component implements HasForms, HasActions
 {
     use
+        InteractsWithForms,
+        InteractsWithActions,
+        WithUserActionModals,
+        WithBlocking,
         WithFavoriting,
         CanRetrieveUser,
         WithRequesting {
@@ -55,14 +65,9 @@ class DashboardCard extends Component
         $this->dispatchSelf('actionTakenOnUser');
     }
 
-    public function showDeleteRequestModal()
+    public function showDeleteRequestModal(): void
     {
-        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
-    }
-
-    public function showReportOrBlockModal()
-    {
-        $this->dispatch('openModal', 'components.modals.report-or-block-modal', ["user" => $this->user->uuid]);
+        $this->mountAction('deleteRoommateRequest', ['user' => $this->user->uuid]);
     }
 
     #[Computed]

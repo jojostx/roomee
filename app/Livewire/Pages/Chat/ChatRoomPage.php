@@ -2,14 +2,20 @@
 
 namespace App\Livewire\Pages\Chat;
 
+use App\Livewire\Traits\WithUserActionModals;
 use App\Models\ChatMessage;
 use App\Models\ChatRoom;
 use App\Models\User;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ChatRoomPage extends Component
+class ChatRoomPage extends Component implements HasForms, HasActions
 {
+    use InteractsWithForms, InteractsWithActions, WithUserActionModals;
     public ChatRoom $chatRoom;
     public string $newMessage = '';
 
@@ -59,7 +65,7 @@ class ChatRoomPage extends Component
 
         $otherUser = $this->chatRoom->otherParticipant($this->getAuthModel());
 
-        $this->dispatch('openModal', 'components.modals.contact-user-modal', ['user' => $otherUser->uuid]);
+        $this->mountAction('contactUser', ['user' => $otherUser->uuid]);
     }
 
     public function render(): \Illuminate\Contracts\View\View

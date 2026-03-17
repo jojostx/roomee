@@ -2,24 +2,32 @@
 
 namespace App\Livewire\Components\Cards\RoommateRequests;
 
+use App\Livewire\Traits\CanRetrieveUser;
+use App\Livewire\Traits\WithUserActionModals;
 use App\Models\User;
 use App\Notifications\RoommateRequestAcceptedNotification;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class ReceivedRoommateRequestCard extends Component
+class ReceivedRoommateRequestCard extends Component implements HasForms, HasActions
 {
+    use InteractsWithForms, InteractsWithActions, WithUserActionModals, CanRetrieveUser;
+
     public $user;
     public $roommateRequest;
 
-    protected function getListeners()
+    protected function getListeners(): array
     {
         return [
             'refreshChildren:' . $this->user->id => '$refresh',
         ];
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = $this->roommateRequest->sender;
     }
@@ -29,9 +37,9 @@ class ReceivedRoommateRequestCard extends Component
         return Auth::user();
     }
 
-    public function showDeleteRoommateRequestModal()
+    public function showDeleteRoommateRequestModal(): void
     {
-        $this->dispatch('openModal', 'components.modals.delete-roommate-request-modal', ["user" => $this->user->uuid]);
+        $this->mountAction('deleteRoommateRequest', ['user' => $this->user->uuid]);
     }
 
     public function acceptRoommateRequest()

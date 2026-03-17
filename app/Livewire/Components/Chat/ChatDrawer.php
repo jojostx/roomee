@@ -6,6 +6,7 @@ use App\Events\MessageSent;
 use App\Models\ChatRoom;
 use App\Models\ChatMessage;
 use App\Models\User;
+use App\Livewire\Traits\WithUserActionModals;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -19,7 +20,7 @@ use Livewire\Component;
 
 class ChatDrawer extends Component implements HasForms, HasActions
 {
-    use InteractsWithForms, InteractsWithActions;
+    use InteractsWithForms, InteractsWithActions, WithUserActionModals;
 
     public ?string $activeChatRoomId = null;
 
@@ -257,9 +258,7 @@ class ChatDrawer extends Component implements HasForms, HasActions
             return;
         }
 
-        $this->dispatch('openModal', 'components.modals.contact-user-modal', [
-            'user' => $this->otherUser?->uuid,
-        ]);
+        $this->mountAction('contactUser', ['user' => $this->otherUser?->uuid]);
     }
 
     protected function markMessagesAsRead(): void

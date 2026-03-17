@@ -1,1 +1,3 @@
-<div></div>
+<div>
+    <x-filament-actions::modals />
+</div>

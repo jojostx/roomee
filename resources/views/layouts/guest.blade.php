@@ -82,9 +82,6 @@
     </div>
     @endauth
 
-    @auth
-    <livewire:components.global-modal />
-    @endauth
     <script type="application/javascript">
         function setCustomCSSViewportHeightVariable() {
             // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
@@ -99,7 +96,6 @@
         window.addEventListener('resize', () => setCustomCSSViewportHeightVariable());
     </script>
 
-    <x-livewire.includes.user-interaction-menu />
 </body>
 
 </html>
