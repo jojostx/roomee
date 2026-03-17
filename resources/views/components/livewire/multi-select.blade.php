@@ -19,10 +19,10 @@
                 </span>
             </div>
 
-            <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" class="absolute z-30 w-full my-1 transition bg-white border border-secondary-300 rounded-lg shadow-md focus:outline-none" style="bottom: 40px; display: none;">
-                <ul class="py-1 space-y-1 overflow-auto text-base leading-6 max-h-60 focus:outline-none">
+            <div x-show="optionsVisible" x-transition:leave="ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" role="listbox" tabindex="-1" class="absolute z-30 w-full my-1 transition bg-white border border-secondary-300 rounded-lg shadow-md focus:outline-hidden" style="bottom: 40px; display: none;">
+                <ul class="py-1 space-y-1 overflow-auto text-base leading-6 max-h-60 focus:outline-hidden">
                     <template x-for="(option, index) in filteredOptions()" x-bind:key="option.id">
-                        <li @click.prevent="toggle(option)" x-on:keydown.enter="toggle(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-secondary-900 ': !isSelected(option)}" tabindex="0" role="option" class="relative flex items-center px-1 text-secondary-900 border border-transparent rounded-md cursor-default select-none hover:bg-secondary-200 focus:border-secondary-400 focus:bg-secondary-100 focus:outline-none">
+                        <li @click.prevent="toggle(option)" x-on:keydown.enter="toggle(option)" @keydown.arrow-up.prevent="previousUp($event)" @keydown.arrow-down.prevent="nextDown($event)" x-bind:class="{'text-secondary-900 ': !isSelected(option)}" tabindex="0" role="option" class="relative flex items-center px-1 text-secondary-900 border border-transparent rounded-md cursor-default select-none hover:bg-secondary-200 focus:border-secondary-400 focus:bg-secondary-100 focus:outline-hidden">
                             <input type="checkbox" wire:model="{{ 'selected'.$slot }}" x-bind:id="_id(option.name)" x-bind:value="option.id" x-bind:checked="isSelected(option)" name="{{ $name }}" class="hidden dropdown_checkboxes" autocomplete="off">
 
                             <label x-bind:for="_id(option.name)" class="flex items-center justify-between w-full h-full px-2 py-2 rounded-md">

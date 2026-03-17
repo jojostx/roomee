@@ -156,14 +156,14 @@
                     @if ($this->hasBothSharedContacts)
                         <button
                             wire:click="openContactModal"
-                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-success-600 hover:bg-success-700 transition-colors focus:outline-none focus:ring-2 focus:ring-success-500">
+                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-success-600 hover:bg-success-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-success-500">
                             <x-heroicon-s-phone class="w-4 h-4" />
                             <span class="hidden sm:inline">Contact Info</span>
                         </button>
                     @elseif (!$this->currentUserHasContactChannels)
                         <a
                             href="{{ route('settings.contact-channels') }}"
-                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-warning-700 rounded-lg border border-warning-300 bg-warning-50 hover:bg-warning-100 transition-colors focus:outline-none focus:ring-2 focus:ring-warning-500">
+                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-warning-700 rounded-lg border border-warning-300 bg-warning-50 hover:bg-warning-100 transition-colors focus:outline-hidden focus:ring-2 focus:ring-warning-500">
                             <x-heroicon-o-plus-circle class="w-4 h-4" />
                             <span class="hidden sm:inline">Add Contact Channels</span>
                         </a>
@@ -171,7 +171,7 @@
                         <button
                             wire:click="mountAction('shareContacts')"
                             wire:loading.attr="disabled"
-                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-primary-700 rounded-lg border border-primary-300 bg-primary-50 hover:bg-primary-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-60">
+                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-primary-700 rounded-lg border border-primary-300 bg-primary-50 hover:bg-primary-100 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500 disabled:opacity-60">
                             <x-heroicon-o-share class="w-4 h-4" />
                             <span class="hidden sm:inline">Share Contacts</span>
                         </button>
@@ -183,7 +183,7 @@
                         <button
                             wire:click="mountAction('unshareContacts')"
                             wire:loading.attr="disabled"
-                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-danger-700 rounded-lg border border-danger-300 bg-danger-50 hover:bg-danger-100 transition-colors focus:outline-none focus:ring-2 focus:ring-danger-500 disabled:opacity-60">
+                            class="inline-flex items-center gap-1.5 px-2 sm:px-3 py-1.5 text-xs font-semibold text-danger-700 rounded-lg border border-danger-300 bg-danger-50 hover:bg-danger-100 transition-colors focus:outline-hidden focus:ring-2 focus:ring-danger-500 disabled:opacity-60">
                             <x-heroicon-o-x-mark class="w-4 h-4" />
                             <span class="hidden sm:inline">Undo</span>
                         </button>
@@ -213,7 +213,7 @@
                     </div>
                     <button
                         wire:click="mountAction('shareContacts')"
-                        class="flex-shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500">
+                        class="flex-shrink-0 inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-white rounded-lg bg-primary-600 hover:bg-primary-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500">
                         <x-heroicon-s-check class="w-3.5 h-3.5" />
                         Accept
                     </button>
@@ -279,7 +279,7 @@
                             wire:model="newMessage"
                             rows="1"
                             placeholder="Type a message…"
-                            class="block w-full resize-none rounded-xl border border-secondary-300 bg-secondary-50 px-4 py-2.5 text-sm text-secondary-900 placeholder-secondary-400 focus:border-primary-500 focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary-500 transition-colors"
+                            class="block w-full resize-none rounded-xl border border-secondary-300 bg-secondary-50 px-4 py-2.5 text-sm text-secondary-900 placeholder-secondary-400 focus:border-primary-500 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-primary-500 transition-colors"
                             x-data
                             x-on:keydown.enter.prevent="if (!$event.shiftKey) { $wire.sendMessage() }"
                             x-on:input="$el.style.height = 'auto'; $el.style.height = Math.min($el.scrollHeight, 160) + 'px'"
@@ -288,7 +288,7 @@
                     <button
                         type="submit"
                         wire:loading.attr="disabled"
-                        class="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary-600 text-white hover:bg-primary-700 transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
+                        class="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary-600 text-white hover:bg-primary-700 transition-colors focus:outline-hidden focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
                     >
                         <x-heroicon-s-paper-airplane class="w-5 h-5" />
                     </button>

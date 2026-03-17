@@ -1,4 +1,4 @@
-<button title="Open Notifications" type="button" class="relative flex items-center justify-center w-10 h-10 text-sm font-medium text-center rounded-md text-secondary-500 hover:text-secondary-900 dark:hover:text-white dark:text-secondary-400 filament-icon-button hover:bg-secondary-500/5 focus:outline-none focus:text-primary-500 focus:bg-primary-500/10" aria-expanded="false">
+<button title="Open Notifications" type="button" class="relative flex items-center justify-center w-10 h-10 text-sm font-medium text-center rounded-md text-secondary-500 hover:text-secondary-900 dark:hover:text-white dark:text-secondary-400 filament-icon-button hover:bg-secondary-500/5 focus:outline-hidden focus:text-primary-500 focus:bg-primary-500/10" aria-expanded="false">
   <span class="sr-only">
     Notifications trigger
   </span>

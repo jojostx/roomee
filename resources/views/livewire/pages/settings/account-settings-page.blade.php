@@ -7,7 +7,7 @@
                     <p class="text-base font-semibold text-secondary-700">Hello, {{ auth()->user()->full_name }}.</p>
                 </div>
 
-                <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 font-semibold list-none bg-white border rounded-md shadow-sm text-secondary-800 lg:flex">
+                <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 font-semibold list-none bg-white border rounded-md shadow-xs text-secondary-800 lg:flex">
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="personal-info" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('personal_information').scrollIntoView()" for="personal" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
@@ -46,7 +46,7 @@
                 <div id="personal_information">
                     <p class="mb-4 font-bold tracking-wide sm:text-lg">Personal Information</p>
 
-                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                    <div class="p-4 bg-white border rounded-lg shadow-xs md:p-6">
                         <form wire:submit.prevent="savePersonalInfo">
                             {{ $this->personalInfoForm }}
 
@@ -62,7 +62,7 @@
                 <div class="mt-6 sm:mt-10" id="email_information">
                     <p class="mb-4 font-bold tracking-wide sm:text-lg">Email Information</p>
 
-                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                    <div class="p-4 bg-white border rounded-lg shadow-xs md:p-6">
                         <form wire:submit.prevent="saveContactInfo">
                             {{ $this->contactInfoForm }}
 
@@ -78,7 +78,7 @@
                 <div class="mt-6 sm:mt-10" id="password_information">
                     <p class="mb-4 font-bold tracking-wide sm:text-lg">Password Information</p>
 
-                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                    <div class="p-4 bg-white border rounded-lg shadow-xs md:p-6">
                         <form wire:submit.prevent="savePasswordInfo">
                             {{ $this->passwordInfoForm}}
 
@@ -104,7 +104,7 @@
                 <div class="mt-6 sm:mt-10" id="matching_preferences">
                     <p class="mb-4 font-bold tracking-wide sm:text-lg">Matching Preferences</p>
 
-                    <div class="p-4 bg-white border rounded-lg shadow-sm md:p-6">
+                    <div class="p-4 bg-white border rounded-lg shadow-xs md:p-6">
                         <form wire:submit.prevent="saveMatchingPreferences">
                             {{ $this->matchingPreferencesForm }}
 

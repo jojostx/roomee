@@ -10,7 +10,7 @@
         <!-- Settings Dropdown -->
         <div class="flex items-center">
             @unless (request()->routeIs('dashboard'))
-            <a href="{{ route('dashboard') }}" class="items-center justify-start hidden px-2 py-1 text-sm transition duration-150 ease-in-out border-[1.5px] rounded-md text-primary-700 border-primary-700 md:flex sm:text-base hover:text-primary-700 hover:bg-primary-200 focus:outline-none focus:bg-primary-200 focus:text-primary-700">Dashboard</a>
+            <a href="{{ route('dashboard') }}" class="items-center justify-start hidden px-2 py-1 text-sm transition duration-150 ease-in-out border-[1.5px] rounded-md text-primary-700 border-primary-700 md:flex sm:text-base hover:text-primary-700 hover:bg-primary-200 focus:outline-hidden focus:bg-primary-200 focus:text-primary-700">Dashboard</a>
             @endunless
 
             @auth

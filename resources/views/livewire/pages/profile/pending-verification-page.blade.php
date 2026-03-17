@@ -1,5 +1,5 @@
 <div class="max-w-3xl px-4 py-10 mx-auto sm:px-6 lg:px-8">
-    <div class="overflow-hidden bg-white border border-gray-200 shadow-sm rounded-xl">
+    <div class="overflow-hidden bg-white border border-gray-200 shadow-xs rounded-xl">
         <div class="px-6 py-5 border-b border-gray-200">
             <h1 class="text-xl font-semibold text-gray-900">Verification In Progress</h1>
             <p class="mt-2 text-sm text-gray-600">

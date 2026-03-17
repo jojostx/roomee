@@ -12,7 +12,7 @@
 
     $buttonClasses = \Illuminate\Support\Arr::toCssClasses([
         'flex items-center w-full h-8 px-3 text-sm font-medium group whitespace-nowrap filament-dropdown-item',
-        'focus:outline-none hover:text-white focus:text-white' => $hasHoverAndFocusState,
+        'focus:outline-hidden hover:text-white focus:text-white' => $hasHoverAndFocusState,
         'hover:bg-primary-600 focus:bg-primary-700' => ($color === 'primary' || $color === 'secondary') && $hasHoverAndFocusState,
         'hover:bg-danger-600 focus:bg-danger-700' => $color === 'danger' && $hasHoverAndFocusState,
         'hover:bg-success-600 focus:bg-success-700' => $color === 'success' && $hasHoverAndFocusState,

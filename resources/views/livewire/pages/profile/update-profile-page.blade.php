@@ -8,7 +8,7 @@
                     <p class="inline-flex px-4 py-1 text-sm rounded-full text-danger-700 bg-danger-200">All fields are required</p>
                 </div>
     
-                <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none bg-white border rounded-md shadow-sm text-secondary-800 lg:flex">
+                <ul x-data class="flex-col hidden w-full px-2 py-2 my-2 overflow-y-auto font-semibold list-none bg-white border rounded-md shadow-xs text-secondary-800 lg:flex">
                     <li class="relative w-full my-1 cursor-pointer">
                         <input type="radio" name="section-link" id="general" class="absolute opacity-0 left-20" autocomplete="off">
                         <label @click="document.getElementById('general-information').scrollIntoView()" for="general" class="flex items-center px-2 py-2 border border-transparent rounded-md cursor-pointer hover:bg-secondary-300">
@@ -76,7 +76,7 @@
                 </div>
     
                 <div class="my-8 text-secondary-500 lg:mt-6">
-                    <button id="save" type="submit" class="block w-full px-4 py-3 font-semibold leading-4 text-white bg-primary-600 rounded-md shadow-sm lg:text-lg hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    <button id="save" type="submit" class="block w-full px-4 py-3 font-semibold leading-4 text-white bg-primary-600 rounded-md shadow-xs lg:text-lg hover:bg-primary-700 focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                         Save Changes
                     </button>
                 </div>

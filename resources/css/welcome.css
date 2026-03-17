@@ -1,16 +1,109 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-@import 'flickity.min.css';
+@import 'tailwindcss';
+@import './flickity.min.css';
+
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+/* Scan the same sources as app.css */
+@source "../../vendor/filament/**/*.blade.php";
+
+/* Class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --breakpoint-xs: 320px;
+
+    --font-sans: "Nunito", system-ui, sans-serif;
+
+    /* Custom colors: primary → blue */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
+
+    /* Custom colors: secondary → gray */
+    --color-secondary-50: #f9fafb;
+    --color-secondary-100: #f3f4f6;
+    --color-secondary-200: #e5e7eb;
+    --color-secondary-300: #d1d5db;
+    --color-secondary-400: #9ca3af;
+    --color-secondary-500: #6b7280;
+    --color-secondary-600: #4b5563;
+    --color-secondary-700: #374151;
+    --color-secondary-800: #1f2937;
+    --color-secondary-900: #111827;
+    --color-secondary-950: #030712;
+
+    /* Custom colors: danger → rose */
+    --color-danger-50: #fff1f2;
+    --color-danger-100: #ffe4e6;
+    --color-danger-200: #fecdd3;
+    --color-danger-300: #fda4af;
+    --color-danger-400: #fb7185;
+    --color-danger-500: #f43f5e;
+    --color-danger-600: #e11d48;
+    --color-danger-700: #be123c;
+    --color-danger-800: #9f1239;
+    --color-danger-900: #881337;
+    --color-danger-950: #4c0519;
+
+    /* Custom colors: success → green */
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+    --color-success-950: #052e16;
+
+    /* Custom colors: warning → yellow */
+    --color-warning-50: #fefce8;
+    --color-warning-100: #fef9c3;
+    --color-warning-200: #fef08a;
+    --color-warning-300: #fde047;
+    --color-warning-400: #facc15;
+    --color-warning-500: #eab308;
+    --color-warning-600: #ca8a04;
+    --color-warning-700: #a16207;
+    --color-warning-800: #854d0e;
+    --color-warning-900: #713f12;
+    --color-warning-950: #422006;
+
+    /* Custom animations */
+    --animate-reverseSpin: reverseSpin 3s linear infinite;
+    --animate-spin-slow: spin 3s linear infinite;
+    --animate-slide-up: slide_up 1s linear;
+
+    @keyframes reverseSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes slide_up {
+        100% { transform: translateY(36px); }
+    }
+}
+
 @layer components {
     .dropdown_ul {
-        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-24 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-secondary-50;
+        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-24 overflow-auto overflow-y-auto list-none border rounded-md shadow-xs max-h-56 -top-3 bg-secondary-50;
     }
     .select_dropdown {
-        @apply w-full text-secondary-500 border-secondary-300 rounded-md shadow-sm;
+        @apply w-full text-secondary-500 border-secondary-300 rounded-md shadow-xs;
     }
     .select_dropdown:focus {
-        @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
+        @apply border-indigo-300 ring-3 ring-indigo-200/50;
     }
     .label {
         @apply block mb-2 font-medium text-secondary-700;
@@ -23,31 +116,29 @@
     }
 }
 
-@layer utilities {
-    .animate-delay-0 {
-        animation-delay: 0s;
-    }
-    .animate-delay-1 {
-        animation-delay: .1s;
-    }
-    .animate-delay-2 {
-        animation-delay: .15s;
-    }
-    .animate-delay-3 {
-        animation-delay: .2s;
-    }
-    .animate-delay-4 {
-        animation-delay: .25s;
-    }
-    .animate-delay-5 {
-        animation-delay: .3s;
-    }
-    .animate-delay-6 {
-        animation-delay: .35s;
-    }
-    .text-indent {
-        text-indent: 10px;
-    }
+@utility animate-delay-0 {
+    animation-delay: 0s;
+}
+@utility animate-delay-1 {
+    animation-delay: .1s;
+}
+@utility animate-delay-2 {
+    animation-delay: .15s;
+}
+@utility animate-delay-3 {
+    animation-delay: .2s;
+}
+@utility animate-delay-4 {
+    animation-delay: .25s;
+}
+@utility animate-delay-5 {
+    animation-delay: .3s;
+}
+@utility animate-delay-6 {
+    animation-delay: .35s;
+}
+@utility text-indent {
+    text-indent: 10px;
 }
 
 .HeroGraphic__phone {
@@ -112,15 +203,9 @@
     }
 }
 
-
-/* icon color */
-
 .testimonial-carousel .flickity-button-icon {
     fill: white;
 }
-
-
-/* hide disabled button */
 
 .testimonial-carousel .flickity-button:disabled {
     display: none;
@@ -168,9 +253,6 @@
     color: rgba(233, 22, 22, 0.8);
 }
 
-
-/* hero background gradient */
-
 .blur-bg {
     filter: blur(12px);
 }
@@ -183,9 +265,6 @@
 .hero2-bg {
     background: rgb(17, 24, 39);
     background: linear-gradient(180deg, rgba(96, 155, 250, 1) 20%, rgba(30, 58, 105, 1) 60%, rgba(17, 24, 39, 1) 100%);
-    /* rgba(59, 130, 246, 1) */
-    /* rgba(17, 24, 39, 1) */
-    /* (30, 58, 105, 1) */
 }
 
 .badge::after {

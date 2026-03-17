@@ -1,77 +1,199 @@
+@import 'tailwindcss';
 @import '../../node_modules/cropperjs/dist/cropper.min.css';
 @import '../../node_modules/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css';
-@import 'tippy.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './tippy.css';
 
-/* Prevent @tailwindcss/forms base resets from overriding Filament v4 input component styles.
-   Both selectors have equal specificity (0,1,0), so document order decides — these come after
-   the forms plugin rules and therefore win. */
-@layer base {
-    .fi-input {
-        background-color: transparent;
-        border-style: none;
-        border-width: 0;
-        border-radius: 0;
-        padding: unset;
-        font-size: unset;
-        line-height: unset;
-        --tw-shadow: none;
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+/* Scan vendor blade files for class usage */
+@source "../../vendor/filament/**/*.blade.php";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+
+/* Class-based dark mode (matches v3 darkMode: "class") */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    /* Custom breakpoint */
+    --breakpoint-xs: 320px;
+
+    /* Font family */
+    --font-sans: "Nunito", system-ui, sans-serif;
+
+    /* Custom colors: primary → blue */
+    --color-primary-50: #eff6ff;
+    --color-primary-100: #dbeafe;
+    --color-primary-200: #bfdbfe;
+    --color-primary-300: #93c5fd;
+    --color-primary-400: #60a5fa;
+    --color-primary-500: #3b82f6;
+    --color-primary-600: #2563eb;
+    --color-primary-700: #1d4ed8;
+    --color-primary-800: #1e40af;
+    --color-primary-900: #1e3a8a;
+    --color-primary-950: #172554;
+
+    /* Custom colors: secondary → gray */
+    --color-secondary-50: #f9fafb;
+    --color-secondary-100: #f3f4f6;
+    --color-secondary-200: #e5e7eb;
+    --color-secondary-300: #d1d5db;
+    --color-secondary-400: #9ca3af;
+    --color-secondary-500: #6b7280;
+    --color-secondary-600: #4b5563;
+    --color-secondary-700: #374151;
+    --color-secondary-800: #1f2937;
+    --color-secondary-900: #111827;
+    --color-secondary-950: #030712;
+
+    /* Custom colors: danger → rose */
+    --color-danger-50: #fff1f2;
+    --color-danger-100: #ffe4e6;
+    --color-danger-200: #fecdd3;
+    --color-danger-300: #fda4af;
+    --color-danger-400: #fb7185;
+    --color-danger-500: #f43f5e;
+    --color-danger-600: #e11d48;
+    --color-danger-700: #be123c;
+    --color-danger-800: #9f1239;
+    --color-danger-900: #881337;
+    --color-danger-950: #4c0519;
+
+    /* Custom colors: success → green */
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+    --color-success-950: #052e16;
+
+    /* Custom colors: warning → yellow */
+    --color-warning-50: #fefce8;
+    --color-warning-100: #fef9c3;
+    --color-warning-200: #fef08a;
+    --color-warning-300: #fde047;
+    --color-warning-400: #facc15;
+    --color-warning-500: #eab308;
+    --color-warning-600: #ca8a04;
+    --color-warning-700: #a16207;
+    --color-warning-800: #854d0e;
+    --color-warning-900: #713f12;
+    --color-warning-950: #422006;
+
+    /* Custom animations */
+    --animate-reverseSpin: reverseSpin 3s linear infinite;
+    --animate-spin-slow: spin 3s linear infinite;
+    --animate-slide-up: slide_up 1s linear;
+
+    @keyframes reverseSpin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes slide_up {
+        100% { transform: translateY(36px); }
     }
 }
 
 /*
- * Filament v4 non-layered overrides for non-panel pages.
- * Filament's compiled CSS uses Tailwind v4 CSS variables for rings/borders
- * that don't resolve in this Tailwind v3 app. These concrete rules ensure
- * the input wrapper border, select arrow, and dropdown items render correctly.
+ * Filament v4 CSS variable bridge.
+ * Filament's compiled CSS expects --primary-600 etc. (without the --color- prefix
+ * that Tailwind v4 uses). These aliases let all Filament components render
+ * correctly on non-panel pages.
  */
-.fi-input-wrp {
-    border: 1px solid rgb(209 213 219); /* gray-300 */
-    border-radius: 0.5rem;
-    background-color: white;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+:root {
+    --gray-50: var(--color-gray-50);
+    --gray-100: var(--color-gray-100);
+    --gray-200: var(--color-gray-200);
+    --gray-300: var(--color-gray-300);
+    --gray-400: var(--color-gray-400);
+    --gray-500: var(--color-gray-500);
+    --gray-600: var(--color-gray-600);
+    --gray-700: var(--color-gray-700);
+    --gray-800: var(--color-gray-800);
+    --gray-900: var(--color-gray-900);
+    --gray-950: var(--color-gray-950);
+
+    --primary-50: var(--color-primary-50);
+    --primary-100: var(--color-primary-100);
+    --primary-200: var(--color-primary-200);
+    --primary-300: var(--color-primary-300);
+    --primary-400: var(--color-primary-400);
+    --primary-500: var(--color-primary-500);
+    --primary-600: var(--color-primary-600);
+    --primary-700: var(--color-primary-700);
+    --primary-800: var(--color-primary-800);
+    --primary-900: var(--color-primary-900);
+    --primary-950: var(--color-primary-950);
+
+    --danger-50: var(--color-danger-50);
+    --danger-100: var(--color-danger-100);
+    --danger-200: var(--color-danger-200);
+    --danger-300: var(--color-danger-300);
+    --danger-400: var(--color-danger-400);
+    --danger-500: var(--color-danger-500);
+    --danger-600: var(--color-danger-600);
+    --danger-700: var(--color-danger-700);
+    --danger-800: var(--color-danger-800);
+    --danger-900: var(--color-danger-900);
+    --danger-950: var(--color-danger-950);
+
+    --success-50: var(--color-success-50);
+    --success-100: var(--color-success-100);
+    --success-200: var(--color-success-200);
+    --success-300: var(--color-success-300);
+    --success-400: var(--color-success-400);
+    --success-500: var(--color-success-500);
+    --success-600: var(--color-success-600);
+    --success-700: var(--color-success-700);
+    --success-800: var(--color-success-800);
+    --success-900: var(--color-success-900);
+    --success-950: var(--color-success-950);
+
+    --warning-50: var(--color-warning-50);
+    --warning-100: var(--color-warning-100);
+    --warning-200: var(--color-warning-200);
+    --warning-300: var(--color-warning-300);
+    --warning-400: var(--color-warning-400);
+    --warning-500: var(--color-warning-500);
+    --warning-600: var(--color-warning-600);
+    --warning-700: var(--color-warning-700);
+    --warning-800: var(--color-warning-800);
+    --warning-900: var(--color-warning-900);
+    --warning-950: var(--color-warning-950);
+
+    --info-50: var(--color-primary-50);
+    --info-100: var(--color-primary-100);
+    --info-200: var(--color-primary-200);
+    --info-300: var(--color-primary-300);
+    --info-400: var(--color-primary-400);
+    --info-500: var(--color-primary-500);
+    --info-600: var(--color-primary-600);
+    --info-700: var(--color-primary-700);
+    --info-800: var(--color-primary-800);
+    --info-900: var(--color-primary-900);
+    --info-950: var(--color-primary-950);
+
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.fi-select-input {
-    background-color: transparent;
-    background-image: none;
-    border-style: none;
-    border-width: 0;
-    border-radius: 0;
-    padding: 0.375rem 1.5rem 0.375rem 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-    cursor: pointer;
-    box-shadow: none;
-    --tw-shadow: none;
-}
-
-.fi-dropdown-list-item {
-    padding: 0.625rem 0.875rem;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-.fi-dropdown-list-item + .fi-dropdown-list-item {
-    border-top: 1px solid rgb(243 244 246); /* gray-100 */
-}
-
-@layer utilities {
-    .min-h-calc-screen {
-        min-height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-        min-height: calc(var(--vh, 1vh) * 100);
-    }
+/* Custom utility */
+@utility min-h-calc-screen {
+    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
 }
 
 @layer base {
-    html, body { height: 100%;}
+    html, body { height: 100%; }
 
     html {
-        font-family: "Nunito", system-ui, sans-serif;
         --scrollbarBG: rgba(229, 231, 235, 1);
         --thumbBG: rgba(75, 85, 99, 1);
         scroll-behavior: smooth;
@@ -87,18 +209,18 @@
     }
 
     body > footer {
-    position: sticky;
-    top: 100vh;
+        position: sticky;
+        top: 100vh;
     }
-    
+
     body::-webkit-scrollbar {
         width: 11px;
     }
-    
+
     body::-webkit-scrollbar-track {
         background: var(--scrollbarBG);
     }
-    
+
     body::-webkit-scrollbar-thumb {
         background: var(--thumbBG);
         border: 3px solid var(--scrollbarBG);
@@ -109,15 +231,13 @@
         flex-wrap: nowrap;
     }
 
-    button[disabled]{
+    button[disabled] {
         cursor: default;
-        --tw-bg-opacity: 0.5;
-        background-color: rgb(160 160 160 / var(--tw-bg-opacity));
+        background-color: rgb(160 160 160 / 0.5);
     }
 
-    button[disabled]:hover{
-        --tw-bg-opacity: 0.5;
-        background-color: rgb(160 160 160 / var(--tw-bg-opacity));
+    button[disabled]:hover {
+        background-color: rgb(160 160 160 / 0.5);
     }
 }
 
@@ -126,22 +246,22 @@
         @apply inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium border rounded-md bg-primary-100 hover:bg-primary-200 text-primary-800 dark:bg-gray-700 dark:text-primary-400 border-primary-400;
     }
     .responsive-nav-link {
-        @apply cursor-pointer flex items-center pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-secondary-600 hover:text-secondary-800 hover:bg-secondary-50 hover:border-secondary-300 focus:outline-none focus:text-secondary-800 focus:bg-secondary-50 focus:border-secondary-300 transition duration-150 ease-in-out;
+        @apply cursor-pointer flex items-center pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-secondary-600 hover:text-secondary-800 hover:bg-secondary-50 hover:border-secondary-300 focus:outline-hidden focus:text-secondary-800 focus:bg-secondary-50 focus:border-secondary-300 transition duration-150 ease-in-out;
     }
     .responsive-nav-link.active {
         @apply border-primary-400 text-primary-700 bg-primary-50 focus:text-primary-800 focus:bg-primary-100 focus:border-primary-700 transition duration-150 ease-in-out;
     }
 
     .dropdown_ul {
-        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-sm max-h-56 -top-3 bg-secondary-50;
+        @apply absolute left-0 z-20 flex flex-col w-full px-2 py-2 mt-2 overflow-auto overflow-y-auto list-none border rounded-md shadow-xs max-h-56 -top-3 bg-secondary-50;
     }
 
     .select_dropdown {
-        @apply w-full rounded-md shadow-sm text-secondary-500 border-secondary-300;
+        @apply w-full rounded-md shadow-xs text-secondary-500 border-secondary-300;
     }
 
     .select_dropdown:focus {
-        @apply border-indigo-300 ring ring-indigo-200 ring-opacity-50;
+        @apply border-indigo-300 ring-3 ring-indigo-200/50;
     }
 
     .label {
@@ -159,7 +279,7 @@
     .alert-warning {
         @apply text-orange-700 bg-orange-100 dark:bg-orange-200 dark:text-orange-800;
     }
-    
+
     .alert-danger {
         @apply text-danger-700 bg-danger-100 dark:bg-danger-200 dark:text-danger-800;
     }
@@ -191,17 +311,17 @@
     .close-button__info {
         @apply rounded-lg text-primary-500 bg-primary-100 focus:ring-2 focus:ring-primary-400 hover:bg-primary-200 dark:bg-primary-200 dark:text-primary-600 dark:hover:bg-primary-300;
     }
-    
+
     .close-button__default {
         @apply rounded-lg text-secondary-500 bg-secondary-100 focus:ring-2 focus:ring-secondary-400 hover:bg-secondary-200 dark:bg-secondary-200 dark:text-secondary-600 dark:hover:bg-secondary-300;
     }
 
     .toast {
-        @apply fixed z-50 flex items-center w-full max-w-sm p-4 mb-4 bg-white rounded-lg shadow text-secondary-500 bottom-5 right-5 sm:max-w-md dark:text-secondary-400 dark:bg-secondary-800;
+        @apply fixed z-50 flex items-center w-full max-w-sm p-4 mb-4 bg-white rounded-lg shadow-sm text-secondary-500 bottom-5 right-5 sm:max-w-md dark:text-secondary-400 dark:bg-secondary-800;
     }
 
     .toast-icon {
-        @apply inline-flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg;
+        @apply inline-flex items-center justify-center shrink-0 w-8 h-8 rounded-lg;
     }
 
     .filament-user-card.user-favorited {
@@ -243,20 +363,12 @@
 
 input[type=radio]#yes:checked+label {
     border-color: rgba(165, 180, 252, 1);
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-    --tw-ring-opacity: 0.5;
-    --tw-ring-color: rgba(199, 210, 254, var(--tw-ring-opacity));
+    box-shadow: 0 0 0 3px rgba(199, 210, 254, 0.5);
 }
 
 input[type=radio]#no:checked+label {
     border-color: rgba(252, 165, 165, 1);
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-    --tw-ring-opacity: 0.5;
-    --tw-ring-color: rgba(254, 202, 202, var(--tw-ring-opacity));
+    box-shadow: 0 0 0 3px rgba(254, 202, 202, 0.5);
 }
 
 input[type=radio]#yes:focus,
@@ -370,42 +482,33 @@ option {
     display: initial;
 }
 
-/* use a hand cursor intead of arrow for the action buttons */
+/* FilePond styles */
 .filepond--file-action-button {
     cursor: pointer;
 }
 
-/* the background color of the filepond drop area */
 .filepond--panel-root {
     background-color: #eee;
-}
-
-/* the border radius of the drop area */
-.filepond--panel-root {
     border-radius: 0.5em;
 }
 
 .filepond--root[data-style-panel-layout~="circle"] .filepond--panel-root {
     background-color: #eee;
-  }
+}
 
-/* the border radius of the file item */
 .filepond--item-panel {
     border-radius: 0.5em;
 }
 
-/* the color of the focus ring */
 .filepond--file-action-button:hover,
 .filepond--file-action-button:focus {
     box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.9);
 }
 
-/* the text color of the file status and info labels */
 .filepond--file {
     color: white;
 }
 
-/* error state color */
 [data-filepond-item-state*='error'] .filepond--item-panel,
 [data-filepond-item-state*='invalid'] .filepond--item-panel {
     background-color: red;

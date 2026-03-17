@@ -99,7 +99,7 @@ $is_hard_filter_restricted = (Illuminate\Support\Arr::get($getColumns(), 'hard_f
     </div>
 
     @if ($is_hard_filter_restricted)
-    <div class="absolute inset-0 z-20 flex items-center justify-center p-4 text-center bg-white/60 rounded-lg backdrop-blur-sm">
+    <div class="absolute inset-0 z-20 flex items-center justify-center p-4 text-center bg-white/60 rounded-lg backdrop-blur-xs">
         <p class="text-xs font-semibold text-secondary-700">
             Profile hidden due to your updated hard matching filters.
         </p>

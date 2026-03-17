@@ -45,7 +45,7 @@
     <!-- Responsive Navigation Menu -->
     <div class="relative z-40 block sm:hidden" x-data="{ isOpen: false }" x-trap.noscroll="isOpen" x-on:close-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = false" x-on:open-modal.window="if ($event.detail.id === 'nav-menu-panel') isOpen = true" role="dialog" aria-modal="true">
         <div class="flex items-center sm:hidden">
-            <button @click="$dispatch('open-modal', { id: 'nav-menu-panel' });" title="open menu" class="inline-flex items-center justify-center w-10 h-10 p-1 transition duration-150 ease-in-out rounded-md text-secondary-200 hover:text-secondary-900 hover:bg-secondary-100 focus:outline-none focus:bg-secondary-100 focus:text-secondary-900">
+            <button @click="$dispatch('open-modal', { id: 'nav-menu-panel' });" title="open menu" class="inline-flex items-center justify-center w-10 h-10 p-1 transition duration-150 ease-in-out rounded-md text-secondary-200 hover:text-secondary-900 hover:bg-secondary-100 focus:outline-hidden focus:bg-secondary-100 focus:text-secondary-900">
                 <x-heroicon-o-bars-3 />
             </button>
         </div>

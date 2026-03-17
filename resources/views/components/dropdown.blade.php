@@ -38,10 +38,10 @@ switch ($width) {
     >
     <button 
         x-on:click="$refs.dropdown_panel.toggle" 
-        x-bind:class="open && 'text-primary-600 outline-none'"
+        x-bind:class="open && 'text-primary-600 outline-hidden'"
         aria-label="menu trigger button" 
         title="menu trigger button" 
-        class="flex items-center justify-center text-sm font-medium text-secondary-500 transition duration-150 ease-in-out hover:text-secondary-700 hover:border-secondary-300 focus:outline-none focus:text-secondary-700 focus:border-secondary-300"
+        class="flex items-center justify-center text-sm font-medium text-secondary-500 transition duration-150 ease-in-out hover:text-secondary-700 hover:border-secondary-300 focus:outline-hidden focus:text-secondary-700 focus:border-secondary-300"
      >
         {{ $trigger }}
     </button>

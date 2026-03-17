@@ -5,7 +5,7 @@
                 <div class="mb-3 space-y-2 md:mb-6">
                     <p class="text-2xl font-semibold">Contact Channel Settings</p>
                     <p class="font-semibold text-secondary-700">Hello, {{ auth()->user()->full_name }}.</p>
-                    <div class="max-w-md p-4 text-sm border rounded-lg shadow text-secondary-300 bg-secondary-900">
+                    <div class="max-w-md p-4 text-sm border rounded-lg shadow-sm text-secondary-300 bg-secondary-900">
                         <p class="text-secondary-400">To add a new contact channel, follow the steps below:</p>
                         <ul class="mt-2 space-y-1 list-decimal list-inside">
                             <li>

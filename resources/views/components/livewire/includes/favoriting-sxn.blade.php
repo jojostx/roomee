@@ -11,7 +11,7 @@
         type="button" 
         title="Remove from Favorites" 
         aria-label="unfavorite user"
-        class="relative flex items-center justify-center w-8 h-8 -my-2 border rounded-lg filament-icon-button hover:bg-gray-500/5 focus:outline-none text-primary-500 focus:bg-primary-500/10 border-secondary-300 filament-tables-icon-button-action"
+        class="relative flex items-center justify-center w-8 h-8 -my-2 border rounded-lg filament-icon-button hover:bg-gray-500/5 focus:outline-hidden text-primary-500 focus:bg-primary-500/10 border-secondary-300 filament-tables-icon-button-action"
     >
         <span class="sr-only">
             Remove from Favorites
@@ -34,7 +34,7 @@
         type="button" 
         title="Add to Favorites" 
         aria-label="favorite user"
-        class="relative inline-flex items-center justify-center w-8 h-8 -my-2 text-gray-500 border rounded-lg filament-icon-button hover:bg-gray-500/5 focus:outline-none focus:bg-gray-500/10 border-secondary-300 filament-tables-icon-button-action"
+        class="relative inline-flex items-center justify-center w-8 h-8 -my-2 text-gray-500 border rounded-lg filament-icon-button hover:bg-gray-500/5 focus:outline-hidden focus:bg-gray-500/10 border-secondary-300 filament-tables-icon-button-action"
     >
         <span class="sr-only">
             favorite
