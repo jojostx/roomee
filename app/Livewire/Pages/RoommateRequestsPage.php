@@ -21,7 +21,6 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use App\Livewire\Traits\CanReactToRoommateRequestUpdate;
-use App\Models\ChatRoom;
 use App\Models\RoommateRequest;
 use Illuminate\Support\Collection;
 use Livewire\Component;
@@ -366,7 +365,7 @@ class RoommateRequestsPage extends Component implements HasTable, HasForms, HasA
                 ->color('danger')
                 ->action(function (User $record) {
                     $this->blockUser($record);
-                    $this->dispatchSelf('refresh-component');
+                    $this->dispatch('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading(fn (User $record) => 'Block ' . $record->full_name)
@@ -386,7 +385,7 @@ class RoommateRequestsPage extends Component implements HasTable, HasForms, HasA
                 ->icon('heroicon-o-star')
                 ->action(function (User $record) {
                     $this->favorite($record);
-                    $this->dispatchSelf('refresh-component');
+                    $this->dispatch('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => !$this->hasBeenFavorited($record)),
@@ -398,7 +397,7 @@ class RoommateRequestsPage extends Component implements HasTable, HasForms, HasA
                 ->icon('heroicon-s-star')
                 ->action(function (User $record) {
                     $this->unfavorite($record);
-                    $this->dispatchSelf('refresh-component');
+                    $this->dispatch('refresh-component');
                 })
                 ->extraAttributes(['class' => 'mt-1'])
                 ->visible(fn (User $record): bool => $this->hasBeenFavorited($record))
@@ -419,11 +418,11 @@ class RoommateRequestsPage extends Component implements HasTable, HasForms, HasA
                 ])
                 ->action(function (User $record) {
                     $this->acceptRoommateRequest($record);
-                    $this->dispatchSelf('refresh-component');
+                    $this->dispatch('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Accept Roommate Request')
-                ->modalContent(fn (User $record) => str("<p class='text-center'>This will enable <span class='font-semibold text-secondary-600'>{$record->full_name}</span> to contact you via your configured Contact channels.</p>")->toHtmlString())
+                ->modalContent(fn (User $record) => str("<p class='text-center'>This will accept <span class='font-semibold text-secondary-600'>{$record->full_name}</span>'s roommate request, open chat, and keep contact details hidden until both of you choose to share them.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasPendingRoommateRequestFrom($record)),
 
             Action::make('delete-roommate-request')
@@ -437,28 +436,43 @@ class RoommateRequestsPage extends Component implements HasTable, HasForms, HasA
                 ])
                 ->action(function (User $record) {
                     $this->deleteRoommateRequest($record);
-                    $this->dispatchSelf('refresh-component');
+                    $this->dispatch('refresh-component');
                 })
                 ->requiresConfirmation()
                 ->modalHeading('Delete Roommate Request')
                 ->modalContent(fn (User $record) => str("<p class='text-center'>This will delete the Roommate request you sent to <span class='font-semibold text-secondary-600'>{$record->full_name}</span>.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasPendingRoommateRequestTo($record)),
 
-            Action::make('message-user')
+            Action::make('chat-user')
                 ->button()
-                ->label('Message')
+                ->label('Chat')
                 ->icon('heroicon-s-chat-bubble-left-right')
                 ->color('success')
                 ->extraAttributes([
-                    'title' => 'message user',
-                    'class' => 'w-full filament-tables-action-message-user',
+                    'title' => 'open chat',
+                    'class' => 'w-full filament-tables-action-chat-user',
                 ])
                 ->action(function (User $record) {
-                    $room = ChatRoom::findBetween($this->getAuthModel(), $record);
-                    if ($room) {
-                        $this->redirect(route('chat.room', $room));
-                    }
+                    $this->openChat($record);
                 })
+                ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
+
+            Action::make('unmatch-roommate')
+                ->button()
+                ->label('Unmatch')
+                ->icon('heroicon-o-user-minus')
+                ->color('danger')
+                ->extraAttributes([
+                    'title' => 'unmatch roommate',
+                    'class' => 'w-full filament-tables-action-unmatch-roommate',
+                ])
+                ->action(function (User $record) {
+                    $this->unmatchRoommate($record);
+                    $this->dispatch('refresh-component');
+                })
+                ->requiresConfirmation()
+                ->modalHeading(fn (User $record) => 'Unmatch ' . $record->full_name)
+                ->modalContent(fn (User $record) => str("<p class='text-center'>This will remove your roommate match with <span class='font-semibold text-secondary-600'>{$record->full_name}</span>. Existing chat history will stay available, but contact sharing will be reset.</p>")->toHtmlString())
                 ->visible(fn (User $record) => $this->hasAcceptedRoommateRequest($record)),
         ];
     }

@@ -51,10 +51,10 @@
         </div>
 
         <div x-show="isOpen" x-cloak x-transition:enter="ease duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-40 flex items-center min-h-screen px-4 overflow-x-hidden overflow-y-auto transition">
-            <div x-on:click="$dispatch('close-modal', { id: 'nav-menu-panel' })" aria-hidden="true" class="fixed inset-0 w-full h-full cursor-pointer filament-modal-close-overlay bg-black/50"></div>
+            <div x-on:click="$dispatch('close-modal', { id: 'nav-menu-panel' })" aria-hidden="true" class="fixed inset-0 w-full h-full cursor-pointer bg-black/50"></div>
 
             <div x-show="isOpen" x-on:keydown.window.escape="$dispatch('close-modal', { id: 'nav-menu-panel' })" x-transition:enter="ease duration-300" x-transition:leave="ease duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full" class="relative w-full cursor-pointer pointer-events-none" slideover="slideover">
-                <div class="relative w-full h-screen max-w-sm ml-auto -mr-4 overflow-y-auto bg-white cursor-default pointer-events-auto filament-modal-window rtl:mr-auto rtl:-ml-4">
+                <div class="relative w-full h-screen max-w-sm ml-auto -mr-4 overflow-y-auto bg-white cursor-default pointer-events-auto rtl:mr-auto rtl:-ml-4">
                     <button x-on:click="isOpen = false" tabindex="-1" type="button" class="absolute cursor-pointer top-4 right-4 rtl:right-0 rtl:left-4 text-secondary-800">
                         <x-heroicon-o-x-mark title="close menu" tabindex="-1" class="w-9 h-9" />
                         <span class="sr-only">

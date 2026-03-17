@@ -27,8 +27,8 @@ trait WithUserActionModals
     public function contactUserAction(): Action
     {
         return Action::make('contactUser')
-            ->label('Contact User')
-            ->modalHeading(fn (array $arguments): string => 'Contact ' . ($this->resolveUserFromArguments($arguments)?->full_name ?? 'User'))
+            ->label('Contact Details')
+            ->modalHeading(fn (array $arguments): string => 'Contact details for ' . ($this->resolveUserFromArguments($arguments)?->full_name ?? 'User'))
             ->modalSubmitAction(false)
             ->modalCancelAction(fn (Action $action) => $action->label('Close'))
             ->modalWidth('sm')
@@ -47,6 +47,41 @@ trait WithUserActionModals
                 return view('livewire.partials.contact-user-modal-content', [
                     'channels' => $channels,
                 ]);
+            });
+    }
+
+    public function unmatchRoommateAction(): Action
+    {
+        return Action::make('unmatchRoommate')
+            ->label('Unmatch')
+            ->icon('heroicon-o-user-minus')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->modalHeading(fn (array $arguments): string => 'Unmatch ' . ($this->resolveUserFromArguments($arguments)?->full_name ?? 'User'))
+            ->modalDescription('This removes your roommate match, keeps existing chat history available, and resets any shared contact details.')
+            ->modalSubmitActionLabel('Unmatch')
+            ->modalWidth('sm')
+            ->action(function (array $arguments): void {
+                $user = $this->resolveUserFromArguments($arguments);
+                $authUser = $this->getAuthModel();
+
+                if (blank($user) || blank($authUser) || !$authUser->isRoommateWith($user)) {
+                    return;
+                }
+
+                if (!$authUser->unmatchRoommate($user)) {
+                    return;
+                }
+
+                Notification::make()
+                    ->title('Roommate match removed')
+                    ->warning()
+                    ->body("You are no longer matched with **{$user->full_name}**. Existing chat history stays available, but contact sharing has been reset.")
+                    ->send();
+
+                $this->dispatch('actionTakenOnUser');
+                $this->dispatch("refreshChildren:{$user->id}");
+                $this->dispatch('resetUsers', $user->id);
             });
     }
 

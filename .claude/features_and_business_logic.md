@@ -1,142 +1,76 @@
-# Roomee: Features and Business Logic Documentation
+# Roomee: Features and Business Logic
 
-This document outlines features and core business logic in the Roomee application, marked by implementation status.
+This document reflects the current codebase after a repo review on 2026-03-17. It records implemented behavior first, then the smaller backlog that still remains.
 
-**Legend**: ✅ Implemented · 🚧 Planned (not yet built)
-
----
-
-## Infrastructure & Tech Stack
+## Implemented Stack
 
 | Layer | Technology | Status |
 |---|---|---|
-| Backend framework | Laravel 12 | ✅ |
-| Admin panel | Filament v4 | ✅ |
-| Reactive UI | Livewire v3 | ✅ |
-| Real-time WebSockets | Laravel Reverb | ✅ |
-| Frontend event bus | Laravel Echo + pusher-js | ✅ |
+| Backend framework | Laravel 12 | Implemented |
+| Admin panel | Filament 4 | Implemented |
+| Reactive UI | Livewire 3 | Implemented |
+| Realtime transport | Laravel Reverb | Implemented |
+| Browser event client | Laravel Echo + pusher-js | Implemented |
+| Frontend build | Vite + Tailwind CSS + Alpine.js | Implemented |
 
----
+## Implemented Product Behavior
 
-## Core Entities & User Management
+### Core Entities and User Management
 
-### ✅ User Profiles
-Users create profiles storing: name, email, avatar, bio, gender, school, course of study, course level, preferred number of rooms, hobbies, dislikes, preferred towns, and budget range (`min_budget`, `max_budget`).
+- User profiles store name, email, avatar, bio, gender, school, course, course level, preferred room count, hobbies, dislikes, preferred towns, and budget range.
+- Roles are `Admin`, `Staff`, and `User`. Admin and staff users can access the Filament panel.
+- Onboarding is sequential and profile completion is gated.
+- Identity verification supports `unverified`, `pending`, `approved`, and `rejected`.
+- Users can be suspended with suspension metadata.
+- Premium users can keep multiple published listings. Non-premium users are limited to one active published listing.
+- Users can configure multiple contact channels, and each channel has its own enabled and verified state.
 
-### ✅ Roles & Permissions
-Three roles: `Admin`, `Staff`, and `User` (Regular). Admins and Staff access the Filament backend panel. Regular users interact with the core social features.
+### Matching and Discovery
 
-### ✅ Onboarding & Verification
-- Users go through a sequential onboarding flow gating profile sections (General → Personal → Educational → Apartment).
-- Identity verification has four statuses: `unverified`, `pending`, `approved`, `rejected`.
-- Users can be suspended (`is_suspended`).
+- User discovery is restricted to users in the same school.
+- Similarity scoring is weighted across budget overlap, dislikes, preferred towns, preferred room count, hobbies, and course level.
+- Budget overlap is also applied as a hard database prefilter before in-PHP similarity scoring runs.
+- Gender visibility is bidirectional:
+  - if the viewer enables strict gender filtering, they only see users of the same gender
+  - a user with a gender set is only visible to same-gender viewers unless that user opted out of strict gender filtering
+- Blocking is mutual at the discovery level: blocked users and users who blocked you are both excluded.
+- Favorites are implemented and can also act as a filtered discovery source.
 
-### ✅ Premium Users
-Users flagged as premium (`is_premium`) can publish **multiple listings simultaneously**. Non-premium users are limited to one active listing at a time.
+### Listings
 
-### ✅ Contact Channels
-Users configure multiple contact methods (Email, WhatsApp, Facebook, Instagram, Twitter, etc.) and have each individually verified. When and how channels are shared with a matched user is governed by the contact-sharing flow (see **User Interactions** below).
+- Listings store title, description, address, city, rent amount, rent period, move-in date, amenities, house rules, images, and published state.
+- Listing management is gated by `canManageListings()`: regular user, verified email, completed profile, approved identity verification, and not suspended.
+- Listing discovery applies:
+  - budget filtering, with listing preferences falling back to profile budgets
+  - move-in-date filtering, including exclusion of already-expired listings
+  - dealbreaker filtering against listing house rules
+  - amenity similarity scoring based on the seeker's stored preferences
 
----
+### Requests, Chat, and Contact Sharing
 
-## Matching & Discovery
+- Roommate requests support `pending`, `accepted`, `denied`, and deletion flows.
+- Accepting a roommate request creates or reuses a `chat_rooms` record for the pair.
+- Chat data is stored in `chat_rooms` and `chat_messages`.
+- `ChatRoom` tracks `contact_shared_by_a` and `contact_shared_by_b`, and exposes `hasBothSharedContacts()`.
+- Contact details remain hidden until both matched users share contacts inside chat.
+- The active chat experience is the global `ChatDrawer` overlay:
+  - it lists rooms with latest message previews and unread counts
+  - it supports live message sending and read tracking
+  - it shows consent controls for sharing or withdrawing contact sharing
+  - it unlocks the contact modal only after mutual consent
+- `/chat/{room}` routes currently exist as wrappers that auto-open the global drawer with the selected room.
 
-### ✅ School-Scoped Discovery
-All user discovery is strictly scoped to users attending the **same school**. Users from different schools are never surfaced to one another in any discovery context.
+### Settings, Notifications, and Admin
 
-### ✅ Similarity Scoring
-A weighted similarity algorithm ranks potential roommates with a normalised score (0–100) across six factors:
+- Account settings include profile data, password changes, and matching preferences.
+- Contact-channel settings support per-channel setup and verification.
+- Notification settings page exists.
+- Realtime events are implemented for roommate requests, chat messages, and blocking updates.
+- Filament resources and pages exist for users, listings, roommate requests, favorites, blocklists, contact channels, verification requests, verification settings, and admin broadcasts.
 
-| Factor | Weight |
-|---|---|
-| Budget range overlap | 1.4 (highest) |
-| Dislikes overlap | 1.0 |
-| Preferred towns overlap | 1.0 |
-| Preferred number of rooms | 1.0 |
-| Course level | 0.8 |
-| Hobbies overlap | 0.8 |
+## Remaining Work
 
-Budget overlap is a pre-filter (hard filter) applied at the database query level before in-PHP scoring; only users whose budget ranges overlap are considered as similarity candidates.
-
-### ✅ Gender Filtering (Bidirectional Visibility)
-Gender filtering affects both who a user sees **and** who can see them:
-- If a user has **strict gender filtering enabled**, they only see users of the same gender.
-- A user with a gender set will only **appear** in others' discovery results if those others share the same gender — unless the discovering user has set `strict_gender_filter: false`, in which case they are visible across genders.
-
-### ✅ Property Listings
-Users can post roommate/property listings. Listings include rent amount, rent period, amenities, address, move-in date, and specific house rules (e.g., no smoking, no pets).
-
-**Prerequisites** (`canManageListings`): User must be a regular (non-admin/staff) user, have a verified email, completed profile, **approved** identity verification status, and must not be suspended.
-
-### ✅ Listing Discovery
-Users configure listing preferences (stored in `settings->listing_preferences`):
-- **Budget filtering**: Listings filtered to those within the user's preferred budget range (falls back to profile budget range if no listing-specific range is set).
-- **Move-in date filtering**: Listings with a passed move-in date are always excluded. If the user has a preferred move-in date set, listings with a later date are also excluded.
-- **Dealbreakers**: Listings with conflicting house rules (e.g., user wants pets; listing says no pets) are hard-filtered out.
-- **Amenity similarity scoring**: Listings scored against preferred amenities using Jaccard similarity (0–100). If no amenity preference is set, listings receive a full 100 score on this axis. This score is computed separately from user-to-user similarity.
-
----
-
-## User Interactions
-
-### ✅ Roommate Requests
-The core interaction loop. Users send roommate requests. A request can be: `pending`, `accepted`, `denied`, or `deleted`.
-
-### ✅ Favoriting
-Users can bookmark ("favorite") other users. Favorites are also used as a filtering signal in discovery pages.
-
-### ✅ Blocking
-Users can block others. Blocking enforces **mutual exclusion** in all discovery scopes:
-- A user will not see anyone they have blocked.
-- A user will not see anyone who has blocked them.
-- A block by either party removes both users from each other's discovery results simultaneously.
-
-### ✅ Reporting
-Users can report others for violating platform guidelines. Reports are selected from a predefined list and reviewed by admins.
-
----
-
-## Contact Sharing
-
-### ~~Legacy Flow~~ (Replaced)
-~~When a roommate request is accepted, both users can immediately view each other's contact channels via the `contact-user-modal`.~~
-
-### ✅ New Flow (Implemented)
-The immediate-reveal behaviour above will be replaced by a consent-gated chat flow:
-
-1. User A sends a roommate request to User B.
-2. User B accepts → a **ChatRoom** is created for A and B; contact channels remain hidden.
-3. A and B communicate via in-app chat (real-time via Laravel Reverb).
-4. If **both** A and B click "Share Contacts" within the chat, their respective consent flags (`contact_shared_by_a`, `contact_shared_by_b`) are set to `true`.
-5. Only once **both** flags are `true` does the contact modal unlock, showing each user the other's verified channels.
-
-**New entities required**:
-- `chat_rooms` table — `id` (UUID), `user_a_id`, `user_b_id`, `contact_shared_by_a` (bool), `contact_shared_by_b` (bool), unique constraint on `(user_a_id, user_b_id)`.
-- `chat_messages` table — `id` (UUID), `chat_room_id`, `sender_id`, `message` (text), `read_at` (nullable timestamp).
-- `ChatRoom` model with `hasBothSharedContacts()` helper.
-- `ChatMessage` model.
-
-**New UI required**:
-- `ChatIndexPage` — sidebar listing all active chat rooms with latest message and unread count.
-- `ChatRoomPage` — real-time conversational interface. Includes a "Share Contacts" consent banner/button. Once mutual consent is given, a "Show Contact Channels" button appears.
-
-**Modifications required**:
-- `RoommateRequest` acceptance logic — create a `ChatRoom` when a request transitions to `accepted`.
-- `User` model — add `chatRooms()` relationship; update contact-viewing gate to check `hasBothSharedContacts()` in addition to accepted request status.
-- `DashboardPage` / `RoommateRequestsPage` — change "Contact User" action to "Message" (redirects to `ChatRoomPage`); disable direct contact modal access outside the chat context.
-
----
-
-## Settings & Preferences
-
-### ✅ Account Settings
-Users can update their first/last name, email address (requires re-verification of new address), and password.
-
-### ✅ Matching Preferences
-Users can enable/disable strict gender filtering, set listing budget range, preferred move-in date, and dealbreakers — all of which influence what listings and users they see in discovery.
-
-### ✅ Contact Channel Settings
-Users can configure and individually verify each of their contact channels (Email, WhatsApp, Facebook, Instagram, Twitter).
-
-### ✅ Notification Settings
-Basic notification preference management.
+- Harmonize CTA labels and modal copy so every surface matches the mutual-consent chat flow.
+- Decide whether chat should remain drawer-first or whether `ChatIndexPage` and `ChatRoomPage` should become full standalone page UIs.
+- If desired, wire dashboard and roommate-request actions to open and select the drawer inline instead of redirecting to `/chat/{room}`.
+- Clean up stale Filament v3 CSS classes and related legacy styling backlog still present in several Blade views.

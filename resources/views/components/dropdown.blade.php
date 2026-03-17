@@ -51,7 +51,7 @@ switch ($width) {
         x-cloak
         x-ref="dropdown_panel"
         x-float.placement.bottom-end.offset.shift="{ offset: 10 }"
-        class="fixed z-20 w-full max-w-sm overflow-hidden bg-white rounded-md shadow-xl filament-action-group-dropdown ring-1 ring-secondary-900/10 dark:bg-secondary-700" aria-modal="true" role="dialog">
+        class="fixed z-20 w-full max-w-sm overflow-hidden bg-white rounded-md shadow-xl ring-1 ring-secondary-900/10 dark:bg-secondary-700" aria-modal="true" role="dialog">
         {{ $content }}
     </div>
 </div>

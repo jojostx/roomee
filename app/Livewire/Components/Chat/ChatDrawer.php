@@ -146,6 +146,12 @@ class ChatDrawer extends Component implements HasForms, HasActions
             ->exists();
     }
 
+    #[Computed]
+    public function isMatchedWithOtherUser(): bool
+    {
+        return filled($this->otherUser) && $this->getAuthModel()->isRoommateWith($this->otherUser);
+    }
+
     public function selectRoom(string $uuid): void
     {
         $authUser = $this->getAuthModel();
@@ -161,7 +167,7 @@ class ChatDrawer extends Component implements HasForms, HasActions
         }
 
         $this->activeChatRoomId = $uuid;
-        unset($this->chatMessages, $this->activeChatRoom, $this->otherUser, $this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts);
+        unset($this->chatMessages, $this->activeChatRoom, $this->otherUser, $this->hasBothSharedContacts, $this->hasCurrentUserSharedContacts, $this->isMatchedWithOtherUser);
 
         $this->markMessagesAsRead();
         unset($this->chatRooms);
@@ -208,7 +214,7 @@ class ChatDrawer extends Component implements HasForms, HasActions
             ->action(function (): void {
                 $authUser = $this->getAuthModel();
 
-                if (!$this->activeChatRoom || $this->activeChatRoom->hasUserSharedContacts($authUser)) {
+                if (!$this->activeChatRoom || !$this->isMatchedWithOtherUser || $this->activeChatRoom->hasUserSharedContacts($authUser)) {
                     return;
                 }
 
@@ -236,7 +242,7 @@ class ChatDrawer extends Component implements HasForms, HasActions
             ->action(function (): void {
                 $authUser = $this->getAuthModel();
 
-                if (!$this->activeChatRoom || !$this->activeChatRoom->hasUserSharedContacts($authUser)) {
+                if (!$this->activeChatRoom || !$this->isMatchedWithOtherUser || !$this->activeChatRoom->hasUserSharedContacts($authUser)) {
                     return;
                 }
 
@@ -254,7 +260,7 @@ class ChatDrawer extends Component implements HasForms, HasActions
 
     public function openContactModal(): void
     {
-        if (!$this->activeChatRoom?->hasBothSharedContacts()) {
+        if (!$this->isMatchedWithOtherUser || !$this->activeChatRoom?->hasBothSharedContacts()) {
             return;
         }
 

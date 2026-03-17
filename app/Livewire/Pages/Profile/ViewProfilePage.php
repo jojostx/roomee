@@ -51,36 +51,31 @@ class ViewProfilePage extends Component implements HasForms, HasActions
         ];
     }
 
-    public function acceptRoommateRequest()
+    public function acceptRoommateRequest($user = null): void
     {
-        $this->traitAcceptRoommateRequest($this->user);
+        $this->traitAcceptRoommateRequest($this->retrieveUser($user) ?? $this->user);
         $this->dispatch('actionTakenOnUser');
     }
 
-    public function sendRoommateRequest()
+    public function sendRoommateRequest($user = null): void
     {
-        $this->traitSendRoommateRequest($this->user);
-        $this->dispatchSelf('actionTakenOnUser');
+        $this->traitSendRoommateRequest($this->retrieveUser($user) ?? $this->user);
+        $this->dispatch('actionTakenOnUser');
     }
 
-    public function showContactUserModal(): void
+    public function showDeleteRequestModal($user = null): void
     {
-        $this->mountAction('contactUser', ['user' => $this->user->uuid]);
+        $this->mountAction('deleteRoommateRequest', ['user' => ($this->retrieveUser($user) ?? $this->user)->uuid]);
     }
 
-    public function showDeleteRequestModal(): void
+    public function showReportOrBlockModal($user = null): void
     {
-        $this->mountAction('deleteRoommateRequest', ['user' => $this->user->uuid]);
+        $this->mountAction('reportUser', ['user' => ($this->retrieveUser($user) ?? $this->user)->uuid]);
     }
 
-    public function showReportOrBlockModal(): void
+    public function showUserBlockingModal($user = null): void
     {
-        $this->mountAction('reportUser', ['user' => $this->user->uuid]);
-    }
-
-    public function showUserBlockingModal(): void
-    {
-        $this->mountAction('blockUser', ['user' => $this->user->uuid]);
+        $this->mountAction('blockUser', ['user' => ($this->retrieveUser($user) ?? $this->user)->uuid]);
     }
 
     public function render()

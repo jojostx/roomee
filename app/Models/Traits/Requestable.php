@@ -206,6 +206,22 @@ trait Requestable
         return $updated;
     }
 
+    public function unmatchRoommate(User $recipient): bool
+    {
+        $deleted = (bool) RoommateRequest::query()
+            ->betweenModels($this, $recipient)
+            ->accepted()
+            ->delete();
+
+        if ($deleted) {
+            ChatRoom::findBetween($this, $recipient)?->resetSharedContacts();
+        }
+
+        RoommateRequestUpdated::dispatch($this->getKey(), $recipient->getKey(), Status::DELETED);
+
+        return $deleted;
+    }
+
     public function denyRoommateRequest(User $sender): bool
     {
         $updated = (bool) RoommateRequest::query()

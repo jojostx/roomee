@@ -3,8 +3,11 @@
 <div class="flex items-center w-full gap-2">
     <!-- requesting and contacting section -->
     @if (auth()->user()->isRoommateWith($user))
-    <x-filament::button class="inline-flex shrink-0 items-center justify-center px-3" wire:click="showContactUserModal('{{ $user->uuid }}')" color="success" size="sm" icon="heroicon-s-chat-bubble-left-right" aria-label="contact {{ $user->full_name }}" title="contact {{ $user->full_name }}">
-        Contact User
+    <x-filament::button class="inline-flex items-center justify-center grow px-3" wire:click="openChat('{{ $user->uuid }}')" color="success" size="sm" icon="heroicon-s-chat-bubble-left-right" aria-label="chat with {{ $user->full_name }}" title="chat with {{ $user->full_name }}">
+        Chat
+    </x-filament::button>
+    <x-filament::button class="inline-flex shrink-0 items-center justify-center px-3" wire:click="mountAction('unmatchRoommate', { user: '{{ $user->uuid }}' })" color="danger" size="sm" icon="heroicon-o-user-minus" aria-label="unmatch {{ $user->full_name }}" title="unmatch {{ $user->full_name }}">
+        Unmatch
     </x-filament::button>
     @elseif (auth()->user()->hasPendingSentRoommateRequestTo($user))
     <x-filament::button class="inline-flex items-center justify-center w-full px-5" wire:click="showDeleteRequestModal('{{ $user->uuid }}')" color="danger" size="sm" icon="heroicon-s-user-minus" aria-label="delete roommate request" title="delete roommate request">

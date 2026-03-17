@@ -1,250 +1,128 @@
-# Roomee 🏠
+# Roomee
 
-A **student roommate-matching platform** built with Laravel 11, Livewire 3, and Filament 3. Roomee helps students find compatible roommates using a weighted similarity algorithm, verify their identity, discover rental listings, and connect with potential roommates in real time.
+Roomee is a student roommate-matching platform built on Laravel 12, Livewire 3, Filament 4, and Laravel Reverb. The current codebase supports school-scoped discovery, roommate requests, verified contact channels, listing discovery, and real-time chat with mutual contact-sharing consent.
 
----
+## Current Status
 
-## Table of Contents
+Implemented
+- Authentication, email verification, onboarding, and identity-verification gating
+- School-scoped roommate discovery with weighted similarity scoring and budget prefiltering
+- Favorites, blocking, reporting, and real-time roommate-request updates
+- Listing creation and discovery with budget, move-in, amenity, and dealbreaker filtering
+- Premium listing limits, suspension controls, and Filament admin moderation pages
+- Chat rooms created on roommate-request acceptance
+- Drawer-based real-time chat with unread counts, read tracking, and mutual contact sharing before contact details unlock
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Environment Configuration](#environment-configuration)
-- [Running the App](#running-the-app)
-- [Real-Time (WebSockets)](#real-time-websockets)
-- [Admin Panel](#admin-panel)
-- [Project Structure](#project-structure)
-- [Key Concepts](#key-concepts)
+Still open
+- Some CTAs and modal copy still use legacy "Contact User" or "Message" wording
+- Dashboard and roommate-request actions still redirect to `/chat/{room}` instead of selecting the drawer inline
+- `ChatIndexPage` and `ChatRoomPage` are route wrappers around the global drawer, not standalone chat pages
+- Old Filament v3 CSS cleanup tasks are still pending in several Blade views
 
----
+## Core Features
 
-## Features
+### User and Matching
 
-- **Roommate Matching** — Weighted similarity scoring (hobbies, dislikes, budget, location, course level, room count) shown as a 0–100% match score.
-- **Identity Verification (KYC)** — Users upload a government ID and selfie; admins review before granting full access.
-- **Roommate Requests** — Send, accept, deny, or delete requests between users.
-- **Contact Channels** — WhatsApp, Facebook, Instagram, Twitter, and Email contact details revealed only after a request is accepted.
-- **Property Listings** — Post and discover rental listings filtered by budget, location, move-in date, amenities, and house rules.
-- **Real-Time Notifications** — WebSocket-powered live notifications for request updates and admin broadcasts.
-- **Favorites & Blocklist** — Save interesting profiles or block unwanted users.
-- **Reporting System** — Report users directly from the dashboard.
-- **Onboarding Flow** — Step-by-step guide using `spatie/laravel-onboard`.
-- **Filament Admin Panel** — Manage users, verify identities, moderate content, and broadcast messages to all users.
+- Sequential onboarding gates profile completion across general, personal, educational, and apartment sections.
+- Users are filtered to the same school before discovery results are shown.
+- Similarity scoring uses budget overlap, dislikes, preferred towns, preferred room count, hobbies, and course level.
+- Gender visibility is bidirectional: a user's strict gender setting affects both who they see and who can see them.
 
----
+### Requests, Chat, and Contact Sharing
+
+- Users can send, accept, deny, and delete roommate requests.
+- Accepting a request creates a `chat_rooms` record for the pair.
+- Contacts stay hidden until both matched users share contacts inside chat.
+- The active chat UI is the global `ChatDrawer` overlay, which can also be auto-opened from `/chat/*` routes.
+- Verified contact channels include email plus enabled and verified social channels.
+
+### Listings and Admin
+
+- Listings support rent amount, rent period, move-in date, amenities, house rules, and publication state.
+- Non-premium users can only keep one published listing; premium users can keep multiple.
+- Listing discovery applies budget, move-in-date, dealbreaker, and amenity-similarity logic.
+- Filament resources cover users, listings, roommate requests, favorites, blocklists, contact channels, and verification requests.
+- Admin and staff users can access the admin panel and broadcast messages to users.
 
 ## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| **Backend** | PHP 8.2+, Laravel 11 |
-| **UI Components** | Livewire 3, Filament 3 |
-| **Frontend** | Vite, Tailwind CSS v3, Alpine.js v3 |
-| **Auth** | Laravel Sanctum + Email Verification + KYC |
-| **Database** | MySQL 8 |
-| **Cache / Queue** | Redis |
-| **Real-Time** | Pusher protocol (Soketi / self-hosted WebSockets) + Laravel Echo |
-| **File Storage** | Local public disk (avatars) + private disk (KYC docs) |
-| **Dev Environment** | Laravel Sail (Docker), MailHog |
+| Backend | PHP 8.2+, Laravel 12 |
+| UI | Livewire 3, Filament 4 |
+| Frontend | Vite, Alpine.js, Tailwind CSS |
+| Realtime | Laravel Reverb, Laravel Echo, pusher-js |
+| Auth | Sanctum, email verification, identity verification |
+| Data | MySQL, Redis |
+| Testing | PHPUnit 11 |
 
----
-
-## Requirements
-
-- PHP **8.2+** with extensions: `BCMath`, `Ctype`, `Fileinfo`, `JSON`, `Mbstring`, `OpenSSL`, `PDO`, `Tokenizer`, `XML`
-- **Composer**
-- **Node.js** (LTS) + **npm**
-- **MySQL 8** (or use Docker / Laravel Sail)
-- **Redis**
-- **Soketi** (for real-time features) — see [Real-Time](#real-time-websockets)
-
----
-
-## Installation
+## Local Setup
 
 ```bash
-# 1. Clone the repository
-git clone <repo-url> roomee
-cd roomee
-
-# 2. Install PHP dependencies
 composer install
-
-# 3. Install Node dependencies
 npm install
-
-# 4. Copy the environment file and generate the app key
 cp .env.example .env
 php artisan key:generate
-
-# 5. Configure your database and other settings in .env (see below)
-
-# 6. Run migrations and seed the database
 php artisan migrate --seed
-
-# 7. Create the storage symlink
 php artisan storage:link
-
-# 8. Build frontend assets
 npm run build
 ```
 
-### Using Laravel Sail (Docker)
+For day-to-day development, run:
 
 ```bash
-# Start all services (MySQL, Redis, MailHog)
-./vendor/bin/sail up -d
-
-# Run migrations
-./vendor/bin/sail artisan migrate --seed
+php artisan serve
+npm run dev
+php artisan queue:work
+php artisan reverb:start
 ```
 
----
-
-## Environment Configuration
-
-Copy `.env.example` to `.env` and fill in the key values:
+Key realtime environment values come from `.env.example`:
 
 ```ini
-APP_NAME=Roomee
-APP_URL=http://localhost
-
-# Database
-DB_CONNECTION=mysql
-DB_DATABASE=roomee
-DB_USERNAME=root
-DB_PASSWORD=
-
-# Queue (use "database" or "redis" for production)
-QUEUE_CONNECTION=sync
-
-# Mail (MailHog is preconfigured for local dev)
-MAIL_MAILER=smtp
-MAIL_HOST=mailhog
-MAIL_PORT=1025
-
-# WebSockets — Pusher-compatible (see Real-Time section)
-PUSHER_APP_ID=app-id
-PUSHER_APP_KEY=app-key
-PUSHER_APP_SECRET=app-secret
-PUSHER_HOST=127.0.0.1
-PUSHER_PORT=6001
-PUSHER_SCHEME=http
-
-VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
-VITE_PUSHER_HOST="${PUSHER_HOST}"
-VITE_PUSHER_PORT="${PUSHER_PORT}"
-VITE_PUSHER_SCHEME="${PUSHER_SCHEME}"
-
-# Enable broadcasting
-BROADCAST_DRIVER=pusher
+BROADCAST_CONNECTION=reverb
+REVERB_APP_ID=
+REVERB_APP_KEY=
+REVERB_APP_SECRET=
+REVERB_HOST=localhost
+REVERB_PORT=8080
+REVERB_SCHEME=http
+VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
+VITE_REVERB_HOST="${REVERB_HOST}"
+VITE_REVERB_PORT="${REVERB_PORT}"
+VITE_REVERB_SCHEME="${REVERB_SCHEME}"
 ```
-
----
-
-## Running the App
-
-```bash
-# Development server
-php artisan serve
-
-# Watch & rebuild frontend assets
-npm run dev
-
-# Process queued jobs (notifications, emails)
-php artisan queue:work
-```
-
----
-
-## Real-Time (WebSockets)
-
-Roomee uses a Pusher-compatible WebSocket server for real-time roommate request notifications and admin broadcasts. The recommended local setup is **Soketi**.
-
-**Install Soketi:**
-
-```bash
-npm install -g @soketi/soketi@latest
-```
-
-**Start the WebSocket server** (in a separate terminal):
-
-```bash
-soketi start
-```
-
-Ensure `BROADCAST_DRIVER=pusher` and the `PUSHER_*` variables in `.env` point to `127.0.0.1:6001`.
-
-> Other Pusher-compatible options (e.g., [Laravel WebSockets](https://beyondco.de/docs/laravel-websockets)) also work — just update the `PUSHER_HOST` and `PUSHER_PORT` accordingly.
-
----
-
-## Admin Panel
-
-The Filament-powered admin panel is available at `/admin`.
-
-Access requires the `admin` or `staff` user role. From the admin panel you can:
-
-- **Manage Users** — view, edit, suspend, or unsuspend accounts.
-- **Review Identity Verifications** — approve or reject KYC submissions (ID + selfie), with secure temporary file URLs.
-- **Moderate Content** — manage roommate requests, listings, favorites, and blocklists.
-- **Broadcast Messages** — send a notification to all users at once via the "Message Users" page.
-- **View Stats** — system overview widget on the dashboard.
-
----
 
 ## Project Structure
 
-```
+```text
 app/
-├── Http/
-│   ├── Controllers/        # Standard + Auth controllers
-│   ├── Livewire/Pages/     # Full-page Livewire components
-│   └── Middleware/         # Auth, KYC, suspension guards
-├── Models/                 # Eloquent models (User, Listing, RoommateRequest, …)
-├── Filament/               # Admin panel resources & pages
-├── Notifications/          # Queued DB notifications
-├── Events/ & Listeners/    # WebSocket broadcast events
-└── Services/               # Similarity scoring logic
-database/
-├── migrations/             # 50+ incremental migrations
-└── seeders/
+|- Filament/           # admin pages, resources, widgets
+|- Livewire/           # user-facing pages, cards, chat drawer, traits
+|- Models/             # users, listings, requests, chat rooms/messages, etc.
+|- Events/Listeners/   # realtime events and queued listeners
+|- Http/Middleware/    # profile, suspension, identity, listing access guards
+|- Services/           # similarity helpers
 resources/
-├── views/
-│   ├── livewire/pages/     # Livewire component templates
-│   ├── pages/              # Public marketing pages
-│   └── auth/               # Auth flow views
-└── js/ & css/              # Alpine.js, Laravel Echo, Tailwind
+|- views/              # Blade views, chat drawer, page layouts
+|- js/                 # Echo/Reverb bootstrap and Alpine stores
+|- css/                # application styles
 routes/
-├── web.php                 # Public + authenticated web routes
-└── auth.php                # Auth routes
+|- web.php             # public, authenticated, listings, chat, settings routes
+|- channels.php        # private broadcast channel authorization
+tests/
+|- Feature/            # auth, matching, listings, chat, middleware, Filament
+|- Unit/
 ```
 
----
+## Testing
 
-## Key Concepts
+Run the full suite with `php artisan test --compact`.
 
-### Similarity Algorithm
-
-The matching score between two users is calculated in the `canCalculateUserSimilarity` trait using OVRS (Overlap Range Similarity) and Jaccard similarity across weighted dimensions:
-
-| Dimension | Weight |
-|---|---|
-| Budget overlap | 1.4 |
-| Dislikes overlap | 1.0 |
-| Preferred locations | 1.0 |
-| Room count preference | 1.0 |
-| Hobbies overlap | 0.8 |
-| Course level | 0.8 |
-
-### Identity Verification Flow
-
-1. User uploads **government ID** + **selfie** (webcam or file) on the profile page.
-2. Status changes to `pending`; the user is redirected to a waiting page.
-3. Admin reviews the files via signed URLs (30-minute expiry) in `/admin`.
-4. On **approval** the user gains full access; on **rejection** the files are deleted and a reason is stored.
-
-### Contact Channel Reveal
-
-A user's social/contact links (WhatsApp, Facebook, Instagram, Twitter, Email) are only visible to another user after a roommate request between them has been **accepted**.
+Targeted suites already cover:
+- chat room creation and mutual contact sharing
+- chat drawer behavior
+- listing access and advanced filtering
+- matching rules, including budget prefiltering and gender visibility
+- onboarding and profile gating
+- Filament resource rules and smoke routes

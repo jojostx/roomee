@@ -294,6 +294,9 @@ class ChatDrawerTest extends TestCase
         $other = User::factory()->create();
         $room  = $this->makeChatRoom($user, $other);
 
+        $user->sendRoommateRequest($other);
+        $other->acceptRoommateRequest($user);
+
         Livewire::actingAs($user)
             ->test(ChatDrawer::class)
             ->call('selectRoom', $room->id)
@@ -308,12 +311,34 @@ class ChatDrawerTest extends TestCase
         $user  = User::factory()->create();
         $other = User::factory()->create();
         $room  = $this->makeChatRoom($user, $other);
+
+        $user->sendRoommateRequest($other);
+        $other->acceptRoommateRequest($user);
         $room->markContactSharedBy($user);
 
         Livewire::actingAs($user)
             ->test(ChatDrawer::class)
             ->call('selectRoom', $room->id)
             ->callAction('unshareContacts');
+
+        $column = $room->user_a_id === $user->id ? 'contact_shared_by_a' : 'contact_shared_by_b';
+        $this->assertDatabaseHas('chat_rooms', ['id' => $room->id, $column => false]);
+    }
+
+    public function test_share_contacts_does_nothing_after_users_are_unmatched(): void
+    {
+        $user  = User::factory()->create();
+        $other = User::factory()->create();
+        $room  = $this->makeChatRoom($user, $other);
+
+        $user->sendRoommateRequest($other);
+        $other->acceptRoommateRequest($user);
+        $user->unmatchRoommate($other);
+
+        Livewire::actingAs($user)
+            ->test(ChatDrawer::class)
+            ->call('selectRoom', $room->id)
+            ->callAction('shareContacts');
 
         $column = $room->user_a_id === $user->id ? 'contact_shared_by_a' : 'contact_shared_by_b';
         $this->assertDatabaseHas('chat_rooms', ['id' => $room->id, $column => false]);

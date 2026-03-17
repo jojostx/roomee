@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Traits;
 
+use App\Models\ChatRoom;
 use App\Models\User;
 use App\Notifications\RoommateRequestAcceptedNotification;
 use App\Notifications\RoommateRequestReceivedNotification;
@@ -76,11 +77,53 @@ trait WithRequesting
             Notification::make()
                 ->title('Request accepted successfully')
                 ->success()
-                ->body("You can now contact **{$user->full_name}**.")
+                ->body("You can now chat with **{$user->full_name}**. Contact details stay hidden until both of you share them from chat.")
                 ->send();
 
             $user->notify(new RoommateRequestAcceptedNotification($this->getAuthModel()));
         }
+    }
+
+    protected function unmatchRoommate($user_id = null): bool
+    {
+        $user = $this->retrieveUser($user_id);
+
+        if (blank($user) || !($user instanceof User)) {
+            return false;
+        }
+
+        if (!$this->getAuthModel()->isRoommateWith($user)) {
+            return false;
+        }
+
+        $unmatched = $this->getAuthModel()->unmatchRoommate($user);
+
+        if ($unmatched) {
+            Notification::make()
+                ->title('Roommate match removed')
+                ->warning()
+                ->body("You are no longer matched with **{$user->full_name}**. Existing chat history stays available, but contact sharing has been reset.")
+                ->send();
+        }
+
+        return $unmatched;
+    }
+
+    public function openChat($user_id = null): void
+    {
+        $user = $this->retrieveUser($user_id);
+
+        if (blank($user) || !($user instanceof User)) {
+            return;
+        }
+
+        if (!$this->getAuthModel()->isRoommateWith($user)) {
+            return;
+        }
+
+        $room = ChatRoom::firstOrCreateBetween($this->getAuthModel(), $user);
+
+        $this->dispatch('open-chat-room', roomId: $room->id);
     }
 
     protected function denyRoommateRequest($user_id = null)

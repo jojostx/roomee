@@ -84,6 +84,14 @@ class ChatRoom extends Model
         }
     }
 
+    public function resetSharedContacts(): void
+    {
+        $this->update([
+            'contact_shared_by_a' => false,
+            'contact_shared_by_b' => false,
+        ]);
+    }
+
     /**
      * Returns whether the given user has already shared their contacts.
      */

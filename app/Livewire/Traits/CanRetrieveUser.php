@@ -6,16 +6,20 @@ use App\Models\User;
 
 trait CanRetrieveUser
 {
-  protected function retrieveUser($user_id = null): ?User
-  {
-      if (is_string($user_id) || is_int($user_id)) {
-          $user = User::query()->firstWhere('id', $user_id);
-      } elseif ($user_id instanceof User) {
-          $user = $user_id;
-      } else {
-          $user = (property_exists($this, 'user') && $this->user instanceof User) ? $this->user : null;
-      }
+    protected function retrieveUser($user_id = null): ?User
+    {
+        if (is_int($user_id) || (is_string($user_id) && ctype_digit($user_id))) {
+            return User::query()->find((int) $user_id);
+        }
 
-      return $user;
-  }
+        if (is_string($user_id)) {
+            return User::query()->firstWhere('uuid', $user_id);
+        }
+
+        if ($user_id instanceof User) {
+            return $user_id;
+        }
+
+        return (property_exists($this, 'user') && $this->user instanceof User) ? $this->user : null;
+    }
 }

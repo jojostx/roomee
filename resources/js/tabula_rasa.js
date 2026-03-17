@@ -12,24 +12,50 @@ document.addEventListener('alpine:init', () => {
     Alpine.store('chat', {
         open: autoOpen,
         previousUrl: autoOpen ? '/dashboard' : null,
+        pendingRoomId: null,
+        openedFromStandaloneRoute: autoOpen,
 
         toggle() {
             this.open ? this.close() : this.openModal();
         },
 
-        openModal() {
+        openModal(roomId = null) {
+            if (roomId) {
+                this.pendingRoomId = roomId;
+            }
+
             if (!this.open) {
                 this.previousUrl = window.location.href;
-                this.open = true;
             }
+
+            this.openedFromStandaloneRoute = false;
+            this.open = true;
         },
 
         close() {
+            const targetUrl = this.previousUrl;
+            const shouldNavigate = this.openedFromStandaloneRoute && !!targetUrl;
+
             this.open = false;
-            if (this.previousUrl) {
-                history.pushState({}, '', this.previousUrl);
+            this.pendingRoomId = null;
+            this.openedFromStandaloneRoute = false;
+
+            if (!targetUrl) {
+                return;
             }
+
+            if (shouldNavigate) {
+                window.location.assign(targetUrl);
+
+                return;
+            }
+
+            history.pushState({}, '', targetUrl);
         },
+    });
+
+    window.addEventListener('open-chat-room', (event) => {
+        Alpine.store('chat').openModal(event.detail?.roomId ?? null);
     });
 });
 
